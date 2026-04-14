@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@500;600;700;800&family=Montserrat:wght@500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Manrope", sans-serif;
+  --font-brand: "Montserrat", sans-serif;
+
+  --color-surface: #0b1326;
+  --color-surface-container-lowest: #060e20;
+  --color-surface-container-low: #0f172a;
+  --color-surface-container-high: #222a3d;
+  --color-surface-container-highest: #333c52;
+  
+  --color-primary: #7bd0ff;
+  --color-primary-container: #00ade8;
+  
+  --color-on-surface: #dae2fd;
+  --color-on-surface-variant: #87929a;
+  --color-on-primary: #003549;
+
+  --radius-default: 0.25rem;
+  --radius-lg: 0.5rem;
+}
+
+@layer base {
+  body {
+    @apply bg-surface text-on-surface font-sans selection:bg-primary/30 selection:text-white;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-surface-container-highest/60 backdrop-blur-xl border border-white/10;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(0, 173, 232, 0.4);
+  }
+
+  .nebula-shadow {
+    box-shadow: 0 20px 40px rgba(0, 173, 232, 0.08);
+  }
+
+  .lowercase-all {
+    text-transform: lowercase;
+  }
+}
+
+/* Custom scrollbar for the midnight aesthetic */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-surface;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-surface-container-high rounded-full hover:bg-surface-container-highest transition-colors;
+}
