@@ -1,0 +1,8 @@
+name = "ness-site2026"
+compatibility_date = "2024-04-14"
+pages_build_output_dir = "dist"
+
+
+
+[vars]
+ENVIRONMENT = "production"

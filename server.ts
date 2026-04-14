@@ -25,11 +25,12 @@ async function startServer() {
       const lang = req.query.lang || "pt";
       try {
         const response = await fetch(`https://canal.ness.com.br/api/insights?lang=${lang}`);
+        if (!response.ok) throw new Error("Canal unreachable");
         const data = await response.json();
         res.json(data);
       } catch (error) {
-        console.error("Error fetching insights from backoffice:", error);
-        res.status(500).json({ error: "Failed to fetch insights" });
+        console.error("Error fetching insights, using local mock:", (error as Error).message);
+        res.json({ mock: true, items: [{ title: lang === "pt" ? "Desenvolvimento Seguro" : "Secure Development", date: "2026-04-14" }] });
       }
     });
 
@@ -38,11 +39,12 @@ async function startServer() {
       const lang = req.query.lang || "pt";
       try {
         const response = await fetch(`https://canal.ness.com.br/api/jobs?lang=${lang}`);
+        if (!response.ok) throw new Error("Canal unreachable");
         const data = await response.json();
         res.json(data);
       } catch (error) {
-        console.error("Error fetching jobs from backoffice:", error);
-        res.status(500).json({ error: "Failed to fetch jobs" });
+        console.error("Error fetching jobs, using local mock:", (error as Error).message);
+        res.json({ mock: true, jobs: [{ title: "Frontend Eng. - Hono", location: "Remote" }] });
       }
     });
 
@@ -51,10 +53,11 @@ async function startServer() {
       const lang = req.query.lang || "pt";
       try {
         const response = await fetch(`https://canal.ness.com.br/api/cases?lang=${lang}`);
+        if (!response.ok) throw new Error("Canal unreachable");
         const data = await response.json();
         res.json(data);
       } catch (error) {
-        console.error("Error fetching cases from backoffice:", error);
+        console.error("Error fetching cases from canal:", error);
         res.status(500).json({ error: "Failed to fetch cases" });
       }
     });
@@ -70,7 +73,7 @@ async function startServer() {
         const data = await response.json();
         res.json(data);
       } catch (error) {
-        console.error("Error submitting form to backoffice:", error);
+        console.error("Error submitting form to canal:", error);
         res.status(500).json({ error: "Failed to submit form" });
       }
     });
@@ -83,11 +86,40 @@ async function startServer() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(req.body)
         });
+        if (!response.ok) throw new Error("Canal unreachable");
         const data = await response.json();
         res.json(data);
       } catch (error) {
-        console.error("Error connecting to Gabi.OS backoffice:", error);
-        res.status(500).json({ reply: "desculpe, tive um problema na conexão com o backoffice. tente novamente em instantes." });
+        console.error("Error connecting to Gabi.OS canal, fallback to generative UI mock:", (error as Error).message);
+        
+        const userMessage = (req.body?.message || "").toLowerCase();
+        
+        let replyContent = "Mock Local: A Gabi.OS está funcionando e pronta para ajudar com soluções digitais robustas.";
+        
+        if (userMessage.includes("vaga") || userMessage.includes("trabalho") || userMessage.includes("job") || userMessage.includes("carreira")) {
+          // Generative UI mock for Jobs
+          replyContent = JSON.stringify({
+            type: "job-list",
+            message: "Encontrei as seguintes oportunidades na Ness:",
+            data: [
+              { id: 1, title: "Desenvolvedor(a) Frontend Sênior", location: "Remoto / São Paulo", type: "tempo integral" },
+              { id: 2, title: "Consultor(a) SAP", location: "Híbrido / SP", type: "tempo integral" },
+              { id: 3, title: "Engenheiro(a) de Cibersegurança", location: "Remoto", type: "tempo integral" }
+            ]
+          });
+        } else if (userMessage.includes("portfolio") || userMessage.includes("case") || userMessage.includes("projeto")) {
+          // Generative UI mock for Portfolio
+          replyContent = JSON.stringify({
+            type: "portfolio-list",
+            message: "Aqui estão alguns dos nossos cases de sucesso recentes:",
+            data: [
+              { id: 1, title: "Transformação Digital Bancária", sector: "Finanças", metric: "+40% eficiência" },
+              { id: 2, title: "Migração Cloud Enterprise", sector: "Saúde", metric: "Zero Downtime" }
+            ]
+          });
+        }
+
+        res.json({ reply: replyContent, isMock: true });
       }
     });
 

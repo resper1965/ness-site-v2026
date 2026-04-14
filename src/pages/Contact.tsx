@@ -1,0 +1,237 @@
+import BlueDot from '../components/BlueDot';
+import React, {  } from "react";
+import { motion } from "motion/react";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { 
+Mail,
+  Phone,
+  MapPin,
+  Linkedin,
+  Instagram,
+  Facebook,
+  AlertTriangle} from "lucide-react";
+
+// Celebration Configuration
+const FOUNDATION_YEAR = 1991;
+const CURRENT_YEAR = new Date().getFullYear();
+const YEARS_OF_LEGACY = CURRENT_YEAR - FOUNDATION_YEAR;
+
+
+
+const Contact = () => {
+  const { t } = useTranslation();
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen"
+    >
+      {/* Immersive Background for Contact Page */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <motion.img 
+          initial={{ scale: 1.1, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.15 }}
+          transition={{ duration: 1.5 }}
+          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2000"
+          alt="Contact Background"
+          className="w-full h-full object-cover"
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-linear-to-b from-surface-container-lowest/40 via-surface-container-lowest/90 to-surface-container-lowest z-10"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-20">
+        <div className="grid lg:grid-cols-2 gap-24">
+          {/* Left Side: Info */}
+          <div className="space-y-12">
+            <div>
+              <motion.div
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="text-primary-container font-mono text-xs uppercase tracking-[0.3em] mb-6"
+              >
+                get in touch — ness. precision
+              </motion.div>
+              <h1 className="text-5xl md:text-7xl font-display font-semibold text-white tracking-tighter leading-tight mb-8 lowercase-all">
+                {t('contact.title')}<BlueDot />
+              </h1>
+              <p className="text-xl text-on-surface-variant font-light leading-relaxed">
+                {t('contact.subtitle')}
+              </p>
+            </div>
+
+            <div className="space-y-8">
+              <div className="flex items-start gap-6 group">
+                <div className="w-12 h-12 rounded-2xl bg-primary-container/10 flex items-center justify-center shrink-0 group-hover:bg-primary-container/20 transition-colors">
+                  <Mail className="text-primary-container" size={24} />
+                </div>
+                <div>
+                  <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-1">{t('contact.info.email')}</h4>
+                  <p className="text-on-surface-variant font-light">contato@ness.com.br</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-6 group">
+                <div className="w-12 h-12 rounded-2xl bg-primary-container/10 flex items-center justify-center shrink-0 group-hover:bg-primary-container/20 transition-colors">
+                  <Phone className="text-primary-container" size={24} />
+                </div>
+                <div>
+                  <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-1">{t('contact.info.phone')}</h4>
+                  <p className="text-on-surface-variant font-light">+55 (11) 2504-7650</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-6 group">
+                <div className="w-12 h-12 rounded-2xl bg-primary-container/10 flex items-center justify-center shrink-0 group-hover:bg-primary-container/20 transition-colors">
+                  <MapPin className="text-primary-container" size={24} />
+                </div>
+                <div>
+                  <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-1">{t('contact.info.office')}</h4>
+                  <p className="text-on-surface-variant font-light leading-relaxed">
+                    Rua George Ohm 230 Torre A Cj 82<br />
+                    Brooklin Paulista - São Paulo/SP<br />
+                    CEP 04576-020
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-8 flex gap-4">
+              {[
+                { Icon: Linkedin, url: "https://www.linkedin.com/company/ness-tecnologia/" },
+                { Icon: Instagram, url: "https://www.instagram.com/ness.tecnologia/" },
+                { Icon: Facebook, url: "https://www.facebook.com/nesstecnologia" }
+              ].map((social, i) => (
+                <a key={i} href={social.url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-on-surface-variant hover:text-primary-container hover:border-primary-container transition-all">
+                  <social.Icon size={20} />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Side: Form */}
+          <div className="bg-surface-container-low/30 border border-white/5 p-8 md:p-12 rounded-[3rem] nebula-shadow">
+            <form 
+              className="space-y-6"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.currentTarget);
+                const payload = {
+                  formType: "contact",
+                  name: formData.get("name"),
+                  company: formData.get("company"),
+                  email: formData.get("email"),
+                  subject: formData.get("subject"),
+                  message: formData.get("message")
+                };
+                try {
+                  const response = await fetch("/api/submit-form", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                  });
+                  if (response.ok) {
+                    alert(t('contact.form.success'));
+                    (e.target as HTMLFormElement).reset();
+                  } else {
+                    throw new Error("Failed to submit");
+                  }
+                } catch (error) {
+                  alert(t('contact.form.error'));
+                }
+              }}
+            >
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.name')}</label>
+                  <input 
+                    name="name"
+                    type="text" 
+                    required
+                    placeholder={t('contact.form.name_placeholder')} 
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.company')}</label>
+                  <input 
+                    name="company"
+                    type="text" 
+                    required
+                    placeholder={t('contact.form.company_placeholder')} 
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.email')}</label>
+                <input 
+                  name="email"
+                  type="email" 
+                  required
+                  placeholder={t('contact.form.email_placeholder')} 
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.subject')}</label>
+                <select name="subject" required className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all appearance-none">
+                  <option value="" className="bg-surface">{t('contact.form.subject_select')}</option>
+                  <option value="n.secops" className="bg-surface">n.secops</option>
+                  <option value="n.autoops" className="bg-surface">n.autoops</option>
+                  <option value="n.infraops" className="bg-surface">n.infraops</option>
+                  <option value="outros" className="bg-surface">{t('nav.services')}</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.message')}</label>
+                <textarea 
+                  name="message"
+                  rows={4}
+                  required
+                  placeholder={t('contact.form.message_placeholder')} 
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all resize-none"
+                ></textarea>
+              </div>
+              <button className="w-full bg-primary-container text-on-primary py-5 rounded-2xl font-display font-bold uppercase tracking-widest text-sm hover:brightness-110 transition-all shadow-xl shadow-primary-container/20">
+                {t('contact.form.send')}
+              </button>
+            </form>
+          </div>
+        </div>
+
+        {/* Whistleblowing Callout on Contact Page */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="mt-24 p-8 md:p-12 rounded-[3rem] bg-surface-container-low/20 border border-white/5 flex flex-col md:flex-row items-center justify-between gap-8"
+        >
+          <div className="flex items-center gap-6">
+            <div className="w-16 h-16 rounded-3xl bg-primary-container/10 flex items-center justify-center shrink-0">
+              <AlertTriangle className="text-primary-container" size={32} />
+            </div>
+            <div>
+              <h3 className="text-xl font-display font-bold text-white mb-2 lowercase-all">{t('contact.whistleblower.title')}<BlueDot /></h3>
+              <p className="text-on-surface-variant font-light text-sm max-w-md">
+                {t('contact.whistleblower.desc')}
+              </p>
+            </div>
+          </div>
+          <Link 
+            to="/compliance/etica"
+            className="bg-white/5 hover:bg-white/10 text-white px-8 py-4 rounded-2xl font-display font-bold uppercase tracking-widest text-xs transition-all border border-white/10"
+          >
+            {t('contact.whistleblower.cta')}
+          </Link>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+};
+
+
+export default Contact;

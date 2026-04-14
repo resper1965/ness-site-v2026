@@ -16,7 +16,7 @@ const resources = {
       },
       "hero": {
         "tag": "engenharia digital de precisão",
-        "title": "invisíveis quando tudo funciona. presentes quando mais importa",
+        "title": "invisíveis quando tudo funciona. <highlight>presentes</highlight> quando mais importa",
         "subtitle": "elevamos a resiliência digital da sua empresa através de operações precisas e arquiteturas de segurança invisíveis.",
         "explore": "explorar soluções",
         "know_ness": "conheça a ness"
@@ -231,7 +231,7 @@ const resources = {
       },
       "hero": {
         "tag": "precision digital engineering",
-        "title": "invisible when everything works. present when it matters most",
+        "title": "invisible when everything works. <highlight>present</highlight> when it matters most",
         "subtitle": "we elevate your company's digital resilience through precise operations and invisible security architectures.",
         "explore": "explore solutions",
         "know_ness": "know ness"
@@ -446,7 +446,7 @@ const resources = {
       },
       "hero": {
         "tag": "ingeniería digital de precisión",
-        "title": "invisibles cuando todo funciona. presentes cuando más importa",
+        "title": "invisibles cuando todo funciona. <highlight>presentes</highlight> cuando más importa",
         "subtitle": "elevamos la resiliencia digital de su empresa a través de operaciones precisas y arquitecturas de seguridad invisibles.",
         "explore": "explorar soluciones",
         "know_ness": "conozca a ness"
