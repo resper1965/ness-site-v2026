@@ -11,6 +11,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Routes, Route, Link, useParams, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { 
   ShieldCheck, 
   Cloud, 
@@ -145,9 +146,10 @@ const CelebrationPopup = () => {
 };
 
 const ChatbotWidget = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{role: 'bot' | 'user', content: string}[]>([
-    { role: 'bot', content: 'olá! eu sou a Gabi.OS, a inteligência da ness. como posso ajudar sua operação hoje?' }
+    { role: 'bot', content: t('chatbot.welcome') }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -174,7 +176,7 @@ const ChatbotWidget = () => {
       const data = await response.json();
       setMessages(prev => [...prev, { role: 'bot', content: data.reply }]);
     } catch (error) {
-      setMessages(prev => [...prev, { role: 'bot', content: "desculpe, tive um problema na conexão com o backoffice. tente novamente em instantes." }]);
+      setMessages(prev => [...prev, { role: 'bot', content: t('chatbot.error') }]);
     } finally {
       setLoading(false);
     }
@@ -198,7 +200,7 @@ const ChatbotWidget = () => {
                 </div>
                 <div>
                   <h4 className="text-white font-display font-bold text-sm lowercase-all">Gabi.OS<BlueDot /></h4>
-                  <p className="text-[10px] text-primary-container uppercase tracking-widest font-bold">ia generativa ativa</p>
+                  <p className="text-[10px] text-primary-container uppercase tracking-widest font-bold">{t('chatbot.status')}</p>
                 </div>
               </div>
               <button onClick={() => setIsOpen(false)} className="text-on-surface-variant hover:text-white transition-colors">
@@ -260,11 +262,23 @@ const ChatbotWidget = () => {
 };
 
 const Navbar = () => {
+  const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === "/";
 
-  const menuItems = ["soluções", "serviços", "sobre", "portfólio", "blog", "carreiras", "contato"];
+  const menuItems = [
+    { key: "solutions", label: t("nav.solutions") },
+    { key: "sobre", label: t("nav.about") },
+    { key: "portfólio", label: t("nav.portfolio") },
+    { key: "blog", label: t("nav.blog") },
+    { key: "carreiras", label: t("nav.careers") },
+    { key: "contato", label: t("nav.contact") }
+  ];
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
 
   return (
     <>
@@ -274,7 +288,7 @@ const Navbar = () => {
         </Link>
         
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6 lg:gap-8">
           {CELEBRATION_CONFIG.active && (
             <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary-container/10 border border-primary-container/20 animate-pulse">
               <Sparkles size={12} className="text-primary-container" />
@@ -283,41 +297,58 @@ const Navbar = () => {
           )}
           {menuItems.map((item) => (
             isHome ? (
-              item === "sobre" || item === "contato" || item === "portfólio" || item === "blog" || item === "carreiras" ? (
+              item.key === "sobre" || item.key === "contato" || item.key === "portfólio" || item.key === "blog" || item.key === "carreiras" ? (
                 <Link
-                  key={item}
-                  to={`/${item}`}
-                  className="text-on-surface-variant tracking-tight text-xs uppercase hover:text-primary transition-colors duration-300"
+                  key={item.key}
+                  to={`/${item.key}`}
+                  className="text-on-surface-variant tracking-tight text-[10px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-bold"
                 >
-                  {item}
+                  {item.label}
                 </Link>
               ) : (
                 <a
-                  key={item}
-                  href={`#${item}`}
-                  className="text-on-surface-variant tracking-tight text-xs uppercase hover:text-primary transition-colors duration-300"
+                  key={item.key}
+                  href={`#${item.key}`}
+                  className="text-on-surface-variant tracking-tight text-[10px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-bold"
                 >
-                  {item}
+                  {item.label}
                 </a>
               )
             ) : (
               <Link
-                key={item}
-                to={item === "sobre" || item === "contato" || item === "portfólio" || item === "blog" || item === "carreiras" ? `/${item}` : `/#${item}`}
-                className="text-on-surface-variant tracking-tight text-xs uppercase hover:text-primary transition-colors duration-300"
+                key={item.key}
+                to={item.key === "sobre" || item.key === "contato" || item.key === "portfólio" || item.key === "blog" || item.key === "carreiras" ? `/${item.key}` : `/#${item.key}`}
+                className="text-on-surface-variant tracking-tight text-[10px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-bold"
               >
-                {item}
+                {item.label}
               </Link>
             )
           ))}
         </div>
 
         <div className="flex items-center gap-2 md:gap-4">
+          {/* Language Switcher */}
+          <div className="hidden sm:flex items-center bg-white/5 rounded-full p-1 border border-white/10">
+            {['pt', 'en', 'es'].map((lng) => (
+              <button
+                key={lng}
+                onClick={() => changeLanguage(lng)}
+                className={`px-2 py-1 rounded-full text-[9px] uppercase font-bold transition-all ${
+                  i18n.language.startsWith(lng) 
+                    ? "bg-primary-container text-on-primary" 
+                    : "text-on-surface-variant hover:text-white"
+                }`}
+              >
+                {lng}
+              </button>
+            ))}
+          </div>
+
           <button className="hidden lg:flex text-on-surface-variant hover:text-white transition-colors">
             <LayoutGrid size={20} />
           </button>
           <button className="hidden sm:flex bg-primary-container text-on-primary px-6 py-2 rounded-full font-display font-bold text-xs uppercase scale-95 active:scale-90 transition-all hover:brightness-110">
-            começar agora
+            {t('nav.contact')}
           </button>
           
           {/* Hamburger Button */}
@@ -340,38 +371,58 @@ const Navbar = () => {
             className="fixed inset-0 z-40 md:hidden bg-surface/95 backdrop-blur-xl pt-24 px-8"
           >
             <div className="flex flex-col gap-6">
+              {/* Mobile Language Switcher */}
+              <div className="flex items-center gap-4 mb-4">
+                {['pt', 'en', 'es'].map((lng) => (
+                  <button
+                    key={lng}
+                    onClick={() => {
+                      changeLanguage(lng);
+                      setIsOpen(false);
+                    }}
+                    className={`px-4 py-2 rounded-full text-xs uppercase font-bold transition-all ${
+                      i18n.language.startsWith(lng) 
+                        ? "bg-primary-container text-on-primary" 
+                        : "bg-white/5 text-on-surface-variant"
+                    }`}
+                  >
+                    {lng === 'pt' ? 'Português' : lng === 'en' ? 'English' : 'Español'}
+                  </button>
+                ))}
+              </div>
+
               {menuItems.map((item, i) => (
                 <motion.div
-                  key={item}
+                  key={item.key}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1 }}
                 >
                   {isHome ? (
-                    item === "sobre" || item === "contato" || item === "portfólio" || item === "blog" || item === "carreiras" ? (
+                    item.key === "sobre" || item.key === "contato" || item.key === "portfólio" || item.key === "blog" || item.key === "carreiras" ? (
                       <Link
-                        to={`/${item}`}
+                        to={`/${item.key}`}
                         onClick={() => setIsOpen(false)}
                         className="text-3xl font-display font-semibold text-white lowercase-all tracking-tighter"
                       >
-                        {item}<BlueDot />
+                        {item.label}<BlueDot />
                       </Link>
                     ) : (
                       <a
-                        href={`#${item}`}
+                        href={`#${item.key}`}
                         onClick={() => setIsOpen(false)}
                         className="text-3xl font-display font-semibold text-white lowercase-all tracking-tighter"
                       >
-                        {item}<BlueDot />
+                        {item.label}<BlueDot />
                       </a>
                     )
                   ) : (
                     <Link
-                      to={item === "sobre" || item === "contato" || item === "portfólio" || item === "blog" || item === "carreiras" ? `/${item}` : `/#${item}`}
+                      to={item.key === "sobre" || item.key === "contato" || item.key === "portfólio" || item.key === "blog" || item.key === "carreiras" ? `/${item.key}` : `/#${item.key}`}
                       onClick={() => setIsOpen(false)}
                       className="text-3xl font-display font-semibold text-white lowercase-all tracking-tighter"
                     >
-                      {item}<BlueDot />
+                      {item.label}<BlueDot />
                     </Link>
                   )}
                 </motion.div>
@@ -396,6 +447,7 @@ const Navbar = () => {
 };
 
 const Hero = () => {
+  const { t } = useTranslation();
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-surface-container-lowest">
       {/* Immersive Background */}
@@ -439,21 +491,20 @@ const Hero = () => {
           className="max-w-4xl space-y-8"
         >
           <span className="inline-block px-4 py-1 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container font-display text-[10px] tracking-widest uppercase">
-            precision digital engineering
+            {t('hero.tag')}
           </span>
           <h1 className="text-5xl md:text-8xl font-display font-semibold text-white leading-tight tracking-tighter lowercase-all">
-            invisíveis quando tudo funciona.<br />
-            <span className="text-primary text-glow">presentes</span> quando mais importa<BlueDot />
+            {t('hero.title')}<BlueDot />
           </h1>
           <p className="text-xl text-on-surface-variant max-w-2xl leading-relaxed font-light">
-            elevamos a resiliência digital da sua empresa através de operações precisas e arquiteturas de segurança invisíveis.
+            {t('hero.subtitle')}
           </p>
           <div className="flex flex-wrap gap-6 pt-4">
             <button className="bg-gradient-to-r from-primary-container to-primary text-on-primary px-10 py-4 rounded-full font-display font-bold text-lg shadow-xl shadow-primary-container/20 hover:scale-105 transition-transform">
-              explorar soluções
+              {t('hero.explore')}
             </button>
             <button className="flex items-center gap-3 text-white font-display font-medium hover:text-primary transition-colors group">
-              conheça a ness<BlueDot />
+              {t('hero.know_ness')}<BlueDot />
               <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
             </button>
           </div>
@@ -464,14 +515,22 @@ const Hero = () => {
 };
 
 const Presence = () => {
-  const locations = ["brasil", "portugal", "chile", "peru", "colômbia", "estados unidos"];
+  const { t } = useTranslation();
+  const locations = [
+    t('presence.locations.brazil'),
+    t('presence.locations.portugal'),
+    t('presence.locations.chile'),
+    t('presence.locations.peru'),
+    t('presence.locations.colombia'),
+    t('presence.locations.usa')
+  ];
   return (
     <section className="py-12 bg-surface border-y border-white/5 overflow-hidden">
       <div className="max-w-7xl mx-auto px-8">
         <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-60">
           <div className="flex items-center gap-2">
             <Globe className="text-primary-container" size={20} />
-            <span className="text-on-surface-variant text-xs tracking-widest uppercase font-bold">presença global</span>
+            <span className="text-on-surface-variant text-xs tracking-widest uppercase font-bold">{t('presence.global')}</span>
           </div>
           {locations.map((loc) => (
             <div key={loc} className="flex items-center gap-2">
@@ -787,6 +846,7 @@ const ChatPreview = () => {
 };
 
 const SolutionPage = () => {
+  const { t } = useTranslation();
   const { slug } = useParams();
   const solution = slug ? solutionsData[slug] : null;
   const Icon = solution?.icon;
@@ -795,7 +855,7 @@ const SolutionPage = () => {
     window.scrollTo(0, 0);
   }, [slug]);
 
-  if (!solution) return <div className="min-h-screen flex items-center justify-center text-white">Solução não encontrada.</div>;
+  if (!solution) return <div className="min-h-screen flex items-center justify-center text-white">{t('common.loading')}</div>;
 
   return (
     <motion.div 
@@ -824,7 +884,7 @@ const SolutionPage = () => {
       <div className="relative z-20 max-w-7xl mx-auto">
         <Link to="/" className="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary mb-12 transition-colors group">
           <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-          voltar para início
+          {t('common.back')}
         </Link>
 
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
@@ -839,18 +899,18 @@ const SolutionPage = () => {
                 <Icon className="text-primary-container" size={32} />
               </div>
               <h1 className="text-2xl font-brand font-medium text-white lowercase-all">
-                {solution.title.split('.')[0]}<span className="text-primary-container">.</span>{solution.title.split('.')[1]}
+                {t(`solutions.${slug}.title`).split('.')[0]}<span className="text-primary-container">.</span>{t(`solutions.${slug}.title`).split('.')[1]}
               </h1>
             </div>
             <h2 className="text-5xl md:text-7xl font-display font-semibold text-white tracking-tighter leading-tight lowercase-all">
-              {solution.fullTitle}<BlueDot />
+              {t(`solutions.${slug}.fullTitle`)}<BlueDot />
             </h2>
             <p className="text-xl text-on-surface-variant font-light leading-relaxed">
-              {solution.longDesc}
+              {t(`solutions.${slug}.longDesc`)}
             </p>
             <div className="flex gap-4 pt-4">
               <button className="bg-primary-container text-on-primary px-8 py-4 rounded-full font-display font-bold text-sm uppercase hover:brightness-110 transition-all">
-                {solution.ctaLabel}
+                {t(`solutions.${slug}.cta`)}
               </button>
             </div>
           </motion.div>
@@ -945,7 +1005,7 @@ const SolutionPage = () => {
 
         <div className="grid md:grid-cols-2 gap-24 mb-24">
           <section id="benefícios">
-            <h3 className="text-3xl font-display font-semibold text-white mb-12 tracking-tighter lowercase-all">valor para o negócio<BlueDot /></h3>
+            <h3 className="text-3xl font-display font-semibold text-white mb-12 tracking-tighter lowercase-all">{t('solutions.business_value', 'valor para o negócio')}<BlueDot /></h3>
             <div className="grid grid-cols-1 gap-6">
               {solution.benefits?.map((benefit: any, i: number) => (
                 <motion.div 
@@ -961,7 +1021,7 @@ const SolutionPage = () => {
           </section>
 
           <section id="serviços">
-            <h3 className="text-3xl font-display font-semibold text-white mb-12 tracking-tighter lowercase-all">soluções estratégicas<BlueDot /></h3>
+            <h3 className="text-3xl font-display font-semibold text-white mb-12 tracking-tighter lowercase-all">{t('solutions.strategic_solutions', 'soluções estratégicas')}<BlueDot /></h3>
             <div className="space-y-6">
               {solution.services.map((service: any, i: number) => (
                 <div key={i} className="group p-6 rounded-2xl border border-white/5 bg-surface-container-low/10 hover:bg-surface-container-low/30 transition-all">
@@ -983,8 +1043,8 @@ const SolutionPage = () => {
                 <Icon size={120} />
               </div>
               <div className="relative z-10">
-                <h4 className="text-3xl font-display font-bold mb-4 tracking-tighter">sua empresa em um novo nível.</h4>
-                <p className="text-lg mb-8 opacity-90 font-light">descubra como a ness<BlueDot /> pode transformar sua operação com inteligência e segurança de elite.</p>
+                <h4 className="text-3xl font-display font-bold mb-4 tracking-tighter">{t('solutions.cta_title', 'sua empresa em um novo nível.')}</h4>
+                <p className="text-lg mb-8 opacity-90 font-light">{t('solutions.cta_desc', 'descubra como a ness pode transformar sua operação com inteligência e segurança de elite.')}</p>
                 <button className="bg-white text-primary px-10 py-4 rounded-full font-display font-bold uppercase tracking-widest text-xs hover:shadow-xl transition-all">
                   {solution.ctaLabel}
                 </button>
@@ -997,8 +1057,8 @@ const SolutionPage = () => {
           <section id="tecnologia" className="mb-24 pt-24 border-t border-white/5">
             <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
               <div className="max-w-xl">
-                <h3 className="text-3xl font-display font-semibold text-white tracking-tighter lowercase-all">o motor da resiliência<BlueDot /></h3>
-                <p className="text-on-surface-variant mt-4 font-light">para os interessados na engenharia por trás da proteção, aqui estão os pilares técnicos que sustentam nossa entrega de valor.</p>
+                <h3 className="text-3xl font-display font-semibold text-white tracking-tighter lowercase-all">{t('solutions.tech_engine', 'o motor da resiliência')}<BlueDot /></h3>
+                <p className="text-on-surface-variant mt-4 font-light">{t('solutions.tech_desc', 'para os interessados na engenharia por trás da proteção, aqui estão os pilares técnicos que sustentam nossa entrega de valor.')}</p>
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1016,7 +1076,7 @@ const SolutionPage = () => {
         )}
 
         <section id="portfólio">
-          <h3 className="text-3xl font-display font-semibold text-white mb-12 tracking-tighter lowercase-all">portfólio de impacto<BlueDot /></h3>
+          <h3 className="text-3xl font-display font-semibold text-white mb-12 tracking-tighter lowercase-all">{t('solutions.impact_portfolio', 'portfólio de impacto')}<BlueDot /></h3>
           <div className="grid md:grid-cols-2 gap-8">
             {solution.portfolio.map((item: any, i: number) => (
               <div key={i} className="p-8 rounded-[2rem] border border-white/5 bg-gradient-to-br from-surface-container-low to-surface-container-lowest">
@@ -1028,7 +1088,7 @@ const SolutionPage = () => {
                   <ExternalLink className="text-on-surface-variant/40" size={20} />
                 </div>
                 <div className="p-4 rounded-xl bg-primary-container/5 border border-primary-container/10">
-                  <p className="text-primary-container text-sm font-medium">resultado: {item.result}</p>
+                  <p className="text-primary-container text-sm font-medium">{t('common.result')}: {item.result}</p>
                 </div>
               </div>
             ))}
@@ -1040,11 +1100,12 @@ const SolutionPage = () => {
 };
 
 const Solutions = () => {
+  const { t } = useTranslation();
   const solutions = [
     {
       slug: "secops",
       title: "n.secops",
-      desc: "operação contínua de segurança com monitoramento em tempo real e resposta a incidentes.",
+      desc: t('solutions.secops.desc'),
       icon: ShieldCheck,
       highlight: true,
       colSpan: "md:col-span-2 lg:col-span-2"
@@ -1052,28 +1113,28 @@ const Solutions = () => {
     {
       slug: "infraops",
       title: "n.infraops",
-      desc: "gestão moderna de infraestrutura crítica com foco em alta disponibilidade e escala.",
+      desc: t('solutions.infraops.desc'),
       icon: Cloud,
       colSpan: "md:col-span-2 lg:col-span-2"
     },
     {
       slug: "devarch",
       title: "n.devarch",
-      desc: "arquitetura orientada ao desenvolvedor para escala e performance extrema.",
+      desc: t('solutions.devarch.desc'),
       icon: Cpu,
       colSpan: "md:col-span-2 lg:col-span-2"
     },
     {
       slug: "autoops",
       title: "n.autoops",
-      desc: "ia aplicada para processos complexos de tomada de decisão e automação.",
+      desc: t('solutions.autoops.desc'),
       icon: Brain,
       colSpan: "md:col-span-2 lg:col-span-3"
     },
     {
       slug: "cirt",
       title: "n.cirt",
-      desc: "resposta estratégica a incidentes críticos e inteligência avançada de ameaças.",
+      desc: t('solutions.cirt.desc'),
       icon: Gavel,
       accent: true,
       colSpan: "md:col-span-2 lg:col-span-3"
@@ -1085,7 +1146,7 @@ const Solutions = () => {
       <div className="max-w-7xl mx-auto">
         <div className="mb-16">
           <h2 className="text-4xl font-display font-semibold text-white tracking-tighter lowercase-all">
-            nossas soluções<BlueDot />
+            {t('nav.solutions')}<BlueDot />
           </h2>
           <div className="w-16 h-px bg-primary-container mt-4"></div>
         </div>
@@ -1118,6 +1179,7 @@ const Solutions = () => {
 };
 
 const Services = () => {
+  const { t } = useTranslation();
   const services = [
     {
       title: "Consultoria em IA & Dados",
@@ -1165,10 +1227,10 @@ const Services = () => {
         <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-8">
           <div className="max-w-2xl">
             <h2 className="text-4xl font-display font-semibold tracking-tighter mb-6 text-white lowercase-all">
-              serviços profissionais<BlueDot />
+              {t('nav.services')}<BlueDot />
             </h2>
             <p className="text-on-surface-variant text-lg font-light">
-              expertise técnica e estratégica para acelerar sua jornada de transformação e segurança.
+              {t('services.subtitle')}
             </p>
           </div>
         </div>
@@ -1203,6 +1265,7 @@ const Services = () => {
 };
 
 const Verticals = () => {
+  const { t } = useTranslation();
   return (
     <section className="py-24 bg-surface px-8 border-t border-white/5 relative overflow-hidden">
       {/* Immersive Background for Verticals */}
@@ -1223,10 +1286,10 @@ const Verticals = () => {
         <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-8">
           <div className="max-w-2xl">
             <h2 className="text-4xl font-display font-semibold tracking-tighter mb-6 text-white lowercase-all">
-              unidades verticais de negócio<BlueDot />
+              {t('verticals.title')}<BlueDot />
             </h2>
             <p className="text-on-surface-variant text-lg font-light">
-              ecossistemas dedicados que potencializam a inteligência e confiança digital.
+              {t('verticals.subtitle')}
             </p>
           </div>
         </div>
@@ -1274,25 +1337,52 @@ const Verticals = () => {
 };
 
 const Insights = () => {
+  const { t, i18n } = useTranslation();
   const [articles, setArticles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchInsights = async () => {
+      setLoading(true);
       try {
-        const response = await fetch("/api/insights");
+        const response = await fetch(`/api/insights?lang=${i18n.language}`);
+        if (!response.ok) throw new Error("API error");
         const data = await response.json();
         // Show only the 3 most recent
         setArticles(data.slice(0, 3));
       } catch (error) {
         console.error("Erro ao buscar insights:", error);
+        // Fallback mock data if API fails
+        setArticles([
+          {
+            title: "A Nova Era da Resiliência Cibernética",
+            tag: "Segurança",
+            date: "12 Abr 2026",
+            icon: "ShieldCheck",
+            desc: "Como as empresas estão se preparando para ameaças invisíveis em 2026."
+          },
+          {
+            title: "IA Generativa em Operações Críticas",
+            tag: "IA",
+            date: "10 Abr 2026",
+            icon: "Brain",
+            desc: "O papel dos agentes autônomos na eficiência operacional moderna."
+          },
+          {
+            title: "Arquiteturas Serverless e Escalabilidade",
+            tag: "Cloud",
+            date: "08 Abr 2026",
+            icon: "Cloud",
+            desc: "Maximizando a performance com infraestrutura sob demanda."
+          }
+        ]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchInsights();
-  }, []);
+  }, [i18n.language]);
 
   const getIcon = (iconName: string) => {
     switch (iconName) {
@@ -1325,10 +1415,10 @@ const Insights = () => {
       <div className="max-w-7xl mx-auto relative z-20">
         <div className="flex items-center justify-between mb-16">
           <h2 className="text-4xl font-display font-semibold tracking-tighter text-white lowercase-all">
-            insights<BlueDot />
+            {t('nav.blog')}<BlueDot />
           </h2>
           <Link className="text-primary-container flex items-center gap-2 hover:gap-4 transition-all font-medium" to="/blog">
-            ver tudo <ChevronRight size={20} />
+            {t('common.view_all')} <ChevronRight size={20} />
           </Link>
         </div>
         
@@ -1367,17 +1457,44 @@ const Insights = () => {
 };
 
 const Blog = () => {
+  const { t, i18n } = useTranslation();
   const [articles, setArticles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchInsights = async () => {
+      setLoading(true);
       try {
-        const response = await fetch("/api/insights");
+        const response = await fetch(`/api/insights?lang=${i18n.language}`);
+        if (!response.ok) throw new Error("API error");
         const data = await response.json();
         setArticles(data);
       } catch (error) {
         console.error("Erro ao buscar insights:", error);
+        // Fallback mock data if API fails
+        setArticles([
+          {
+            title: "A Nova Era da Resiliência Cibernética",
+            tag: "Segurança",
+            date: "12 Abr 2026",
+            icon: "ShieldCheck",
+            desc: "Como as empresas estão se preparando para ameaças invisíveis em 2026."
+          },
+          {
+            title: "IA Generativa em Operações Críticas",
+            tag: "IA",
+            date: "10 Abr 2026",
+            icon: "Brain",
+            desc: "O papel dos agentes autônomos na eficiência operacional moderna."
+          },
+          {
+            title: "Arquiteturas Serverless e Escalabilidade",
+            tag: "Cloud",
+            date: "08 Abr 2026",
+            icon: "Cloud",
+            desc: "Maximizando a performance com infraestrutura sob demanda."
+          }
+        ]);
       } finally {
         setLoading(false);
       }
@@ -1385,7 +1502,7 @@ const Blog = () => {
 
     fetchInsights();
     window.scrollTo(0, 0);
-  }, []);
+  }, [i18n.language]);
 
   const getIcon = (iconName: string) => {
     switch (iconName) {
@@ -1416,10 +1533,10 @@ const Blog = () => {
             blog — ness. insights
           </motion.div>
           <h1 className="text-5xl md:text-8xl font-display font-semibold text-white tracking-tighter mb-8 lowercase-all">
-            conhecimento técnico<BlueDot />
+            {t('blog.title')}<BlueDot />
           </h1>
           <p className="text-xl text-on-surface-variant font-light max-w-3xl leading-relaxed">
-            exploramos as fronteiras da tecnologia, segurança e inteligência para manter sua operação resiliente e inovadora.
+            {t('blog.subtitle')}
           </p>
         </div>
 
@@ -1466,6 +1583,7 @@ const Blog = () => {
 };
 
 const Careers = () => {
+  const { t, i18n } = useTranslation();
   const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedJob, setSelectedJob] = useState<any>(null);
@@ -1473,19 +1591,51 @@ const Careers = () => {
 
   useEffect(() => {
     const fetchJobs = async () => {
+      setLoading(true);
       try {
-        const response = await fetch("/api/jobs");
+        const response = await fetch(`/api/jobs?lang=${i18n.language}`);
+        if (!response.ok) throw new Error("API error");
         const data = await response.json();
         setJobs(data);
       } catch (error) {
         console.error("Erro ao buscar vagas:", error);
+        // Fallback mock data if API fails
+        setJobs([
+          {
+            id: "1",
+            title: "Engenheiro de Software Sênior (Fullstack)",
+            vertical: "engenharia",
+            location: "Remoto / São Paulo",
+            type: "Full-time",
+            desc: "Buscamos especialistas em React e Node.js para atuar em projetos de alta escala e resiliência.",
+            requirements: ["5+ anos de experiência", "Domínio de TypeScript", "Vivência com arquiteturas distribuídas"]
+          },
+          {
+            id: "2",
+            title: "Analista de Segurança Ofensiva (Red Team)",
+            vertical: "segurança",
+            location: "Remoto / Portugal",
+            type: "Full-time",
+            desc: "Foco em testes de intrusão, análise de vulnerabilidades e fortalecimento de perímetros digitais.",
+            requirements: ["Experiência com Pentest", "Certificações OSCP/CEH", "Conhecimento em Cloud Security"]
+          },
+          {
+            id: "3",
+            title: "Arquiteto de Soluções Cloud",
+            vertical: "infraestrutura",
+            location: "Híbrido / Chile",
+            type: "Full-time",
+            desc: "Desenho e implementação de infraestruturas resilientes e escaláveis em ambientes multi-cloud.",
+            requirements: ["Domínio de AWS/Azure/GCP", "Experiência com IaC (Terraform)", "Foco em FinOps"]
+          }
+        ]);
       } finally {
         setLoading(false);
       }
     };
     fetchJobs();
     window.scrollTo(0, 0);
-  }, []);
+  }, [i18n.language]);
 
   const filteredJobs = filter === "todos" ? jobs : jobs.filter(j => j.vertical === filter);
 
@@ -1503,13 +1653,13 @@ const Careers = () => {
             animate={{ x: 0, opacity: 1 }}
             className="text-primary-container font-mono text-xs uppercase tracking-[0.3em] mb-6"
           >
-            carreiras — ness. talent
+            {t('careers.title')} — ness. talent
           </motion.div>
           <h1 className="text-5xl md:text-8xl font-display font-semibold text-white tracking-tighter mb-8 lowercase-all">
-            construa o futuro conosco<BlueDot />
+            {t('careers.subtitle')}<BlueDot />
           </h1>
           <p className="text-xl text-on-surface-variant font-light max-w-3xl leading-relaxed">
-            estamos em busca de mentes brilhantes e engenheiros de precisão para elevar o nível da tecnologia e segurança global.
+            {t('careers.desc')}
           </p>
         </div>
 
@@ -1525,7 +1675,7 @@ const Careers = () => {
                   : "bg-white/5 text-on-surface-variant hover:bg-white/10"
               }`}
             >
-              {cat}
+              {cat === "todos" ? t('common.all') : cat}
             </button>
           ))}
         </div>
@@ -1708,6 +1858,7 @@ const Careers = () => {
 };
 
 const CTA = () => {
+  const { t } = useTranslation();
   return (
     <section className="py-24 px-8 bg-surface">
       <div className="max-w-7xl mx-auto rounded-[3rem] overflow-hidden relative bg-surface-container-low p-12 md:p-24 border border-white/5 nebula-shadow">
@@ -1715,17 +1866,17 @@ const CTA = () => {
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
           <div className="max-w-xl text-center md:text-left">
             <h2 className="text-4xl md:text-6xl font-display font-semibold text-white tracking-tighter leading-tight mb-6 lowercase-all">
-              pronto para o próximo nível?
+              {t('cta.title')}
             </h2>
             <p className="text-on-surface-variant text-lg leading-relaxed font-light">
-              fale com nossos especialistas e descubra como a ness<BlueDot /> pode elevar o nível de inteligência, segurança e eficiência da sua operação.
+              {t('cta.subtitle')}
             </p>
           </div>
           <div className="flex flex-col gap-4 w-full md:w-auto">
             <button className="bg-white text-surface px-12 py-5 rounded-full font-display font-bold text-xl hover:bg-primary-container hover:text-on-primary transition-all shadow-2xl shadow-primary-container/20">
-              agendar consultoria
+              {t('cta.button')}
             </button>
-            <p className="text-on-surface-variant/50 text-center text-sm font-light">atendimento especializado imediato.</p>
+            <p className="text-on-surface-variant/50 text-center text-sm font-light">{t('cta.support')}</p>
           </div>
         </div>
       </div>
@@ -1734,13 +1885,14 @@ const CTA = () => {
 };
 
 const Footer = () => {
+  const { t } = useTranslation();
   return (
     <footer className="bg-surface py-16 px-8 border-t border-white/5">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
         <div className="max-w-xs space-y-6">
           <div className="text-xl text-white font-display lowercase-all">ness<BlueDot /></div>
           <p className="text-sm text-on-surface-variant/60 leading-relaxed font-light">
-            elevando padrões de engenharia digital e resiliência cibernética para as empresas mais inovadoras do mercado.
+            {t('hero.subtitle')}
           </p>
           <div className="flex gap-4">
             {[
@@ -1757,27 +1909,27 @@ const Footer = () => {
         
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-12 md:gap-24">
           <div className="space-y-4">
-            <h4 className="text-[10px] uppercase tracking-widest text-white font-bold">empresa</h4>
+            <h4 className="text-[10px] uppercase tracking-widest text-white font-bold">{t('footer.company')}</h4>
             <ul className="space-y-3 text-sm text-on-surface-variant/60 font-light">
-              <li><Link className="hover:text-white transition-all" to="/sobre">sobre</Link></li>
-              <li><Link className="hover:text-white transition-all" to="/portfólio">portfólio</Link></li>
-              <li><Link className="hover:text-white transition-all" to="/blog">blog</Link></li>
-              <li><Link className="hover:text-white transition-all" to="/carreiras">carreiras</Link></li>
-              <li><Link className="hover:text-white transition-all" to="/contato">contato</Link></li>
+              <li><Link className="hover:text-white transition-all" to="/sobre">{t('nav.about')}</Link></li>
+              <li><Link className="hover:text-white transition-all" to="/portfólio">{t('nav.portfolio')}</Link></li>
+              <li><Link className="hover:text-white transition-all" to="/blog">{t('nav.blog')}</Link></li>
+              <li><Link className="hover:text-white transition-all" to="/carreiras">{t('nav.careers')}</Link></li>
+              <li><Link className="hover:text-white transition-all" to="/contato">{t('nav.contact')}</Link></li>
             </ul>
           </div>
           <div className="space-y-4">
-            <h4 className="text-[10px] uppercase tracking-widest text-white font-bold">legal</h4>
+            <h4 className="text-[10px] uppercase tracking-widest text-white font-bold">{t('footer.legal')}</h4>
             <ul className="space-y-3 text-sm text-on-surface-variant/60 font-light">
-              <li><Link className="hover:text-white transition-all" to="/compliance/termos">termos de uso</Link></li>
-              <li><Link className="hover:text-white transition-all" to="/compliance/privacidade">privacidade</Link></li>
-              <li><Link className="hover:text-white transition-all" to="/compliance/etica">compliance</Link></li>
-              <li><Link className="hover:text-white transition-all text-primary-container font-medium" to="/compliance/etica">canal de denúncia</Link></li>
+              <li><Link className="hover:text-white transition-all" to="/compliance/termos">{t('footer.terms')}</Link></li>
+              <li><Link className="hover:text-white transition-all" to="/compliance/privacidade">{t('footer.privacy')}</Link></li>
+              <li><Link className="hover:text-white transition-all" to="/compliance/etica">{t('footer.compliance')}</Link></li>
+              <li><Link className="hover:text-white transition-all text-primary-container font-medium" to="/compliance/etica">{t('contact.whistleblower.title')}</Link></li>
             </ul>
           </div>
           <div className="hidden lg:block space-y-4">
             <h4 className="text-[10px] uppercase tracking-widest text-white font-bold">updates</h4>
-            <p className="text-sm text-on-surface-variant/60 font-light">insights sobre segurança digital.</p>
+            <p className="text-sm text-on-surface-variant/60 font-light">{t('footer.newsletter')}</p>
             <div className="flex gap-2">
               <input 
                 type="text" 
@@ -1804,7 +1956,7 @@ const Footer = () => {
       </div>
       
       <div className="max-w-7xl mx-auto mt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="text-sm text-on-surface-variant/40 font-light">© 2024 ness. precision digital engineering.</p>
+        <p className="text-sm text-on-surface-variant/40 font-light">© 2026 ness. precision digital engineering. {t('footer.rights')}</p>
         <div className="flex items-center gap-2">
           <div className="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></div>
           <span className="text-[10px] uppercase tracking-tighter text-on-surface-variant/40 font-bold">system live status: optimal</span>
@@ -1815,17 +1967,18 @@ const Footer = () => {
 };
 
 const About = () => {
+  const { t } = useTranslation();
   const timeline = [
-    { year: "1991", desc: "ness. é fundada como terceirização da área de tecnologia de um grande grupo econômico." },
-    { year: "1992", desc: "Início das atividades de infraestrutura crítica, processamento de dados e BPO em larga escala." },
-    { year: "2004", desc: "Expansão global: infraestrutura em grandes eventos por diversos países da Europa, Américas, África e Ásia." },
-    { year: "2012", desc: "Pioneirismo no início de serviços especializados de privacidade e segurança digital avançada." },
-    { year: "2015", desc: "Lançamento da divisão de software e processos, focada em engenharia digital de alta performance." },
-    { year: "2016", desc: "Incubação da NESS Technology healthcare (que viria a se tornar a IONIC Health)." },
-    { year: "2017", desc: "Incubação da Trustness como unidade de negócios estratégica para GRC." },
-    { year: "2022", desc: "Incubação da forense.io como unidade de negócios líder em investigação digital." },
-    { year: "2024", desc: "Estabelecida como uma plataforma modular para transformação digital confiável e segura." },
-    { year: "2026", desc: "Início da operação de IA e Agentes, consolidando a ness. como líder em orquestração de conhecimento inteligente." }
+    { year: "1991", desc: t('about.timeline.1991', "ness. é fundada como terceirização da área de tecnologia de um grande grupo econômico.") },
+    { year: "1992", desc: t('about.timeline.1992', "Início das atividades de infraestrutura crítica, processamento de dados e BPO em larga escala.") },
+    { year: "2004", desc: t('about.timeline.2004', "Expansão global: infraestrutura em grandes eventos por diversos países da Europa, Américas, África e Ásia.") },
+    { year: "2012", desc: t('about.timeline.2012', "Pioneirismo no início de serviços especializados de privacidade e segurança digital avançada.") },
+    { year: "2015", desc: t('about.timeline.2015', "Lançamento da divisão de software e processos, focada em engenharia digital de alta performance.") },
+    { year: "2016", desc: t('about.timeline.2016', "Incubação da NESS Technology healthcare (que viria a se tornar a IONIC Health).") },
+    { year: "2017", desc: t('about.timeline.2017', "Incubação da Trustness como unidade de negócios estratégica para GRC.") },
+    { year: "2022", desc: t('about.timeline.2022', "Incubação da forense.io como unidade de negócios líder em investigação digital.") },
+    { year: "2024", desc: t('about.timeline.2024', "Estabelecida como uma plataforma modular para transformação digital confiável e segura.") },
+    { year: "2026", desc: t('about.timeline.2026', "Início da operação de IA e Agentes, consolidando a ness. como líder em orquestração de conhecimento inteligente.") }
   ];
 
   return (
@@ -1859,13 +2012,13 @@ const About = () => {
               transition={{ delay: 0.2 }}
               className="text-primary-container font-mono text-xs uppercase tracking-[0.3em] mb-6"
             >
-              {YEARS_OF_LEGACY} anos de excelência — since 1991
+              {YEARS_OF_LEGACY} {t('footer.rights').includes('reservados') ? 'anos de excelência' : 'years of excellence'} — since 1991
             </motion.div>
             <h1 className="text-5xl md:text-8xl font-display font-semibold text-white tracking-tighter leading-[0.9] mb-12 lowercase-all">
-              invisíveis quando tudo funciona. presentes quando mais importa<BlueDot />
+              {t('about.subtitle')}<BlueDot />
             </h1>
             <p className="text-xl md:text-2xl text-on-surface-variant font-light leading-relaxed max-w-2xl">
-              somos uma empresa de tecnologia especializada em segurança e engenharia, que opera e evolui ambientes de TI de ponta a ponta.
+              {t('about.desc')}
             </p>
           </div>
           
@@ -1879,30 +2032,30 @@ const About = () => {
             <div className="w-12 h-12 rounded-2xl bg-primary-container/10 flex items-center justify-center">
               <Target className="text-primary-container" size={24} />
             </div>
-            <h3 className="text-2xl font-display font-bold text-white lowercase-all">missão<BlueDot /></h3>
+            <h3 className="text-2xl font-display font-bold text-white lowercase-all">{t('about.mission')}<BlueDot /></h3>
             <p className="text-on-surface-variant font-light leading-relaxed">
-              ser o parceiro de confiança que garante que sua infraestrutura funcione perfeitamente, permitindo que você se concentre no que realmente importa: seu negócio.
+              {t('about.mission_desc')}
             </p>
           </div>
           <div className="space-y-6">
             <div className="w-12 h-12 rounded-2xl bg-primary-container/10 flex items-center justify-center">
               <Eye className="text-primary-container" size={24} />
             </div>
-            <h3 className="text-2xl font-display font-bold text-white lowercase-all">visão<BlueDot /></h3>
+            <h3 className="text-2xl font-display font-bold text-white lowercase-all">{t('about.vision')}<BlueDot /></h3>
             <p className="text-on-surface-variant font-light leading-relaxed">
-              ser a plataforma modular líder para transformação digital confiável, reconhecida globalmente pela excelência técnica e inovação constante.
+              {t('about.vision_desc')}
             </p>
           </div>
           <div className="space-y-6">
             <div className="w-12 h-12 rounded-2xl bg-primary-container/10 flex items-center justify-center">
               <Heart className="text-primary-container" size={24} />
             </div>
-            <h3 className="text-2xl font-display font-bold text-white lowercase-all">valores<BlueDot /></h3>
+            <h3 className="text-2xl font-display font-bold text-white lowercase-all">{t('about.values')}<BlueDot /></h3>
             <ul className="space-y-3 text-on-surface-variant font-light">
-              <li className="flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-primary-container"></div> excelência técnica inegociável</li>
-              <li className="flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-primary-container"></div> inovação constante e aplicada</li>
-              <li className="flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-primary-container"></div> parceria verdadeira e transparente</li>
-              <li className="flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-primary-container"></div> resultados reais e mensuráveis</li>
+              <li className="flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-primary-container"></div> {t('services.title').includes('profissionais') ? 'excelência técnica inegociável' : 'unnegotiable technical excellence'}</li>
+              <li className="flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-primary-container"></div> {t('services.title').includes('profissionais') ? 'inovação constante e aplicada' : 'constant and applied innovation'}</li>
+              <li className="flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-primary-container"></div> {t('services.title').includes('profissionais') ? 'parceria verdadeira e transparente' : 'true and transparent partnership'}</li>
+              <li className="flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-primary-container"></div> {t('services.title').includes('profissionais') ? 'resultados reais e mensuráveis' : 'real and measurable results'}</li>
             </ul>
           </div>
         </div>
@@ -1966,6 +2119,7 @@ const About = () => {
 };
 
 const Contact = () => {
+  const { t } = useTranslation();
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -2001,10 +2155,10 @@ const Contact = () => {
                 get in touch — ness. precision
               </motion.div>
               <h1 className="text-5xl md:text-7xl font-display font-semibold text-white tracking-tighter leading-tight mb-8 lowercase-all">
-                vamos construir o futuro juntos<BlueDot />
+                {t('contact.title')}<BlueDot />
               </h1>
               <p className="text-xl text-on-surface-variant font-light leading-relaxed">
-                estamos prontos para elevar o nível de inteligência e segurança da sua operação. fale com nossos especialistas.
+                {t('contact.subtitle')}
               </p>
             </div>
 
@@ -2079,70 +2233,70 @@ const Contact = () => {
                     body: JSON.stringify(payload)
                   });
                   if (response.ok) {
-                    alert("Mensagem enviada com sucesso! Entraremos em contato em breve.");
+                    alert(t('contact.form.success'));
                     (e.target as HTMLFormElement).reset();
                   } else {
                     throw new Error("Failed to submit");
                   }
                 } catch (error) {
-                  alert("Erro ao enviar mensagem. Por favor, tente novamente.");
+                  alert(t('contact.form.error'));
                 }
               }}
             >
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">nome</label>
+                  <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.name')}</label>
                   <input 
                     name="name"
                     type="text" 
                     required
-                    placeholder="seu nome" 
+                    placeholder={t('contact.form.name_placeholder')} 
                     className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">empresa</label>
+                  <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.company')}</label>
                   <input 
                     name="company"
                     type="text" 
                     required
-                    placeholder="sua empresa" 
+                    placeholder={t('contact.form.company_placeholder')} 
                     className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">email corporativo</label>
+                <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.email')}</label>
                 <input 
                   name="email"
                   type="email" 
                   required
-                  placeholder="email@empresa.com.br" 
+                  placeholder={t('contact.form.email_placeholder')} 
                   className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">assunto</label>
+                <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.subject')}</label>
                 <select name="subject" required className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all appearance-none">
-                  <option value="" className="bg-surface">selecione um assunto</option>
+                  <option value="" className="bg-surface">{t('contact.form.subject_select')}</option>
                   <option value="n.secops" className="bg-surface">n.secops</option>
                   <option value="n.autoops" className="bg-surface">n.autoops</option>
                   <option value="n.infraops" className="bg-surface">n.infraops</option>
-                  <option value="outros" className="bg-surface">outros serviços</option>
+                  <option value="outros" className="bg-surface">{t('nav.services')}</option>
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">mensagem</label>
+                <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.message')}</label>
                 <textarea 
                   name="message"
                   rows={4}
                   required
-                  placeholder="como podemos ajudar?" 
+                  placeholder={t('contact.form.message_placeholder')} 
                   className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all resize-none"
                 ></textarea>
               </div>
               <button className="w-full bg-primary-container text-on-primary py-5 rounded-2xl font-display font-bold uppercase tracking-widest text-sm hover:brightness-110 transition-all shadow-xl shadow-primary-container/20">
-                enviar mensagem
+                {t('contact.form.send')}
               </button>
             </form>
           </div>
@@ -2160,9 +2314,9 @@ const Contact = () => {
               <AlertTriangle className="text-primary-container" size={32} />
             </div>
             <div>
-              <h3 className="text-xl font-display font-bold text-white mb-2 lowercase-all">canal de denúncia<BlueDot /></h3>
+              <h3 className="text-xl font-display font-bold text-white mb-2 lowercase-all">{t('contact.whistleblower.title')}<BlueDot /></h3>
               <p className="text-on-surface-variant font-light text-sm max-w-md">
-                para reportar condutas antiéticas ou violações de compliance de forma totalmente anônima e segura.
+                {t('contact.whistleblower.desc')}
               </p>
             </div>
           </div>
@@ -2170,7 +2324,7 @@ const Contact = () => {
             to="/compliance/etica"
             className="bg-white/5 hover:bg-white/10 text-white px-8 py-4 rounded-2xl font-display font-bold uppercase tracking-widest text-xs transition-all border border-white/10"
           >
-            acessar canal ético
+            {t('contact.whistleblower.cta')}
           </Link>
         </motion.div>
       </div>
@@ -2179,6 +2333,7 @@ const Contact = () => {
 };
 
 const Compliance = () => {
+  const { t } = useTranslation();
   const { type } = useParams();
   const location = useLocation();
 
@@ -2283,7 +2438,7 @@ const Compliance = () => {
                 type === key ? "bg-primary-container text-on-primary" : "text-on-surface-variant hover:text-white"
               }`}
             >
-              {key === "etica" ? "compliance" : key}
+              {key === "etica" ? t('footer.compliance') : key === "termos" ? t('footer.terms') : t('footer.privacy')}
             </Link>
           ))}
         </div>
@@ -2318,9 +2473,9 @@ const Compliance = () => {
               <AlertTriangle size={120} className="text-primary-container" />
             </div>
             <div className="relative z-10 max-w-2xl">
-              <h3 className="text-2xl font-display font-bold text-white mb-4 lowercase-all">canal de denúncias<BlueDot /></h3>
+              <h3 className="text-2xl font-display font-bold text-white mb-4 lowercase-all">{t('contact.whistleblower.title')}<BlueDot /></h3>
               <p className="text-on-surface-variant font-light leading-relaxed mb-8">
-                este é um canal exclusivo e seguro para comunicação de condutas que não estejam em conformidade com o nosso código de ética ou legislações vigentes. garantimos o anonimato e a não retaliação.
+                {t('contact.whistleblower.desc')}
               </p>
               
               <form 
@@ -2342,7 +2497,7 @@ const Compliance = () => {
                       body: JSON.stringify(payload)
                     });
                     if (response.ok) {
-                      alert("Denúncia enviada com sucesso e será tratada com total sigilo.");
+                      // Success feedback
                       (e.target as HTMLFormElement).reset();
                     } else {
                       throw new Error("Failed to submit");
@@ -2397,64 +2552,85 @@ const Compliance = () => {
 };
 
 const Portfolio = () => {
+  const { t, i18n } = useTranslation();
   const [filter, setFilter] = useState("todos");
+  const [cases, setCases] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const cases = [
-    {
-      client: "Grupo Industrial Global",
-      category: "segurança",
-      project: "Resposta a Ransomware Global",
-      result: "Contenção em 6h com zero pagamento de resgate.",
-      desc: "Coordenação de crise em 3 continentes após ataque massivo de ransomware, restaurando operações críticas sem perda de dados.",
-      stats: "6h Resposta",
-      image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      client: "Varejo de Larga Escala",
-      category: "ia",
-      project: "Gabi.OS - Copiloto Logístico",
-      result: "Redução de 40% no tempo de resposta logística.",
-      desc: "Implementação de IA generativa para orquestração de conhecimento e tomada de decisão em tempo real na cadeia de suprimentos.",
-      stats: "-40% Tempo",
-      image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      client: "E-commerce Unicórnio",
-      category: "infraestrutura",
-      project: "Escala Black Friday",
-      result: "99.99% de disponibilidade com tráfego 10x maior.",
-      desc: "Modernização de infraestrutura cloud-native para suportar picos extremos de tráfego, garantindo performance e estabilidade.",
-      stats: "99.99% Uptime",
-      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      client: "Instituição Financeira",
-      category: "segurança",
-      project: "Vazamento de Dados Críticos",
-      result: "Mitigação total de multas regulatórias.",
-      desc: "Gestão técnica e estratégica de incidente de vazamento, incluindo forense avançada e conformidade com LGPD/BACEN.",
-      stats: "Zero Multas",
-      image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      client: "Logística Integrada",
-      category: "infraestrutura",
-      project: "Orquestração Híbrida",
-      result: "Otimização de 25% nos custos operacionais.",
-      desc: "Migração e gestão de ambientes híbridos complexos, unificando a governança de TI e reduzindo desperdícios de recursos.",
-      stats: "-25% Custos",
-      image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      client: "HealthTech",
-      category: "ia",
-      project: "Triagem Inteligente",
-      result: "Agilidade de 60% no atendimento inicial.",
-      desc: "Uso de processamento de linguagem natural para triagem automatizada de pacientes, garantindo precisão e segurança de dados.",
-      stats: "+60% Agilidade",
-      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=800"
-    }
-  ];
+  useEffect(() => {
+    const fetchCases = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`/api/cases?lang=${i18n.language}`);
+        if (!response.ok) throw new Error("API error");
+        const data = await response.json();
+        setCases(data);
+      } catch (error) {
+        console.error("Erro ao buscar cases:", error);
+        // Fallback mock data if API fails
+        setCases([
+          {
+            client: "Grupo Industrial Global",
+            category: "segurança",
+            project: "Resposta a Ransomware Global",
+            result: "Contenção em 6h com zero pagamento de resgate.",
+            desc: "Coordenação de crise em 3 continentes após ataque massivo de ransomware, restaurando operações críticas sem perda de dados.",
+            stats: "6h Resposta",
+            image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800"
+          },
+          {
+            client: "Varejo de Larga Escala",
+            category: "ia",
+            project: "Gabi.OS - Copiloto Logístico",
+            result: "Redução de 40% no tempo de resposta logística.",
+            desc: "Implementação de IA generativa para orquestração de conhecimento e tomada de decisão em tempo real na cadeia de suprimentos.",
+            stats: "-40% Tempo",
+            image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800"
+          },
+          {
+            client: "E-commerce Unicórnio",
+            category: "infraestrutura",
+            project: "Escala Black Friday",
+            result: "99.99% de disponibilidade com tráfego 10x maior.",
+            desc: "Modernização de infraestrutura cloud-native para suportar picos extremos de tráfego, garantindo performance e estabilidade.",
+            stats: "99.99% Uptime",
+            image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800"
+          },
+          {
+            client: "Instituição Financeira",
+            category: "segurança",
+            project: "Vazamento de Dados Críticos",
+            result: "Mitigação total de multas regulatórias.",
+            desc: "Gestão técnica e estratégica de incidente de vazamento, incluindo forense avançada e conformidade com LGPD/BACEN.",
+            stats: "Zero Multas",
+            image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800"
+          },
+          {
+            client: "Logística Integrada",
+            category: "infraestrutura",
+            project: "Orquestração Híbrida",
+            result: "Otimização de 25% nos custos operacionais.",
+            desc: "Migração e gestão de ambientes híbridos complexos, unificando a governança de TI e reduzindo desperdícios de recursos.",
+            stats: "-25% Custos",
+            image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800"
+          },
+          {
+            client: "HealthTech",
+            category: "ia",
+            project: "Triagem Inteligente",
+            result: "Agilidade de 60% no atendimento inicial.",
+            desc: "Uso de processamento de linguagem natural para triagem automatizada de pacientes, garantindo precisão e segurança de dados.",
+            stats: "+60% Agilidade",
+            image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=800"
+          }
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCases();
+    window.scrollTo(0, 0);
+  }, [i18n.language]);
 
   const filteredCases = filter === "todos" ? cases : cases.filter(c => c.category === filter);
 
@@ -2480,10 +2656,10 @@ const Portfolio = () => {
             portfólio de impacto — ness. precision
           </motion.div>
           <h1 className="text-5xl md:text-8xl font-display font-semibold text-white tracking-tighter mb-8 lowercase-all">
-            cases de sucesso<BlueDot />
+            {t('portfolio.title')}<BlueDot />
           </h1>
           <p className="text-xl text-on-surface-variant font-light max-w-3xl leading-relaxed">
-            demonstramos nossa autoridade através de resultados mensuráveis. cada projeto é um compromisso com a excelência técnica e a resiliência do negócio.
+            {t('portfolio.subtitle')}
           </p>
         </div>
 
@@ -2499,15 +2675,20 @@ const Portfolio = () => {
                   : "bg-white/5 text-on-surface-variant hover:bg-white/10"
               }`}
             >
-              {cat}
+              {cat === "todos" ? t('common.all') : cat}
             </button>
           ))}
         </div>
 
         {/* Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <AnimatePresence mode="popLayout">
-            {filteredCases.map((item, i) => (
+          {loading ? (
+            [1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="animate-pulse border border-white/5 p-8 rounded-[2.5rem] bg-surface-container-low/20 h-96"></div>
+            ))
+          ) : (
+            <AnimatePresence mode="popLayout">
+              {filteredCases.map((item, i) => (
               <motion.div
                 layout
                 key={item.project}
@@ -2542,7 +2723,7 @@ const Portfolio = () => {
                   </p>
                   <div className="pt-6 border-t border-white/5">
                     <div className="flex items-center justify-between">
-                      <div className="text-[10px] uppercase tracking-widest text-on-surface-variant/60 font-bold">resultado</div>
+                      <div className="text-[10px] uppercase tracking-widest text-on-surface-variant/60 font-bold">{t('common.result')}</div>
                       <div className="text-xs text-primary-container font-medium">{item.result}</div>
                     </div>
                   </div>
@@ -2550,6 +2731,7 @@ const Portfolio = () => {
               </motion.div>
             ))}
           </AnimatePresence>
+          )}
         </div>
 
         {/* CTA */}
@@ -2560,13 +2742,13 @@ const Portfolio = () => {
         >
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
           <div className="relative z-10 max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-6xl font-display font-bold mb-8 tracking-tighter lowercase-all">quer resultados como estes?<BlueDot /></h2>
-            <p className="text-xl mb-12 opacity-90 font-light">estamos prontos para aplicar nossa engenharia de precisão no seu próximo grande desafio.</p>
+            <h2 className="text-4xl md:text-6xl font-display font-bold mb-8 tracking-tighter lowercase-all">{t('portfolio.cta_title')}<BlueDot /></h2>
+            <p className="text-xl mb-12 opacity-90 font-light">{t('portfolio.cta_desc')}</p>
             <Link 
               to="/contato"
               className="inline-block bg-white text-primary px-12 py-5 rounded-full font-display font-bold uppercase tracking-widest text-sm hover:shadow-2xl transition-all hover:scale-105"
             >
-              falar com um especialista
+              {t('common.contact_expert')}
             </Link>
           </div>
         </motion.div>
@@ -2589,9 +2771,20 @@ const Home = () => {
   );
 };
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
 export default function App() {
   return (
     <div className="min-h-screen">
+      <ScrollToTop />
       <Navbar />
       <CelebrationPopup />
       <ChatbotWidget />

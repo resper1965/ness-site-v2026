@@ -22,8 +22,9 @@ async function startServer() {
 
     // API Route for Insights (CMS Simulation)
     app.get("/api/insights", async (req, res) => {
+      const lang = req.query.lang || "pt";
       try {
-        const response = await fetch("https://backoffice.ness.com.br/api/insights");
+        const response = await fetch(`https://backoffice.ness.com.br/api/insights?lang=${lang}`);
         const data = await response.json();
         res.json(data);
       } catch (error) {
@@ -34,13 +35,27 @@ async function startServer() {
 
     // API Route for Jobs
     app.get("/api/jobs", async (req, res) => {
+      const lang = req.query.lang || "pt";
       try {
-        const response = await fetch("https://backoffice.ness.com.br/api/jobs");
+        const response = await fetch(`https://backoffice.ness.com.br/api/jobs?lang=${lang}`);
         const data = await response.json();
         res.json(data);
       } catch (error) {
         console.error("Error fetching jobs from backoffice:", error);
         res.status(500).json({ error: "Failed to fetch jobs" });
+      }
+    });
+
+    // API Route for Success Cases
+    app.get("/api/cases", async (req, res) => {
+      const lang = req.query.lang || "pt";
+      try {
+        const response = await fetch(`https://backoffice.ness.com.br/api/cases?lang=${lang}`);
+        const data = await response.json();
+        res.json(data);
+      } catch (error) {
+        console.error("Error fetching cases from backoffice:", error);
+        res.status(500).json({ error: "Failed to fetch cases" });
       }
     });
 
@@ -85,8 +100,9 @@ async function startServer() {
     const app = new Hono();
     
     app.get("/api/insights", async (c) => {
+      const lang = c.req.query("lang") || "pt";
       try {
-        const response = await fetch("https://backoffice.ness.com.br/api/insights");
+        const response = await fetch(`https://backoffice.ness.com.br/api/insights?lang=${lang}`);
         const data = await response.json();
         return c.json(data);
       } catch (error) {
@@ -95,12 +111,24 @@ async function startServer() {
     });
 
     app.get("/api/jobs", async (c) => {
+      const lang = c.req.query("lang") || "pt";
       try {
-        const response = await fetch("https://backoffice.ness.com.br/api/jobs");
+        const response = await fetch(`https://backoffice.ness.com.br/api/jobs?lang=${lang}`);
         const data = await response.json();
         return c.json(data);
       } catch (error) {
         return c.json({ error: "Failed to fetch jobs" }, 500);
+      }
+    });
+
+    app.get("/api/cases", async (c) => {
+      const lang = c.req.query("lang") || "pt";
+      try {
+        const response = await fetch(`https://backoffice.ness.com.br/api/cases?lang=${lang}`);
+        const data = await response.json();
+        return c.json(data);
+      } catch (error) {
+        return c.json({ error: "Failed to fetch cases" }, 500);
       }
     });
 
