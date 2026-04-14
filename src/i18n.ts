@@ -35,6 +35,8 @@ const resources = {
       "solutions": {
         "title": "nossas soluções",
         "subtitle": "tecnologia de elite para empresas que não aceitam falhas.",
+        "active_resilience": "resiliência ativa",
+        "intelligence_flow": "fluxo de inteligência",
         "secops": {
           "title": "n.secops",
           "fullTitle": "resiliência operacional & continuidade",
@@ -92,7 +94,25 @@ const resources = {
       "careers": {
         "title": "carreiras",
         "subtitle": "construa o futuro conosco",
-        "desc": "estamos em busca de mentes brilhantes e engenheiros de precisão para elevar o nível da tecnologia e segurança global."
+        "desc": "estamos em busca de mentes brilhantes e engenheiros de precisão para elevar o nível da tecnologia e segurança global.",
+        "apply_title": "candidatar-se à vaga",
+        "requirements": "requisitos",
+        "benefits": "benefícios ness.",
+        "form": {
+          "full_name": "nome completo",
+          "linkedin": "linkedin / portfólio",
+          "attach_cv": "anexar cv (pdf)",
+          "drag_drop": "clique ou arraste seu currículo aqui",
+          "send_button": "enviar candidatura",
+          "success": "Candidatura enviada com sucesso!",
+          "error": "Erro ao enviar candidatura. Por favor, tente novamente."
+        },
+        "benefits_list": {
+          "health": "plano de saúde premium",
+          "bonus": "bônus por performance",
+          "education": "auxílio educação",
+          "setup": "setup de alta performance"
+        }
       },
       "about": {
         "title": "sobre",
@@ -103,14 +123,22 @@ const resources = {
         "vision": "visão",
         "vision_desc": "ser a plataforma modular líder para transformação digital confiável, reconhecida globalmente pela excelência técnica e inovação constante.",
         "values": "valores",
-        "history": "nossa história e legado"
+        "history": "nossa história e legado",
+        "history_title": "nossa história e legado"
       },
       "contact": {
         "title": "vamos construir o futuro juntos",
         "subtitle": "entre em contato com nosso time de especialistas para transformar sua operação digital.",
+        "info": {
+          "email": "email",
+          "phone": "telefone",
+          "office": "escritório"
+        },
         "form": {
           "name": "nome",
           "name_placeholder": "seu nome",
+          "name_optional": "nome (opcional)",
+          "contact_optional": "contato (opcional)",
           "company": "empresa",
           "company_placeholder": "sua empresa",
           "email": "email corporativo",
@@ -126,7 +154,25 @@ const resources = {
         "whistleblower": {
           "title": "canal de denúncia",
           "desc": "para reportar condutas antiéticas ou violações de compliance de forma totalmente anônima e segura.",
-          "cta": "acessar canal ético"
+          "cta": "acessar canal ético",
+          "occurrence_type": "tipo de ocorrência",
+          "category_select": "selecione uma categoria",
+          "description": "descrição dos fatos",
+          "last_update": "última atualização: 14 de abril de 2024. para dúvidas adicionais, entre em contato com nosso DPO em dpo@ness.com.br",
+          "categories": {
+            "ethics": "violação ética",
+            "harassment": "assédio / discriminação",
+            "fraud": "fraude / corrupção",
+            "security": "vazamento de dados / segurança",
+            "others": "outros"
+          },
+          "form": {
+            "name_placeholder": "seu nome ou deixe em branco",
+            "contact_placeholder": "email ou telefone para retorno",
+            "message_placeholder": "detalhe o ocorrido com o máximo de informações possíveis (datas, locais, envolvidos)...",
+            "send_button": "enviar denúncia segura",
+            "error": "Erro ao enviar denúncia. Por favor, tente novamente."
+          }
         }
       },
       "cta": {
@@ -139,7 +185,13 @@ const resources = {
         "welcome": "olá! eu sou a Gabi.OS, a inteligência da ness. como posso ajudar sua operação hoje?",
         "status": "ia generativa ativa",
         "error": "desculpe, tive um problema na conexão com o backoffice. tente novamente em instantes.",
-        "placeholder": "digite sua mensagem..."
+        "placeholder": "digite sua mensagem...",
+        "preview": {
+          "msg1_user": "Gabi, preciso de um resumo dos contratos que vencem este mês.",
+          "msg1_bot": "Com certeza. Identifiquei 12 contratos com vencimento em abril. Os 3 principais são: Cliente Alpha (dia 15), Tech Solutions (dia 22) e Global Corp (dia 28). Deseja que eu prepare os termos de renovação?",
+          "msg2_user": "Sim, por favor. Use o modelo padrão de 2024.",
+          "msg2_bot": "Entendido. Processando minutas... Pronto! As 3 minutas foram geradas e enviadas para sua pasta de rascunhos no Teams. Algo mais?"
+        }
       },
       "common": {
         "see_all": "ver tudo",
@@ -160,7 +212,9 @@ const resources = {
         "privacy": "privacidade",
         "compliance": "compliance & ética",
         "newsletter": "insights sobre segurança digital.",
-        "rights": "todos os direitos reservados."
+        "rights": "todos os direitos reservados.",
+        "updates": "updates",
+        "status": "system live status: optimal"
       }
     }
   },
@@ -196,6 +250,8 @@ const resources = {
       "solutions": {
         "title": "our solutions",
         "subtitle": "elite technology for companies that don't accept failure.",
+        "active_resilience": "active resilience",
+        "intelligence_flow": "intelligence flow",
         "secops": {
           "title": "n.secops",
           "fullTitle": "operational resilience & continuity",
@@ -253,7 +309,25 @@ const resources = {
       "careers": {
         "title": "careers",
         "subtitle": "build the future with us",
-        "desc": "we are looking for brilliant minds and precision engineers to elevate the level of global technology and security."
+        "desc": "we are looking for brilliant minds and precision engineers to elevate the level of global technology and security.",
+        "apply_title": "apply for position",
+        "requirements": "requirements",
+        "benefits": "ness. benefits",
+        "form": {
+          "full_name": "full name",
+          "linkedin": "linkedin / portfolio",
+          "attach_cv": "attach cv (pdf)",
+          "drag_drop": "click or drag your resume here",
+          "send_button": "submit application",
+          "success": "Application submitted successfully!",
+          "error": "Error submitting application. Please try again."
+        },
+        "benefits_list": {
+          "health": "premium health plan",
+          "bonus": "performance bonus",
+          "education": "education allowance",
+          "setup": "high performance setup"
+        }
       },
       "about": {
         "title": "about",
@@ -264,14 +338,22 @@ const resources = {
         "vision": "vision",
         "vision_desc": "to be the leading modular platform for reliable digital transformation, globally recognized for technical excellence and constant innovation.",
         "values": "values",
-        "history": "our history and legacy"
+        "history": "our history and legacy",
+        "history_title": "our history and legacy"
       },
       "contact": {
         "title": "let's build the future together",
         "subtitle": "contact our team of experts to transform your digital operation.",
+        "info": {
+          "email": "email",
+          "phone": "phone",
+          "office": "office"
+        },
         "form": {
           "name": "name",
           "name_placeholder": "your name",
+          "name_optional": "name (optional)",
+          "contact_optional": "contact (optional)",
           "company": "company",
           "company_placeholder": "your company",
           "email": "corporate email",
@@ -287,7 +369,25 @@ const resources = {
         "whistleblower": {
           "title": "whistleblower channel",
           "desc": "to report unethical conduct or compliance violations completely anonymously and securely.",
-          "cta": "access ethical channel"
+          "cta": "access ethical channel",
+          "occurrence_type": "occurrence type",
+          "category_select": "select a category",
+          "description": "description of facts",
+          "last_update": "last update: April 14, 2024. for additional questions, contact our DPO at dpo@ness.com.br",
+          "categories": {
+            "ethics": "ethical violation",
+            "harassment": "harassment / discrimination",
+            "fraud": "fraud / corruption",
+            "security": "data leak / security",
+            "others": "others"
+          },
+          "form": {
+            "name_placeholder": "your name or leave blank",
+            "contact_placeholder": "email or phone for return",
+            "message_placeholder": "detail the occurrence with as much information as possible (dates, locations, involved)...",
+            "send_button": "send secure report",
+            "error": "Error sending report. Please try again."
+          }
         }
       },
       "cta": {
@@ -300,7 +400,13 @@ const resources = {
         "welcome": "hello! I am Gabi.OS, ness. intelligence. how can I help your operation today?",
         "status": "active generative ai",
         "error": "sorry, I had a problem connecting to the backoffice. please try again in a few moments.",
-        "placeholder": "type your message..."
+        "placeholder": "type your message...",
+        "preview": {
+          "msg1_user": "Gabi, I need a summary of the contracts expiring this month.",
+          "msg1_bot": "Certainly. I identified 12 contracts expiring in April. The top 3 are: Alpha Client (15th), Tech Solutions (22nd), and Global Corp (28th). Would you like me to prepare the renewal terms?",
+          "msg2_user": "Yes, please. Use the 2024 standard template.",
+          "msg2_bot": "Understood. Processing drafts... Done! The 3 drafts have been generated and sent to your drafts folder in Teams. Anything else?"
+        }
       },
       "common": {
         "see_all": "see all",
@@ -321,7 +427,9 @@ const resources = {
         "privacy": "privacy",
         "compliance": "compliance & ethics",
         "newsletter": "insights on digital security.",
-        "rights": "all rights reserved."
+        "rights": "all rights reserved.",
+        "updates": "updates",
+        "status": "system live status: optimal"
       }
     }
   },
@@ -357,6 +465,8 @@ const resources = {
       "solutions": {
         "title": "nuestras soluciones",
         "subtitle": "tecnología de élite para empresas que no aceptan fallos.",
+        "active_resilience": "resiliencia activa",
+        "intelligence_flow": "flujo de inteligencia",
         "secops": {
           "title": "n.secops",
           "fullTitle": "resiliencia operativa & continuidad",
@@ -414,7 +524,25 @@ const resources = {
       "careers": {
         "title": "carreras",
         "subtitle": "construye el futuro con nosotros",
-        "desc": "buscamos mentes brillantes e ingenieros de precisión para elevar el nivel de la tecnología y seguridad global."
+        "desc": "buscamos mentes brillantes e ingenieros de precisión para elevar el nivel de la tecnología y seguridad global.",
+        "apply_title": "postularse a la vacante",
+        "requirements": "requisitos",
+        "benefits": "beneficios ness.",
+        "form": {
+          "full_name": "nombre completo",
+          "linkedin": "linkedin / portafolio",
+          "attach_cv": "adjuntar cv (pdf)",
+          "drag_drop": "haga clic ou arrastre su currículum aquí",
+          "send_button": "enviar candidatura",
+          "success": "¡Candidatura enviada con éxito!",
+          "error": "Error al enviar la candidatura. Por favor, inténtelo de nuevo."
+        },
+        "benefits_list": {
+          "health": "plan de salud premium",
+          "bonus": "bono por desempeño",
+          "education": "ayuda para educación",
+          "setup": "equipo de alto rendimiento"
+        }
       },
       "about": {
         "title": "nosotros",
@@ -458,10 +586,16 @@ const resources = {
         "support": "soporte especializado inmediato."
       },
       "chatbot": {
-        "welcome": "¡hola! soy Gabi.OS, la inteligencia de ness. ¿cómo puedo ayudar a su operación hoy?",
+        "welcome": "¡hola! soy Gabi.OS, la inteligencia de ness. ¿cómo puedo ayudar a su operation hoy?",
         "status": "ia generativa activa",
         "error": "lo siento, tuve un problema al conectarme con el backoffice. por favor, inténtelo de nuevo en unos momentos.",
-        "placeholder": "escriba su mensaje..."
+        "placeholder": "escriba su mensaje...",
+        "preview": {
+          "msg1_user": "Gabi, necesito un resumen de los contratos que vencen este mes.",
+          "msg1_bot": "Por supuesto. He identificado 12 contratos que vencen en abril. Los 3 principales son: Cliente Alpha (día 15), Tech Solutions (día 22) y Global Corp (día 28). ¿Desea que prepare los términos de renovación?",
+          "msg2_user": "Sí, por favor. Use el modelo estándar de 2024.",
+          "msg2_bot": "Entendido. Procesando borradores... ¡Listo! Los 3 borradores han sido generados y enviados a su carpeta de borradores en Teams. ¿Algo más?"
+        }
       },
       "common": {
         "see_all": "ver todo",
@@ -482,7 +616,9 @@ const resources = {
         "privacy": "privacidad",
         "compliance": "cumplimiento y ética",
         "newsletter": "información sobre seguridad digital.",
-        "rights": "todos los derechos reservados."
+        "rights": "todos los derechos reservados.",
+        "updates": "actualizaciones",
+        "status": "system live status: optimal"
       }
     }
   }

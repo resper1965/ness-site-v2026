@@ -237,7 +237,7 @@ const ChatbotWidget = () => {
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="digite sua dúvida..."
+                placeholder={t('chatbot.placeholder')}
                 className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
               />
               <button type="submit" className="w-12 h-12 bg-primary-container text-on-primary rounded-xl flex items-center justify-center hover:brightness-110 transition-all">
@@ -786,11 +786,12 @@ const solutionsData: Record<string, any> = {
 };
 
 const ChatPreview = () => {
+  const { t } = useTranslation();
   const messages = [
-    { role: "user", text: "Gabi, preciso de um resumo dos contratos que vencem este mês." },
-    { role: "assistant", text: "Com certeza. Identifiquei 12 contratos com vencimento em abril. Os 3 principais são: Cliente Alpha (dia 15), Tech Solutions (dia 22) e Global Corp (dia 28). Deseja que eu prepare os termos de renovação?" },
-    { role: "user", text: "Sim, por favor. Use o modelo padrão de 2024." },
-    { role: "assistant", text: "Entendido. Processando minutas... Pronto! As 3 minutas foram geradas e enviadas para sua pasta de rascunhos no Teams. Algo mais?" }
+    { role: "user", text: t('chatbot.preview.msg1_user') },
+    { role: "assistant", text: t('chatbot.preview.msg1_bot') },
+    { role: "user", text: t('chatbot.preview.msg2_user') },
+    { role: "assistant", text: t('chatbot.preview.msg2_bot') }
   ];
 
   return (
@@ -837,7 +838,7 @@ const ChatPreview = () => {
 
       <div className="mt-6 pt-4 border-t border-white/5">
         <div className="bg-white/5 rounded-full px-4 py-3 flex items-center justify-between border border-white/10">
-          <span className="text-on-surface-variant/40 text-xs">digite sua mensagem...</span>
+          <span className="text-on-surface-variant/40 text-xs">{t('chatbot.placeholder')}</span>
           <Send size={16} className="text-primary-container" />
         </div>
       </div>
@@ -929,7 +930,7 @@ const SolutionPage = () => {
                 <div className="absolute top-0 right-0 p-6">
                   <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
                     <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
-                    <span className="text-[10px] text-green-500 font-bold uppercase tracking-widest">resiliência ativa</span>
+                    <span className="text-[10px] text-green-500 font-bold uppercase tracking-widest">{t('solutions.active_resilience')}</span>
                   </div>
                 </div>
                 
@@ -974,7 +975,7 @@ const SolutionPage = () => {
                   </div>
 
                   <div className="space-y-4">
-                    <h4 className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">fluxo de inteligência</h4>
+                    <h4 className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">{t('solutions.intelligence_flow')}</h4>
                     <div className="space-y-3">
                       {solution.workflow?.map((w: any) => (
                         <motion.div 
@@ -1763,7 +1764,7 @@ const Careers = () => {
                     </div>
 
                     <div className="space-y-4">
-                      <h4 className="text-white font-bold text-xs uppercase tracking-widest">requisitos</h4>
+                      <h4 className="text-white font-bold text-xs uppercase tracking-widest">{t('careers.requirements')}</h4>
                       <ul className="space-y-3">
                         {selectedJob.requirements.map((req: string, i: number) => (
                           <li key={i} className="flex gap-3 text-on-surface-variant text-sm font-light">
@@ -1775,18 +1776,18 @@ const Careers = () => {
                     </div>
 
                     <div className="p-6 rounded-2xl bg-white/5 border border-white/5 space-y-4">
-                      <h4 className="text-white font-bold text-xs uppercase tracking-widest">benefícios ness.</h4>
+                      <h4 className="text-white font-bold text-xs uppercase tracking-widest">{t('careers.benefits')}</h4>
                       <div className="grid grid-cols-2 gap-4 text-[10px] text-on-surface-variant/60 uppercase tracking-widest font-bold">
-                        <div>• plano de saúde premium</div>
-                        <div>• bônus por performance</div>
-                        <div>• auxílio educação</div>
-                        <div>• setup de alta performance</div>
+                        <div>• {t('careers.benefits_list.health')}</div>
+                        <div>• {t('careers.benefits_list.bonus')}</div>
+                        <div>• {t('careers.benefits_list.education')}</div>
+                        <div>• {t('careers.benefits_list.setup')}</div>
                       </div>
                     </div>
                   </div>
 
                   <div className="bg-surface-container-high/50 p-8 rounded-[2rem] border border-white/5">
-                    <h3 className="text-xl font-display font-bold text-white mb-8 lowercase-all">candidatar-se à vaga<BlueDot /></h3>
+                    <h3 className="text-xl font-display font-bold text-white mb-8 lowercase-all">{t('careers.apply_title')}<BlueDot /></h3>
                     <form 
                       className="space-y-4" 
                       onSubmit={async (e) => { 
@@ -1810,40 +1811,40 @@ const Careers = () => {
                             body: JSON.stringify(payload)
                           });
                           if (response.ok) {
-                            alert('Candidatura enviada com sucesso!'); 
+                            alert(t('careers.form.success')); 
                             setSelectedJob(null); 
                           } else {
                             throw new Error("Failed to submit");
                           }
                         } catch (error) {
-                          alert("Erro ao enviar candidatura. Por favor, tente novamente.");
+                          alert(t('careers.form.error'));
                         }
                       }}
                     >
                       <div className="space-y-2">
-                        <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">nome completo</label>
+                        <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.full_name')}</label>
                         <input name="name" type="text" required placeholder="seu nome" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">email corporativo</label>
+                        <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.email')}</label>
                         <input name="email" type="email" required placeholder="email@exemplo.com" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">linkedin / portfólio</label>
+                        <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.linkedin')}</label>
                         <input name="linkedin" type="url" placeholder="https://linkedin.com/in/..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">anexar cv (pdf)</label>
+                        <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.attach_cv')}</label>
                         <div className="relative group/upload">
                           <input name="cv" type="file" accept=".pdf" required className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
                           <div className="w-full bg-white/5 border border-dashed border-white/20 rounded-2xl px-6 py-8 text-center group-hover/upload:border-primary-container/50 transition-all">
                             <Upload className="mx-auto text-on-surface-variant/40 mb-2 group-hover/upload:text-primary-container transition-colors" size={24} />
-                            <p className="text-xs text-on-surface-variant/60">clique ou arraste seu currículo aqui</p>
+                            <p className="text-xs text-on-surface-variant/60">{t('careers.form.drag_drop')}</p>
                           </div>
                         </div>
                       </div>
                       <button className="w-full bg-primary-container text-on-primary py-5 rounded-2xl font-display font-bold uppercase tracking-widest text-sm hover:brightness-110 transition-all shadow-xl shadow-primary-container/20 mt-4">
-                        enviar candidatura
+                        {t('careers.form.send_button')}
                       </button>
                     </form>
                   </div>
@@ -1928,7 +1929,7 @@ const Footer = () => {
             </ul>
           </div>
           <div className="hidden lg:block space-y-4">
-            <h4 className="text-[10px] uppercase tracking-widest text-white font-bold">updates</h4>
+            <h4 className="text-[10px] uppercase tracking-widest text-white font-bold">{t('footer.updates')}</h4>
             <p className="text-sm text-on-surface-variant/60 font-light">{t('footer.newsletter')}</p>
             <div className="flex gap-2">
               <input 
@@ -1959,7 +1960,7 @@ const Footer = () => {
         <p className="text-sm text-on-surface-variant/40 font-light">© 2026 ness. precision digital engineering. {t('footer.rights')}</p>
         <div className="flex items-center gap-2">
           <div className="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></div>
-          <span className="text-[10px] uppercase tracking-tighter text-on-surface-variant/40 font-bold">system live status: optimal</span>
+          <span className="text-[10px] uppercase tracking-tighter text-on-surface-variant/40 font-bold">{t('footer.status')}</span>
         </div>
       </div>
     </footer>
@@ -2084,7 +2085,7 @@ const About = () => {
           <div className="flex flex-col md:flex-row gap-16">
             <div className="md:w-1/3">
               <h2 className="text-4xl font-display font-semibold text-white sticky top-32 tracking-tighter lowercase-all">
-                nossa história<br />e legado<BlueDot />
+                {t('about.history_title')}<BlueDot />
               </h2>
               <p className="mt-6 text-on-surface-variant font-light leading-relaxed sticky top-56">
                 {YEARS_OF_LEGACY} anos construindo a base tecnológica de grandes corporações e eventos globais.
@@ -2168,7 +2169,7 @@ const Contact = () => {
                   <Mail className="text-primary-container" size={24} />
                 </div>
                 <div>
-                  <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-1">email</h4>
+                  <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-1">{t('contact.info.email')}</h4>
                   <p className="text-on-surface-variant font-light">contato@ness.com.br</p>
                 </div>
               </div>
@@ -2178,7 +2179,7 @@ const Contact = () => {
                   <Phone className="text-primary-container" size={24} />
                 </div>
                 <div>
-                  <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-1">telefone</h4>
+                  <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-1">{t('contact.info.phone')}</h4>
                   <p className="text-on-surface-variant font-light">+55 (11) 2504-7650</p>
                 </div>
               </div>
@@ -2188,7 +2189,7 @@ const Contact = () => {
                   <MapPin className="text-primary-container" size={24} />
                 </div>
                 <div>
-                  <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-1">escritório</h4>
+                  <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-1">{t('contact.info.office')}</h4>
                   <p className="text-on-surface-variant font-light leading-relaxed">
                     Rua George Ohm 230 Torre A Cj 82<br />
                     Brooklin Paulista - São Paulo/SP<br />
@@ -2509,27 +2510,27 @@ const Compliance = () => {
               >
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">nome (opcional)</label>
+                    <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.name_optional')}</label>
                     <input name="name" type="text" placeholder="seu nome ou deixe em branco" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">contato (opcional)</label>
+                    <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.contact_optional')}</label>
                     <input name="email" type="text" placeholder="email ou telefone para retorno" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">tipo de ocorrência</label>
+                  <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.whistleblower.occurrence_type')}</label>
                   <select name="subject" required className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all appearance-none">
-                    <option value="" className="bg-surface">selecione uma categoria</option>
-                    <option value="etica" className="bg-surface">violação ética</option>
-                    <option value="assédio" className="bg-surface">assédio / discriminação</option>
-                    <option value="fraude" className="bg-surface">fraude / corrupção</option>
-                    <option value="segurança" className="bg-surface">vazamento de dados / segurança</option>
-                    <option value="outros" className="bg-surface">outros</option>
+                    <option value="" className="bg-surface">{t('contact.whistleblower.category_select')}</option>
+                    <option value="etica" className="bg-surface">{t('contact.whistleblower.categories.ethics')}</option>
+                    <option value="assédio" className="bg-surface">{t('contact.whistleblower.categories.harassment')}</option>
+                    <option value="fraude" className="bg-surface">{t('contact.whistleblower.categories.fraud')}</option>
+                    <option value="segurança" className="bg-surface">{t('contact.whistleblower.categories.security')}</option>
+                    <option value="outros" className="bg-surface">{t('contact.whistleblower.categories.others')}</option>
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">descrição dos fatos</label>
+                  <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.whistleblower.description')}</label>
                   <textarea name="message" required rows={6} placeholder="detalhe o ocorrido com o máximo de informações possíveis (datas, locais, envolvidos)..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all resize-none"></textarea>
                 </div>
                 <button className="w-full bg-primary-container text-on-primary py-5 rounded-2xl font-display font-bold uppercase tracking-widest text-sm hover:brightness-110 transition-all shadow-xl shadow-primary-container/20">
