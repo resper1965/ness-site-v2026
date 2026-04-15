@@ -40,31 +40,8 @@ const Blog = () => {
         const data = await response.json();
         setArticles(data);
       } catch (error) {
-        console.error("Erro ao buscar insights:", error);
-        // Fallback mock data if API fails
-        setArticles([
-          {
-            title: "A Nova Era da Resiliência Cibernética",
-            tag: "Segurança",
-            date: "12 Abr 2026",
-            icon: "ShieldCheck",
-            desc: "Como as empresas estão se preparando para ameaças invisíveis em 2026."
-          },
-          {
-            title: "IA Generativa em Operações Críticas",
-            tag: "IA",
-            date: "10 Abr 2026",
-            icon: "Brain",
-            desc: "O papel dos agentes autônomos na eficiência operacional moderna."
-          },
-          {
-            title: "Arquiteturas Serverless e Escalabilidade",
-            tag: "Cloud",
-            date: "08 Abr 2026",
-            icon: "Cloud",
-            desc: "Maximizando a performance com infraestrutura sob demanda."
-          }
-        ]);
+        console.error('Canal API unavailable:', error);
+        setArticles([]);
       } finally {
         setLoading(false);
       }

@@ -29,37 +29,8 @@ const Careers = () => {
         const data = await response.json();
         setJobs(data);
       } catch (error) {
-        console.error("Erro ao buscar vagas:", error);
-        // Fallback mock data if API fails
-        setJobs([
-          {
-            id: "1",
-            title: "Engenheiro de Software Sênior (Fullstack)",
-            vertical: "engenharia",
-            location: "Remoto / São Paulo",
-            type: "Full-time",
-            desc: "Buscamos especialistas em React e Node.js para atuar em projetos de alta escala e resiliência.",
-            requirements: ["5+ anos de experiência", "Domínio de TypeScript", "Vivência com arquiteturas distribuídas"]
-          },
-          {
-            id: "2",
-            title: "Analista de Segurança Ofensiva (Red Team)",
-            vertical: "segurança",
-            location: "Remoto / Portugal",
-            type: "Full-time",
-            desc: "Foco em testes de intrusão, análise de vulnerabilidades e fortalecimento de perímetros digitais.",
-            requirements: ["Experiência com Pentest", "Certificações OSCP/CEH", "Conhecimento em Cloud Security"]
-          },
-          {
-            id: "3",
-            title: "Arquiteto de Soluções Cloud",
-            vertical: "infraestrutura",
-            location: "Híbrido / Chile",
-            type: "Full-time",
-            desc: "Desenho e implementação de infraestruturas resilientes e escaláveis em ambientes multi-cloud.",
-            requirements: ["Domínio de AWS/Azure/GCP", "Experiência com IaC (Terraform)", "Foco em FinOps"]
-          }
-        ]);
+        console.error('Canal API unavailable:', error);
+        setJobs([]);
       } finally {
         setLoading(false);
       }

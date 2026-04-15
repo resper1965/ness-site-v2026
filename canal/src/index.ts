@@ -60,23 +60,34 @@ app.get('/', (c) => c.text('Canal API v2 — Better Auth + D1'))
 app.get('/api/insights', async (c) => {
   const lang = c.req.query('lang') || 'pt'
   const { results } = await c.env.DB.prepare(
-    'SELECT * FROM insights WHERE lang = ?'
+    `SELECT id, lang, slug, title, tag, icon, date, desc, featured
+     FROM insights WHERE lang = ? AND published = 1
+     ORDER BY date DESC`
   ).bind(lang).all()
-  return c.json({ items: results })
+  return c.json(results)
 })
 
 app.get('/api/jobs', async (c) => {
   const lang = c.req.query('lang') || 'pt'
   const { results } = await c.env.DB.prepare(
-    'SELECT * FROM jobs WHERE lang = ?'
+    `SELECT id, lang, title, vertical, location, type, desc, requirements
+     FROM jobs WHERE lang = ? AND published = 1
+     ORDER BY id ASC`
   ).bind(lang).all()
-  return c.json(results)
+  // Parse requirements JSON string → array
+  const items = (results as any[]).map(j => ({
+    ...j,
+    requirements: (() => { try { return JSON.parse(j.requirements) } catch { return [] } })()
+  }))
+  return c.json(items)
 })
 
 app.get('/api/cases', async (c) => {
   const lang = c.req.query('lang') || 'pt'
   const { results } = await c.env.DB.prepare(
-    'SELECT * FROM cases WHERE lang = ?'
+    `SELECT id, lang, client, category, project, result, desc, stats, image, featured
+     FROM cases WHERE lang = ? AND published = 1
+     ORDER BY featured DESC, id ASC`
   ).bind(lang).all()
   return c.json(results)
 })
@@ -109,10 +120,17 @@ async function requireSession(c: any, next: () => Promise<void>) {
 
 // CRUD de insights (admin)
 app.post('/api/admin/insights', requireSession, async (c) => {
-  const body = await c.req.json<{ title: string; content: string; lang: string; slug: string }>()
+  const body = await c.req.json<{
+    lang: string; slug: string; title: string; tag: string;
+    icon?: string; date: string; desc: string; featured?: number
+  }>()
   const { success } = await c.env.DB.prepare(
-    'INSERT INTO insights (title, content, lang, slug, published_at) VALUES (?, ?, ?, ?, ?)'
-  ).bind(body.title, body.content, body.lang, body.slug, new Date().toISOString()).run()
+    `INSERT INTO insights (lang, slug, title, tag, icon, date, desc, featured)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+  ).bind(
+    body.lang, body.slug, body.title, body.tag,
+    body.icon ?? 'FileText', body.date, body.desc, body.featured ?? 0
+  ).run()
   return c.json({ success })
 })
 
@@ -124,10 +142,39 @@ app.delete('/api/admin/insights/:id', requireSession, async (c) => {
 
 // CRUD de vagas (admin)
 app.post('/api/admin/jobs', requireSession, async (c) => {
-  const body = await c.req.json<{ title: string; description: string; lang: string; location: string }>()
+  const body = await c.req.json<{
+    lang: string; title: string; vertical: string; location: string;
+    type: string; desc: string; requirements: string[]
+  }>()
   const { success } = await c.env.DB.prepare(
-    'INSERT INTO jobs (title, description, lang, location) VALUES (?, ?, ?, ?)'
-  ).bind(body.title, body.description, body.lang, body.location).run()
+    `INSERT INTO jobs (lang, title, vertical, location, type, desc, requirements)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`
+  ).bind(
+    body.lang, body.title, body.vertical, body.location,
+    body.type, body.desc, JSON.stringify(body.requirements ?? [])
+  ).run()
+  return c.json({ success })
+})
+
+// CRUD de cases (admin)
+app.post('/api/admin/cases', requireSession, async (c) => {
+  const body = await c.req.json<{
+    lang: string; client: string; category: string; project: string;
+    result: string; desc: string; stats: string; image?: string; featured?: number
+  }>()
+  const { success } = await c.env.DB.prepare(
+    `INSERT INTO cases (lang, client, category, project, result, desc, stats, image, featured)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ).bind(
+    body.lang, body.client, body.category, body.project,
+    body.result, body.desc, body.stats, body.image ?? '', body.featured ?? 0
+  ).run()
+  return c.json({ success })
+})
+
+app.delete('/api/admin/cases/:id', requireSession, async (c) => {
+  const id = c.req.param('id')
+  const { success } = await c.env.DB.prepare('DELETE FROM cases WHERE id = ?').bind(id).run()
   return c.json({ success })
 })
 

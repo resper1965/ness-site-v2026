@@ -23,64 +23,8 @@ const Portfolio = () => {
         const data = await response.json();
         setCases(data);
       } catch (error) {
-        console.error("Erro ao buscar cases:", error);
-        // Fallback mock data if API fails
-        setCases([
-          {
-            client: "Grupo Industrial Global",
-            category: "segurança",
-            project: "Resposta a Ransomware Global",
-            result: "Contenção em 6h com zero pagamento de resgate.",
-            desc: "Coordenação de crise em 3 continentes após ataque massivo de ransomware, restaurando operações críticas sem perda de dados.",
-            stats: "6h Resposta",
-            image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800"
-          },
-          {
-            client: "Varejo de Larga Escala",
-            category: "ia",
-            project: "Gabi.OS - Copiloto Logístico",
-            result: "Redução de 40% no tempo de resposta logística.",
-            desc: "Implementação de IA generativa para orquestração de conhecimento e tomada de decisão em tempo real na cadeia de suprimentos.",
-            stats: "-40% Tempo",
-            image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800"
-          },
-          {
-            client: "E-commerce Unicórnio",
-            category: "infraestrutura",
-            project: "Escala Black Friday",
-            result: "99.99% de disponibilidade com tráfego 10x maior.",
-            desc: "Modernização de infraestrutura cloud-native para suportar picos extremos de tráfego, garantindo performance e estabilidade.",
-            stats: "99.99% Uptime",
-            image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800"
-          },
-          {
-            client: "Instituição Financeira",
-            category: "segurança",
-            project: "Vazamento de Dados Críticos",
-            result: "Mitigação total de multas regulatórias.",
-            desc: "Gestão técnica e estratégica de incidente de vazamento, incluindo forense avançada e conformidade com LGPD/BACEN.",
-            stats: "Zero Multas",
-            image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800"
-          },
-          {
-            client: "Logística Integrada",
-            category: "infraestrutura",
-            project: "Orquestração Híbrida",
-            result: "Otimização de 25% nos custos operacionais.",
-            desc: "Migração e gestão de ambientes híbridos complexos, unificando a governança de TI e reduzindo desperdícios de recursos.",
-            stats: "-25% Custos",
-            image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800"
-          },
-          {
-            client: "HealthTech",
-            category: "ia",
-            project: "Triagem Inteligente",
-            result: "Agilidade de 60% no atendimento inicial.",
-            desc: "Uso de processamento de linguagem natural para triagem automatizada de pacientes, garantindo precisão e segurança de dados.",
-            stats: "+60% Agilidade",
-            image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=800"
-          }
-        ]);
+        console.error('Canal API unavailable:', error);
+        setCases([]);
       } finally {
         setLoading(false);
       }
