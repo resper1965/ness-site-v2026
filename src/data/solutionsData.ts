@@ -13,7 +13,7 @@ export const solutionsData: any = {
       ],
       progress: { label: "soar isolation speed", value: "Sub 500ms", subLabel: "" }
     },
-    overview: "Pagar assinaturas separadas de RMM, monitoramento contínuo e softwares de proteção é o que sangra a rentabilidade do seu negócio. A plataforma n.secops acaba de vez com a ineficiência de gerenciar múltiplos painéis (a 'Taxa de Alternância'). Unificamos a Operação da TI e a Defesa de Segurança Avançada (ITOps + SecOps) sob uma única assinatura. Nossos clientes garantem gestão de endpoints, patch management, detecção ativa e controle de tenants Cloud (M365/Workspace) num ecossistema consolidado, reduzindo o custo total de propriedade (TCO) sem sacrificar governança.",
+    overview: "Pagar assinaturas separadas para proteger endpoints, nuvem e perímetro é o que sangra a rentabilidade do seu negócio. A plataforma n.secops acaba de vez com a ineficiência de gerenciar múltiplos painéis de segurança. Consolidamos toda a sua Operação de Segurança Avançada (SecOps) sob uma única assinatura. Nossos clientes garantem blindagem de endpoints, patch management, detecção ativa e auditoria de tenants Cloud (M365/Workspace) num ecossistema coeso, reduzindo o Custo Total de Propriedade (TCO) focado estritamente em ciberdefesa.",
     workflow: [
       { step: "01", name: "Integração e Visibilidade Total", desc: "Instalação do agente unificado para obter o levantamento real-time e unificado de todos os hardwares e softwares da corporação." },
       { step: "02", name: "Higiene da Infraestrutura", desc: "Aplicação silenciosa de inventário cruzado contra vulnerabilidades do mercado. O patching remoto atua de imediato para expurgar brechas." },
@@ -21,8 +21,8 @@ export const solutionsData: any = {
     ],
     benefits: [
       { title: "MDR Pronto para Uso (Sem Contratar Analistas)", desc: "Ter um SOC interno custa fortunas em licenças e equipe. Entregamos a blindagem contínua via MDR como um serviço pronto e gerenciado, cortando seu gasto com folha de pagamento." },
-      { title: "Plataforma SaaS (Zero Custo com Licenças)", desc: "Somos um SaaS All-in-One. Você contrata a inteligência agregada e não gasta um único centavo a mais comprando licenças individuais de EDRs, sistemas de HelpDesk ou SIEMs." },
-      { title: "Fim das Ferramentas que Não Conversam", desc: "Diga adeus ao inferno de cruzar logs entre quatro softwares isolados. Ao agregar a gestão técnica da TI (RMM) ao SOC, cortamos a fadiga de alertas inúteis e focamos em remediações curtas e agressivas." }
+      { title: "Plataforma SaaS (Zero Custo com Licenças)", desc: "Somos um SaaS de Segurança All-in-One. Você contrata a inteligência de defesa agregada e não gasta um centavo a mais comprando licenças individuais de antivírus, EDRs ou SIEMs." },
+      { title: "Fim das Ferramentas de Defesa Isoladas", desc: "Diga adeus ao inferno de cruzar logs entre softwares de proteção que não conversam. Ao centralizar as ações de cibersegurança no nosso SOC nativo, cortamos a fadiga de alertas e focamos em bloqueios agressivos." }
     ],
     services: [
       { name: "MDR Services (SOC 24x7)", desc: "Managed Detection and Response integrado: caçamos ameaças e entregamos resposta contida sem inundar sua TI com relatórios inúteis." },
