@@ -145,39 +145,44 @@ const SolutionPage = () => {
                       />
                     </div>
                   </div>
-
-                  <div className="space-y-4">
-                    <h4 className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">{t('solutions.intelligence_flow')}</h4>
-                    <div className="space-y-3">
-                      {solution.workflow?.map((w: any) => (
-                        <motion.div 
-                          key={w.step} 
-                          initial={{ opacity: 0.4 }}
-                          whileInView={{ opacity: 1 }}
-                          className="flex gap-4 group/step items-center"
-                        >
-                          <div className="w-8 h-8 rounded-full bg-primary-container/10 border border-primary-container/20 flex items-center justify-center text-[10px] font-mono text-primary-container">
-                            {w.step}
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex justify-between items-center mb-1">
-                              <h4 className="text-white text-xs font-medium group-hover/step:text-primary transition-colors">{w.name}</h4>
-                              <div className="h-px flex-1 mx-4 bg-white/5"></div>
-                              <CheckCircle2 size={12} className="text-primary-container shrink-0" />
-                            </div>
-                            {w.desc && (
-                              <p className="text-[10px] text-on-surface-variant font-light leading-relaxed pr-6">{w.desc}</p>
-                            )}
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
                 </div>
               </div>
             )}
           </motion.div>
         </div>
+
+        {/* NEW Fluxo Operacional (Workflow Espaçoso) */}
+        <section id="fluxo-operacional" className="mb-32">
+          <div className="mb-12">
+            <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase">
+              {t('solutions.intelligence_flow', 'o fluxo de inteligência')}<BlueDot />
+            </h3>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {solution.workflow?.map((w: any, idx: number) => (
+              <motion.div 
+                key={w.step}
+                whileHover={{ y: -5 }} 
+                className="relative p-8 rounded-4xl bg-surface-container-low/10 border border-white/5 hover:bg-surface-container-low/30 hover:border-primary/20 transition-all overflow-hidden group flex flex-col"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/20 transition-all z-0"></div>
+                <div className="relative z-10 flex flex-col flex-1">
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className="w-12 h-12 shrink-0 rounded-full bg-primary-container/10 border border-primary-container/20 flex items-center justify-center text-sm font-mono text-primary-container font-bold shadow-[0_0_15px_rgba(var(--primary-container-rgb),0.1)] group-hover:shadow-[0_0_20px_rgba(var(--primary-container-rgb),0.2)] transition-shadow">
+                      {w.step}
+                    </div>
+                    <div className="h-px flex-1 bg-linear-to-r from-white/10 to-transparent group-hover:from-primary-container/30 transition-colors"></div>
+                  </div>
+                  <h4 className="text-white font-display font-medium text-[1.15rem] leading-snug mb-4 tracking-tight group-hover:text-primary-container transition-colors drop-shadow-sm">{w.name}</h4>
+                  {w.desc && (
+                    <p className="text-on-surface-variant font-light leading-relaxed text-sm flex-1">{w.desc}</p>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
 
         {/* NEW Valor para o Negócio (Full Width Bento-style Cards) */}
         <section id="benefícios" className="mb-32">
