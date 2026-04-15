@@ -1,0 +1,137 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ShieldAlert, Send, X, AlertTriangle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+
+interface EmergencyChatModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function EmergencyChatModal({ isOpen, onClose }: EmergencyChatModalProps) {
+  const { t } = useTranslation();
+  const [messages, setMessages] = useState([
+    { role: 'system', content: 'ATENÇÃO: Você iniciou o protocolo de acionamento do n.cirt. Este canal tem SLA de atendimento de 15 minutos.' },
+    { role: 'bot', content: 'Qual o porte o incidente de segurança atual? (Ex: Ransomware, Vazamento de Dados, Indisponibilidade)' }
+  ]);
+  const [input, setInput] = useState('');
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
+  const handleSend = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+    
+    setMessages(prev => [...prev, { role: 'user', content: input }]);
+    setInput('');
+    
+    // Fake typing effect for the emergency dispatcher placeholder
+    setTimeout(() => {
+      setMessages(prev => [...prev, { role: 'bot', content: 'Sinal recebido pela central n.cirt. Um coordenador tático da Ness está sendo alocado para a sua sessão emergencial.\n\nPor favor, não reinicie os servidores infectados até o início do contato remoto para preservação de evidências forenses.' }]);
+    }, 1500);
+  };
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-200 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="absolute inset-0 bg-black/80 backdrop-blur-md"
+          />
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.95, opacity: 0, y: 20 }}
+            className="relative w-full max-w-2xl bg-[#0a0a0a] border border-red-500/30 rounded-3xl overflow-hidden shadow-[0_0_80px_rgba(239,68,68,0.15)] flex flex-col h-[650px] max-h-[85vh]"
+          >
+            {/* Header */}
+            <div className="bg-[#150505] border-b border-red-500/20 p-6 flex flex-row items-center justify-between z-10 relative">
+              <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20 mix-blend-overlay"></div>
+              <div className="flex items-center gap-4 relative z-10">
+                <div className="w-12 h-12 bg-red-500/10 rounded-full flex items-center justify-center border border-red-500/30 relative">
+                  <div className="absolute inset-0 bg-red-500/20 rounded-full blur-md animate-pulse"></div>
+                  <ShieldAlert className="text-red-500 relative z-10 animate-[pulse_2s_ease-in-out_infinite]" size={22} />
+                </div>
+                <div>
+                  <h3 className="text-white font-display font-medium text-xl flex items-center gap-2">
+                    n.cirt <span className="text-red-500 font-bold tracking-tight">emergência</span> 
+                    <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse ml-1 shadow-[0_0_10px_rgba(239,68,68,0.8)]" />
+                  </h3>
+                  <p className="text-red-400/80 text-[10px] font-mono uppercase tracking-[0.2em] mt-1 hidden sm:block">War Room Activation Protocol</p>
+                </div>
+              </div>
+              <button 
+                onClick={onClose}
+                className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/70 hover:text-white transition-colors relative z-10"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Warning Banner */}
+            <div className="bg-red-500/10 px-6 py-3 flex items-start gap-3 border-b border-red-500/10">
+              <AlertTriangle className="text-red-400 shrink-0 mt-0.5" size={16} />
+              <p className="text-red-200/70 text-xs leading-relaxed font-light">
+                Este canal isolado é exclusivo para incidentes críticos ativos (Cyberbreach, Ransomware). O faturamento emergencial aplicável começa a partir da entrada tática.
+              </p>
+            </div>
+
+            {/* Chat Area */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 relative bg-linear-to-b from-[#0a0a0a] to-[#0f0505]">
+              {messages.map((msg, idx) => (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  key={idx} 
+                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div className={`
+                    max-w-[90%] sm:max-w-[80%] rounded-2xl px-5 py-3.5 text-sm font-light leading-relaxed whitespace-pre-wrap
+                    ${msg.role === 'user' 
+                      ? 'bg-red-600/90 text-white rounded-tr-sm border border-red-500/50 shadow-lg shadow-red-900/20' 
+                      : msg.role === 'system'
+                        ? 'bg-transparent border border-red-500/20 text-red-400/80 w-full text-center font-mono text-[11px] uppercase tracking-wider p-4 rounded-xl'
+                        : 'bg-white/5 border border-white/10 text-on-surface-variant rounded-tl-sm backdrop-blur-md'
+                    }
+                  `}>
+                    {msg.content}
+                  </div>
+                </motion.div>
+              ))}
+              <div ref={chatEndRef} />
+            </div>
+
+            {/* Input Area */}
+            <div className="p-5 bg-surface-container-lowest border-t border-white/5">
+              <form onSubmit={handleSend} className="relative flex items-center">
+                <input 
+                  type="text" 
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Descreva os primeiros sintomas do pain point atual..." 
+                  className="w-full bg-[#111] border border-white/10 rounded-full py-4 pl-6 pr-14 text-white text-sm focus:outline-none focus:border-red-500/60 transition-colors placeholder:text-white/20 font-light"
+                />
+                <button 
+                  type="submit"
+                  disabled={!input.trim()}
+                  className="absolute right-2 w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white disabled:opacity-20 disabled:bg-white/10 hover:bg-red-500 transition-colors shadow-lg shadow-red-900/40"
+                >
+                  <Send size={16} className="-translate-x-px translate-y-px" />
+                </button>
+              </form>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+}

@@ -1,8 +1,9 @@
 import BlueDot from '../components/BlueDot';
 import ChatPreview from '../components/ChatPreview';
+import EmergencyChatModal from '../components/EmergencyChatModal';
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { solutionsData } from "../data/solutionsData";
 import { 
@@ -19,9 +20,11 @@ import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/bra
 const SolutionPage = () => {
   const { t } = useTranslation();
   const { slug } = useParams();
+  const navigate = useNavigate();
   const solution = slug ? solutionsData[slug] : null;
   const Icon = solution?.icon;
   const [showTech, setShowTech] = useState(false);
+  const [isEmergencyChatOpen, setIsEmergencyChatOpen] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -349,7 +352,15 @@ const SolutionPage = () => {
           <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
             <h4 className="text-3xl lg:text-5xl font-display font-medium text-white mb-6 tracking-tight lowercase">{t('solutions.cta_title', 'sua empresa em um novo nível')}<BlueDot /></h4>
             <p className="text-lg text-on-surface-variant font-light leading-relaxed mb-10">{t('solutions.cta_desc', 'descubra como a ness pode transformar sua operação com inteligência e segurança de elite.')}</p>
-            <button className="bg-white text-surface px-10 py-5 rounded-full font-display font-semibold uppercase tracking-widest text-sm hover:bg-primary-container hover:text-on-primary hover:scale-105 transition-all shadow-lg shadow-primary-container/20 whitespace-nowrap">
+            <button 
+              onClick={() => {
+                if (slug === 'cirt') {
+                  setIsEmergencyChatOpen(true);
+                } else {
+                  navigate('/contact');
+                }
+              }}
+              className="bg-white text-surface px-10 py-5 rounded-full font-display font-semibold uppercase tracking-widest text-sm hover:bg-primary-container hover:text-on-primary hover:scale-105 transition-all shadow-lg shadow-primary-container/20 whitespace-nowrap">
               {solution.ctaLabel}
             </button>
           </div>
@@ -420,6 +431,11 @@ const SolutionPage = () => {
           </div>
         </section>
       </div>
+      
+      <EmergencyChatModal 
+        isOpen={isEmergencyChatOpen} 
+        onClose={() => setIsEmergencyChatOpen(false)} 
+      />
     </motion.div>
   );
 };
