@@ -184,6 +184,29 @@ const SolutionPage = () => {
           </div>
         </section>
 
+        {/* NEW Casos de Uso Típicos (Legacy Refactored) */}
+        {solution.useCases && (
+          <section id="casos-de-uso" className="mb-32">
+            <div className="mb-12">
+              <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase">
+                {t('solutions.use_cases', 'casos de uso reais')}<BlueDot />
+              </h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {solution.useCases.map((useCase: any, i: number) => (
+                <motion.div 
+                  key={i} 
+                  whileHover={{ y: -5 }}
+                  className="p-8 lg:p-10 rounded-4xl bg-surface-container-low/10 border border-white/5 hover:bg-surface-container-low/30 hover:border-primary/20 transition-all group flex flex-col justify-between"
+                >
+                  <h4 className="text-white font-medium text-lg lg:text-xl leading-tight mb-4 group-hover:text-primary-container transition-colors pr-6">{useCase.title}</h4>
+                  <p className="text-on-surface-variant font-light text-sm">{useCase.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* NEW Valor para o Negócio (Full Width Bento-style Cards) */}
         <section id="benefícios" className="mb-32">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
@@ -247,6 +270,59 @@ const SolutionPage = () => {
             ))}
           </div>
         </section>
+
+        {/* NEW O Arsenal Técnico (Features Legadas) */}
+        {solution.features && (
+          <section id="funcionalidades" className="mb-40">
+            <div className="mb-16 text-center">
+              <h3 className="text-3xl md:text-4xl font-display font-bold text-white tracking-tight lowercase mb-6">
+                {t('solutions.technical_arsenal', 'o arsenal em operação')}<BlueDot />
+              </h3>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 max-w-[1000px] mx-auto">
+              {solution.features.map((feat: any, i: number) => (
+                <motion.div 
+                  key={i} 
+                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center gap-2 px-5 py-3 rounded-full border border-white/5 bg-surface-container-low/20 hover:border-primary/30 hover:bg-surface-container-low/50 transition-colors shadow-lg shadow-black/10"
+                >
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary-container shadow-[0_0_8px_rgba(var(--primary-container-rgb),0.8)]"></div>
+                  <span className="text-white text-sm font-medium">{feat.name}</span>
+                  <span className="text-on-surface-variant text-[10px] uppercase tracking-widest ml-2 hidden md:inline-block border-l border-white/10 pl-2">{feat.category}</span>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* NEW Timeline de Onboarding (Legacy Refactored) */}
+        {solution.onboarding && (
+          <section id="onboarding" className="mb-40">
+            <div className="mb-16">
+              <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase mb-6">
+                {t('solutions.onboarding_journey', 'jornada de ativação')}<BlueDot />
+              </h3>
+            </div>
+            <div className="flex flex-col md:flex-row gap-8 relative mt-16">
+              <div className="absolute top-6 left-0 right-0 h-px bg-white/5 hidden md:block z-0"></div>
+              {solution.onboarding.map((step: any, i: number) => (
+                <motion.div 
+                  key={i} 
+                  whileHover={{ y: -10 }}
+                  className="flex-1 relative z-10 bg-surface-container-lowest md:bg-transparent p-6 md:p-0 rounded-3xl border border-white/5 md:border-transparent group"
+                >
+                  <div className="w-12 h-12 bg-surface-container-lowest border border-white/10 rounded-full flex items-center justify-center text-primary font-mono text-sm font-bold mb-8 mx-auto shadow-xl group-hover:border-primary/50 group-hover:text-primary-container transition-all">
+                    {step.step}
+                  </div>
+                  <div className="text-center md:px-2">
+                    <h4 className="text-white font-medium text-lg mb-3 tracking-tight">{step.title}</h4>
+                    <p className="text-on-surface-variant text-xs md:text-sm font-light leading-relaxed">{step.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Modular CTA Banner */}
         <div className="mb-24 p-12 lg:p-16 rounded-[4rem] bg-surface-container-low border border-white/5 nebula-shadow relative overflow-hidden group text-center">

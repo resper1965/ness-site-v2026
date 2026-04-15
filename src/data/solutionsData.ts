@@ -27,6 +27,30 @@ export const solutionsData: any = {
       { name: "SOC 24x7 com MDR", desc: "A operação mantém vigilância contínua sobre eventos, alertas e comportamentos suspeitos, com correlação, triagem, classificação de severidade, escalonamento e resposta coordenada. Esse modelo entrega uma capacidade permanente de SOC 24x7 com MDR." }
     ],
     ctaLabel: "Fale com a ness.",
+    useCases: [
+      { title: "Empresa sofreu ransomware e quer prevenir recorrência", desc: "SOC 24×7 monitora ameaças, EDR bloqueia processos maliciosos antes de propagação, e patching reduz superfície de ataque." },
+      { title: "Startup precisa ISO 27001/SOC 2 em 6 meses", desc: "A empresa já sai com as evidências mandatórias prontas para a auditoria: logs centralizados, scan contínuo de vulnerabilidades, relatórios trimestrais de patch e inventário unificado." },
+      { title: "TI enxuta não consegue acompanhar CVEs críticos", desc: "Nosso motor assume a máquina. Triagem automatizada de vulnerabilidades + ciclo de patch aplicado de forma orquestrada durante janelas silenciosas, sem causar downtime não planejado." },
+      { title: "Gestor quer visibilidade exata de quem acessou o quê", desc: "O SIEM proprietário correlaciona logs infinitos de AD, firewalls, EDR e aplicações em nuvem, entregando dashboards centralizados e irrevogáveis para controle e compliance direto." }
+    ],
+    features: [
+      { name: "Motor SOC 24×7", category: "Monitoramento Ativo" },
+      { name: "Correlação SIEM Avançada", category: "Visibilidade" },
+      { name: "EDR/AV Next-Gen com ML", category: "Combate de Ponto" },
+      { name: "Gestão Contínua de Vulnerabilidades", category: "Prevenção" },
+      { name: "Application Patch Management", category: "Higiene Tática" },
+      { name: "Security Hardening (CIS/NIST)", category: "Fundação" },
+      { name: "Inventário Discovery de Ativos", category: "Governança" },
+      { name: "Orquestração Incident Response", category: "Contenção" },
+      { name: "Feeds de Threat Intelligence", category: "Capacidade Cíclica" },
+      { name: "Reportes Táticos Executivos", category: "Auditoria" }
+    ],
+    onboarding: [
+      { step: "01", title: "Diagnóstico Completo", desc: "Mapeamento em profundidade do ambiente, assessment de stack tecnológico atual frente às ameaças globais operantes." },
+      { step: "02", title: "Baseline e Instalação", desc: "Deploy silencioso de sensores EDR, conexões criptografadas ao SIEM e centralização dos dados do tenant." },
+      { step: "03", title: "Tuning e Ajuste Fino", desc: "Calibração aguda das regras de detecção da Inteligência para reduzir fadiga de alertas e focar apenas no ruído que derruba negócios." },
+      { step: "04", title: "Operação 24x7 Ativada", desc: "O n.secops assume a vigília ininterrupta com emissão agendada de relatórios evolutivos sem gap de feriado." }
+    ],
     technicalFeatures: [],
     portfolio: [
       { client: "Global Fintech", project: "SOC Enterprise", result: "Prevenção estimada de US$ 2.5M em fraudes anuais." }
