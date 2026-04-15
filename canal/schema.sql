@@ -39,6 +39,7 @@ DROP TABLE IF EXISTS cases;
 CREATE TABLE cases (
   id           INTEGER PRIMARY KEY AUTOINCREMENT,
   lang         TEXT    NOT NULL DEFAULT 'pt',
+  slug         TEXT    NOT NULL,
   client       TEXT    NOT NULL,
   category     TEXT    NOT NULL DEFAULT 'infraestrutura',
   project      TEXT    NOT NULL,
@@ -59,4 +60,12 @@ CREATE TABLE forms (
   source       TEXT    NOT NULL,
   status       TEXT    NOT NULL DEFAULT 'new',
   created_at   DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ── newsletter ──────────────────────────────────────────────
+DROP TABLE IF EXISTS newsletter;
+CREATE TABLE newsletter (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  email      TEXT NOT NULL UNIQUE,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );

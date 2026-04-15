@@ -5,6 +5,11 @@
       "source": "cloudflare/skills",
       "sourceType": "github",
       "computedHash": "9f7a0866bc627b095f738558b594ac4246bda6ff895f1feb78037f8bd98a01d9"
+    },
+    "content-strategy": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "computedHash": "be124f3733b037fb8d859f275454ecd1c590759ef9ab184bea35ba1a0a38e14c"
     }
   }
 }

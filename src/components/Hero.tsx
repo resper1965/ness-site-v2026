@@ -1,16 +1,15 @@
 import BlueDot from '../components/BlueDot';
-import React, {  } from "react";
+import React from "react";
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
-import { 
-ArrowRight} from "lucide-react";
-
+import { ArrowRight } from "lucide-react";
 import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
-
-
+import { usePageTitle } from '../hooks/usePageTitle';
 
 const Hero = () => {
   const { t } = useTranslation();
+  usePageTitle('', 'precision digital engineering');
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-surface-container-lowest">
       {/* Immersive Background */}
@@ -29,18 +28,12 @@ const Hero = () => {
         
         {/* Floating Glow Elements */}
         <motion.div 
-          animate={{ 
-            y: [0, -20, 0],
-            opacity: [0.2, 0.5, 0.2]
-          }}
+          animate={{ y: [0, -20, 0], opacity: [0.2, 0.5, 0.2] }}
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 blur-[120px] rounded-full z-10"
         />
         <motion.div 
-          animate={{ 
-            y: [0, 20, 0],
-            opacity: [0.1, 0.3, 0.1]
-          }}
+          animate={{ y: [0, 20, 0], opacity: [0.1, 0.3, 0.1] }}
           transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-container/10 blur-[150px] rounded-full z-10"
         />
@@ -64,19 +57,24 @@ const Hero = () => {
             {t('hero.subtitle')}
           </p>
           <div className="flex flex-wrap gap-6 pt-4">
-            <button className="bg-linear-to-r from-primary-container to-primary text-on-primary px-8 py-3 rounded-full font-display font-semibold text-[13px] shadow-lg shadow-primary-container/20 hover:scale-105 transition-transform">
+            <Link
+              to="/solucoes"
+              className="bg-linear-to-r from-primary-container to-primary text-on-primary px-8 py-3 rounded-full font-display font-semibold text-[13px] shadow-lg shadow-primary-container/20 hover:scale-105 transition-transform"
+            >
               {t('hero.explore')}
-            </button>
-            <button className="flex items-center gap-2 text-white font-display font-medium text-sm hover:text-primary transition-colors group">
+            </Link>
+            <Link
+              to="/sobre"
+              className="flex items-center gap-2 text-white font-display font-medium text-sm hover:text-primary transition-colors group"
+            >
               {t('hero.know_ness')}<BlueDot />
               <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
-            </button>
+            </Link>
           </div>
         </motion.div>
       </div>
     </section>
   );
 };
-
 
 export default Hero;

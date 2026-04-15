@@ -187,7 +187,7 @@ const Careers = () => {
                     </div>
                   </div>
 
-                  <div className="bg-surface-container-high/50 p-8 rounded-[2rem] border border-white/5">
+                  <div className="bg-surface-container-high/50 p-8 rounded-4xl border border-white/5">
                     <h3 className="text-xl font-display font-bold text-white mb-8 lowercase-all">{t('careers.apply_title')}<BlueDot /></h3>
                     <form 
                       className="space-y-4" 

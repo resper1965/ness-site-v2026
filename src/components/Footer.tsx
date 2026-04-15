@@ -3,10 +3,12 @@ import React, {  } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { 
-Send,
+  Send,
   Linkedin,
   Instagram,
-  Facebook} from "lucide-react";
+  Facebook,
+  Lock
+} from "lucide-react";
 
 import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
@@ -85,9 +87,20 @@ const Footer = () => {
       
       <div className="max-w-7xl mx-auto mt-8 flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-sm text-on-surface-variant/40 font-light">© {FOUNDATION_YEAR}–{CURRENT_YEAR} ness. precision digital engineering. {t('footer.rights')}</p>
-        <div className="flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></div>
-          <span className="text-[10px] uppercase tracking-tighter text-on-surface-variant/40 font-bold">{t('footer.status')}</span>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></div>
+            <span className="text-[10px] uppercase tracking-tighter text-on-surface-variant/40 font-bold">{t('footer.status')}</span>
+          </div>
+          <a
+            href="https://canal.ness.workers.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="canal"
+            className="text-on-surface-variant/20 hover:text-on-surface-variant/60 transition-all duration-300"
+          >
+            <Lock size={12} />
+          </a>
         </div>
       </div>
     </footer>

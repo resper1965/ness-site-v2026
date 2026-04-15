@@ -2,14 +2,14 @@ import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { AnimatePresence } from "motion/react";
 
-// Layout components — carregados imediatamente (parte do shell)
+// Layout components — immediate load (shell)
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ChatbotWidget from './components/ChatbotWidget';
 import CelebrationPopup from './components/CelebrationPopup';
 import ScrollToTop from './components/ScrollToTop';
 
-// Pages — lazy loaded por rota (code splitting automático)
+// Pages — lazy loaded (code splitting)
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
 const Solutions = lazy(() => import('./pages/Solutions'));
@@ -18,7 +18,9 @@ const Verticals = lazy(() => import('./pages/Verticals'));
 const SolutionPage = lazy(() => import('./pages/SolutionPage'));
 const Insights = lazy(() => import('./pages/Insights'));
 const Blog = lazy(() => import('./pages/Blog'));
+const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Portfolio = lazy(() => import('./pages/Portfolio'));
+const PortfolioCase = lazy(() => import('./pages/PortfolioCase'));
 const Careers = lazy(() => import('./pages/Careers'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Compliance = lazy(() => import('./pages/Compliance'));
@@ -45,8 +47,12 @@ export default function App() {
             <Route path="/solucoes" element={<Solutions />} />
             <Route path="/solucoes/:slug" element={<SolutionPage />} />
             <Route path="/sobre" element={<About />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+            {/* legacy redirect for accented route */}
             <Route path="/portfólio" element={<Portfolio />} />
+            <Route path="/portfolio/:slug" element={<PortfolioCase />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/carreiras" element={<Careers />} />
             <Route path="/contato" element={<Contact />} />
             <Route path="/compliance/:type" element={<Compliance />} />

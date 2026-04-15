@@ -1,5 +1,6 @@
 import BlueDot from '../components/BlueDot';
 import CTA from '../components/CTA';
+import AnimatedCounter from '../components/AnimatedCounter';
 import React from "react";
 import { motion } from "motion/react";
 import { useTranslation, Trans } from "react-i18next";
@@ -135,6 +136,14 @@ const About = () => {
               </p>
             </motion.div>
           ))}
+        </div>
+
+        {/* ── Metrics ────────────────────────────────────────────── */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 border-t border-white/5 pt-16 mt-8 mb-16">
+          <AnimatedCounter value={YEARS_OF_LEGACY} label="anos de operação" suffix="+" duration={1500} />
+          <AnimatedCounter value={30} label="países atendidos" suffix="+" duration={2000} />
+          <AnimatedCounter value={500} label="projetos globais" suffix="+" duration={2500} />
+          <AnimatedCounter value={99} label="sla / uptime" suffix="%" duration={3000} />
         </div>
 
         {/* ── Timeline ─────────────────────────────────────────── */}

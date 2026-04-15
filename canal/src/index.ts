@@ -85,11 +85,52 @@ app.get('/api/jobs', async (c) => {
 app.get('/api/cases', async (c) => {
   const lang = c.req.query('lang') || 'pt'
   const { results } = await c.env.DB.prepare(
-    `SELECT id, lang, client, category, project, result, desc, stats, image, featured
+    `SELECT id, lang, slug, client, category, project, result, desc, stats, image, featured
      FROM cases WHERE lang = ? AND published = 1
      ORDER BY featured DESC, id ASC`
   ).bind(lang).all()
   return c.json(results)
+})
+
+// ── Endpoints de detalhe por slug ───────────────────────────────────────────────
+
+app.get('/api/insights/:slug', async (c) => {
+  const lang = c.req.query('lang') || 'pt'
+  const slug = c.req.param('slug')
+  const result = await c.env.DB.prepare(
+    `SELECT * FROM insights WHERE slug = ? AND lang = ? AND published = 1 LIMIT 1`
+  ).bind(slug, lang).first()
+  if (!result) return c.json({ error: 'Not found' }, 404)
+  return c.json(result)
+})
+
+app.get('/api/cases/:slug', async (c) => {
+  const lang = c.req.query('lang') || 'pt'
+  const slug = c.req.param('slug')
+  const result = await c.env.DB.prepare(
+    `SELECT * FROM cases WHERE slug = ? AND lang = ? AND published = 1 LIMIT 1`
+  ).bind(slug, lang).first()
+  if (!result) return c.json({ error: 'Not found' }, 404)
+  return c.json(result)
+})
+
+// ── Newsletter ───────────────────────────────────────────────────────────────
+
+app.post('/api/newsletter', async (c) => {
+  try {
+    const { email } = await c.req.json<{ email: string }>()
+    if (!email || !email.includes('@')) return c.json({ error: 'Invalid email' }, 400)
+    const existing = await c.env.DB.prepare(
+      'SELECT id FROM newsletter WHERE email = ? LIMIT 1'
+    ).bind(email).first()
+    if (existing) return c.json({ success: true, message: 'already_subscribed' })
+    await c.env.DB.prepare(
+      "INSERT INTO newsletter (email) VALUES (?)"
+    ).bind(email).run()
+    return c.json({ success: true, message: 'subscribed' })
+  } catch {
+    return c.json({ error: 'Failed' }, 500)
+  }
 })
 
 app.post('/api/submit-form', async (c) => {
