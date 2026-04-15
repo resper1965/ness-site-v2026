@@ -13,32 +13,21 @@ export const solutionsData: any = {
       ],
       progress: { label: "soar isolation speed", value: "Sub 500ms", subLabel: "" }
     },
-    overview: "Pagar assinaturas separadas para proteger endpoints, nuvem e perímetro é o que sangra a rentabilidade do seu negócio. A plataforma n.secops acaba de vez com a ineficiência de gerenciar múltiplos painéis de segurança. Consolidamos toda a sua Operação de Segurança Avançada (SecOps) sob uma única assinatura. Nossos clientes garantem blindagem de endpoints, patch management, detecção ativa e auditoria de tenants Cloud (M365/Workspace) num ecossistema coeso, reduzindo o Custo Total de Propriedade (TCO) focado estritamente em ciberdefesa.",
+    overview: "O n.secops é o serviço gerenciado de segurança da ness. para empresas que precisam fortalecer sua operação com proteção contínua, capacidade real de resposta e evolução mensurável da postura de segurança. A oferta combina monitoramento permanente, resposta estruturada a incidentes, automação operacional, conformidade normativa e gestão de riscos em uma única operação.",
     workflow: [
-      { step: "01", name: "Integração e Visibilidade Total", desc: "Instalação do agente unificado para obter o levantamento real-time e unificado de todos os hardwares e softwares da corporação." },
-      { step: "02", name: "Higiene da Infraestrutura", desc: "Aplicação silenciosa de inventário cruzado contra vulnerabilidades do mercado. O patching remoto atua de imediato para expurgar brechas." },
-      { step: "03", name: "Serviços MDR (SOC 24x7)", desc: "Seu ambiente passa a ser ativamente monitorado. Empregamos Managed Detection and Response (MDR) para isolar táticas invasivas, eliminando falsos positivos e parando ameaças na origem." }
+      { step: "01", name: "Cobertura de ambientes críticos e tenants corporativos", desc: "O n.secops amplia a visibilidade sobre endpoints, servidores, rede, ativos críticos e tenants corporativos, incluindo Microsoft 365 e Google Workspace, com foco em postura de segurança, eventos relevantes, comportamento de contas e resposta diante de ocorrências que exijam ação imediata." },
+      { step: "02", name: "Alertas e acionamento por canais", desc: "Quando uma ocorrência exige atenção, a operação acelera o tratamento com abertura de chamados, registro de evidências, escalonamento e comunicação imediata com os pontos focais definidos. Os alertas podem ser conduzidos por canais corporativos e de rápida resposta, como Teams, WhatsApp e Telegram." },
+      { step: "03", name: "Controles, conformidade e GRC no centro da operação", desc: "O n.secops transforma eventos e incidentes em evidências úteis para governança, risco e conformidade. A operação apoia a evolução de controles, a emissão de relatórios e a documentações e o acompanhamento contínuo da aderência a referências como CIS Controls, ISO 27001, NIST e LGPD." }
     ],
     benefits: [
-      { title: "MDR Pronto para Uso (Sem Contratar Analistas)", desc: "Ter um SOC interno custa fortunas em licenças e equipe. Entregamos a blindagem contínua via MDR como um serviço pronto e gerenciado, cortando seu gasto com folha de pagamento." },
-      { title: "Plataforma SaaS (Zero Custo com Licenças)", desc: "Somos um SaaS de Segurança All-in-One. Você contrata a inteligência de defesa agregada e não gasta um centavo a mais comprando licenças individuais de antivírus, EDRs ou SIEMs." },
-      { title: "Fim das Ferramentas de Defesa Isoladas", desc: "Diga adeus ao inferno de cruzar logs entre softwares de proteção que não conversam. Ao centralizar as ações de cibersegurança no nosso SOC nativo, cortamos a fadiga de alertas e focamos em bloqueios agressivos." }
+      { title: "Mais previsibilidade para operar com segurança", desc: "Em vez de sustentar múltiplas frentes desconectadas, o n.secops organiza a segurança em um modelo recorrente, com custo previsível e estrutura operacional pronta para execução contínua. Isso reduz dispersão, simplifica a gestão e amplia a capacidade de resposta sem exigir expansão proporcional da estrutura interna." },
+      { title: "Segurança que gera decisão", desc: "Cada incidente tratado fortalece a capacidade de decisão da organização com documentação, rastreabilidade, indicadores e direcionamento claro para correção, priorização e melhoria contínua. O resultado é uma operação de segurança mais madura e preparada para sustentar continuidade." }
     ],
     services: [
-      { name: "MDR Services (SOC 24x7)", desc: "Managed Detection and Response integrado: caçamos ameaças e entregamos resposta contida sem inundar sua TI com relatórios inúteis." },
-      { name: "Análise de Vulnerabilidade Contínua", desc: "Varreduras sistemáticas nos seus endpoints (desktops, servidores e laptops), caçando CVEs abertos direto na malha do sistema operacional antes que sejam explorados." },
-      { name: "Atualização Contínua", desc: "Atualização cirúrgica de sistemas legados ou expostos neutralizando ameaças já catalogadas (CVEs)." },
-      { name: "GRC (Governança, Risco e Conformidade)", desc: "Auditorias automatizadas e relatórios prontos para compliance (LGPD, ISO 27001, SOC2). Mapeamos lacunas de risco, evidenciamos controles e mantemos sua empresa dentro das exigências regulatórias sem esforço braçal." },
-      { name: "Inventário de Software e Hardware", desc: "Visibilidade centralizada e real-time de todos os ativos tangíveis ou lógicos acoplados à sua rede." },
-      { name: "Plano de Resposta a Incidente", desc: "Execução fria, contenciosa e metódica mapeada sob inteligência global (MITRE) caso uma anomalia fure a primeira linha." }
+      { name: "SOC 24x7 com MDR", desc: "A operação mantém vigilância contínua sobre eventos, alertas e comportamentos suspeitos, com correlação, triagem, classificação de severidade, escalonamento e resposta coordenada. Esse modelo entrega uma capacidade permanente de SOC 24x7 com MDR." }
     ],
-    ctaLabel: "blindar minha operação",
-    technicalFeatures: [
-      { title: "Cobertura Híbrida XDR (Wazuh)", desc: "Agentes leves em endpoints físicos misturados à auditoria API nativa de provedores Cloud, incluindo Microsoft 365 e Google Workspace." },
-      { title: "Gestão Atuante de Software Contínua", desc: "Descoberta não apenas de equipamentos, mas das versões exatas de uso dos pacotes (Microsoft, Adobe, etc) e CVEs vinculadas." },
-      { title: "Automação Operacional (RMM Integrado)", desc: "A execução é impulsionada não só em análise de relatórios, mas em resolução efetiva com updates injetados via remota." },
-      { title: "Plataforma de Subscrição Unificada", desc: "Licenciamento paramétrico de base consolidada superando a ineficiência do uso fatiado do mercado legados." }
-    ],
+    ctaLabel: "Fale com a ness.",
+    technicalFeatures: [],
     portfolio: [
       { client: "Global Fintech", project: "SOC Enterprise", result: "Prevenção estimada de US$ 2.5M em fraudes anuais." }
     ]
