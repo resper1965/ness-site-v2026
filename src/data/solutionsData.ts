@@ -33,9 +33,10 @@ export const solutionsData: any = {
     ],
     ctaLabel: "blindar minha operação",
     technicalFeatures: [
+      { title: "Cobertura Híbrida XDR (Wazuh)", desc: "Agentes leves em endpoints físicos misturados à auditoria API nativa de provedores Cloud, incluindo Microsoft 365 e Google Workspace." },
       { title: "Edge Computing Nativo", desc: "Decisões de segurança tomadas na borda geográfica para latência próxima a zero na navegação." },
       { title: "Arquitetura Serverless", desc: "Poder computacional escalável infinitamente para processamento de logs sob ataques massivos (DDoS)." },
-      { title: "Plataforma SaaS Unificada", desc: "Uma única licença, uma única integração para Identity, Network e Endpoint." }
+      { title: "Plataforma SaaS Unificada", desc: "Uma única licença, uma única integração paramétrica em vez do fardo de operar seis telas em paralelo." }
     ],
     portfolio: [
       { client: "Global Fintech", project: "SOC Enterprise", result: "Prevenção estimada de US$ 2.5M em fraudes anuais." }
