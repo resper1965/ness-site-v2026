@@ -13,30 +13,30 @@ export const solutionsData: any = {
       ],
       progress: { label: "soar isolation speed", value: "Sub 500ms", subLabel: "" }
     },
-    overview: "O mercado de segurança atual te obriga a costurar e licenciar sistemas isolados que sofrem para se comunicar. O Ness Cybersecurity Suite vai na direção diametralmente oposta: somos uma plataforma moderna de segurança operando puramente como SaaS. Desenvolvida 'from the ground up' com tecnologias de Edge Computing e Serverless, nossa suíte atua como um ecossistema coeso onde dados de rede, endpoints e identidades são cruzados em tempo real na espinha dorsal para antecipar ameaças antes da execução. Segurança corporativa brutal, sem o fardo da complexidade de gestão de silos.",
+    overview: "Pagar assinaturas separadas de RMM, monitoramento contínuo e softwares de proteção é o que sangra a rentabilidade do seu negócio. O Ness Cybersecurity Suite acaba de vez com a ineficiência de gerenciar múltiplos painéis (a 'Taxa de Alternância'). Unificamos a Operação da TI e a Defesa de Segurança Avançada (ITOps + SecOps) sob uma única assinatura. Nossos clientes garantem gestão de endpoints, patch management, detecção ativa e controle de tenants Cloud (M365/Workspace) num ecossistema consolidado, reduzindo o custo total de propriedade (TCO) sem sacrificar governança.",
     workflow: [
-      { step: "01", name: "Inventário e Visibilidade Absoluta", desc: "Você não protege o que não enxerga. A primeira etapa varre a planta e estabelece o inventário exato de software e hardware corporativo." },
-      { step: "02", name: "Análise de Vulnerabilidade e Patching", desc: "Correlação contínua das falhas da sua infraestrutura frente aos bancos de ameaças. O patching é aplicado ativamente para fechar brechas antes da exploração." },
-      { step: "03", name: "SOC 24x7 e Resposta Rápida", desc: "Monitoramento ininterrupto. Havendo intrusão técnica tática, disparamos o plano de resposta a incidentes para conter a ameaça cirurgicamente." }
+      { step: "01", name: "Integração e Visibilidade Total", desc: "Instalação do agente unificado para obter o levantamento real-time e unificado de todos os hardwares e softwares da corporação." },
+      { step: "02", name: "Higiene da Infraestrutura", desc: "Aplicação silenciosa de inventário cruzado contra vulnerabilidades do mercado. O patching remoto atua de imediato para expurgar brechas." },
+      { step: "03", name: "Serviços MDR (SOC 24x7)", desc: "Seu ambiente passa a ser ativamente monitorado. Empregamos Managed Detection and Response (MDR) para isolar táticas invasivas, eliminando falsos positivos e parando ameaças na origem." }
     ],
     benefits: [
-      { title: "Cobertura Completa 24x7 (SOC)", desc: "Seus engenheiros não precisam acordar de madrugada para investigar alertas inócuos. Nosso centro de operações assume a primeira linha de choque de domingo a domingo." },
-      { title: "Fim do Shadow IT e Ativos Ocultos", desc: "Com nosso inventário contínuo de Software e Hardware, eliminamos as 'caixas pretas' da sua rede, garantindo que nenhum servidor esquecido vire porta de entrada." },
-      { title: "Governança Prática e Patching Ativo", desc: "Auditorias exigem que softwares não tenham CVEs críticos abertos por meses. Nosso patching garante conformidade automática sem quebrar a operação do usuário final." }
+      { title: "MDR 'Turnkey' sem o Custo de Analistas", desc: "Montar um SOC próprio custa fortunas em hunting e capacitação. Nosotros te entregamos a blindagem contínua via MDR como um verdadeiro 'Turnkey Service', sem você precisar expandir o payroll." },
+      { title: "Redução Extrema de Custo Total (TCO)", desc: "Seus engenheiros não precisam assinar EDRs, sistemas de HelpDesk e SIEMs separados. Consolidamos as inteligências operacionais em uma só via orçamentária." },
+      { title: "Fim do 'Vendor Sprawl' e Fadiga de Alertas", desc: "Diga adeus ao inferno de cruzar logs entre quatro softwares que não conversam. Ao agregar o RMM ao SOC, cortamos o ruído e focamos em remediações agressivas." }
     ],
     services: [
-      { name: "SOC 24x7", desc: "Monitoramento e triagem contínua de segurança na sua infraestrutura ininterruptamente." },
+      { name: "MDR Services (SOC 24x7)", desc: "Managed Detection and Response integrado: caçamos ameaças e entregamos resposta contida sem inundar sua TI com relatórios inúteis." },
       { name: "Análise de Vulnerabilidade Contínua", desc: "Varreduras sistemáticas apontando gargalos térmicos em aplicações web e redes internas." },
       { name: "Patching Ativo", desc: "Atualização cirúrgica de sistemas legados ou expostos neutralizando ameaças já catalogadas (CVEs)." },
       { name: "Inventário de Software e Hardware", desc: "Visibilidade centralizada e real-time de todos os ativos tangíveis ou lógicos acoplados à sua rede." },
-      { name: "Plano de Resposta a Incidente", desc: "Execução fria, contenciosa e metódica logo que uma anomalia corporativa crítica fura a primeira linha." }
+      { name: "Plano de Resposta a Incidente", desc: "Execução fria, contenciosa e metódica mapeada sob inteligência global (MITRE) caso uma anomalia fure a primeira linha." }
     ],
     ctaLabel: "blindar minha operação",
     technicalFeatures: [
       { title: "Cobertura Híbrida XDR (Wazuh)", desc: "Agentes leves em endpoints físicos misturados à auditoria API nativa de provedores Cloud, incluindo Microsoft 365 e Google Workspace." },
-      { title: "Edge Computing Nativo", desc: "Decisões de segurança tomadas na borda geográfica para latência próxima a zero na navegação." },
-      { title: "Arquitetura Serverless", desc: "Poder computacional escalável infinitamente para processamento de logs sob ataques massivos (DDoS)." },
-      { title: "Plataforma SaaS Unificada", desc: "Uma única licença, uma única integração paramétrica em vez do fardo de operar seis telas em paralelo." }
+      { title: "Gestão Atuante de Software Contínua", desc: "Descoberta não apenas de equipamentos, mas das versões exatas de uso dos pacotes (Microsoft, Adobe, etc) e CVEs vinculadas." },
+      { title: "Automação Operacional (RMM Integrado)", desc: "A execução é impulsionada não só em análise de relatórios, mas em resolução efetiva com updates injetados via remota." },
+      { title: "Plataforma de Subscrição Unificada", desc: "Licenciamento paramétrico de base consolidada superando a ineficiência do uso fatiado do mercado legados." }
     ],
     portfolio: [
       { client: "Global Fintech", project: "SOC Enterprise", result: "Prevenção estimada de US$ 2.5M em fraudes anuais." }
