@@ -25,7 +25,9 @@ export const solutionsData: any = {
       { title: "Visão via Portal GRC", desc: "Acompanhe sua Governança de Risco e Postura em tempo real. Nosso Portal Integrado traduz milhares de eventos cibernéticos em um painel gerencial absurdamente simples para você liderar o compliance." }
     ],
     services: [
-      { name: "SOC 24x7 com MDR", desc: "A operação mantém vigilância contínua sobre eventos, alertas e comportamentos suspeitos, com correlação, triagem, classificação de severidade, escalonamento e resposta coordenada. Esse modelo entrega uma capacidade permanente de SOC 24x7 com MDR." }
+      { name: "Motor SOC 24x7 (MDR)", desc: "Vigilância ininterrupta sobre eventos e comportamentos suspeitos em toda a sua rede. Nossa equipe realiza a triagem e neutraliza ameaças instantaneamente antes que elas escalem." },
+      { name: "Gestão Contínua de Vulnerabilidades", desc: "Não focamos apenas em achar buracos críticos, mas em fechá-los. Realizamos varreduras recorrentes no seu ambiente e aplicamos os patches necessários de forma cadenciada." },
+      { name: "Threat Intelligence e Forense", desc: "Estudo contínuo do cibercrime focado no seu setor de mercado para prever ataques. Se o pior acontecer, conduzimos extrações forenses completas para propósitos legais." }
     ],
     ctaLabel: "Fale com a ness.",
     useCases: [

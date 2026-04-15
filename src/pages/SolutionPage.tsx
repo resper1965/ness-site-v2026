@@ -279,19 +279,35 @@ const SolutionPage = () => {
                 {t('solutions.technical_arsenal', 'o arsenal em operação')}<BlueDot />
               </h3>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 max-w-[1000px] mx-auto">
+            <motion.div 
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={{
+                hidden: { opacity: 0 },
+                show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+              }}
+              className="flex flex-wrap items-center justify-center gap-4 max-w-[1000px] mx-auto relative p-4"
+            >
+              {/* Linhas de conexão visuais no fundo pra dar sensação de correlação/pipeline */}
+              <div className="absolute inset-x-20 top-1/2 h-px bg-linear-to-r from-transparent via-primary/30 to-transparent -translate-y-1/2 z-0 hidden lg:block"></div>
+              
               {solution.features.map((feat: any, i: number) => (
                 <motion.div 
                   key={i} 
-                  whileHover={{ scale: 1.05 }}
-                  className="flex items-center gap-2 px-5 py-3 rounded-full border border-white/5 bg-surface-container-low/20 hover:border-primary/30 hover:bg-surface-container-low/50 transition-colors shadow-lg shadow-black/10"
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.8, y: 15 },
+                    show: { opacity: 1, scale: 1, y: 0, transition: { type: "spring" } }
+                  }}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  className="relative z-10 flex items-center gap-2 px-5 py-3 rounded-full border border-white/10 bg-surface-container-low/80 backdrop-blur-md hover:border-primary/50 hover:bg-surface-container-low transition-all shadow-xl shadow-black/20 group cursor-default"
                 >
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary-container shadow-[0_0_8px_rgba(var(--primary-container-rgb),0.8)]"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary-container shadow-[0_0_8px_rgba(var(--primary-container-rgb),0.8)] group-hover:scale-150 transition-transform"></div>
                   <span className="text-white text-sm font-medium">{feat.name}</span>
                   <span className="text-on-surface-variant text-[10px] uppercase tracking-widest ml-2 hidden md:inline-block border-l border-white/10 pl-2">{feat.category}</span>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </section>
         )}
 
@@ -339,7 +355,7 @@ const SolutionPage = () => {
           </div>
         </div>
 
-        {solution.technicalFeatures && (
+        {solution.technicalFeatures && solution.technicalFeatures.length > 0 && (
           <section id="tecnologia" className="mb-24 pt-12 border-t border-white/5">
             <div className="flex justify-center mb-8">
               <button 
