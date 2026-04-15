@@ -84,24 +84,24 @@ export const solutionsData: any = {
     ],
     services: [
       { name: "Service Desk L1/L2/L3 (ITIL)", desc: "Triagem, escalonamento e resolução sob rigorosos processos ITIL. Encerramos tickets velozmente documentando soluções para problemas repetitivos." },
-      { name: "NOC e Monitoramento Específico", desc: "Vigilância dos Ativos vitais da empresa. Parametrizamos alertas baseados em Service Level Objectives evitando que o usuário abra um chamado em primeiro lugar." },
+      { name: "AIOps e Orquestração Autônoma (SOAR)", desc: "Vigilância impulsionada por agentes de Inteligência Artificial. Malhas de sensores detectam anomalias, executam fluxos de mitigação antes do impacto e atualizam seus dashboards de integridade automagicamente." },
       { name: "Backup Strategy & Disaster Recovery", desc: "Engenharia voltada para salvaguardar a continuidade do negócio. Criamos cofres de dados com RTO e RPO matemáticos para recuperação instantânea de desastres." }
     ],
     ctaLabel: "agendar assessment (1-2s)",
     useCases: [
       { title: "TI enxuta precisa escalar Atendimento sem inchar a folha", desc: "Assumimos as linhas iniciais L1 e L2, resolvendo rapidamente o volume. Seu board foca em inovação, derrubando o ticket backlog em mais da metade na primeira semana." },
-      { title: "Infra legada requer Migração para a Nuvem", desc: "Planejamento orquestrado on-premise → cloud híbrido com tolerância extrema. Garantimos a migração sem gerar os crônicos momentos de downtime acidental para a produção." },
+      { title: "Fadiga de alertas de Infraestrutura esgotando os engenheiros", desc: "Implementação de modelo agentico de monitoramento. Nossa IA investiga ocorrências, auto-resolve incidentes comuns via orquestração e só abre chamados documentados para humanos em falhas críticas reais." },
       { title: "A Diretoria exige relatórios de compliance para a próxima rodada", desc: "A adoção rigorosa de processos ITIL, Change Management (CAB) com rollbacks e relatórios abrem imediatamente o caminho em auditorias rigorosas como SOC 2 e ISO." },
       { title: "A empresa perdeu dinheiro renovando licenças que não usava", desc: "Implementação profunda de CMDB e Gestão de Capacidade. Auditamos periodicamente ativos de software e hardware matando o desperdício de recursos inativos ou ociosos." }
     ],
     features: [
+      { name: "Agentes Autônomos de NOC", category: "AIOps" },
+      { name: "Orquestração de Resposta (SOAR)", category: "Automação" },
       { name: "Service Desk L1/L2/L3", category: "Atendimento" },
       { name: "Gestão de Ativos (CMDB / ITAM)", category: "Governança" },
       { name: "Painéis de Autonomia SLO/SLI", category: "Monitoramento" },
-      { name: "Change Advisory Board (CAB)", category: "Compliance" },
       { name: "Planos RPO / RTO em Backup", category: "Continuidade" },
       { name: "Cloud Migration Strategy", category: "Operação" },
-      { name: "Capacity Planning Automatizado", category: "Rentabilidade" },
       { name: "Relatórios de Evidência ITIL", category: "Auditoria" }
     ],
     onboarding: [
