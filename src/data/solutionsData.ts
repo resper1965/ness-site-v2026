@@ -27,7 +27,8 @@ export const solutionsData: any = {
     services: [
       { name: "MDR Services (SOC 24x7)", desc: "Managed Detection and Response integrado: caçamos ameaças e entregamos resposta contida sem inundar sua TI com relatórios inúteis." },
       { name: "Análise de Vulnerabilidade Contínua", desc: "Varreduras sistemáticas nos seus endpoints (desktops, servidores e laptops), caçando CVEs abertos direto na malha do sistema operacional antes que sejam explorados." },
-      { name: "Patching Ativo", desc: "Atualização cirúrgica de sistemas legados ou expostos neutralizando ameaças já catalogadas (CVEs)." },
+      { name: "Atualização Contínua", desc: "Atualização cirúrgica de sistemas legados ou expostos neutralizando ameaças já catalogadas (CVEs)." },
+      { name: "GRC (Governança, Risco e Conformidade)", desc: "Auditorias automatizadas e relatórios prontos para compliance (LGPD, ISO 27001, SOC2). Mapeamos lacunas de risco, evidenciamos controles e mantemos sua empresa dentro das exigências regulatórias sem esforço braçal." },
       { name: "Inventário de Software e Hardware", desc: "Visibilidade centralizada e real-time de todos os ativos tangíveis ou lógicos acoplados à sua rede." },
       { name: "Plano de Resposta a Incidente", desc: "Execução fria, contenciosa e metódica mapeada sob inteligência global (MITRE) caso uma anomalia fure a primeira linha." }
     ],
