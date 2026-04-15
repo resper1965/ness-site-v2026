@@ -179,55 +179,85 @@ const SolutionPage = () => {
           </motion.div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-24 mb-24">
-          <section id="benefícios">
-            <h3 className="text-xl md:text-2xl font-display font-semibold text-white mb-10 tracking-tight lowercase">{t('solutions.business_value', 'valor para o negócio')}<BlueDot /></h3>
-            <div className="grid grid-cols-1 gap-6">
-              {solution.benefits?.map((benefit: any, i: number) => (
-                <motion.div 
-                  key={i} 
-                  whileHover={{ x: 10 }}
-                  className="p-8 rounded-3xl bg-surface-container-low/30 border border-white/5 hover:bg-surface-container-low/50 transition-all"
-                >
-                  <h4 className="text-primary-container font-bold text-xs uppercase tracking-widest mb-3">{benefit.title}</h4>
-                  <p className="text-white text-lg font-light leading-relaxed">{benefit.desc}</p>
-                </motion.div>
-              ))}
+        {/* NEW Valor para o Negócio (Full Width Bento-style Cards) */}
+        <section id="benefícios" className="mb-32">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
+            <div className="max-w-2xl">
+              <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase">
+                {t('solutions.business_value', 'valor para o negócio')}<BlueDot />
+              </h3>
             </div>
-          </section>
-
-          <section id="serviços">
-            <h3 className="text-xl md:text-2xl font-display font-semibold text-white mb-10 tracking-tight lowercase">{t('solutions.strategic_solutions', 'soluções estratégicas')}<BlueDot /></h3>
-            <div className="space-y-6">
-              {solution.services.map((service: any, i: number) => (
-                <div key={i} className="group p-6 rounded-2xl border border-white/5 bg-surface-container-low/10 hover:bg-surface-container-low/30 transition-all">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-primary-container/10 flex items-center justify-center shrink-0">
-                      <Icon className="text-primary-container" size={20} />
-                    </div>
-                    <div>
-                      <h4 className="text-white font-medium mb-1">{service.name}</h4>
-                      <p className="text-on-surface-variant text-sm font-light">{service.desc}</p>
-                    </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {solution.benefits?.map((benefit: any, i: number) => (
+              <motion.div 
+                key={i} 
+                whileHover={{ y: -10 }}
+                className="p-10 rounded-[2rem] bg-surface-container-low/20 border border-white/5 hover:bg-surface-container-low/40 hover:border-primary/30 transition-all relative overflow-hidden group flex flex-col"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/20 transition-all"></div>
+                <div className="relative z-10 flex-1 flex flex-col">
+                  <div className="w-12 h-12 rounded-2xl bg-primary-container/10 flex items-center justify-center mb-8 border border-primary-container/20">
+                    <CheckCircle2 className="text-primary-container" size={24} />
                   </div>
+                  <h4 className="text-white font-display font-semibold text-xl mb-4 group-hover:text-primary-container transition-colors tracking-tight">{benefit.title}</h4>
+                  <p className="text-on-surface-variant font-light leading-relaxed flex-1">{benefit.desc}</p>
                 </div>
-              ))}
-            </div>
-            
-            <div className="mt-12 p-10 rounded-[3rem] bg-surface-container-low border border-white/5 nebula-shadow relative overflow-hidden group">
-              <div className="absolute inset-0 bg-linear-to-br from-primary/10 to-primary-container/10 opacity-50 backdrop-blur-md"></div>
-              <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform">
-                <Icon size={120} />
-              </div>
-              <div className="relative z-10">
-                <h4 className="text-xl font-display font-medium text-white mb-3 tracking-tight">{t('solutions.cta_title', 'sua empresa em um novo nível.')}</h4>
-                <p className="text-sm text-on-surface-variant font-light leading-relaxed mb-8">{t('solutions.cta_desc', 'descubra como a ness pode transformar sua operação com inteligência e segurança de elite.')}</p>
-                <button className="bg-white text-surface px-8 py-4 rounded-full font-display font-semibold uppercase tracking-widest text-xs hover:bg-primary-container hover:text-on-primary hover:scale-105 transition-all shadow-lg shadow-primary-container/20 whitespace-nowrap">
-                  {solution.ctaLabel}
-                </button>
-              </div>
-            </div>
-          </section>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* NEW Soluções Estratégicas (Full Width SaaS Modules) */}
+        <section id="serviços" className="mb-32">
+          <div className="text-center mb-16">
+            <h3 className="text-3xl md:text-5xl font-display font-bold text-white tracking-tight lowercase mb-6">
+              {t('solutions.strategic_solutions', 'soluções estratégicas')}<BlueDot />
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {solution.services.map((service: any, i: number) => (
+              <motion.div 
+                key={i} 
+                whileHover={{ scale: 1.02 }}
+                className="group relative p-10 lg:p-12 rounded-[3rem] border border-white/5 bg-surface-container-low/30 hover:bg-surface-container-low/50 overflow-hidden transition-all flex flex-col justify-between min-h-[300px]"
+              >
+                <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/20 transition-all duration-700"></div>
+                <div className="absolute top-8 right-8 opacity-5 group-hover:opacity-10 group-hover:scale-110 transition-all duration-500">
+                  <Icon size={180} />
+                </div>
+                
+                <div className="relative z-10">
+                  <div className="w-16 h-16 rounded-2xl bg-primary-container/20 flex items-center justify-center mb-8 border border-primary-container/20 shadow-[0_0_30px_rgba(var(--primary-container-rgb),0.15)] group-hover:shadow-[0_0_40px_rgba(var(--primary-container-rgb),0.3)] transition-shadow">
+                    <Icon className="text-primary-container" size={32} />
+                  </div>
+                  <h4 className="text-white font-display text-2xl lg:text-3xl font-bold mb-4 tracking-tight drop-shadow-md">{service.name}</h4>
+                  <p className="text-on-surface-variant md:text-lg font-light leading-relaxed max-w-md">{service.desc}</p>
+                </div>
+                
+                <div className="relative z-10 mt-12 flex items-center gap-3 text-primary-container text-sm uppercase tracking-widest font-semibold group-hover:translate-x-2 transition-transform cursor-pointer">
+                  explorar módulo <ChevronLeft className="rotate-180" size={16} />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* Modular CTA Banner */}
+        <div className="mb-24 p-12 lg:p-16 rounded-[4rem] bg-surface-container-low border border-white/5 nebula-shadow relative overflow-hidden group text-center">
+          <div className="absolute inset-0 bg-linear-to-br from-primary/10 to-primary-container/10 opacity-50 backdrop-blur-md"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 scale-150 group-hover:scale-110 transition-transform duration-1000">
+            <Icon size={400} />
+          </div>
+          <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
+            <h4 className="text-3xl lg:text-5xl font-display font-medium text-white mb-6 tracking-tight lowercase">{t('solutions.cta_title', 'sua empresa em um novo nível')}<BlueDot /></h4>
+            <p className="text-lg text-on-surface-variant font-light leading-relaxed mb-10">{t('solutions.cta_desc', 'descubra como a ness pode transformar sua operação com inteligência e segurança de elite.')}</p>
+            <button className="bg-white text-surface px-10 py-5 rounded-full font-display font-semibold uppercase tracking-widest text-sm hover:bg-primary-container hover:text-on-primary hover:scale-105 transition-all shadow-lg shadow-primary-container/20 whitespace-nowrap">
+              {solution.ctaLabel}
+            </button>
+          </div>
         </div>
 
         {solution.technicalFeatures && (
