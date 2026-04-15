@@ -21,7 +21,7 @@ export const solutionsData: any = {
     ],
     benefits: [
       { title: "MDR Pronto para Uso (Sem Contratar Analistas)", desc: "Ter um SOC interno custa fortunas em licenças e equipe. Entregamos a blindagem contínua via MDR como um serviço pronto e gerenciado, cortando seu gasto com folha de pagamento." },
-      { title: "Redução Extrema de Custo Total (TCO)", desc: "Seus engenheiros não precisam assinar EDRs, sistemas de HelpDesk e SIEMs separados. Consolidamos as inteligências operacionais em uma só via orçamentária." },
+      { title: "Plataforma SaaS (Zero Custo com Licenças)", desc: "Somos um SaaS All-in-One. Você contrata a inteligência agregada e não gasta um único centavo a mais comprando licenças individuais de EDRs, sistemas de HelpDesk ou SIEMs." },
       { title: "Fim das Ferramentas que Não Conversam", desc: "Diga adeus ao inferno de cruzar logs entre quatro softwares isolados. Ao agregar a gestão técnica da TI (RMM) ao SOC, cortamos a fadiga de alertas inúteis e focamos em remediações curtas e agressivas." }
     ],
     services: [
