@@ -152,7 +152,7 @@ const SolutionPage = () => {
         </div>
 
         {/* NEW Fluxo Operacional (Workflow Espaçoso) */}
-        <section id="fluxo-operacional" className="mb-32">
+        <section id="fluxo-operacional" className="mb-24">
           <div className="mb-12">
             <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase">
               {t('solutions.intelligence_flow', 'o fluxo de inteligência')}<BlueDot />
@@ -186,7 +186,7 @@ const SolutionPage = () => {
 
         {/* NEW Casos de Uso Típicos (Legacy Refactored) */}
         {solution.useCases && (
-          <section id="casos-de-uso" className="mb-32">
+          <section id="casos-de-uso" className="mb-24">
             <div className="mb-12">
               <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase">
                 {t('solutions.use_cases', 'casos de uso reais')}<BlueDot />
@@ -208,7 +208,7 @@ const SolutionPage = () => {
         )}
 
         {/* NEW Valor para o Negócio (Full Width Bento-style Cards) */}
-        <section id="benefícios" className="mb-32">
+        <section id="benefícios" className="mb-24">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
             <div className="max-w-2xl">
               <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase">
@@ -238,14 +238,14 @@ const SolutionPage = () => {
         </section>
 
         {/* NEW Soluções Estratégicas (Full Width SaaS Modules) */}
-        <section id="serviços" className="mb-32">
+        <section id="serviços" className="mb-24">
           <div className="text-center mb-16">
             <h3 className="text-3xl md:text-5xl font-display font-bold text-white tracking-tight lowercase mb-6">
               {t('solutions.strategic_solutions', 'soluções estratégicas')}<BlueDot />
             </h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {solution.services.map((service: any, i: number) => (
               <motion.div 
                 key={i} 
@@ -273,7 +273,7 @@ const SolutionPage = () => {
 
         {/* NEW O Arsenal Técnico (Features Legadas) */}
         {solution.features && (
-          <section id="funcionalidades" className="mb-40">
+          <section id="funcionalidades" className="mb-24 pt-12 border-t border-white/5">
             <div className="mb-16 text-center">
               <h3 className="text-3xl md:text-4xl font-display font-bold text-white tracking-tight lowercase mb-6">
                 {t('solutions.technical_arsenal', 'o arsenal em operação')}<BlueDot />
@@ -313,7 +313,7 @@ const SolutionPage = () => {
 
         {/* NEW Timeline de Onboarding (Legacy Refactored) */}
         {solution.onboarding && (
-          <section id="onboarding" className="mb-40">
+          <section id="onboarding" className="mb-24 pt-12 border-t border-white/5">
             <div className="mb-16">
               <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase mb-6">
                 {t('solutions.onboarding_journey', 'jornada de ativação')}<BlueDot />
