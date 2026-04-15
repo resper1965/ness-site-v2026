@@ -105,7 +105,7 @@ const Blog = () => {
           >
             blog — ness. insights
           </motion.div>
-          <h1 className="text-5xl md:text-8xl font-display font-semibold text-white tracking-tighter mb-8 lowercase-all">
+          <h1 className="text-4xl md:text-6xl font-display font-semibold text-white tracking-tighter mb-8 lowercase-all">
             {t('blog.title')}<BlueDot />
           </h1>
           <p className="text-xl text-on-surface-variant font-light max-w-3xl leading-relaxed">

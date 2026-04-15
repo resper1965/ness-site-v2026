@@ -55,7 +55,7 @@ const Contact = () => {
               >
                 get in touch — ness. precision
               </motion.div>
-              <h1 className="text-5xl md:text-7xl font-display font-semibold text-white tracking-tighter leading-tight mb-8 lowercase-all">
+              <h1 className="text-4xl md:text-6xl font-display font-semibold text-white tracking-tighter leading-tight mb-8 lowercase-all">
                 {t('contact.title')}<BlueDot />
               </h1>
               <p className="text-xl text-on-surface-variant font-light leading-relaxed">

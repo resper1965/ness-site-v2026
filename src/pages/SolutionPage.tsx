@@ -74,7 +74,7 @@ const SolutionPage = () => {
                 {t(`solutions.${slug}.title`).split('.')[0]}<span className="text-primary-container">.</span>{t(`solutions.${slug}.title`).split('.')[1]}
               </h1>
             </div>
-            <h2 className="text-5xl md:text-7xl font-display font-semibold text-white tracking-tighter leading-tight lowercase-all">
+            <h2 className="text-4xl md:text-6xl font-display font-semibold text-white tracking-tighter leading-tight lowercase-all">
               {t(`solutions.${slug}.fullTitle`)}<BlueDot />
             </h2>
             <p className="text-xl text-on-surface-variant font-light leading-relaxed">

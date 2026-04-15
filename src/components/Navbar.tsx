@@ -33,12 +33,12 @@ const Navbar = () => {
   const isHome = location.pathname === "/";
 
   const menuItems = [
-    { key: "solutions", label: t("nav.solutions") },
-    { key: "sobre", label: t("nav.about") },
-    { key: "portfólio", label: t("nav.portfolio") },
-    { key: "blog", label: t("nav.blog") },
-    { key: "carreiras", label: t("nav.careers") },
-    { key: "contato", label: t("nav.contact") }
+    { key: "solutions", label: t("nav.solutions"), to: "/solucoes" },
+    { key: "sobre", label: t("nav.about"), to: "/sobre" },
+    { key: "portfólio", label: t("nav.portfolio"), to: "/portfólio" },
+    { key: "blog", label: t("nav.blog"), to: "/blog" },
+    { key: "carreiras", label: t("nav.careers"), to: "/carreiras" },
+    { key: "contato", label: t("nav.contact"), to: "/contato" }
   ];
 
   const changeLanguage = (lng: string) => {
@@ -61,33 +61,13 @@ const Navbar = () => {
             </div>
           )}
           {menuItems.map((item) => (
-            isHome ? (
-              item.key === "sobre" || item.key === "contato" || item.key === "portfólio" || item.key === "blog" || item.key === "carreiras" ? (
-                <Link
-                  key={item.key}
-                  to={`/${item.key}`}
-                  className="text-on-surface-variant tracking-tight text-[10px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-bold"
-                >
-                  {item.label}
-                </Link>
-              ) : (
-                <a
-                  key={item.key}
-                  href={`#${item.key}`}
-                  className="text-on-surface-variant tracking-tight text-[10px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-bold"
-                >
-                  {item.label}
-                </a>
-              )
-            ) : (
-              <Link
-                key={item.key}
-                to={item.key === "sobre" || item.key === "contato" || item.key === "portfólio" || item.key === "blog" || item.key === "carreiras" ? `/${item.key}` : `/#${item.key}`}
-                className="text-on-surface-variant tracking-tight text-[10px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-bold"
-              >
-                {item.label}
-              </Link>
-            )
+            <Link
+              key={item.key}
+              to={item.to}
+              className="text-on-surface-variant tracking-tight text-[10px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-bold"
+            >
+              {item.label}
+            </Link>
           ))}
         </div>
 
@@ -163,33 +143,13 @@ const Navbar = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1 }}
                 >
-                  {isHome ? (
-                    item.key === "sobre" || item.key === "contato" || item.key === "portfólio" || item.key === "blog" || item.key === "carreiras" ? (
-                      <Link
-                        to={`/${item.key}`}
-                        onClick={() => setIsOpen(false)}
-                        className="text-3xl font-display font-semibold text-white lowercase-all tracking-tighter"
-                      >
-                        {item.label}<BlueDot />
-                      </Link>
-                    ) : (
-                      <a
-                        href={`#${item.key}`}
-                        onClick={() => setIsOpen(false)}
-                        className="text-3xl font-display font-semibold text-white lowercase-all tracking-tighter"
-                      >
-                        {item.label}<BlueDot />
-                      </a>
-                    )
-                  ) : (
-                    <Link
-                      to={item.key === "sobre" || item.key === "contato" || item.key === "portfólio" || item.key === "blog" || item.key === "carreiras" ? `/${item.key}` : `/#${item.key}`}
-                      onClick={() => setIsOpen(false)}
-                      className="text-3xl font-display font-semibold text-white lowercase-all tracking-tighter"
-                    >
-                      {item.label}<BlueDot />
-                    </Link>
-                  )}
+                  <Link
+                    to={item.to}
+                    onClick={() => setIsOpen(false)}
+                    className="text-3xl font-display font-semibold text-white lowercase-all tracking-tighter"
+                  >
+                    {item.label}<BlueDot />
+                  </Link>
                 </motion.div>
               ))}
               

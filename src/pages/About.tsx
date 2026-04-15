@@ -63,7 +63,7 @@ const About = () => {
             >
               {YEARS_OF_LEGACY} {t('footer.rights').includes('reservados') ? 'anos de excelência' : 'years of excellence'} — since 1991
             </motion.div>
-            <h1 className="text-5xl md:text-8xl font-display font-semibold text-white tracking-tighter leading-[0.9] mb-12 lowercase-all">
+            <h1 className="text-4xl md:text-6xl font-display font-semibold text-white tracking-tighter leading-[0.9] mb-12 lowercase-all">
               {t('about.subtitle')}<BlueDot />
             </h1>
             <p className="text-xl md:text-2xl text-on-surface-variant font-light leading-relaxed max-w-2xl">
