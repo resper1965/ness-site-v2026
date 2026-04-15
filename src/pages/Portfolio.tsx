@@ -115,10 +115,10 @@ const Portfolio = () => {
           >
             portfólio de impacto — ness. precision
           </motion.div>
-          <h1 className="text-4xl md:text-6xl font-display font-semibold text-white tracking-tighter mb-8 lowercase-all">
+          <h1 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight mb-6 lowercase">
             {t('portfolio.title')}<BlueDot />
           </h1>
-          <p className="text-xl text-on-surface-variant font-light max-w-3xl leading-relaxed">
+          <p className="text-base md:text-lg text-on-surface-variant font-light max-w-3xl leading-relaxed">
             {t('portfolio.subtitle')}
           </p>
         </div>
@@ -202,11 +202,11 @@ const Portfolio = () => {
         >
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
           <div className="relative z-10 max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-6xl font-display font-bold mb-8 tracking-tighter lowercase-all">{t('portfolio.cta_title')}<BlueDot /></h2>
-            <p className="text-xl mb-12 opacity-90 font-light">{t('portfolio.cta_desc')}</p>
+            <h2 className="text-2xl md:text-3xl font-display font-bold mb-4 tracking-tight lowercase">{t('portfolio.cta_title')}<BlueDot /></h2>
+            <p className="text-base mb-8 opacity-90 font-light">{t('portfolio.cta_desc')}</p>
             <Link 
               to="/contato"
-              className="inline-block bg-white text-primary px-12 py-5 rounded-full font-display font-bold uppercase tracking-widest text-sm hover:shadow-2xl transition-all hover:scale-105"
+              className="inline-block bg-white text-primary px-8 py-3 rounded-full font-display font-semibold uppercase tracking-widest text-xs hover:shadow-xl transition-all hover:scale-105"
             >
               {t('common.contact_expert')}
             </Link>

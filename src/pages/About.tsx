@@ -2,7 +2,7 @@ import BlueDot from '../components/BlueDot';
 import CTA from '../components/CTA';
 import React from "react";
 import { motion } from "motion/react";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import { Target, Eye, Heart, Shield, Globe, Cpu } from "lucide-react";
 
 const FOUNDATION_YEAR = 1991;
@@ -78,7 +78,10 @@ const About = () => {
             transition={{ delay: 0.25 }}
             className="text-3xl md:text-4xl font-display font-medium text-white tracking-tight leading-[1.1] mb-6 lowercase"
           >
-            {t('about.subtitle')}<BlueDot />
+            <Trans
+              i18nKey="about.subtitle"
+              components={{ highlight: <span className="text-primary-container drop-shadow-[0_0_15px_rgba(0,173,232,0.6)]" /> }}
+            /><BlueDot />
           </motion.h1>
 
           <motion.p

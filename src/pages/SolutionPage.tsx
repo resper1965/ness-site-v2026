@@ -74,14 +74,14 @@ const SolutionPage = () => {
                 {t(`solutions.${slug}.title`).split('.')[0]}<span className="text-primary-container">.</span>{t(`solutions.${slug}.title`).split('.')[1]}
               </h1>
             </div>
-            <h2 className="text-4xl md:text-6xl font-display font-semibold text-white tracking-tighter leading-tight lowercase-all">
+            <h2 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight leading-tight lowercase">
               {t(`solutions.${slug}.fullTitle`)}<BlueDot />
             </h2>
-            <p className="text-xl text-on-surface-variant font-light leading-relaxed">
+            <p className="text-base md:text-lg text-on-surface-variant font-light leading-relaxed">
               {t(`solutions.${slug}.longDesc`)}
             </p>
             <div className="flex gap-4 pt-4">
-              <button className="bg-primary-container text-on-primary px-8 py-4 rounded-full font-display font-bold text-sm uppercase hover:brightness-110 transition-all">
+              <button className="bg-primary-container text-on-primary px-8 py-3 rounded-full font-display font-semibold text-sm hover:brightness-110 transition-all">
                 {t(`solutions.${slug}.cta`)}
               </button>
             </div>
@@ -177,7 +177,7 @@ const SolutionPage = () => {
 
         <div className="grid md:grid-cols-2 gap-24 mb-24">
           <section id="benefícios">
-            <h3 className="text-3xl font-display font-semibold text-white mb-12 tracking-tighter lowercase-all">{t('solutions.business_value', 'valor para o negócio')}<BlueDot /></h3>
+            <h3 className="text-xl md:text-2xl font-display font-semibold text-white mb-10 tracking-tight lowercase">{t('solutions.business_value', 'valor para o negócio')}<BlueDot /></h3>
             <div className="grid grid-cols-1 gap-6">
               {solution.benefits?.map((benefit: any, i: number) => (
                 <motion.div 
@@ -193,7 +193,7 @@ const SolutionPage = () => {
           </section>
 
           <section id="serviços">
-            <h3 className="text-3xl font-display font-semibold text-white mb-12 tracking-tighter lowercase-all">{t('solutions.strategic_solutions', 'soluções estratégicas')}<BlueDot /></h3>
+            <h3 className="text-xl md:text-2xl font-display font-semibold text-white mb-10 tracking-tight lowercase">{t('solutions.strategic_solutions', 'soluções estratégicas')}<BlueDot /></h3>
             <div className="space-y-6">
               {solution.services.map((service: any, i: number) => (
                 <div key={i} className="group p-6 rounded-2xl border border-white/5 bg-surface-container-low/10 hover:bg-surface-container-low/30 transition-all">
@@ -215,9 +215,9 @@ const SolutionPage = () => {
                 <Icon size={120} />
               </div>
               <div className="relative z-10">
-                <h4 className="text-3xl font-display font-bold mb-4 tracking-tighter">{t('solutions.cta_title', 'sua empresa em um novo nível.')}</h4>
-                <p className="text-lg mb-8 opacity-90 font-light">{t('solutions.cta_desc', 'descubra como a ness pode transformar sua operação com inteligência e segurança de elite.')}</p>
-                <button className="bg-white text-primary px-10 py-4 rounded-full font-display font-bold uppercase tracking-widest text-xs hover:shadow-xl transition-all">
+                <h4 className="text-xl font-display font-bold mb-3 tracking-tight">{t('solutions.cta_title', 'sua empresa em um novo nível.')}</h4>
+                <p className="text-base mb-6 opacity-90 font-light">{t('solutions.cta_desc', 'descubra como a ness pode transformar sua operação com inteligência e segurança de elite.')}</p>
+                <button className="bg-white text-primary px-8 py-3 rounded-full font-display font-semibold uppercase tracking-widest text-xs hover:shadow-xl transition-all">
                   {solution.ctaLabel}
                 </button>
               </div>
@@ -229,7 +229,7 @@ const SolutionPage = () => {
           <section id="tecnologia" className="mb-24 pt-24 border-t border-white/5">
             <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
               <div className="max-w-xl">
-                <h3 className="text-3xl font-display font-semibold text-white tracking-tighter lowercase-all">{t('solutions.tech_engine', 'o motor da resiliência')}<BlueDot /></h3>
+                <h3 className="text-xl md:text-2xl font-display font-semibold text-white tracking-tight lowercase">{t('solutions.tech_engine', 'o motor da resiliência')}<BlueDot /></h3>
                 <p className="text-on-surface-variant mt-4 font-light">{t('solutions.tech_desc', 'para os interessados na engenharia por trás da proteção, aqui estão os pilares técnicos que sustentam nossa entrega de valor.')}</p>
               </div>
             </div>
@@ -248,7 +248,7 @@ const SolutionPage = () => {
         )}
 
         <section id="portfólio">
-          <h3 className="text-3xl font-display font-semibold text-white mb-12 tracking-tighter lowercase-all">{t('solutions.impact_portfolio', 'portfólio de impacto')}<BlueDot /></h3>
+          <h3 className="text-xl md:text-2xl font-display font-semibold text-white mb-10 tracking-tight lowercase">{t('solutions.impact_portfolio', 'portfólio de impacto')}<BlueDot /></h3>
           <div className="grid md:grid-cols-2 gap-8">
             {solution.portfolio.map((item: any, i: number) => (
               <div key={i} className="p-8 rounded-4xl border border-white/5 bg-linear-to-br from-surface-container-low to-surface-container-lowest">

@@ -116,7 +116,7 @@ const resources = {
       },
       "about": {
         "title": "sobre",
-        "subtitle": "invisíveis quando tudo funciona. presentes quando mais importa",
+        "subtitle": "invisíveis quando tudo funciona. <highlight>presentes</highlight> quando mais importa",
         "desc": "somos uma empresa de tecnologia especializada em segurança e engenharia, que opera e evolui ambientes de TI de ponta a ponta.",
         "mission": "missão",
         "mission_desc": "ser o parceiro de confiança que garante que sua infraestrutura funcione perfeitamente, permitindo que você se concentre no que realmente importa: seu negócio.",
@@ -331,7 +331,7 @@ const resources = {
       },
       "about": {
         "title": "about",
-        "subtitle": "invisible when everything works. present when it matters most",
+        "subtitle": "invisible when everything works. <highlight>present</highlight> when it matters most",
         "desc": "we are a technology company specialized in security and engineering, operating and evolving end-to-end IT environments.",
         "mission": "mission",
         "mission_desc": "to be the trusted partner that ensures your infrastructure works perfectly, allowing you to focus on what really matters: your business.",
@@ -546,7 +546,7 @@ const resources = {
       },
       "about": {
         "title": "nosotros",
-        "subtitle": "invisibles cuando todo funciona. presentes cuando más importa",
+        "subtitle": "invisibles cuando todo funciona. <highlight>presentes</highlight> cuando más importa",
         "desc": "somos una empresa de tecnología especializada en seguridad e ingeniería, que opera y evoluciona entornos de TI de extremo a extremo.",
         "mission": "misión",
         "mission_desc": "ser el socio de confianza que garantiza que su infraestructura funcione perfectamente, permitiéndole concentrarse en lo que realmente importa: su negocio.",

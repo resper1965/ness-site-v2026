@@ -89,10 +89,10 @@ const Careers = () => {
           >
             {t('careers.title')} — ness. talent
           </motion.div>
-          <h1 className="text-4xl md:text-6xl font-display font-semibold text-white tracking-tighter mb-8 lowercase-all">
+          <h1 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight mb-6 lowercase">
             {t('careers.subtitle')}<BlueDot />
           </h1>
-          <p className="text-xl text-on-surface-variant font-light max-w-3xl leading-relaxed">
+          <p className="text-base md:text-lg text-on-surface-variant font-light max-w-3xl leading-relaxed">
             {t('careers.desc')}
           </p>
         </div>
@@ -193,7 +193,7 @@ const Careers = () => {
                   <div className="space-y-8">
                     <div>
                       <span className="text-primary-container text-[10px] uppercase tracking-widest font-bold">{selectedJob.vertical}</span>
-                      <h2 className="text-3xl md:text-5xl font-display font-bold text-white mt-2 lowercase-all">{selectedJob.title}<BlueDot /></h2>
+                      <h2 className="text-2xl md:text-3xl font-display font-bold text-white mt-2 lowercase">{selectedJob.title}<BlueDot /></h2>
                     </div>
 
                     <div className="space-y-4">
@@ -276,7 +276,7 @@ const Careers = () => {
                           </div>
                         </div>
                       </div>
-                      <button className="w-full bg-primary-container text-on-primary py-5 rounded-2xl font-display font-bold uppercase tracking-widest text-sm hover:brightness-110 transition-all shadow-xl shadow-primary-container/20 mt-4">
+                      <button className="w-full bg-primary-container text-on-primary py-3.5 rounded-2xl font-display font-semibold uppercase tracking-widest text-xs hover:brightness-110 transition-all shadow-lg shadow-primary-container/20 mt-4">
                         {t('careers.form.send_button')}
                       </button>
                     </form>

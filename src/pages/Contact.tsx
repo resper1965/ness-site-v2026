@@ -55,10 +55,10 @@ const Contact = () => {
               >
                 get in touch — ness. precision
               </motion.div>
-              <h1 className="text-4xl md:text-6xl font-display font-semibold text-white tracking-tighter leading-tight mb-8 lowercase-all">
+              <h1 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight leading-tight mb-6 lowercase">
                 {t('contact.title')}<BlueDot />
               </h1>
-              <p className="text-xl text-on-surface-variant font-light leading-relaxed">
+              <p className="text-base md:text-lg text-on-surface-variant font-light leading-relaxed">
                 {t('contact.subtitle')}
               </p>
             </div>
@@ -196,7 +196,7 @@ const Contact = () => {
                   className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all resize-none"
                 ></textarea>
               </div>
-              <button className="w-full bg-primary-container text-on-primary py-5 rounded-2xl font-display font-bold uppercase tracking-widest text-sm hover:brightness-110 transition-all shadow-xl shadow-primary-container/20">
+              <button className="w-full bg-primary-container text-on-primary py-3.5 rounded-2xl font-display font-semibold uppercase tracking-widest text-xs hover:brightness-110 transition-all shadow-lg shadow-primary-container/20">
                 {t('contact.form.send')}
               </button>
             </form>

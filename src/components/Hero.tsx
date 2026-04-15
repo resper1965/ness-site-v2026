@@ -59,18 +59,18 @@ const Hero = () => {
           <span className="inline-block px-4 py-1 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container font-display text-[10px] tracking-widest uppercase">
             {t('hero.tag')}
           </span>
-          <h1 className="text-4xl md:text-6xl font-display font-medium text-white leading-tight tracking-tight lowercase-all">
+          <h1 className="text-4xl md:text-5xl font-display font-medium text-white leading-tight tracking-tight lowercase-all">
             <Trans i18nKey="hero.title" components={{ highlight: <span className="text-primary-container drop-shadow-[0_0_15px_rgba(0,173,232,0.6)]" /> }} />
             <BlueDot />
           </h1>
-          <p className="text-xl text-on-surface-variant max-w-2xl leading-relaxed font-light">
+          <p className="text-base md:text-lg text-on-surface-variant max-w-2xl leading-relaxed font-light">
             {t('hero.subtitle')}
           </p>
           <div className="flex flex-wrap gap-6 pt-4">
-            <button className="bg-linear-to-r from-primary-container to-primary text-on-primary px-10 py-4 rounded-full font-display font-bold text-lg shadow-xl shadow-primary-container/20 hover:scale-105 transition-transform">
+            <button className="bg-linear-to-r from-primary-container to-primary text-on-primary px-8 py-3 rounded-full font-display font-semibold text-[13px] shadow-lg shadow-primary-container/20 hover:scale-105 transition-transform">
               {t('hero.explore')}
             </button>
-            <button className="flex items-center gap-3 text-white font-display font-medium hover:text-primary transition-colors group">
+            <button className="flex items-center gap-2 text-white font-display font-medium text-sm hover:text-primary transition-colors group">
               {t('hero.know_ness')}<BlueDot />
               <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
             </button>
