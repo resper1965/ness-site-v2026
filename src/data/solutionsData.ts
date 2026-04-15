@@ -13,7 +13,7 @@ export const solutionsData: any = {
       ],
       progress: { label: "soar isolation speed", value: "Sub 500ms", subLabel: "" }
     },
-    overview: "Pagar assinaturas separadas de RMM, monitoramento contínuo e softwares de proteção é o que sangra a rentabilidade do seu negócio. O Ness Cybersecurity Suite acaba de vez com a ineficiência de gerenciar múltiplos painéis (a 'Taxa de Alternância'). Unificamos a Operação da TI e a Defesa de Segurança Avançada (ITOps + SecOps) sob uma única assinatura. Nossos clientes garantem gestão de endpoints, patch management, detecção ativa e controle de tenants Cloud (M365/Workspace) num ecossistema consolidado, reduzindo o custo total de propriedade (TCO) sem sacrificar governança.",
+    overview: "Pagar assinaturas separadas de RMM, monitoramento contínuo e softwares de proteção é o que sangra a rentabilidade do seu negócio. A plataforma n.secops acaba de vez com a ineficiência de gerenciar múltiplos painéis (a 'Taxa de Alternância'). Unificamos a Operação da TI e a Defesa de Segurança Avançada (ITOps + SecOps) sob uma única assinatura. Nossos clientes garantem gestão de endpoints, patch management, detecção ativa e controle de tenants Cloud (M365/Workspace) num ecossistema consolidado, reduzindo o custo total de propriedade (TCO) sem sacrificar governança.",
     workflow: [
       { step: "01", name: "Integração e Visibilidade Total", desc: "Instalação do agente unificado para obter o levantamento real-time e unificado de todos os hardwares e softwares da corporação." },
       { step: "02", name: "Higiene da Infraestrutura", desc: "Aplicação silenciosa de inventário cruzado contra vulnerabilidades do mercado. O patching remoto atua de imediato para expurgar brechas." },
