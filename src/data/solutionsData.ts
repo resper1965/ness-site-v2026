@@ -20,10 +20,15 @@ export const solutionsData: any = {
       { step: "03", name: "Integração Agêntica e GRC", desc: "IA atualiza painéis, alerta canais de crise (Teams/WhatsApp), e documenta o rastreio no POAM e plataformas ativas de controle legal (Privacidade)." }
     ],
     benefits: [
-      { title: "Blindagem de Receita", desc: "Evitamos perdas financeiras e de reputação ao bloquear ameaças antes que atinjam seus clientes." }
+      { title: "Continuidade e Blindagem de Receita", desc: "Mais do que segurança, garantimos que suas operações não parem. Isolamento de ransomware e ameaças zero-day em tempo real para proteger seu faturamento e equidade de marca." },
+      { title: "Conformidade Automatizada (GRC)", desc: "A cada intervenção, nossos sistemas compilam automativamente um rastro de auditoria. Diminui vertiginosamente o atrito gerencial em certificações LGPD/ISO e defesas regulatórias." },
+      { title: "Zero-Noise Operacional", desc: "Sua equipe técnica não é um gargalo de triagem. A mitigação acontece sem intervenção manual (SLA sub-segundo), acordando a gestão e diretores apenas quando a ameaça letal já está na gaiola." }
     ],
     services: [
-      { name: "SOC Gerenciado & Resposta a Incidentes", desc: "Monitoramento 24/7 e contenção autônoma baseada em automação de ponta." }
+      { name: "SOC Agêntico (AI Triage)", desc: "Monitoramento 24/7 com integração fluida da sua telemetria (Office 365, Google Workspace, Azure) refinado por aprendizado contínuo para evitar escalonamentos ocos." },
+      { name: "Gestão e Remediação Remota", desc: "Visão milimétrica sobre a vulnerabilidade de cada endpoint com aplicação cirúrgica de patches virtuais antes da infecção latente acontecer." },
+      { name: "Orquestração Autônoma (SOAR)", desc: "Sistemas pre-escriptados que removem redes comprometidas do ar em sub-segundos, blindando instâncias laterais sem depender do clique de fuso horário de um engenheiro Tier 1." },
+      { name: "Governança de Risco (POAM)", desc: "Atualização gerencial viva traduzindo alertas hiper-técnicos em Planos de Ação que conversam diretamente com as urgências normativas da alta diretoria." }
     ],
     ctaLabel: "agendar auditoria secops",
     technicalFeatures: [
