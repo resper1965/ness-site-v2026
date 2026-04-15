@@ -63,37 +63,56 @@ export const solutionsData: any = {
     icon: Cloud,
     bgImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000",
     dashboard: {
-      title: "n.infraops metrics",
-      mainStat: { value: "100%", label: "disponibilidade global" },
+      title: "n.infraops tickets",
+      mainStat: { value: "L1/L2/L3", label: "service desk itil" },
       metrics: [
-        { value: "99.9%", label: "SLA", color: "text-primary" },
-        { value: "< 10ms", label: "latência", color: "text-green-500" }
+        { value: "99.9%", label: "uptime sla", color: "text-primary" },
+        { value: "70%", label: "redução backlog", color: "text-green-500" }
       ],
       progress: { label: "infrastructure health", value: "100%", subLabel: "optimal" }
     },
+    overview: "Infraestrutura instável gera downtime, insatisfação de usuários e desperdício financeiro. O n.infraops assume a operação completa do seu ambiente — do Service Desk L1/L2/L3 à gestão de ITIL e Cloud — liberando seu time interno de apagar incêndios para focar puramente em inovações de alto nível.",
     workflow: [
-      { step: "01", name: "Assessment de Dívida Técnica", desc: "Mapeamento sem viés de infraestruturas ociosas e gargalos de resiliência legado." },
-      { step: "02", name: "Refatoração Cloud-Native", desc: "Abandono do conceito 'lift and shift'. Reconstrução arquitetural para tolerância elástica a falhas." },
-      { step: "03", name: "Sustentação FinOps", desc: "Monitoramento ativo onde algoritmos ligam e desligam clusters sob demanda atrelados à variação de receita." }
+      { step: "01", name: "Assessment Inicial", desc: "Mapeamento minucioso da infraestrutura atual, descobrindo ativos não documentados, processos e identificando os pain points com SLAs reais." },
+      { step: "02", name: "Setup ITSM e CMDB", desc: "Estruturação rigorosa da ferramenta de serviços, desenhando os workflows ITIL (Incident/Change/Problem) e a malha conectada de gestão de ativos." },
+      { step: "03", name: "Operação e SLA Ativo", desc: "Assumimos as trincheiras. Nossos Service Desks L1 e L2 passam a responder os chamados enquanto reportamos indicadores SLO/SLI limpos para a liderança." }
     ],
     benefits: [
-      { title: "Transformação CapEx para OpEx Cirúrgico", desc: "Não compre servidores aguardando o pico de Black Friday. Escalonamento milissegundo de recursos que desliga a conta na hora exata em que o tráfego acaba." },
-      { title: "Resiliência Multi-Região Silenciosa", desc: "Um data center cai, seu usuário não percebe. Espelhamento assíncrono e failovers autônomos garantindo um SLA que blinda sua diretoria." },
-      { title: "Developer Experience inegociável", desc: "Desenvolvedor não deve abrir ticket para rodar um banco de dados temporário. Entregamos Infra as Code (IaC) para autonomia com guardrails de compliance rígidos." }
+      { title: "Foco Estratégico, Zero Incêndios", desc: "Times enxutos gastam cerca de 70% do tempo apagando fogo em chamados de senha e redes. Absorvemos esse impacto para que sua engenharia foque apenas em projetos de core business." },
+      { title: "Visibilidade Métrica de SLOs", desc: "Tire do 'achismo' a saúde da sua TI. Entregamos Dashboards executivos com Uptime, MTTR e Satisfação (CSAT) em tempo real." },
+      { title: "Gestão Unificada de Ativos (CMDB)", desc: "Empresas que crescem rápido costumam perder a rastreabilidade do parque. Controlamos licenças, acessos, servidores físicos e nuvens híbridas sem margem para pontos cegos." }
     ],
     services: [
-      { name: "Sustentação SRE 24/7", desc: "Engenharia de Confiabilidade operando como extensão do seu board técnico, reagindo a anomalias antes do downtime acontecer." },
-      { name: "Gestão Híbrida Inteligente (FinOps)", desc: "Plataforma multicloud distribuindo carga estrategicamente onde a computação está mais barata e a latência menor no globo." },
-      { name: "Auditoria Contínua (Compliance-as-Code)", desc: "Verificação sistêmica que varre aberturas de firewall erráticas no código e barra deploys inseguros na fonte." }
+      { name: "Service Desk L1/L2/L3 (ITIL)", desc: "Triagem, escalonamento e resolução sob rigorosos processos ITIL. Encerramos tickets velozmente documentando soluções para problemas repetitivos." },
+      { name: "NOC e Monitoramento Específico", desc: "Vigilância dos Ativos vitais da empresa. Parametrizamos alertas baseados em Service Level Objectives evitando que o usuário abra um chamado em primeiro lugar." },
+      { name: "Backup Strategy & Disaster Recovery", desc: "Engenharia voltada para salvaguardar a continuidade do negócio. Criamos cofres de dados com RTO e RPO matemáticos para recuperação instantânea de desastres." }
     ],
-    ctaLabel: "otimizar infraestrutura",
-    technicalFeatures: [
-      { title: "Automação Kubernetes Absoluta", desc: "Orquestração conteinerizada agnóstica a provider, evitando 'vendor lock-in' crônico." },
-      { title: "IaC Terraform State", desc: "Toda sua infraestrutura corporativa é textualmente documentada em controle de versão Git." },
-      { title: "Redundância de Topologia Ativa", desc: "Arquitetura distribuída entre provedores garantindo SLA 99,99% em nível de kernel." }
+    ctaLabel: "agendar assessment (1-2s)",
+    useCases: [
+      { title: "TI enxuta precisa escalar Atendimento sem inchar a folha", desc: "Assumimos as linhas iniciais L1 e L2, resolvendo rapidamente o volume. Seu board foca em inovação, derrubando o ticket backlog em mais da metade na primeira semana." },
+      { title: "Infra legada requer Migração para a Nuvem", desc: "Planejamento orquestrado on-premise → cloud híbrido com tolerância extrema. Garantimos a migração sem gerar os crônicos momentos de downtime acidental para a produção." },
+      { title: "A Diretoria exige relatórios de compliance para a próxima rodada", desc: "A adoção rigorosa de processos ITIL, Change Management (CAB) com rollbacks e relatórios abrem imediatamente o caminho em auditorias rigorosas como SOC 2 e ISO." },
+      { title: "A empresa perdeu dinheiro renovando licenças que não usava", desc: "Implementação profunda de CMDB e Gestão de Capacidade. Auditamos periodicamente ativos de software e hardware matando o desperdício de recursos inativos ou ociosos." }
     ],
+    features: [
+      { name: "Service Desk L1/L2/L3", category: "Atendimento" },
+      { name: "Gestão de Ativos (CMDB / ITAM)", category: "Governança" },
+      { name: "Painéis de Autonomia SLO/SLI", category: "Monitoramento" },
+      { name: "Change Advisory Board (CAB)", category: "Compliance" },
+      { name: "Planos RPO / RTO em Backup", category: "Continuidade" },
+      { name: "Cloud Migration Strategy", category: "Operação" },
+      { name: "Capacity Planning Automatizado", category: "Rentabilidade" },
+      { name: "Relatórios de Evidência ITIL", category: "Auditoria" }
+    ],
+    onboarding: [
+      { step: "01", title: "Discovery", desc: "Assessment de arquitetura e dores em 1-2 semanas." },
+      { step: "02", title: "Setup ITSM", desc: "Customização das vias de ITIL e importação do CMDB." },
+      { step: "03", title: "Shadowing", desc: "Transferência de conhecimento documentando runbooks da sua própria TI." },
+      { step: "04", title: "Go-Live Híbrido", desc: "Atuação como backup/suporte até atingirmos autonomia total nos protocolos." }
+    ],
+    technicalFeatures: [],
     portfolio: [
-      { client: "Enterprise Retail", project: "Cloud Migration & FinOps", result: "Redução de 45% nos custos mensais de infraestrutura." }
+      { client: "Logística Nacional", project: "Help Desk + CMDB", result: "Redução de MTTR em mais de 78% nos primeiros meses." }
     ]
   },
   "devarch": {
