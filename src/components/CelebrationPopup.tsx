@@ -4,17 +4,14 @@ import { motion, AnimatePresence } from "motion/react";
 import { 
 PartyPopper} from "lucide-react";
 
-// Celebration Configuration
-const FOUNDATION_YEAR = 1991;
-const CURRENT_YEAR = new Date().getFullYear();
-const YEARS_OF_LEGACY = CURRENT_YEAR - FOUNDATION_YEAR;
+import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
 const CELEBRATION_CONFIG = {
-  active: true, // Set to true to enable celebration
+  active: true,
   label: `${YEARS_OF_LEGACY} anos`,
   title: `${YEARS_OF_LEGACY} anos de engenharia de precisão`,
   message: `estamos celebrando ${YEARS_OF_LEGACY} anos de inovação, resiliência e parcerias de sucesso. obrigado por fazer parte da nossa história.`,
-  startDate: "2024-04-14", // User will provide the exact date
+  startDate: '1991-06-12', // fundação da ness.
   durationDays: 7,
   foundationYear: FOUNDATION_YEAR,
   currentYear: CURRENT_YEAR

@@ -18,10 +18,7 @@ import {
   Scale, 
   Network} from "lucide-react";
 
-// Celebration Configuration
-const FOUNDATION_YEAR = 1991;
-const CURRENT_YEAR = new Date().getFullYear();
-const YEARS_OF_LEGACY = CURRENT_YEAR - FOUNDATION_YEAR;
+import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
 
 

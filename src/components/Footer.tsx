@@ -8,10 +8,7 @@ Send,
   Instagram,
   Facebook} from "lucide-react";
 
-// Celebration Configuration
-const FOUNDATION_YEAR = 1991;
-const CURRENT_YEAR = new Date().getFullYear();
-const YEARS_OF_LEGACY = CURRENT_YEAR - FOUNDATION_YEAR;
+import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
 
 
@@ -87,7 +84,7 @@ const Footer = () => {
       </div>
       
       <div className="max-w-7xl mx-auto mt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="text-sm text-on-surface-variant/40 font-light">© 2026 ness. precision digital engineering. {t('footer.rights')}</p>
+        <p className="text-sm text-on-surface-variant/40 font-light">© {FOUNDATION_YEAR}–{CURRENT_YEAR} ness. precision digital engineering. {t('footer.rights')}</p>
         <div className="flex items-center gap-2">
           <div className="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></div>
           <span className="text-[10px] uppercase tracking-tighter text-on-surface-variant/40 font-bold">{t('footer.status')}</span>
