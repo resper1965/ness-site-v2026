@@ -220,46 +220,43 @@ export const solutionsData: any = {
       ],
       progress: { label: "readiness", value: "maximum", subLabel: "standby mode" }
     },
-    overview: "Quando o impensável acontece, o tempo é seu maior inimigo. O n.cirt é a força de elite de Resposta a Incidentes para organizações em crise ou as que desejam se blindar. Acionamos uma Sala de Guerra virtual em 15 minutos, lideramos a crise usando Playbooks NIST/ISO, alinhamos a Comunicação de Stakeholders (PR e Jurídico) e mantemos a custódia forense legal. Intervenção cirúrgica focada apenas em retomar seu faturamento com danos zerados.",
+    overview: "Quando o impensável acontece, o pânico e o tempo são seus maiores inimigos. O n.cirt é a força de liderança em Resposta a Incidentes, atuando na orquestração da crise. Acionamos uma Sala de Guerra virtual estruturada em até 15 minutos, assumindo o controle gerencial usando Playbooks NIST/ISO. Alinhamos sua equipe de TI, a Comunicação (PR), o Jurídico e até acionamos perícia forense externa, tirando o peso dos ombros da sua diretoria para garantir a continuidade do negócio.",
     workflow: [
-      { step: "01", name: "Identificação do Foco", desc: "Varredura rápida em modo War Room. Localizamos precisamente o escopo do ransomware ou exfiltração de dados isolando os vetores de entrada nas primeiras horas da crise." },
-      { step: "02", name: "Mitigação e Contenção", desc: "Aplicação agressiva de playbooks NIST de estancamento. Restringimos privilégios em nível de kernel e derrubamos comunicações C2 (Command and Control) em micro-sandboxes herméticas." },
-      { step: "03", name: "Erradicação e Recuperação", desc: "Remoção de rastros e artefatos ocultos, engenharia reversa de persistência maliciosa e restauração metódica de backups homologados atestando um ambiente limpo para subida aos pilares produtivos." }
+      { step: "01", name: "War Room e Triagem", desc: "Assumimos a cadeira central de comando. Centralizamos as informações cruzando relatos dos seus times internos e provedores de segurança (SOC/MSSP) para entender a magnitude do incidente sem achismos." },
+      { step: "02", name: "Coordenação de Contenção", desc: "Direcionamos a aplicação de playbooks táticos aprovados. Instruímos suas equipes de redes e infraestrutura sobre exatamente quais conectividades cortar e quais ativos isolar para estancar a sangria imediatamente." },
+      { step: "03", name: "Orquestração de Retomada e Forense", desc: "Gerenciamos a recuperação. Acionamos parceiros especialistas e peritos externos (ex: forense.io) para análise profunda, enquanto guiamos seus DBAs na homologação e subida limpa dos backups essenciais." }
     ],
     benefits: [
-      { title: "Recuperação Imediata", desc: "Downtime custa milhões. Contemos danos em tempo recorde limitando a destruição cibernética nas adjacências arquiteturais, isolando partes para garantir a continuidade central inabalada da empresa." },
-      { title: "Defesa Integrada Baseada em Readiness", desc: "Prepare a sua equipe de dentro para fora. Fora do fogo cruzado da invasão, operamos Tabletop Exercises intensos imitando ransomware para estressar todas as decisões vitais sem que os ativos estejam perigando de verdade." },
-      { title: "Gestão Unificada de Compliance (Pós-Incidente)", desc: "Assumir a linha de frente não é só teclar no terminal. Guiamos comunicações metódicas a conselhos de diretores e notificações de brechas exigidas dentro de horas impostas por marcos legais vigentes (e.g. prazo de 72 horas da ANPD - LGPD)." }
+      { title: "Liderança Fria no Momento Crítico", desc: "Quando a TI interna está exausta e sob enorme pressão, entramos com a sobriedade de quem só faz isso. Assumimos a coordenação e ditamos o ritmo de salvação baseado em processos provados, não emoções." },
+      { title: "Readiness: Preparo Gerencial", desc: "A defesa começa antes. Organizamos Tabletop Exercises intensos imitando ransomware para estressar e preparar todas as decisões vitais do seu Board Executivo e C-Level em um ensaio controlado." },
+      { title: "Orquestração Jurídica e de Relações Públicas", desc: "O incidente técnico é apenas 20% do problema. Lideramos as comunicações metódicas a conselhos de diretores e ajudamos na redação técnica para notificações de brechas exigidas pelas leis vigentes (ANPD/LGPD)." }
     ],
     services: [
-      { name: "Incident Response e Liderança Tática", desc: "Intervenção ativa de elite em cenários de violação corporativa. Assumimos a cadeira de coordenador de operações focando totalmente nos playbooks criados para cada gravidade categorizada." },
-      { name: "Modo Standby (Retainer Ativo)", desc: "Seu seguro acionado antes da falência. Uma equipe sênior à espreita do seu comitê, de sobreaviso constante 24/7, garantindo início de combate severo a incidentes críticos na primeira variação anormal reportada no SIEM do seu NOC." },
-      { name: "Post-Incident Forensic Review", desc: "Relatórios de ponta a ponta sobre quem quebrou as maçanetas de segurança: desconstruindo o traçado criminoso, colhendo assinaturas TTPs e transformando a dor da crise em evolução maciça para a nova arquitetura do cliente." }
+      { name: "Incident Response Management", desc: "Liderança ativa de elite em cenários de violação. Assumimos a posição de Incident Commander, gerenciando seus provedores de tecnologia e ditando prioridades críticas minuto a minuto." },
+      { name: "Modo Standby (Retainer Ativo)", desc: "Seu seguro-comandante contratado antes da falência. Uma liderança sênior à espreita, garantindo a subida do comitê de crise à primeira confirmação do seu NOC de que as barreiras caíram." },
+      { name: "Post-Incident Forensic Review", desc: "Após apagar o incêndio, centralizamos auditorias. Contratamos especialistas forenses para rastrear a origem da porta arrombada e devolvemos um roadmap gerencial de Security inaleável." }
     ],
     ctaLabel: "agendar emergência cirúrgica",
     useCases: [
-      { title: "Ransomware Lateral ativo criptografando servidores Windows Críticos", desc: "Acionamento de emergência. A Sala de Guerra subiu em 15 minutos e os especialistas apartaram o nó comprometido, investigando o marco zero antes dos criptografadores tomarem o file-system vital para operação." },
-      { title: "Vazamento contínuo de Logs de Bancos Privados na RedWeb/DarkWeb", desc: "Ativação do processo tático focado em contenção de PII e estancamento reputacional. Interseção forense para descobrir secessão de credencial em Home Office mitigando penalizações pesadas." }
+      { title: "Ransomware Ativo paralisando a operação global", desc: "Acionamento de emergência. A Sala de Guerra subiu em 15 minutos e os especialistas da Ness coordenaram os líderes de TI do cliente e a provedora de nuvem para isolar as contas administrativas antes da perda total." },
+      { title: "Vazamento contínuo de Logs na DarkWeb", desc: "Ativação do processo tático focado em contenção de PII. A coordenação da Ness acionou rapidamente firmas forenses parceiras e guiou o comitê jurídico na formatação da defesa pública." }
     ],
     features: [
       { name: "Sala de Guerra Virtual 24/7", category: "Orquestração" },
-      { name: "Playbooks Normatizados (NIST)", category: "Contenção" },
-      { name: "Coordenação de Stakeholders", category: "Governança" },
-      { name: "Integração Forense Tática", category: "Legal Hold" },
-      { name: "Template de Comunicação de Crise", category: "C-Level PR" },
+      { name: "Playbooks Normatizados (NIST)", category: "Processos" },
+      { name: "Coordenação de Fornecedores", category: "Microgestão" },
+      { name: "Integração Jurídica e Forense", category: "Legal Hold" },
+      { name: "Comunicação de Crise", category: "C-Level PR" },
       { name: "Simulações Tabletop (Readiness)", category: "Preparo" }
     ],
     onboarding: [
-      { step: "01", title: "Playbook Engine", desc: "Assessment montando de fora pra dentro os rituais obrigatórios do NIST aplicados ao portfólio de risco natural do cliente." },
-      { step: "02", title: "Readiness", desc: "Tabletop exercises testando de fato a agilidade e estresse psíquico na tomada de decisões restritivas urgentes." },
-      { step: "03", title: "Standby Retainer", desc: "O contrato dorme: uma central remota silenciosa mas apta a liderar o incidente com apenas uma notificação PagerDuty recebida." },
-      { step: "04", title: "War Trigger", desc: "Crise instaurada. A central é puxada, todos os processos bloqueados e os vetores espremidos em até 15 min." }
-    ],
-    technicalFeatures: [
-      { title: "Forensics Extraction Engine", desc: "Coleta profunda base-memory local e dump instantâneo de processos efêmeros automatizados, garantindo Cadeia de Custódia Legal sem contaminar as evidências digitais do judiciário." }
+      { step: "01", title: "Playbook Engine", desc: "Assessment de governança desenhando os rituais obrigatórios do NIST aplicados ao catálogo de times e diretores do cliente." },
+      { step: "02", title: "Readiness", desc: "Mapeamento das capacidades dos terceiros (SOC, Cloud Providers) garantindo que eles sabem o que fazer quando a Ness pedir." },
+      { step: "03", title: "Standby Retainer", desc: "O contrato dorme: uma liderança remota silenciosa mas apta a comandar o incidente ao primeiro disparo tático." },
+      { step: "04", title: "War Trigger", desc: "Crise instaurada. A central é puxada, todos os processos bloqueados e os gestores são colocados na call em <= 15 Minutos." }
     ],
     portfolio: [
-      { client: "Healthcare Provider", project: "Ransomware Recovery", result: "Ameaça isolada pela war-room técnica assegurando R$ 15 Milhões em dados vitais hospitalares protegidos com índice de vazamento nulo." }
+      { client: "Healthcare Provider", project: "Ransomware Rescue Coordination", result: "Ameaça contida pela War Room gerencial orquestrando os DBAs internos e evitando R$ 15 Milhões em perdas com índice legal inabalado." }
     ]
   }
 };
