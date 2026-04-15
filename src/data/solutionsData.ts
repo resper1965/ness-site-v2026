@@ -213,30 +213,53 @@ export const solutionsData: any = {
     bgImage: "https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80&w=2000",
     dashboard: {
       title: "n.cirt response",
-      mainStat: { value: "< 5m", label: "time to response" },
+      mainStat: { value: "< 15m", label: "war room SLA" },
       metrics: [
         { value: "100%", label: "threat containment", color: "text-primary" },
         { value: "24/7", label: "plantão de especialistas", color: "text-green-500" }
       ],
-      progress: { label: "readiness", value: "maximum", subLabel: "" }
+      progress: { label: "readiness", value: "maximum", subLabel: "standby mode" }
     },
+    overview: "Quando o impensável acontece, o tempo é seu maior inimigo. O n.cirt é a força de elite de Resposta a Incidentes para organizações em crise ou as que desejam se blindar. Acionamos uma Sala de Guerra virtual em 15 minutos, lideramos a crise usando Playbooks NIST/ISO, alinhamos a Comunicação de Stakeholders (PR e Jurídico) e mantemos a custódia forense legal. Intervenção cirúrgica focada apenas em retomar seu faturamento com danos zerados.",
     workflow: [
-      { step: "01", name: "Identificação do Foco" },
-      { step: "02", name: "Mitigação e Contenção" },
-      { step: "03", name: "Erradicação e Recuperação" }
+      { step: "01", name: "Identificação do Foco", desc: "Varredura rápida em modo War Room. Localizamos precisamente o escopo do ransomware ou exfiltração de dados isolando os vetores de entrada nas primeiras horas da crise." },
+      { step: "02", name: "Mitigação e Contenção", desc: "Aplicação agressiva de playbooks NIST de estancamento. Restringimos privilégios em nível de kernel e derrubamos comunicações C2 (Command and Control) em micro-sandboxes herméticas." },
+      { step: "03", name: "Erradicação e Recuperação", desc: "Remoção de rastros e artefatos ocultos, engenharia reversa de persistência maliciosa e restauração metódica de backups homologados atestando um ambiente limpo para subida aos pilares produtivos." }
     ],
     benefits: [
-      { title: "Recuperação Imediata", desc: "Downtime custa milhões. Contemos danos em tempo recorde para garantir a continuidade absoluta do seu negócio." }
+      { title: "Recuperação Imediata", desc: "Downtime custa milhões. Contemos danos em tempo recorde limitando a destruição cibernética nas adjacências arquiteturais, isolando partes para garantir a continuidade central inabalada da empresa." },
+      { title: "Defesa Integrada Baseada em Readiness", desc: "Prepare a sua equipe de dentro para fora. Fora do fogo cruzado da invasão, operamos Tabletop Exercises intensos imitando ransomware para estressar todas as decisões vitais sem que os ativos estejam perigando de verdade." },
+      { title: "Gestão Unificada de Compliance (Pós-Incidente)", desc: "Assumir a linha de frente não é só teclar no terminal. Guiamos comunicações metódicas a conselhos de diretores e notificações de brechas exigidas dentro de horas impostas por marcos legais vigentes (e.g. prazo de 72 horas da ANPD - LGPD)." }
     ],
     services: [
-      { name: "Incident Response", desc: "Intervenção ativa de elite em cenários de violação corporativa." }
+      { name: "Incident Response e Liderança Tática", desc: "Intervenção ativa de elite em cenários de violação corporativa. Assumimos a cadeira de coordenador de operações focando totalmente nos playbooks criados para cada gravidade categorizada." },
+      { name: "Modo Standby (Retainer Ativo)", desc: "Seu seguro acionado antes da falência. Uma equipe sênior à espreita do seu comitê, de sobreaviso constante 24/7, garantindo início de combate severo a incidentes críticos na primeira variação anormal reportada no SIEM do seu NOC." },
+      { name: "Post-Incident Forensic Review", desc: "Relatórios de ponta a ponta sobre quem quebrou as maçanetas de segurança: desconstruindo o traçado criminoso, colhendo assinaturas TTPs e transformando a dor da crise em evolução maciça para a nova arquitetura do cliente." }
     ],
-    ctaLabel: "agendar análise cirt",
+    ctaLabel: "agendar emergência cirúrgica",
+    useCases: [
+      { title: "Ransomware Lateral ativo criptografando servidores Windows Críticos", desc: "Acionamento de emergência. A Sala de Guerra subiu em 15 minutos e os especialistas apartaram o nó comprometido, investigando o marco zero antes dos criptografadores tomarem o file-system vital para operação." },
+      { title: "Vazamento contínuo de Logs de Bancos Privados na RedWeb/DarkWeb", desc: "Ativação do processo tático focado em contenção de PII e estancamento reputacional. Interseção forense para descobrir secessão de credencial em Home Office mitigando penalizações pesadas." }
+    ],
+    features: [
+      { name: "Sala de Guerra Virtual 24/7", category: "Orquestração" },
+      { name: "Playbooks Normatizados (NIST)", category: "Contenção" },
+      { name: "Coordenação de Stakeholders", category: "Governança" },
+      { name: "Integração Forense Tática", category: "Legal Hold" },
+      { name: "Template de Comunicação de Crise", category: "C-Level PR" },
+      { name: "Simulações Tabletop (Readiness)", category: "Preparo" }
+    ],
+    onboarding: [
+      { step: "01", title: "Playbook Engine", desc: "Assessment montando de fora pra dentro os rituais obrigatórios do NIST aplicados ao portfólio de risco natural do cliente." },
+      { step: "02", title: "Readiness", desc: "Tabletop exercises testando de fato a agilidade e estresse psíquico na tomada de decisões restritivas urgentes." },
+      { step: "03", title: "Standby Retainer", desc: "O contrato dorme: uma central remota silenciosa mas apta a liderar o incidente com apenas uma notificação PagerDuty recebida." },
+      { step: "04", title: "War Trigger", desc: "Crise instaurada. A central é puxada, todos os processos bloqueados e os vetores espremidos em até 15 min." }
+    ],
     technicalFeatures: [
-      { title: "Forensics Engine", desc: "Coleta e análise automatizada de artefatos." }
+      { title: "Forensics Extraction Engine", desc: "Coleta profunda base-memory local e dump instantâneo de processos efêmeros automatizados, garantindo Cadeia de Custódia Legal sem contaminar as evidências digitais do judiciário." }
     ],
     portfolio: [
-      { client: "Healthcare Provider", project: "Ransomware Recovery", result: "R$ 15M protegidos e zero dados vazados." }
+      { client: "Healthcare Provider", project: "Ransomware Recovery", result: "Ameaça isolada pela war-room técnica assegurando R$ 15 Milhões em dados vitais hospitalares protegidos com índice de vazamento nulo." }
     ]
   }
 };
