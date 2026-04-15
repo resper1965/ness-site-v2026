@@ -15,22 +15,21 @@ export const solutionsData: any = {
     },
     overview: "O mercado de segurança atual te obriga a costurar e licenciar sistemas isolados que sofrem para se comunicar. O Ness Cybersecurity Suite vai na direção diametralmente oposta: somos uma plataforma moderna de segurança operando puramente como SaaS. Desenvolvida 'from the ground up' com tecnologias de Edge Computing e Serverless, nossa suíte atua como um ecossistema coeso onde dados de rede, endpoints e identidades são cruzados em tempo real na espinha dorsal para antecipar ameaças antes da execução. Segurança corporativa brutal, sem o fardo da complexidade de gestão de silos.",
     workflow: [
-      { step: "01", name: "Malha de Identidade Contínua", desc: "A primeira etapa corta o mal pela raiz. Sem 'perímetro confiável', cada solicitação de rede é validada continuamente exigindo identidade forte." },
-      { step: "02", name: "Detecção Orientada por IA", desc: "Não caçamos assinaturas velhas. Nosso motor varre toda a navegação em busca de anomalias e desvios comportamentais que predizem ciberataques cirúrgicos." },
-      { step: "03", name: "Contensão Autônoma e SOAR", desc: "A detecção cruza o limiar tático e dispara gatilhos (playbooks) mecânicos que anestesiam o ataque e derrubam o ambiente infectado em milissegundos." }
+      { step: "01", name: "Inventário e Visibilidade Absoluta", desc: "Você não protege o que não enxerga. A primeira etapa varre a planta e estabelece o inventário exato de software e hardware corporativo." },
+      { step: "02", name: "Análise de Vulnerabilidade e Patching", desc: "Correlação contínua das falhas da sua infraestrutura frente aos bancos de ameaças. O patching é aplicado ativamente para fechar brechas antes da exploração." },
+      { step: "03", name: "SOC 24x7 e Resposta Rápida", desc: "Monitoramento ininterrupto. Havendo intrusão técnica tática, disparamos o plano de resposta a incidentes para conter a ameaça cirurgicamente." }
     ],
     benefits: [
-      { title: "Segurança sem o Fardo da Infraestrutura (Serverless)", desc: "Seus engenheiros param de perder tempo aplicando patches em appliances ou consolidando dezenas de licenças corporativas. Todo o ecossistema roda seguro sobre nossa SaaS distribuída no Edge." },
-      { title: "Defesa Ativa contra Ransomware e 0-Days", desc: "Nossa IA caça comportamentos sistêmicos suspeitos (como processos de criptografia em massa) bloqueando a injeção ransomware em tempo real, preservando a liquidez do seu negócio perante investidores." },
-      { title: "Fim da Maior Cegueira Institucional", desc: "Elimine o risco sombrio do 'Shadow IT'. Nosso Mapeamento da Superfície rastreia ativamente o que a sua empresa expõe à Web sem precisar de autorização departamental, varrendo portas e brechas 24/7." }
+      { title: "Cobertura Completa 24x7 (SOC)", desc: "Seus engenheiros não precisam acordar de madrugada para investigar alertas inócuos. Nosso centro de operações assume a primeira linha de choque de domingo a domingo." },
+      { title: "Fim do Shadow IT e Ativos Ocultos", desc: "Com nosso inventário contínuo de Software e Hardware, eliminamos as 'caixas pretas' da sua rede, garantindo que nenhum servidor esquecido vire porta de entrada." },
+      { title: "Governança Prática e Patching Ativo", desc: "Auditorias exigem que softwares não tenham CVEs críticos abertos por meses. Nosso patching garante conformidade automática sem quebrar a operação do usuário final." }
     ],
     services: [
-      { name: "Single Sign-On Unificado (SSO)", desc: "Controle de acesso granular que amarra a identidade do colaborador a um escudo central e intransponível." },
-      { name: "Proteção Ativa contra Ransomware", desc: "Mecanismo defensivo construído para não permitir o colapso dos seus dados vitais operacionais e reputacionais." },
-      { name: "Zero Trust Network Access (ZTNA)", desc: "Micro-segmentação invisível criptografando qualquer comunicação entre os seus colaboradores e suas aplicações core." },
-      { name: "Mapeamento Contínuo da Superfície", desc: "Auditoria ininterrupta sobre a sua infraestrutura buscando pontos vazados ou não homologados expostos ao público." },
-      { name: "AI-Driven Anomaly Detection", desc: "Processamento preditivo capturando movimentações hostis laterais que ferramentas normais de mercado ignorariam como ruído." },
-      { name: "Automated Response Playbooks (SOAR)", desc: "Catálogo profundo de tomada de ação cibernética onde as ameaças são abatidas antes de alertar um humano." }
+      { name: "SOC 24x7", desc: "Monitoramento e triagem contínua de segurança na sua infraestrutura ininterruptamente." },
+      { name: "Análise de Vulnerabilidade Contínua", desc: "Varreduras sistemáticas apontando gargalos térmicos em aplicações web e redes internas." },
+      { name: "Patching Ativo", desc: "Atualização cirúrgica de sistemas legados ou expostos neutralizando ameaças já catalogadas (CVEs)." },
+      { name: "Inventário de Software e Hardware", desc: "Visibilidade centralizada e real-time de todos os ativos tangíveis ou lógicos acoplados à sua rede." },
+      { name: "Plano de Resposta a Incidente", desc: "Execução fria, contenciosa e metódica logo que uma anomalia corporativa crítica fura a primeira linha." }
     ],
     ctaLabel: "blindar minha operação",
     technicalFeatures: [
