@@ -44,22 +44,22 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="max-w-4xl space-y-8"
+          className="max-w-5xl space-y-10"
         >
-          <span className="inline-block px-4 py-1 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container font-display text-[10px] tracking-widest uppercase">
+          <span className="inline-block px-5 py-2 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container font-display text-xs tracking-[0.2em] uppercase">
             {t('hero.tag')}
           </span>
-          <h1 className="text-4xl md:text-5xl font-display font-medium text-white leading-tight tracking-tight lowercase-all">
-            <Trans i18nKey="hero.title" components={{ highlight: <span className="text-primary-container drop-shadow-[0_0_15px_rgba(0,173,232,0.6)]" /> }} />
+          <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-display font-medium text-white leading-[1.05] tracking-tighter lowercase-all">
+            <Trans i18nKey="hero.title" components={{ highlight: <span className="text-primary-container drop-shadow-[0_0_20px_rgba(0,173,232,0.6)]" /> }} />
             <BlueDot />
           </h1>
-          <p className="text-base md:text-lg text-on-surface-variant max-w-2xl leading-relaxed font-light">
+          <p className="text-lg md:text-2xl text-on-surface-variant max-w-3xl leading-relaxed font-light">
             {t('hero.subtitle')}
           </p>
-          <div className="flex flex-wrap gap-6 pt-4">
+          <div className="flex flex-wrap items-center gap-8 pt-4">
             <Link
               to="/solucoes"
-              className="bg-linear-to-r from-primary-container to-primary text-on-primary px-8 py-3 rounded-full font-display font-semibold text-[13px] shadow-lg shadow-primary-container/20 hover:scale-105 transition-transform"
+              className="bg-linear-to-r from-primary-container to-primary text-on-primary px-10 py-4 rounded-full font-display font-semibold text-sm shadow-xl shadow-primary-container/20 hover:scale-105 transition-transform"
             >
               {t('hero.explore')}
             </Link>
