@@ -6,30 +6,35 @@ export const solutionsData: any = {
     bgImage: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2000",
     dashboard: {
       title: "n.secops dashboard",
-      mainStat: { value: "99.99%", label: "uptime operacional" },
+      mainStat: { value: "100%", label: "postura atualizada" },
       metrics: [
-        { value: "0.4s", label: "latency", color: "text-green-500" },
-        { value: "0 incidentes", label: "críticos", color: "text-primary" }
+        { value: "A.I.", label: "triagem agêntica", color: "text-green-500" },
+        { value: "0 gaps", label: "em privacidade", color: "text-primary" }
       ],
-      progress: { label: "threat containment", value: "100%", subLabel: "secured" }
+      progress: { label: "soar isolation speed", value: "Sub 500ms", subLabel: "" }
     },
+    overview: "Nossa resiliência não decorre de esforço manual, mas de orquestração arquitetônica. Construímos um ecossistema silencioso onde anomalias em seus endpoints e correios são lidas, mitigadas e auditadas legalmente antes que o seu comitê saiba de um potencial incidente. Menos dashboards ofuscantes, mais bloqueio em sub-segundos.",
     workflow: [
-      { step: "01", name: "Monitoramento Contínuo" },
-      { step: "02", name: "Análise Heurística" },
-      { step: "03", name: "Contenção Automática" }
+      { step: "01", name: "Telemetria Centralizada", desc: "Varredura contínua e inventário nos seus endpoints e domínios de correio (Microsoft/Google) via agentes embarcados." },
+      { step: "02", name: "Isolamento Autônomo (SOAR)", desc: "Se identificado risco letal pelo nosso SIEM, playbooks táticos de SOAR acionam softwares de Gestão Remota (RMM) para conter e desabilitar endpoints instantaneamente." },
+      { step: "03", name: "Integração Agêntica e GRC", desc: "IA atualiza painéis, alerta canais de crise (Teams/WhatsApp), e documenta o rastreio no POAM e plataformas ativas de controle legal (Privacidade)." }
     ],
     benefits: [
-      { title: "Segurança Ativa", desc: "Sua operação protegida 24/7" }
+      { title: "Blindagem de Receita", desc: "Evitamos perdas financeiras e de reputação ao bloquear ameaças antes que atinjam seus clientes." }
     ],
     services: [
-      { name: "DevSecOps", desc: "Integramos segurança desde o dia zero no ciclo de desenvolvimento." }
+      { name: "SOC Gerenciado & Resposta a Incidentes", desc: "Monitoramento 24/7 e contenção autônoma baseada em automação de ponta." }
     ],
     ctaLabel: "agendar auditoria secops",
     technicalFeatures: [
-      { title: "Zero Trust Architecture", desc: "Adoção de perímetro definido por software." }
+      { title: "Plataforma Centralizada de Anomalias", desc: "Auditoria extensiva de endpoints e correios, fornecendo a espinha dorsal de identificação em tempo real." },
+      { title: "Gestão Remota & Patching (RMM)", desc: "Busca de inventários, gerenciamento de vulnerabilidades e a capacidade de intervir fisicamente em dispositivos comprometidos." },
+      { title: "Orquestração Autônoma (SOAR)", desc: "Geração de playbooks automáticos para análise imediata, disparando contenções táticas diretamente nos endpoints." },
+      { title: "IA Agêntica e Integração Nativa", desc: "Agentes operando sobre EDR/XDR, orquestrando alertas para ITSM, corporativos e atualizando métricas no dashboard central." },
+      { title: "Conformidade GRC Ativa", desc: "Cada resolução atualiza sua postura de risco (POAM) e trilha de privacidade em background, com rastreabilidade legal." }
     ],
     portfolio: [
-      { client: "Global Fintech", project: "SecOps as a Service", result: "Redução de 95% em falsos positivos" }
+      { client: "Global Fintech", project: "SOC Enterprise", result: "Prevenção estimada de US$ 2.5M em fraudes anuais." }
     ]
   },
   "infraops": {
@@ -50,7 +55,7 @@ export const solutionsData: any = {
       { step: "03", name: "Operação Sustentada" }
     ],
     benefits: [
-      { title: "Escalabilidade Infinita", desc: "Infraestrutura desenhada para crescer com seu negócio." }
+      { title: "TCO Otimizado", desc: "Redução drástica do Custo Total de Propriedade (TCO) com arquiteturas escaláveis que pagam por si mesmas." }
     ],
     services: [
       { name: "Cloud Management", desc: "Gestão inteligente de ambientes multi-cloud." }
@@ -60,7 +65,7 @@ export const solutionsData: any = {
       { title: "Infra as Code", desc: "Automação total via Terraform e afins." }
     ],
     portfolio: [
-      { client: "E-commerce Giant", project: "Cloud Migration", result: "Zero downtime durante a Black Friday." }
+      { client: "Enterprise Retail", project: "Cloud Migration & FinOps", result: "Redução de 45% nos custos mensais de infraestrutura." }
     ]
   },
   "devarch": {
@@ -81,17 +86,18 @@ export const solutionsData: any = {
       { step: "03", name: "Esteira CI/CD Automatizada" }
     ],
     benefits: [
-      { title: "Agilidade Corporativa", desc: "Menos burocracia, mais entrega de valor técnico." }
+      { title: "Time-to-Market Acelerado", desc: "Transformamos ciclos de desenvolvimento em vantagem competitiva. Entregue features meses antes da concorrência." }
     ],
     services: [
-      { name: "Software Engineering", desc: "Construção de aplicações resilientes com padrões modernos." }
+      { name: "Software Engineering", desc: "Construção de aplicações resilientes com padrões modernos." },
+      { name: "DevSecOps", desc: "Integramos segurança no pipeline (Shift-Left) desde o dia zero." }
     ],
     ctaLabel: "acelerar meu software",
     technicalFeatures: [
       { title: "Arquitetura Hexagonal", desc: "Isolamos o domínio da sua aplicação contra obsolescência de frameworks." }
     ],
     portfolio: [
-      { client: "Tech Unicorn", project: "App Refactoring", result: "Aumento de 300% na capacidade de TPS." }
+      { client: "SaaS Decacorn", project: "Refactoring Core Banking", result: "Time-to-market reduzido de meses para dias." }
     ]
   },
   "autoops": {
@@ -112,7 +118,7 @@ export const solutionsData: any = {
       { step: "03", name: "Delegação Contínua" }
     ],
     benefits: [
-      { title: "Produtividade Aumentada", desc: "Seu time foca no que a IA não pode copiar: a estratégia." }
+      { title: "Escala sem Headcount", desc: "Multiplique a capacidade operacional do seu negócio infinitamente, sem a necessidade de inchar a folha de pagamento." }
     ],
     services: [
       { name: "IA Generativa no Backoffice", desc: "Automatização de análise de dados e suporte N1." }
@@ -122,7 +128,7 @@ export const solutionsData: any = {
       { title: "LLM Orchestration", desc: "Modelos privados acoplados ao seu banco de dados interno de forma segura." }
     ],
     portfolio: [
-      { client: "Legal Tech", project: "Assistente Jurídico OS", result: "Contratos lidos 500x mais rápidos." }
+      { client: "Logistics Leader", project: "Backoffice AI", result: "Economia de 30.000 horas/ano em tarefas de retaguarda." }
     ]
   },
   "cirt": {
@@ -143,7 +149,7 @@ export const solutionsData: any = {
       { step: "03", name: "Erradicação e Recuperação" }
     ],
     benefits: [
-      { title: "Resiliência Crítica", desc: "Proteção contra cenários extremos de perda de dados e indisponibilidade." }
+      { title: "Recuperação Imediata", desc: "Downtime custa milhões. Contemos danos em tempo recorde para garantir a continuidade absoluta do seu negócio." }
     ],
     services: [
       { name: "Incident Response", desc: "Intervenção ativa de elite em cenários de violação corporativa." }
@@ -153,7 +159,7 @@ export const solutionsData: any = {
       { title: "Forensics Engine", desc: "Coleta e análise automatizada de artefatos." }
     ],
     portfolio: [
-      { client: "Large Retail", project: "Ransomware Recovery", result: "Operação restaurada em menos de 8 horas." }
+      { client: "Healthcare Provider", project: "Ransomware Recovery", result: "R$ 15M protegidos e zero dados vazados." }
     ]
   }
 };

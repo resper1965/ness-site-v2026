@@ -1,14 +1,16 @@
 import BlueDot from '../components/BlueDot';
 import ChatPreview from '../components/ChatPreview';
-import React, { useEffect } from "react";
-import { motion } from "motion/react";
+import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { solutionsData } from "../data/solutionsData";
 import { 
-ChevronLeft,
+  ChevronLeft,
   CheckCircle2,
-  ExternalLink} from "lucide-react";
+  ExternalLink,
+  ChevronDown
+} from "lucide-react";
 
 import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
@@ -19,9 +21,11 @@ const SolutionPage = () => {
   const { slug } = useParams();
   const solution = slug ? solutionsData[slug] : null;
   const Icon = solution?.icon;
+  const [showTech, setShowTech] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    setShowTech(false);
   }, [slug]);
 
   if (!solution) return <div className="min-h-screen flex items-center justify-center text-white">{t('common.loading')}</div>;
@@ -75,7 +79,7 @@ const SolutionPage = () => {
               {t(`solutions.${slug}.fullTitle`)}<BlueDot />
             </h2>
             <p className="text-base md:text-lg text-on-surface-variant font-light leading-relaxed">
-              {t(`solutions.${slug}.longDesc`)}
+              {solution.overview || t(`solutions.${slug}.longDesc`)}
             </p>
             <div className="flex gap-4 pt-4">
               <button className="bg-primary-container text-on-primary px-8 py-3 rounded-full font-display font-semibold text-sm hover:brightness-110 transition-all">
@@ -156,11 +160,14 @@ const SolutionPage = () => {
                             {w.step}
                           </div>
                           <div className="flex-1">
-                            <div className="flex justify-between items-center">
+                            <div className="flex justify-between items-center mb-1">
                               <h4 className="text-white text-xs font-medium group-hover/step:text-primary transition-colors">{w.name}</h4>
                               <div className="h-px flex-1 mx-4 bg-white/5"></div>
-                              <CheckCircle2 size={12} className="text-primary-container" />
+                              <CheckCircle2 size={12} className="text-primary-container shrink-0" />
                             </div>
+                            {w.desc && (
+                              <p className="text-[10px] text-on-surface-variant font-light leading-relaxed pr-6">{w.desc}</p>
+                            )}
                           </div>
                         </motion.div>
                       ))}
@@ -207,14 +214,15 @@ const SolutionPage = () => {
               ))}
             </div>
             
-            <div className="mt-12 p-10 rounded-[3rem] bg-linear-to-br from-primary-container to-primary text-on-primary shadow-2xl shadow-primary-container/20 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
+            <div className="mt-12 p-10 rounded-[3rem] bg-surface-container-low border border-white/5 nebula-shadow relative overflow-hidden group">
+              <div className="absolute inset-0 bg-linear-to-br from-primary/10 to-primary-container/10 opacity-50 backdrop-blur-md"></div>
+              <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform">
                 <Icon size={120} />
               </div>
               <div className="relative z-10">
-                <h4 className="text-xl font-display font-bold mb-3 tracking-tight">{t('solutions.cta_title', 'sua empresa em um novo nível.')}</h4>
-                <p className="text-base mb-6 opacity-90 font-light">{t('solutions.cta_desc', 'descubra como a ness pode transformar sua operação com inteligência e segurança de elite.')}</p>
-                <button className="bg-white text-primary px-8 py-3 rounded-full font-display font-semibold uppercase tracking-widest text-xs hover:shadow-xl transition-all">
+                <h4 className="text-xl font-display font-medium text-white mb-3 tracking-tight">{t('solutions.cta_title', 'sua empresa em um novo nível.')}</h4>
+                <p className="text-sm text-on-surface-variant font-light leading-relaxed mb-8">{t('solutions.cta_desc', 'descubra como a ness pode transformar sua operação com inteligência e segurança de elite.')}</p>
+                <button className="bg-white text-surface px-8 py-4 rounded-full font-display font-semibold uppercase tracking-widest text-xs hover:bg-primary-container hover:text-on-primary hover:scale-105 transition-all shadow-lg shadow-primary-container/20 whitespace-nowrap">
                   {solution.ctaLabel}
                 </button>
               </div>
@@ -223,24 +231,47 @@ const SolutionPage = () => {
         </div>
 
         {solution.technicalFeatures && (
-          <section id="tecnologia" className="mb-24 pt-24 border-t border-white/5">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
-              <div className="max-w-xl">
-                <h3 className="text-xl md:text-2xl font-display font-semibold text-white tracking-tight lowercase">{t('solutions.tech_engine', 'o motor da resiliência')}<BlueDot /></h3>
-                <p className="text-on-surface-variant mt-4 font-light">{t('solutions.tech_desc', 'para os interessados na engenharia por trás da proteção, aqui estão os pilares técnicos que sustentam nossa entrega de valor.')}</p>
-              </div>
+          <section id="tecnologia" className="mb-24 pt-12 border-t border-white/5">
+            <div className="flex justify-center mb-8">
+              <button 
+                onClick={() => setShowTech(!showTech)}
+                className="flex items-center gap-3 px-8 py-4 rounded-full bg-surface-container-low border border-white/10 hover:bg-surface-container-low/80 hover:border-primary/20 transition-all text-on-surface-variant text-xs font-bold uppercase tracking-[0.2em] shadow-lg shadow-black/20"
+              >
+                {t('solutions.technical_view_toggle', 'visão para engenharia & ctos')}
+                <motion.div animate={{ rotate: showTech ? 180 : 0 }}>
+                  <ChevronDown size={16} className="text-primary" />
+                </motion.div>
+              </button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {solution.technicalFeatures.map((feat: any, i: number) => (
-                <div key={i} className="p-8 rounded-3xl border border-white/5 bg-surface-container-low/20 hover:border-primary/20 transition-all">
-                  <h4 className="text-white font-medium mb-3 flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
-                    {feat.title}
-                  </h4>
-                  <p className="text-on-surface-variant text-xs font-light leading-relaxed">{feat.desc}</p>
-                </div>
-              ))}
-            </div>
+            
+            <AnimatePresence>
+              {showTech && (
+                <motion.div 
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8 pt-6">
+                    <div className="max-w-xl">
+                      <h3 className="text-xl md:text-2xl font-display font-semibold text-white tracking-tight lowercase">{t('solutions.tech_engine', 'o motor da resiliência')}<BlueDot /></h3>
+                      <p className="text-on-surface-variant mt-4 font-light">{t('solutions.tech_desc', 'para os interessados na engenharia por trás da proteção, aqui estão os pilares técnicos que sustentam nossa entrega de valor.')}</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-6">
+                    {solution.technicalFeatures.map((feat: any, i: number) => (
+                      <div key={i} className="p-8 rounded-3xl border border-white/5 bg-surface-container-low/20 hover:border-primary/20 transition-all">
+                        <h4 className="text-white font-medium mb-3 flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
+                          {feat.title}
+                        </h4>
+                        <p className="text-on-surface-variant text-xs font-light leading-relaxed">{feat.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </section>
         )}
 
