@@ -13,30 +13,30 @@ export const solutionsData: any = {
       ],
       progress: { label: "soar isolation speed", value: "Sub 500ms", subLabel: "" }
     },
-    overview: "A maioria das centrais de segurança (SOCs) inunda sua equipe com alertas inativos e gera 'alert fatigue'. Nossa filosofia muda essa chave: foco em silêncio operacional absoluto. Através de um ecossistema ativo de IA e motores de orquestração (SOAR), rastreamos, isolamos ameaças laterais e geramos provas para auditoria legal em sub-segundos. Você não recebe alarmes no meio da madrugada; você acorda com o relatório de como o ataque já foi neutralizado.",
+    overview: "SOCs tradicionais fracassam pois medem o sucesso pelo volume de alertas gerados, desencadeando fatiga operacional severa no seu corpo de engenharia. Em n.secops, desafiamos essa convenção: o silêncio é a nossa verdadeira métrica. Projetamos uma arquitetura onde a inteligência autônoma contém anomalias e gera faturamento de trilhas de auditoria GRC sem que sua equipe precise piscar. Menos reuniões de crise, mais continuidade intocável.",
     workflow: [
-      { step: "01", name: "Radar Agêntico 24/7", desc: "Injeção invisível da nossa telemetria em todo o parque de endpoints e domínios corporativos (Microsoft/Google) sem encostar na performance do usuário." },
-      { step: "02", name: "Abate Autônomo e RMM", desc: "Perante anomalias críticas, playbooks de SOAR acionam softwares de Gestão Remota cortando a infecção no instante zero, sem esperar o clique humano." },
-      { step: "03", name: "Tradução Executiva", desc: "Enquanto a TI contém falhas, a IA traduz o incidente letal formatando evidências nos relatórios de GRC e POAM, garantindo defesa regulatória nativa." }
+      { step: "01", name: "Extração de Sinais Base", desc: "Varredura on-premise e cloud extraindo eventos sistêmicos da infraestrutura crítica para identificar desvios da normalidade comportamental." },
+      { step: "02", name: "Validação Cruzada IA", desc: "Alertas filtrados por algoritmos Red-Team que eliminam 95% do ruído convencional, poupando humanos de analisar triviais benignos." },
+      { step: "03", name: "Extirpação e Relatório", desc: "Intervenção ativa (SOAR) que aborta o dano isolando o segmento; e atualização forense retroativa na sua documentação jurídica." }
     ],
     benefits: [
-      { title: "Continuidade e Blindagem de Receita", desc: "Mais do que segurança, garantimos que suas operações não parem. Isolamento de ransomware e ameaças zero-day em tempo real para proteger seu faturamento e equidade de marca." },
-      { title: "Conformidade Automatizada (GRC)", desc: "A cada intervenção, nossos sistemas compilam automativamente um rastro de auditoria. Diminui vertiginosamente o atrito gerencial em certificações LGPD/ISO e defesas regulatórias." },
-      { title: "Zero-Noise Operacional", desc: "Sua equipe técnica não é um gargalo de triagem. A mitigação acontece sem intervenção manual (SLA sub-segundo), acordando a gestão e diretores apenas quando a ameaça letal já está na gaiola." }
+      { title: "Risco Zero em Auditorias ISO/LGPD", desc: "A dor de reunir logs na véspera da auditoria acabou. Cada resposta a incidente gera uma trilha compliance contínua, garantindo conformidade sem atrito legal." },
+      { title: "Garantia Tática de Faturamento", desc: "Downtime é igual a cliente churn. Nosso isolamento em sub-milissegundos blinda a espinha dorsal dos seus serviços, preservando a liquidez e a percepção de marca." },
+      { title: "ROI em Capital Humano Especializado", desc: "Pare de desperdiçar salários sêniores em triagem júnior. Extraia o valor verdadeiro dos seus engenheiros enquanto nós cuidamos da primeira linha de embate térmico." }
     ],
     services: [
-      { name: "SOC Agêntico (AI Triage)", desc: "Monitoramento 24/7 com integração fluida da sua telemetria (Office 365, Google Workspace, Azure) refinado por aprendizado contínuo para evitar escalonamentos ocos." },
-      { name: "Gestão e Remediação Remota", desc: "Visão milimétrica sobre a vulnerabilidade de cada endpoint com aplicação cirúrgica de patches virtuais antes da infecção latente acontecer." },
-      { name: "Orquestração Autônoma (SOAR)", desc: "Sistemas pre-escriptados que removem redes comprometidas do ar em sub-segundos, blindando instâncias laterais sem depender do clique de fuso horário de um engenheiro Tier 1." },
-      { name: "Governança de Risco (POAM)", desc: "Atualização gerencial viva traduzindo alertas hiper-técnicos em Planos de Ação que conversam diretamente com as urgências normativas da alta diretoria." }
+      { name: "MDR Aumentado por IA", desc: "Visibilidade central em toda a superfície 24/7 com supressão de ruídos em nível agêntico." },
+      { name: "Supervisão RMM Remota", desc: "Poder de fogo militar direto no endpoint: patches aplicados invisivelmente em todos os cantos da sua planta operacional." },
+      { name: "Playbooks SOAR Nativos", desc: "Rede de decisões autônomas pré-aprovada pela sua Governança que elimina a perda de tempo na escalada de incidentes críticos." },
+      { name: "Integração Executiva (GRC/POAM)", desc: "Tradução simultânea do 'tecniquês' de segurança cibernética para o dashboard visual de Risco que o seu Comitê Executivo necessita validar diariamente." }
     ],
     ctaLabel: "agendar auditoria secops",
     technicalFeatures: [
-      { title: "Telemetria Agêntica Unificada", desc: "Auditoria contínua extraindo sinais da tríade EDR, XDR e cloud workloads (Microsoft/AWS) para baseline de comportamento." },
-      { title: "Intervenção Fúsica (Painel RMM)", desc: "Capacidade cirúrgica de isolar endpoints suspeitos da rede corporativa remotamente e injetar patches via script silencioso." },
-      { title: "Playbooks de Contenção (SOAR)", desc: "Scripts algorítmicos engatilhados por alertas Red-Tier, resolvendo lateralidades e dumps de credenciais automaticamente." },
-      { title: "Arquitetura Zero-Noise", desc: "Filtros de IA treinados que suprimem 99% do entulho das ferramentas legadas e escalam apenas eventos de Risco Iminente." },
-      { title: "Sincronização de Trilha Legal", desc: "Toda intervenção despacha logs encriptados direto para os módulos de GRC/POAM corporativo, pronto para o DPO assinar." }
+      { title: "Telemetria Cloud-First", desc: "Sensores embutidos conectando Office 365, G-Suite e AWS." },
+      { title: "Gestão Ativa de RMM Corporativo", desc: "Isolamento lateral estrito operado via painel centralizado remoto." },
+      { title: "Fluxos Decisórios Autônomos", desc: "Regras orquestradas de SOAR contendo ataques baseados em IP/Heurística." },
+      { title: "Matriz Neural Supressora", desc: "A.I. designada para rebaixar prioridade de alertas inócuos legados." },
+      { title: "Documentação Forense Viva", desc: "Compliance injetado no código: geração de laudo ativo após contensão." }
     ],
     portfolio: [
       { client: "Global Fintech", project: "SOC Enterprise", result: "Prevenção estimada de US$ 2.5M em fraudes anuais." }
