@@ -35,33 +35,34 @@ const resources = {
       "solutions": {
         "title": "nossas soluções",
         "subtitle": "tecnologia de elite para empresas que não aceitam falhas.",
+        "technical_view_toggle": "visão para engenharia & ctos",
         "active_resilience": "resiliência ativa",
         "intelligence_flow": "fluxo de inteligência",
         "secops": {
           "title": "n.secops",
           "fullTitle": "resiliência operacional & continuidade",
-          "desc": "operação contínua de segurança com monitoramento em tempo real e resposta a incidentes.",
-          "longDesc": "o n.secops não é apenas sobre tecnologia; é sobre a sobrevivência do seu negócio. protegemos sua reputação e sua operação através de um copiloto de inteligência aplicada que antecipa crises antes que elas cheguem à sua mesa.",
+          "desc": "silenciando alarmes e bloqueando incidentes na fonte com IA e abstração total.",
+          "longDesc": "o n.secops não é apenas sobre tecnologia; é sobre a sobrevivência do seu negócio. protegemos sua reputação e sua operação através de um centro de operações de segurança (SOC) de elite que monitora, detecta e neutraliza ameaças antes que causem impacto.",
           "cta": "solicitar diagnóstico de segurança"
         },
         "infraops": {
           "title": "n.infraops",
           "fullTitle": "infraestrutura inteligente & suporte global",
-          "desc": "gestão moderna de infraestrutura crítica com foco em alta disponibilidade e escala.",
+          "desc": "arquitetura finops: nuvem invisível, elástica e com uptime cravado em pedra.",
           "longDesc": "o n.infraops redefine o suporte técnico tradicional. unimos a robustez do framework ITIL à agilidade de um sistema de IA aplicada que atua como copiloto das nossas operações.",
           "cta": "otimizar minha infraestrutura"
         },
         "devarch": {
           "title": "n.devarch",
           "fullTitle": "arquitetura orientada ao desenvolvedor & escala segura",
-          "desc": "arquitetura orientada ao desenvolvedor para escala e performance extrema.",
+          "desc": "fim do débito técnico: engenharia hexagonal focada em longevidade sem breaks.",
           "longDesc": "no n.devarch, transformamos o desenvolvimento em uma vantagem competitiva. criamos nossas próprias soluções e capacitamos empresas a alcançarem escala extrema.",
           "cta": "escalar meu desenvolvimento"
         },
         "autoops": {
           "title": "n.autoops",
           "fullTitle": "eficiência operacional & automação estratégica",
-          "desc": "transforme sua operação com assistentes inteligentes que resolvem gargalos.",
+          "desc": "agentes neuro-digitais e LLMs privados triturando fluxos corporativos manuais.",
           "longDesc": "o n.autoops é o braço de inteligência da ness. que coloca sua empresa à frente da concorrência. desenvolvemos assistentes personalizados (copilotos) que assumem tarefas repetitivas.",
           "cta": "agendar demo da gabi.os"
         },
@@ -250,13 +251,14 @@ const resources = {
       "solutions": {
         "title": "our solutions",
         "subtitle": "elite technology for companies that don't accept failure.",
+        "technical_view_toggle": "engineering & cto view",
         "active_resilience": "active resilience",
         "intelligence_flow": "intelligence flow",
         "secops": {
           "title": "n.secops",
           "fullTitle": "operational resilience & continuity",
           "desc": "continuous security operation with real-time monitoring and incident response.",
-          "longDesc": "n.secops is not just about technology; it's about the survival of your business. we protect your reputation and your operation through an applied intelligence co-pilot that anticipates crises before they reach your desk.",
+          "longDesc": "n.secops is not just about technology; it's about the survival of your business. we protect your reputation and your operation through an elite security operations center (SOC) that monitors, detects, and neutralizes threats before they cause impact.",
           "cta": "request security diagnosis"
         },
         "infraops": {
@@ -465,13 +467,14 @@ const resources = {
       "solutions": {
         "title": "nuestras soluciones",
         "subtitle": "tecnología de élite para empresas que no aceptan fallos.",
+        "technical_view_toggle": "visión para ingeniería y ctos",
         "active_resilience": "resiliencia activa",
         "intelligence_flow": "flujo de inteligencia",
         "secops": {
           "title": "n.secops",
           "fullTitle": "resiliencia operativa & continuidad",
           "desc": "operación continua de seguridad con monitoreo en tiempo real y respuesta a incidentes.",
-          "longDesc": "n.secops no es solo tecnología; es la supervivencia de su negocio. protegemos su reputación y su operación a través de un copiloto de inteligencia aplicada que anticipa crisis antes de que lleguen a su mesa.",
+          "longDesc": "n.secops no es solo tecnología; es la supervivencia de su negocio. protegemos su reputación y su operación a través de un centro de operaciones de seguridad (SOC) de élite que monitorea, detecta y neutraliza las amenazas antes de que causen impacto.",
           "cta": "solicitar diagnóstico de seguridad"
         },
         "infraops": {

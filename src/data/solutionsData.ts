@@ -55,19 +55,25 @@ export const solutionsData: any = {
       progress: { label: "infrastructure health", value: "100%", subLabel: "optimal" }
     },
     workflow: [
-      { step: "01", name: "Avaliação de Arquitetura" },
-      { step: "02", name: "Migração Estratégica" },
-      { step: "03", name: "Operação Sustentada" }
+      { step: "01", name: "Assessment de Dívida Técnica", desc: "Mapeamento sem viés de infraestruturas ociosas e gargalos de resiliência legado." },
+      { step: "02", name: "Refatoração Cloud-Native", desc: "Abandono do conceito 'lift and shift'. Reconstrução arquitetural para tolerância elástica a falhas." },
+      { step: "03", name: "Sustentação FinOps", desc: "Monitoramento ativo onde algoritmos ligam e desligam clusters sob demanda atrelados à variação de receita." }
     ],
     benefits: [
-      { title: "TCO Otimizado", desc: "Redução drástica do Custo Total de Propriedade (TCO) com arquiteturas escaláveis que pagam por si mesmas." }
+      { title: "Transformação CapEx para OpEx Cirúrgico", desc: "Não compre servidores aguardando o pico de Black Friday. Escalonamento milissegundo de recursos que desliga a conta na hora exata em que o tráfego acaba." },
+      { title: "Resiliência Multi-Região Silenciosa", desc: "Um data center cai, seu usuário não percebe. Espelhamento assíncrono e failovers autônomos garantindo um SLA que blinda sua diretoria." },
+      { title: "Developer Experience inegociável", desc: "Desenvolvedor não deve abrir ticket para rodar um banco de dados temporário. Entregamos Infra as Code (IaC) para autonomia com guardrails de compliance rígidos." }
     ],
     services: [
-      { name: "Cloud Management", desc: "Gestão inteligente de ambientes multi-cloud." }
+      { name: "Sustentação SRE 24/7", desc: "Engenharia de Confiabilidade operando como extensão do seu board técnico, reagindo a anomalias antes do downtime acontecer." },
+      { name: "Gestão Híbrida Inteligente (FinOps)", desc: "Plataforma multicloud distribuindo carga estrategicamente onde a computação está mais barata e a latência menor no globo." },
+      { name: "Auditoria Contínua (Compliance-as-Code)", desc: "Verificação sistêmica que varre aberturas de firewall erráticas no código e barra deploys inseguros na fonte." }
     ],
     ctaLabel: "otimizar infraestrutura",
     technicalFeatures: [
-      { title: "Infra as Code", desc: "Automação total via Terraform e afins." }
+      { title: "Automação Kubernetes Absoluta", desc: "Orquestração conteinerizada agnóstica a provider, evitando 'vendor lock-in' crônico." },
+      { title: "IaC Terraform State", desc: "Toda sua infraestrutura corporativa é textualmente documentada em controle de versão Git." },
+      { title: "Redundância de Topologia Ativa", desc: "Arquitetura distribuída entre provedores garantindo SLA 99,99% em nível de kernel." }
     ],
     portfolio: [
       { client: "Enterprise Retail", project: "Cloud Migration & FinOps", result: "Redução de 45% nos custos mensais de infraestrutura." }
@@ -86,20 +92,25 @@ export const solutionsData: any = {
       progress: { label: "development velocity", value: "High", subLabel: "" }
     },
     workflow: [
-      { step: "01", name: "Design System Central" },
-      { step: "02", name: "Microserviços Ágeis" },
-      { step: "03", name: "Esteira CI/CD Automatizada" }
+      { step: "01", name: "Blindagem de Arquitetura", desc: "Refatoração focada no isolamento de domínio (Clean/Hexagonal) para garantir sobrevida do software sem acoplamento a frameworks mutáveis." },
+      { step: "02", name: "Transição Shift-Left", desc: "Injeção de testes end-to-end e varreduras SAST/DAST em pipelines antes que códigos falhos atinjam os reviews manuais de PR." },
+      { step: "03", name: "Maturidade de Rollout", desc: "Estabelecimento de Blue-Green deployments e canários graduais que anulam inteiramente as madrugadas de pânico da sua equipe de release." }
     ],
     benefits: [
-      { title: "Time-to-Market Acelerado", desc: "Transformamos ciclos de desenvolvimento em vantagem competitiva. Entregue features meses antes da concorrência." }
+      { title: "Fim da Obsolescência Programada e Débito Anual", desc: "Construímos bases cimentadas sobre Clean Architecture. O seu core bancário e sistêmico não exigirá reescrita catastrófica daqui a 5 anos." },
+      { title: "Deployments na Sexta-Feira sem Medo", desc: "Processo infalível de automação em que jogar nova versão para produção se torna menos arriscado do que reiniciar um celular." },
+      { title: "Segurança por Design (SecOps Integrado)", desc: "Arquitetura não é segura nos pênaltis. Seu time submete o código, IA corporativa realiza pentest de sintaxe automático barrendo vazamento preventivamente." }
     ],
     services: [
-      { name: "Software Engineering", desc: "Construção de aplicações resilientes com padrões modernos." },
-      { name: "DevSecOps", desc: "Integramos segurança no pipeline (Shift-Left) desde o dia zero." }
+      { name: "Engenharia Squad-as-a-Service", desc: "Acople células sêniores que codificam sua vantagem competitiva mantendo o padrão da arquitetura intacto." },
+      { name: "Esteiras de Entrega e CI/CD Moderno", desc: "Fluxos de delivery algorítmico conectando o IDE direto para produção via validação por branch condicional e testes E2E." },
+      { name: "Desenvolvimento Especialista Modernizado", desc: "Stack tecnológico em constante calibração (Next.js, Node.js escalável, Golang e microsserviços atômicos)." }
     ],
     ctaLabel: "acelerar meu software",
     technicalFeatures: [
-      { title: "Arquitetura Hexagonal", desc: "Isolamos o domínio da sua aplicação contra obsolescência de frameworks." }
+      { title: "Portabilidade Hexagonal", desc: "Seu domínio agnóstico que permite plugar novos bancos de dados ou interfaces sem refatorar core logic." },
+      { title: "Telemetria Dev Embedded", desc: "Código emitindo traces OpenTelemetry antes mesmo da implantação final de produto corporativo." },
+      { title: "Micro-Frontends Atômicos", desc: "Equipes escalando isoladas publicando atualizações de interface sem impactar o layout do time vizinho." }
     ],
     portfolio: [
       { client: "SaaS Decacorn", project: "Refactoring Core Banking", result: "Time-to-market reduzido de meses para dias." }
@@ -118,19 +129,25 @@ export const solutionsData: any = {
       progress: { label: "model accuracy", value: "99.8%", subLabel: "" }
     },
     workflow: [
-      { step: "01", name: "Mapeamento de Processos" },
-      { step: "02", name: "Treinamento de IA" },
-      { step: "03", name: "Delegação Contínua" }
+      { step: "01", name: "Triagem de Fricção Cognitiva", desc: "Varredura corporativa cruzando o mapa de processos departamentais e destacando onde atividades humanas não agregam inovação orgânica." },
+      { step: "02", name: "Injeção LLM Customizada", desc: "Treinamento do core de IA sobre sua wiki corporativa e contratos vitais garantindo acurácia setorial profunda e sem alucinações vazias." },
+      { step: "03", name: "Delegação Ativa Transacional", desc: "Acoplamento de agentes neuro-digitais executivos; eles leem a solicitação, acionam API sem intervenção e enviam o ticket resolvido ao requisitante final." }
     ],
     benefits: [
-      { title: "Escala sem Headcount", desc: "Multiplique a capacidade operacional do seu negócio infinitamente, sem a necessidade de inchar a folha de pagamento." }
+      { title: "Multiplicação Contínua sem Inchar Headcount", desc: "O volume de clientes da sua empresa pode saltar 10x neste quadrimestre sem que você precise expandir a folha BPO e suporte call-center do RH." },
+      { title: "Propriedade Intelectual Isolada em VPC", desc: "Modelos privados consumindo gigabytes estruturais da sua governança limitados entre quatro paredes impenetráveis da nuvem, afastados dos fóruns corriqueiros públicos." },
+      { title: "Acurácia Sistêmica e Frieza Executiva (99,8%)", desc: "Robôs digitais não são corroídos pelo stress corporativo. Eles encaram laudos gigantescos de fraude financeira em segundos, emitindo o alerta com índice percentual frio da decisão tomada." }
     ],
     services: [
-      { name: "IA Generativa no Backoffice", desc: "Automatização de análise de dados e suporte N1." }
+      { name: "LLMs de Backoffice Auditável", desc: "Agentes operando leitura de milhares de PDFs, comparando faturamento automático e indicando onde há gargalos logísticos contábeis rotineiramente." },
+      { name: "Atendimento N1 Cognitivo", desc: "FrontDesk hiper-escalável que absorve tickets técnicos triviais resetando senhas ou acionando rollbacks simples via permissões pré-negociaveis da chefia." },
+      { name: "Orquestradores Baseados em Agentes", desc: "Avanço estrutural de engenharia: A.I. conectada e programada autonomamente atirando payload a múltiplos nós das arquiteturas AWS / GCP por demanda de texto." }
     ],
     ctaLabel: "automatizar operações",
     technicalFeatures: [
-      { title: "LLM Orchestration", desc: "Modelos privados acoplados ao seu banco de dados interno de forma segura." }
+      { title: "Stack LLM Isolado Corporativamente", desc: "Modelos OpenSource robustos empacotados privadamente sem rastreamento dos provedores globais terceiros vigentes." },
+      { title: "Engenharia de Prompt Parametrizada", desc: "Roteamento sistemático na camada de entrada e RAG vector para suprimir distorções." },
+      { title: "Agents via Function Calling", desc: "IAs emparelhadas ativando scripts na AWS isoladas pelo seu controle de JWT/SAML corporativo central." }
     ],
     portfolio: [
       { client: "Logistics Leader", project: "Backoffice AI", result: "Economia de 30.000 horas/ano em tarefas de retaguarda." }
