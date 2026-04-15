@@ -13,15 +13,16 @@ export const solutionsData: any = {
       ],
       progress: { label: "soar isolation speed", value: "Sub 500ms", subLabel: "" }
     },
-    overview: "O n.secops é o serviço gerenciado de segurança da ness. para empresas que precisam fortalecer sua operação com proteção contínua, capacidade real de resposta e evolução mensurável da postura de segurança. A oferta combina monitoramento permanente, resposta estruturada a incidentes, automação operacional, conformidade normativa e gestão de riscos em uma única operação.",
+    overview: "Segurança de elite para sua infraestrutura. O n.secops consolida Monitoramento 24x7, Resposta Imediata e Gestão de Riscos (GRC) em um único contrato — entregando defesa contínua de escala global sem que você precise inflar sua equipe interna.",
     workflow: [
       { step: "01", name: "Visibilidade Total 24/7", desc: "Monitoramos todos os seus dispositivos, servidores e ambientes em nuvem sem pausas. Se houver qualquer comportamento estranho ou brecha de segurança, nós detectamos no mesmo segundo." },
       { step: "02", name: "Resposta Imediata", desc: "Se um ataque for detectado, nossa equipe age na hora. Isolamos a ameaça antes que ela se espalhe e avisamos você diretamente em canais de resposta rápida, como Teams ou WhatsApp." },
       { step: "03", name: "Pronto para Auditorias", desc: "Tudo o que defendemos vira um relatório claro. Traduzimos ataques em evidências organizadas que garantem sua aprovação em processos rígidos como ISO 27001 e LGPD." }
     ],
     benefits: [
-      { title: "Mais previsibilidade para operar com segurança", desc: "Em vez de sustentar múltiplas frentes desconectadas, o n.secops organiza a segurança em um modelo recorrente, com custo previsível e estrutura operacional pronta para execução contínua. Isso reduz dispersão, simplifica a gestão e amplia a capacidade de resposta sem exigir expansão proporcional da estrutura interna." },
-      { title: "Segurança que gera decisão", desc: "Cada incidente tratado fortalece a capacidade de decisão da organização com documentação, rastreabilidade, indicadores e direcionamento claro para correção, priorização e melhoria contínua. O resultado é uma operação de segurança mais madura e preparada para sustentar continuidade." }
+      { title: "Previsibilidade Operacional", desc: "Troque a gestão caótica de múltiplos fornecedores de software por uma operação centralizada. Ganhe escala de segurança 24/7 de forma previsível e recorrente sem precisar expandir drasticamente sua folha de pagamento." },
+      { title: "Inteligência para Decidir", desc: "Reduza o 'achismo'. Fornecemos os indicadores exatos de defesa e as evidências cirúrgicas que a diretoria exige para priorizar os investimentos em TI com segurança blindada e confiança real." },
+      { title: "Visão via Portal GRC", desc: "Acompanhe sua Governança de Risco e Postura em tempo real. Nosso Portal Integrado traduz milhares de eventos cibernéticos em um painel gerencial absurdamente simples para você liderar o compliance." }
     ],
     services: [
       { name: "SOC 24x7 com MDR", desc: "A operação mantém vigilância contínua sobre eventos, alertas e comportamentos suspeitos, com correlação, triagem, classificação de severidade, escalonamento e resposta coordenada. Esse modelo entrega uma capacidade permanente de SOC 24x7 com MDR." }
