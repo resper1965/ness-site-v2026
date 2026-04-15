@@ -237,9 +237,7 @@ const SolutionPage = () => {
                   <p className="text-on-surface-variant md:text-lg font-light leading-relaxed max-w-md">{service.desc}</p>
                 </div>
                 
-                <div className="relative z-10 mt-12 flex items-center gap-3 text-primary-container text-sm uppercase tracking-widest font-semibold group-hover:translate-x-2 transition-transform cursor-pointer">
-                  explorar módulo <ChevronLeft className="rotate-180" size={16} />
-                </div>
+
               </motion.div>
             ))}
           </div>

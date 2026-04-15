@@ -13,30 +13,30 @@ export const solutionsData: any = {
       ],
       progress: { label: "soar isolation speed", value: "Sub 500ms", subLabel: "" }
     },
-    overview: "SOCs tradicionais fracassam pois medem o sucesso pelo volume de alertas gerados, desencadeando fatiga operacional severa no seu corpo de engenharia. Em n.secops, desafiamos essa convenção: o silêncio é a nossa verdadeira métrica. Projetamos uma arquitetura onde a inteligência autônoma contém anomalias e gera faturamento de trilhas de auditoria GRC sem que sua equipe precise piscar. Menos reuniões de crise, mais continuidade intocável.",
+    overview: "O mercado de segurança atual te obriga a costurar e licenciar sistemas isolados que sofrem para se comunicar. O Ness Cybersecurity Suite vai na direção diametralmente oposta: somos uma plataforma moderna de segurança operando puramente como SaaS. Desenvolvida 'from the ground up' com tecnologias de Edge Computing e Serverless, nossa suíte atua como um ecossistema coeso onde dados de rede, endpoints e identidades são cruzados em tempo real na espinha dorsal para antecipar ameaças antes da execução. Segurança corporativa brutal, sem o fardo da complexidade de gestão de silos.",
     workflow: [
-      { step: "01", name: "Extração de Sinais Base", desc: "Varredura on-premise e cloud extraindo eventos sistêmicos da infraestrutura crítica para identificar desvios da normalidade comportamental." },
-      { step: "02", name: "Validação Cruzada IA", desc: "Alertas filtrados por algoritmos Red-Team que eliminam 95% do ruído convencional, poupando humanos de analisar triviais benignos." },
-      { step: "03", name: "Extirpação e Relatório", desc: "Intervenção ativa (SOAR) que aborta o dano isolando o segmento; e atualização forense retroativa na sua documentação jurídica." }
+      { step: "01", name: "Malha de Identidade Contínua", desc: "A primeira etapa corta o mal pela raiz. Sem 'perímetro confiável', cada solicitação de rede é validada continuamente exigindo identidade forte." },
+      { step: "02", name: "Detecção Orientada por IA", desc: "Não caçamos assinaturas velhas. Nosso motor varre toda a navegação em busca de anomalias e desvios comportamentais que predizem ciberataques cirúrgicos." },
+      { step: "03", name: "Contensão Autônoma e SOAR", desc: "A detecção cruza o limiar tático e dispara gatilhos (playbooks) mecânicos que anestesiam o ataque e derrubam o ambiente infectado em milissegundos." }
     ],
     benefits: [
-      { title: "Risco Zero em Auditorias ISO/LGPD", desc: "A dor de reunir logs na véspera da auditoria acabou. Cada resposta a incidente gera uma trilha compliance contínua, garantindo conformidade sem atrito legal." },
-      { title: "Garantia Tática de Faturamento", desc: "Downtime é igual a cliente churn. Nosso isolamento em sub-milissegundos blinda a espinha dorsal dos seus serviços, preservando a liquidez e a percepção de marca." },
-      { title: "ROI em Capital Humano Especializado", desc: "Pare de desperdiçar salários sêniores em triagem júnior. Extraia o valor verdadeiro dos seus engenheiros enquanto nós cuidamos da primeira linha de embate térmico." }
+      { title: "Segurança sem o Fardo da Infraestrutura (Serverless)", desc: "Seus engenheiros param de perder tempo aplicando patches em appliances ou consolidando dezenas de licenças corporativas. Todo o ecossistema roda seguro sobre nossa SaaS distribuída no Edge." },
+      { title: "Defesa Ativa contra Ransomware e 0-Days", desc: "Nossa IA caça comportamentos sistêmicos suspeitos (como processos de criptografia em massa) bloqueando a injeção ransomware em tempo real, preservando a liquidez do seu negócio perante investidores." },
+      { title: "Fim da Maior Cegueira Institucional", desc: "Elimine o risco sombrio do 'Shadow IT'. Nosso Mapeamento da Superfície rastreia ativamente o que a sua empresa expõe à Web sem precisar de autorização departamental, varrendo portas e brechas 24/7." }
     ],
     services: [
-      { name: "MDR Aumentado por IA", desc: "Visibilidade central em toda a superfície 24/7 com supressão de ruídos em nível agêntico." },
-      { name: "Supervisão RMM Remota", desc: "Poder de fogo militar direto no endpoint: patches aplicados invisivelmente em todos os cantos da sua planta operacional." },
-      { name: "Playbooks SOAR Nativos", desc: "Rede de decisões autônomas pré-aprovada pela sua Governança que elimina a perda de tempo na escalada de incidentes críticos." },
-      { name: "Integração Executiva (GRC/POAM)", desc: "Tradução simultânea do 'tecniquês' de segurança cibernética para o dashboard visual de Risco que o seu Comitê Executivo necessita validar diariamente." }
+      { name: "Single Sign-On Unificado (SSO)", desc: "Controle de acesso granular que amarra a identidade do colaborador a um escudo central e intransponível." },
+      { name: "Proteção Ativa contra Ransomware", desc: "Mecanismo defensivo construído para não permitir o colapso dos seus dados vitais operacionais e reputacionais." },
+      { name: "Zero Trust Network Access (ZTNA)", desc: "Micro-segmentação invisível criptografando qualquer comunicação entre os seus colaboradores e suas aplicações core." },
+      { name: "Mapeamento Contínuo da Superfície", desc: "Auditoria ininterrupta sobre a sua infraestrutura buscando pontos vazados ou não homologados expostos ao público." },
+      { name: "AI-Driven Anomaly Detection", desc: "Processamento preditivo capturando movimentações hostis laterais que ferramentas normais de mercado ignorariam como ruído." },
+      { name: "Automated Response Playbooks (SOAR)", desc: "Catálogo profundo de tomada de ação cibernética onde as ameaças são abatidas antes de alertar um humano." }
     ],
-    ctaLabel: "agendar auditoria secops",
+    ctaLabel: "blindar minha operação",
     technicalFeatures: [
-      { title: "Telemetria Cloud-First", desc: "Sensores embutidos conectando Office 365, G-Suite e AWS." },
-      { title: "Gestão Ativa de RMM Corporativo", desc: "Isolamento lateral estrito operado via painel centralizado remoto." },
-      { title: "Fluxos Decisórios Autônomos", desc: "Regras orquestradas de SOAR contendo ataques baseados em IP/Heurística." },
-      { title: "Matriz Neural Supressora", desc: "A.I. designada para rebaixar prioridade de alertas inócuos legados." },
-      { title: "Documentação Forense Viva", desc: "Compliance injetado no código: geração de laudo ativo após contensão." }
+      { title: "Edge Computing Nativo", desc: "Decisões de segurança tomadas na borda geográfica para latência próxima a zero na navegação." },
+      { title: "Arquitetura Serverless", desc: "Poder computacional escalável infinitamente para processamento de logs sob ataques massivos (DDoS)." },
+      { title: "Plataforma SaaS Unificada", desc: "Uma única licença, uma única integração para Identity, Network e Endpoint." }
     ],
     portfolio: [
       { client: "Global Fintech", project: "SOC Enterprise", result: "Prevenção estimada de US$ 2.5M em fraudes anuais." }
