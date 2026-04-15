@@ -20,13 +20,13 @@ export const solutionsData: any = {
       { step: "03", name: "Serviços MDR (SOC 24x7)", desc: "Seu ambiente passa a ser ativamente monitorado. Empregamos Managed Detection and Response (MDR) para isolar táticas invasivas, eliminando falsos positivos e parando ameaças na origem." }
     ],
     benefits: [
-      { title: "MDR 'Turnkey' sem o Custo de Analistas", desc: "Montar um SOC próprio custa fortunas em hunting e capacitação. Nosotros te entregamos a blindagem contínua via MDR como um verdadeiro 'Turnkey Service', sem você precisar expandir o payroll." },
+      { title: "MDR Pronto para Uso (Sem Contratar Analistas)", desc: "Ter um SOC interno custa fortunas em licenças e equipe. Entregamos a blindagem contínua via MDR como um serviço pronto e gerenciado, cortando seu gasto com folha de pagamento." },
       { title: "Redução Extrema de Custo Total (TCO)", desc: "Seus engenheiros não precisam assinar EDRs, sistemas de HelpDesk e SIEMs separados. Consolidamos as inteligências operacionais em uma só via orçamentária." },
-      { title: "Fim do 'Vendor Sprawl' e Fadiga de Alertas", desc: "Diga adeus ao inferno de cruzar logs entre quatro softwares que não conversam. Ao agregar o RMM ao SOC, cortamos o ruído e focamos em remediações agressivas." }
+      { title: "Fim das Ferramentas que Não Conversam", desc: "Diga adeus ao inferno de cruzar logs entre quatro softwares isolados. Ao agregar a gestão técnica da TI (RMM) ao SOC, cortamos a fadiga de alertas inúteis e focamos em remediações curtas e agressivas." }
     ],
     services: [
       { name: "MDR Services (SOC 24x7)", desc: "Managed Detection and Response integrado: caçamos ameaças e entregamos resposta contida sem inundar sua TI com relatórios inúteis." },
-      { name: "Análise de Vulnerabilidade Contínua", desc: "Varreduras sistemáticas apontando gargalos térmicos em aplicações web e redes internas." },
+      { name: "Análise de Vulnerabilidade Contínua", desc: "Varreduras sistemáticas nos seus endpoints (desktops, servidores e laptops), caçando CVEs abertos direto na malha do sistema operacional antes que sejam explorados." },
       { name: "Patching Ativo", desc: "Atualização cirúrgica de sistemas legados ou expostos neutralizando ameaças já catalogadas (CVEs)." },
       { name: "Inventário de Software e Hardware", desc: "Visibilidade centralizada e real-time de todos os ativos tangíveis ou lógicos acoplados à sua rede." },
       { name: "Plano de Resposta a Incidente", desc: "Execução fria, contenciosa e metódica mapeada sob inteligência global (MITRE) caso uma anomalia fure a primeira linha." }
