@@ -120,36 +120,55 @@ export const solutionsData: any = {
     bgImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000",
     dashboard: {
       title: "n.devarch throughput",
-      mainStat: { value: "24/7", label: "deployments" },
+      mainStat: { value: "24/7", label: "secure deployments" },
       metrics: [
-        { value: "10x", label: "velocidade de entrega", color: "text-primary" },
-        { value: "0", label: "débito técnico", color: "text-green-500" }
+        { value: "10x", label: "deploy frequency", color: "text-primary" },
+        { value: "0", label: "critical breaches", color: "text-green-500" }
       ],
-      progress: { label: "development velocity", value: "High", subLabel: "" }
+      progress: { label: "development velocity", value: "High", subLabel: "accelerated" }
     },
+    overview: "80% das vulnerabilidades nascem no código mal versionado. O n.devarch embarca Segurança e Cloud Native diretamente no seu SDLC. Desenhe aplicações escaláveis, consolide CI/CD com varreduras SAST/DAST integradas, levante SBOM dinamicamente e escale sua malha de microsserviços sem travar a velocidade de entrega técnica.",
     workflow: [
-      { step: "01", name: "Blindagem de Arquitetura", desc: "Refatoração focada no isolamento de domínio (Clean/Hexagonal) para garantir sobrevida do software sem acoplamento a frameworks mutáveis." },
-      { step: "02", name: "Transição Shift-Left", desc: "Injeção de testes end-to-end e varreduras SAST/DAST em pipelines antes que códigos falhos atinjam os reviews manuais de PR." },
-      { step: "03", name: "Maturidade de Rollout", desc: "Estabelecimento de Blue-Green deployments e canários graduais que anulam inteiramente as madrugadas de pânico da sua equipe de release." }
+      { step: "01", name: "Architecture Review", desc: "Varredura pontual na arquitetura vigente identificando débitos técnicos, riscos iminentes e desenhando os Threat Models lógicos." },
+      { step: "02", name: "SSDLC Design", desc: "Integração cirúrgica do Secure SDLC desenhando gates automatizados. SAST/DAST acoplados diretamente ao pull request do seu desenvolvedor sem estresse." },
+      { step: "03", name: "CI/CD Setup e Handoff", desc: "Deploys condicionados automatizados com testes E2E blindados. Sua equipe assina a qualidade em produção enquanto a ferramenta aprova riscos baixos sozinha." }
     ],
     benefits: [
-      { title: "Fim da Obsolescência Programada e Débito Anual", desc: "Construímos bases cimentadas sobre Clean Architecture. O seu core bancário e sistêmico não exigirá reescrita catastrófica daqui a 5 anos." },
-      { title: "Deployments na Sexta-Feira sem Medo", desc: "Processo infalível de automação em que jogar nova versão para produção se torna menos arriscado do que reiniciar um celular." },
-      { title: "Segurança por Design (SecOps Integrado)", desc: "Arquitetura não é segura nos pênaltis. Seu time submete o código, IA corporativa realiza pentest de sintaxe automático barrendo vazamento preventivamente." }
+      { title: "Segurança Shift-Left sem Fricção", desc: "Times ágeis não podem esperar aprovação de segurança para lançar features. Inserimos autoaprovação para níveis de baixo risco na sua esteira nativa (CI/CD)." },
+      { title: "Defesas by Design (Cloud-Native)", desc: "Seja orquestrando Microsserviços e Event-Driven, aplicamos um robusto Threat Modeling profilático para escalar sua tecnologia sem herdar furos crônicos de arquitetura." },
+      { title: "Métricas DORA no Board", desc: "Aperte um botão, audite os números e mostre que a TI é estratégica. Deployment Frequency altíssimo e Change Failure Rate achatado atestando que qualidade caminha junto à robustez do código." }
     ],
     services: [
-      { name: "Engenharia Squad-as-a-Service", desc: "Acople células sêniores que codificam sua vantagem competitiva mantendo o padrão da arquitetura intacto." },
-      { name: "Esteiras de Entrega e CI/CD Moderno", desc: "Fluxos de delivery algorítmico conectando o IDE direto para produção via validação por branch condicional e testes E2E." },
-      { name: "Desenvolvimento Especialista Modernizado", desc: "Stack tecnológico em constante calibração (Next.js, Node.js escalável, Golang e microsserviços atômicos)." }
+      { name: "Varreduras Automáticas (SAST/DAST)", desc: "Seu time faz commit, o código é estressado de forma silenciosa por heurísticas em Sandbox localizando fragilidades muito antes de compilar para produção." },
+      { name: "Threat Modeling e SBOM", desc: "Radiografia constante do seu software, desde matrizes com o modelo STRIDE até a transparência milimétrica das bibliotecas em formato SBOM para rigor de auditorias corporativas." },
+      { name: "API e Container Security", desc: "Blindagem externa ponta a ponta. Refinamento de APIs (OAuth2, rate limits) contido na fortaleza de runtime images atestados por scanners contínuos." }
     ],
-    ctaLabel: "acelerar meu software",
-    technicalFeatures: [
-      { title: "Portabilidade Hexagonal", desc: "Seu domínio agnóstico que permite plugar novos bancos de dados ou interfaces sem refatorar core logic." },
-      { title: "Telemetria Dev Embedded", desc: "Código emitindo traces OpenTelemetry antes mesmo da implantação final de produto corporativo." },
-      { title: "Micro-Frontends Atômicos", desc: "Equipes escalando isoladas publicando atualizações de interface sem impactar o layout do time vizinho." }
+    ctaLabel: "solicitar architecture review",
+    useCases: [
+      { title: "O time ágil sofre gargalos da segurança ao soltar releases", desc: "Ao acoplarmos o Scanner de SAST/DAST à esteira CI/CD, os falsos positivos e os alertas de baixo impacto são validados instantaneamente reduzindo revisões puramente manuais da Segurança." },
+      { title: "Startup transicionando carga para Cloud-Native", desc: "Executamos o redesign cirúrgico convertendo monolitos em micro-funcionalidades e API-gateways, migrando a topologia arquitetural aos poucos." },
+      { title: "Auditoria exigiu imediatamente lista SBOM do produto", desc: "Entregamos automações de pipeline que cospem todo o Software Bill of Materials validando assinaturas e varrendo licenças open-source maliciosas on-demand." },
+      { title: "CTO foi cobrado por Métricas Ágeis em Produtividade", desc: "Configuramos painéis executivos vivos medindo Deployment Frequency e tempo médio de recuperação (MTTR) em tempo real baseados nos KPIs DORA universais." }
     ],
+    features: [
+      { name: "Pipelines CI/CD Seguros", category: "Automação" },
+      { name: "Security Gateways SAST/DAST", category: "Shift-Left" },
+      { name: "SBOM Configuration Tracker", category: "Compliance" },
+      { name: "Painéis de DORA Metrics", category: "Métricas" },
+      { name: "Threat Modeling (STRIDE/PASTA)", category: "Arquitetura" },
+      { name: "Container/Runtime Hardening", category: "Isolamento" },
+      { name: "Infra-as-Code (Terraform/OPA)", category: "Deploy" },
+      { name: "Arquitetura API & OIDC", category: "Transação" }
+    ],
+    onboarding: [
+      { step: "01", title: "Review", desc: "Identificação do end-state em sessões precisas de arquitetura de software de até duas semanas." },
+      { step: "02", title: "SSDLC", desc: "Mapeamento rigoroso e implantação inicial das regras nos repositórios para Secure SDLC." },
+      { step: "03", title: "CI/CD Pipe", desc: "Setup final conectando a engenharia de delivery nativa da corporação à nossa automação." },
+      { step: "04", title: "Handoff", desc: "Treinamentos pragmáticos. O processo fica claro, documentado na rotina e assumido pelos DevOps." }
+    ],
+    technicalFeatures: [],
     portfolio: [
-      { client: "SaaS Decacorn", project: "Refactoring Core Banking", result: "Time-to-market reduzido de meses para dias." }
+      { client: "Top Fintech", project: "Refatoração Secure SDLC & SBOM", result: "Adequação acelerada para aprovação do SOC2." }
     ]
   },
   "autoops": {
