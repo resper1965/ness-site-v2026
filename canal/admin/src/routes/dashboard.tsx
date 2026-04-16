@@ -144,7 +144,7 @@ const PAGE_META: Record<string, { title: string; sub: string }> = {
   "/saas":    { title: "Organização",     sub: "Gestão do workspace e membros" },
 };
 
-const SUPER_ADMIN_EMAIL = "resper@bekaa.eu";
+const SUPER_ADMIN_EMAILS = ["resper@bekaa.eu", "admin@ness.com.br"];
 
 /* ── Org Switcher Component ────────────────────────── */
 function OrgSwitcher({ userEmail }: { userEmail: string }) {
@@ -156,7 +156,7 @@ function OrgSwitcher({ userEmail }: { userEmail: string }) {
   const [loading, setLoading] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const isSuperAdmin = userEmail === SUPER_ADMIN_EMAIL;
+  const isSuperAdmin = SUPER_ADMIN_EMAILS.includes(userEmail);
 
   // Close on outside click
   useEffect(() => {

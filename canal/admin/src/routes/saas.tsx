@@ -3,7 +3,7 @@ import { authClient, organization, agent } from "../lib/auth-client";
 
 type Tab = "overview" | "members" | "plan" | "settings";
 
-const SUPER_ADMIN_EMAIL = "resper@bekaa.eu";
+const SUPER_ADMIN_EMAILS = ["resper@bekaa.eu", "admin@ness.com.br"];
 
 // SVG icons
 const CheckIcon = () => (
@@ -496,7 +496,7 @@ export default function SaasSettingsPage() {
 
   // Determine user role in this org
   const userEmail = session?.user?.email || "";
-  const isSuperAdmin = userEmail === SUPER_ADMIN_EMAIL;
+  const isSuperAdmin = SUPER_ADMIN_EMAILS.includes(userEmail);
   const myMembership = activeOrg?.members?.find((m: any) => m.user?.email === userEmail || m.userId === session?.user?.id);
   const myRole = myMembership?.role || "member";
   const isAdmin = isSuperAdmin || myRole === "owner" || myRole === "admin";
