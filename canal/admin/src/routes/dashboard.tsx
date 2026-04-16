@@ -34,6 +34,31 @@ const NAV = [
           </svg>
         ),
       },
+      {
+        to: "/pages",
+        label: "Páginas",
+        icon: (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
+          </svg>
+        ),
+      },
+    ],
+  },
+  {
+    section: "Assets",
+    items: [
+      {
+        to: "/media",
+        label: "Media",
+        icon: (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+        ),
+      },
     ],
   },
   {
@@ -62,11 +87,12 @@ const NAV = [
   },
 ];
 
-// Map route → page title/subtitle
 const PAGE_META: Record<string, { title: string; sub: string }> = {
   "/":        { title: "Insights",       sub: "Artigos e publicações do blog" },
   "/cases":   { title: "Cases",          sub: "Portfólio de projetos e cases" },
   "/jobs":    { title: "Vagas",          sub: "Oportunidades publicadas" },
+  "/pages":   { title: "Páginas",        sub: "Páginas estáticas do site" },
+  "/media":   { title: "Media",          sub: "Galeria de imagens e arquivos" },
   "/forms":   { title: "Formulários",    sub: "Submissões recebidas" },
   "/chats":   { title: "Chatlogs AI",    sub: "Auditoria de interações com IA" },
 };
@@ -97,6 +123,7 @@ export default function DashboardLayout() {
           <span className="sidebar-logo">
             canal<span>.</span>
           </span>
+          <span className="sidebar-version">v2</span>
         </div>
 
         <nav className="sidebar-nav">
@@ -134,15 +161,12 @@ export default function DashboardLayout() {
 
       {/* Main area */}
       <div className="main-area">
-        {/* Topbar — mesma altura que sidebar-header */}
         <header className="topbar">
           <div>
             <div className="topbar-title">{meta.title}</div>
             {meta.sub && <div className="topbar-sub">{meta.sub}</div>}
           </div>
-          <div className="topbar-actions">
-            {/* slot para botões contextuais via Outlet context se necessário */}
-          </div>
+          <div className="topbar-actions" />
         </header>
 
         <main className="page-content">
