@@ -7,6 +7,8 @@ const CollectionPage = React.lazy(() => import("./routes/collection"));
 const MediaPage = React.lazy(() => import("./routes/media"));
 const FormsPage = React.lazy(() => import("./routes/forms"));
 const ChatsPage = React.lazy(() => import("./routes/chats"));
+const BrandbookPage = React.lazy(() => import("./routes/brandbook"));
+const SignaturesPage = React.lazy(() => import("./routes/signatures"));
 
 /** Wrapper para passar slug como prop */
 function CollectionRoute({ slug }: { slug: string }) {
@@ -23,6 +25,8 @@ const router = createBrowserRouter([
       { path: "cases", element: <CollectionRoute slug="cases" /> },
       { path: "jobs", element: <CollectionRoute slug="jobs" /> },
       { path: "pages", element: <CollectionRoute slug="pages" /> },
+      { path: "brandbook", element: <BrandbookPage /> },
+      { path: "signatures", element: <SignaturesPage /> },
       { path: "media", element: <MediaPage /> },
       { path: "forms", element: <FormsPage /> },
       { path: "chats", element: <ChatsPage /> },

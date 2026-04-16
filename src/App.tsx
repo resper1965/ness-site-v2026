@@ -11,6 +11,8 @@ import ScrollToTop from './components/ScrollToTop';
 
 // Pages — lazy loaded (code splitting)
 const Home = lazy(() => import('./pages/Home'));
+const TrustnessHome = lazy(() => import('./pages/trustness/Home'));
+const ForenseHome = lazy(() => import('./pages/forense/Home'));
 const About = lazy(() => import('./pages/About'));
 const Solutions = lazy(() => import('./pages/Solutions'));
 const Services = lazy(() => import('./pages/Services'));
@@ -33,6 +35,8 @@ function PageLoader() {
   );
 }
 
+const BRAND = import.meta.env.VITE_BRAND || 'ness';
+
 export default function App() {
   return (
     <div className="min-h-screen">
@@ -43,9 +47,23 @@ export default function App() {
       <AnimatePresence mode="wait">
         <Suspense fallback={<PageLoader />}>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/solucoes" element={<Solutions />} />
-            <Route path="/solucoes/:slug" element={<SolutionPage />} />
+            {BRAND === 'ness' && (
+              <>
+                <Route path="/" element={<Home />} />
+                <Route path="/solucoes" element={<Solutions />} />
+                <Route path="/solucoes/:slug" element={<SolutionPage />} />
+              </>
+            )}
+
+            {BRAND === 'trustness' && (
+              <Route path="/" element={<TrustnessHome />} />
+            )}
+
+            {BRAND === 'forense' && (
+              <Route path="/" element={<ForenseHome />} />
+            )}
+            
+            {/* Shared universal routes */}
             <Route path="/sobre" element={<About />} />
             <Route path="/portfolio" element={<Portfolio />} />
             {/* legacy redirect for accented route */}

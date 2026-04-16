@@ -62,6 +62,30 @@ const NAV = [
     ],
   },
   {
+    section: "Marketing",
+    items: [
+      {
+        to: "/brandbook",
+        label: "Brandbook",
+        icon: (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/>
+            <circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+          </svg>
+        ),
+      },
+      {
+        to: "/signatures",
+        label: "Assinaturas",
+        icon: (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          </svg>
+        ),
+      },
+    ],
+  },
+  {
     section: "Gestão",
     items: [
       {
@@ -91,8 +115,10 @@ const PAGE_META: Record<string, { title: string; sub: string }> = {
   "/":        { title: "Insights",       sub: "Artigos e publicações do blog" },
   "/cases":   { title: "Cases",          sub: "Portfólio de projetos e cases" },
   "/jobs":    { title: "Vagas",          sub: "Oportunidades publicadas" },
-  "/pages":   { title: "Páginas",        sub: "Páginas estáticas do site" },
-  "/media":   { title: "Media",          sub: "Galeria de imagens e arquivos" },
+  "/pages":       { title: "Páginas",        sub: "Páginas estáticas do site" },
+  "/media":       { title: "Media",          sub: "Galeria de imagens e arquivos" },
+  "/brandbook":   { title: "Brandbook",      sub: "Assets de marca do grupo" },
+  "/signatures":  { title: "Assinaturas",    sub: "Assinaturas de email corporativas" },
   "/forms":   { title: "Formulários",    sub: "Submissões recebidas" },
   "/chats":   { title: "Chatlogs AI",    sub: "Auditoria de interações com IA" },
 };

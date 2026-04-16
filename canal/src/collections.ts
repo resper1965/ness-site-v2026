@@ -123,6 +123,52 @@ export const collections: CollectionDef[] = [
       { name: 'meta_description', type: 'textarea', label: 'Meta Description' },
     ]
   },
+  {
+    slug: 'brandbook',
+    label: 'Brand Asset',
+    labelPlural: 'Brand Assets',
+    icon: 'Palette',
+    hasLocale: false,
+    hasSlug: true,
+    hasStatus: true,
+    fields: [
+      { name: 'title', type: 'text', required: true, label: 'Nome do Asset' },
+      { name: 'category', type: 'select', label: 'Categoria', options: [
+        'logo', 'cor', 'tipografia', 'ícone', 'template', 'guideline'
+      ]},
+      { name: 'brand', type: 'select', label: 'Marca', options: [
+        'ness', 'aegis', 'cavan', 'tne', 'canal'
+      ]},
+      { name: 'desc', type: 'textarea', label: 'Descrição' },
+      { name: 'file_url', type: 'text', label: 'URL do Arquivo' },
+      { name: 'preview_url', type: 'image', label: 'Preview' },
+      { name: 'hex_value', type: 'text', label: 'Hex (cores)' },
+      { name: 'usage_notes', type: 'textarea', label: 'Notas de Uso' },
+    ]
+  },
+  {
+    slug: 'signatures',
+    label: 'Assinatura',
+    labelPlural: 'Assinaturas',
+    icon: 'Mail',
+    hasLocale: false,
+    hasSlug: true,
+    hasStatus: true,
+    fields: [
+      { name: 'name', type: 'text', required: true, label: 'Nome Completo' },
+      { name: 'role', type: 'text', required: true, label: 'Cargo' },
+      { name: 'email', type: 'text', required: true, label: 'Email' },
+      { name: 'phone', type: 'text', label: 'Telefone' },
+      { name: 'brand', type: 'select', label: 'Marca', required: true, options: [
+        'ness', 'aegis', 'cavan', 'tne'
+      ]},
+      { name: 'photo_url', type: 'image', label: 'Foto' },
+      { name: 'linkedin', type: 'text', label: 'LinkedIn URL' },
+      { name: 'department', type: 'select', label: 'Departamento', options: [
+        'Diretoria', 'Engenharia', 'Comercial', 'Operações', 'RH', 'Financeiro', 'Marketing'
+      ]},
+    ]
+  },
 ]
 
 /** Busca uma collection por slug */

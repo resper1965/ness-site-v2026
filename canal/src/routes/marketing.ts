@@ -1,0 +1,262 @@
+/**
+ * Canal CMS — Marketing Hub Routes
+ *
+ * /api/v1/marketing/signature/:slug  → Gera HTML da assinatura de email
+ * /api/v1/marketing/signature/:slug/preview → Preview visual
+ */
+
+import { Hono } from 'hono'
+
+type Env = {
+  Bindings: {
+    DB: D1Database
+    AI: Ai
+    VECTORIZE: VectorizeIndex
+    MEDIA: R2Bucket
+    BETTER_AUTH_SECRET: string
+    BETTER_AUTH_URL: string
+    ADMIN_SETUP_KEY: string
+  }
+}
+
+// Brand configs para geração de assinaturas
+const BRAND_CONFIG: Record<string, {
+  name: string
+  color: string
+  domain: string
+  logo: string
+  tagline: string
+}> = {
+  ness: {
+    name: 'ness.',
+    color: '#00E5A0',
+    domain: 'ness.com.br',
+    logo: 'https://ness.com.br/logo-ness.png',
+    tagline: 'Tecnologia que conecta, protege e transforma.',
+  },
+  aegis: {
+    name: 'Aegis',
+    color: '#00B4D8',
+    domain: 'aegis.ness.com.br',
+    logo: 'https://aegis.ness.com.br/logo-aegis.png',
+    tagline: 'Segurança Cibernética Gerenciada',
+  },
+  cavan: {
+    name: 'Cavan',
+    color: '#FF6B35',
+    domain: 'cavan.ness.com.br',
+    logo: 'https://cavan.ness.com.br/logo-cavan.png',
+    tagline: 'Infraestrutura Inteligente',
+  },
+  tne: {
+    name: 'TNE',
+    color: '#4361EE',
+    domain: 'tne.ness.com.br',
+    logo: 'https://tne.ness.com.br/logo-tne.png',
+    tagline: 'Telecomunicações & Redes',
+  },
+}
+
+const marketing = new Hono<Env>()
+
+// ── Gera HTML inline para assinatura de email ───────────────────
+marketing.get('/marketing/signature/:slug', async (c) => {
+  const slug = c.req.param('slug')
+  const format = c.req.query('format') || 'html'
+
+  // Buscar a entry do tipo signatures pelo slug
+  const colRow = await c.env.DB.prepare(
+    "SELECT id FROM collections WHERE slug = 'signatures' LIMIT 1"
+  ).first<{ id: string }>()
+
+  if (!colRow) return c.json({ error: 'Signatures collection not found' }, 404)
+
+  const entry = await c.env.DB.prepare(
+    'SELECT * FROM entries WHERE collection_id = ? AND slug = ? AND status = ? LIMIT 1'
+  ).bind(colRow.id, slug, 'published').first()
+
+  if (!entry) return c.json({ error: 'Signature not found' }, 404)
+
+  const data = safeParseJSON((entry as any).data)
+  const brand = BRAND_CONFIG[data.brand as string] ?? BRAND_CONFIG.ness
+
+  if (format === 'json') {
+    return c.json({ data, brand })
+  }
+
+  // Gerar HTML inline (compatível com clientes de email)
+  const html = generateSignatureHTML(data, brand)
+
+  c.header('Content-Type', 'text/html; charset=utf-8')
+  c.header('Cache-Control', 'public, max-age=3600')
+  return c.body(html)
+})
+
+// ── Preview visual ──────────────────────────────────────────────
+marketing.get('/marketing/signature/:slug/preview', async (c) => {
+  const slug = c.req.param('slug')
+
+  const colRow = await c.env.DB.prepare(
+    "SELECT id FROM collections WHERE slug = 'signatures' LIMIT 1"
+  ).first<{ id: string }>()
+
+  if (!colRow) return c.json({ error: 'Signatures collection not found' }, 404)
+
+  const entry = await c.env.DB.prepare(
+    'SELECT * FROM entries WHERE collection_id = ? AND slug = ? LIMIT 1'
+  ).bind(colRow.id, slug).first()
+
+  if (!entry) return c.json({ error: 'Signature not found' }, 404)
+
+  const data = safeParseJSON((entry as any).data)
+  const brand = BRAND_CONFIG[data.brand as string] ?? BRAND_CONFIG.ness
+  const signatureHtml = generateSignatureHTML(data, brand)
+
+  const previewPage = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Assinatura — ${data.name}</title>
+  <style>
+    * { margin: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, sans-serif; background: #f5f5f5; padding: 40px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    h1 { font-size: 14px; color: #666; text-transform: uppercase; letter-spacing: 2px; }
+    .preview { background: white; padding: 32px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); max-width: 700px; width: 100%; }
+    .actions { display: flex; gap: 12px; }
+    .actions button { padding: 8px 16px; border: 1px solid #ddd; background: white; border-radius: 6px; cursor: pointer; font-size: 13px; }
+    .actions button:hover { background: #f0f0f0; }
+  </style>
+</head>
+<body>
+  <h1>Preview da Assinatura</h1>
+  <div class="preview" id="sig">${signatureHtml}</div>
+  <div class="actions">
+    <button onclick="copyHTML()">📋 Copiar HTML</button>
+    <button onclick="selectAll()">✅ Selecionar Tudo</button>
+  </div>
+  <script>
+    function copyHTML() {
+      navigator.clipboard.writeText(document.getElementById('sig').innerHTML);
+      alert('HTML copiado!');
+    }
+    function selectAll() {
+      const range = document.createRange();
+      range.selectNodeContents(document.getElementById('sig'));
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  </script>
+</body>
+</html>`
+
+  c.header('Content-Type', 'text/html; charset=utf-8')
+  return c.body(previewPage)
+})
+
+// ── Lista todas as assinaturas ──────────────────────────────────
+marketing.get('/marketing/signatures', async (c) => {
+  const colRow = await c.env.DB.prepare(
+    "SELECT id FROM collections WHERE slug = 'signatures' LIMIT 1"
+  ).first<{ id: string }>()
+
+  if (!colRow) return c.json({ data: [] })
+
+  const { results } = await c.env.DB.prepare(
+    'SELECT * FROM entries WHERE collection_id = ? ORDER BY created_at DESC'
+  ).bind(colRow.id).all()
+
+  const items = (results as any[]).map(row => ({
+    id: row.id,
+    slug: row.slug,
+    status: row.status,
+    ...safeParseJSON(row.data),
+    previewUrl: `/api/v1/marketing/signature/${row.slug}/preview`,
+    htmlUrl: `/api/v1/marketing/signature/${row.slug}`,
+  }))
+
+  return c.json({ data: items })
+})
+
+// ── Brand config público ────────────────────────────────────────
+marketing.get('/marketing/brands', (c) => {
+  return c.json({ data: BRAND_CONFIG })
+})
+
+// ── Helpers ─────────────────────────────────────────────────────
+
+function safeParseJSON(str: unknown): Record<string, unknown> {
+  if (typeof str !== 'string') return {}
+  try { return JSON.parse(str) } catch { return {} }
+}
+
+function generateSignatureHTML(
+  data: Record<string, unknown>,
+  brand: typeof BRAND_CONFIG[string]
+): string {
+  const name = data.name as string || ''
+  const role = data.role as string || ''
+  const email = data.email as string || ''
+  const phone = data.phone as string || ''
+  const linkedin = data.linkedin as string || ''
+  const photoUrl = data.photo_url as string || ''
+
+  const photoCell = photoUrl ? `
+    <td style="vertical-align:top;padding-right:16px;">
+      <img src="${photoUrl}" width="72" height="72" style="border-radius:50%;border:2px solid ${brand.color};" alt="${name}">
+    </td>` : ''
+
+  const linkedinLink = linkedin ? `
+    <tr>
+      <td style="padding-top:6px;">
+        <a href="${linkedin}" style="color:${brand.color};text-decoration:none;font-size:12px;font-family:-apple-system,Arial,sans-serif;">
+          LinkedIn ↗
+        </a>
+      </td>
+    </tr>` : ''
+
+  return `<table cellpadding="0" cellspacing="0" border="0" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;color:#333;">
+  <tr>
+    ${photoCell}
+    <td style="vertical-align:top;">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td style="font-size:16px;font-weight:700;color:#1a1a1a;padding-bottom:2px;line-height:1.3;">
+            ${name}
+          </td>
+        </tr>
+        <tr>
+          <td style="font-size:13px;color:#666;padding-bottom:8px;line-height:1.3;">
+            ${role}
+          </td>
+        </tr>
+        <tr>
+          <td style="border-top:2px solid ${brand.color};padding-top:8px;">
+            <table cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="font-size:12px;color:#444;line-height:1.6;font-family:-apple-system,Arial,sans-serif;">
+                  <a href="mailto:${email}" style="color:#333;text-decoration:none;">${email}</a>
+                  ${phone ? `<br><span style="color:#888;">${phone}</span>` : ''}
+                </td>
+              </tr>
+              ${linkedinLink}
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-top:10px;">
+            <span style="font-size:14px;font-weight:700;color:${brand.color};letter-spacing:-0.5px;">
+              ${brand.name}
+            </span>
+            <span style="font-size:11px;color:#999;padding-left:6px;">
+              ${brand.tagline}
+            </span>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>`
+}
+
+export { marketing }

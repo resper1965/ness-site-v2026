@@ -257,28 +257,28 @@ const resources = {
         "secops": {
           "title": "n.secops",
           "fullTitle": "operational resilience & continuity",
-          "desc": "continuous security operation with real-time monitoring and incident response.",
+          "desc": "silencing alarms and blocking incidents at the source with AI and total abstraction.",
           "longDesc": "n.secops is not just about technology; it's about the survival of your business. we protect your reputation and your operation through an elite security operations center (SOC) that monitors, detects, and neutralizes threats before they cause impact.",
           "cta": "request security diagnosis"
         },
         "infraops": {
           "title": "n.infraops",
           "fullTitle": "intelligent infrastructure & global support",
-          "desc": "modern management of critical infrastructure with a focus on high availability and scale.",
+          "desc": "finops architecture: invisible, elastic cloud with rock-solid, non-negotiable uptime.",
           "longDesc": "n.infraops redefines traditional technical support. we combine the robustness of the ITIL framework with the agility of an applied AI system that acts as a co-pilot for our operations.",
           "cta": "optimize my infrastructure"
         },
         "devarch": {
           "title": "n.devarch",
           "fullTitle": "developer-oriented architecture & secure scale",
-          "desc": "developer-oriented architecture for extreme scale and performance.",
+          "desc": "the end of technical debt: hexagonal engineering focused on break-free longevity.",
           "longDesc": "at n.devarch, we transform development into a competitive advantage. we create our own solutions and empower companies to achieve extreme scale.",
           "cta": "scale my development"
         },
         "autoops": {
           "title": "n.autoops",
           "fullTitle": "operational efficiency & strategic automation",
-          "desc": "transform your operation with intelligent assistants that resolve bottlenecks.",
+          "desc": "neuro-digital agents and private LLMs crushing manual corporate workflows.",
           "longDesc": "n.autoops is the intelligence arm of ness. that puts your company ahead of the competition. we develop personalized assistants (co-pilots) that take over repetitive tasks.",
           "cta": "schedule gabi.os demo"
         },
@@ -473,28 +473,28 @@ const resources = {
         "secops": {
           "title": "n.secops",
           "fullTitle": "resiliencia operativa & continuidad",
-          "desc": "operación continua de seguridad con monitoreo en tiempo real y respuesta a incidentes.",
+          "desc": "silenciando alarmas y bloqueando incidentes en la fuente con IA y abstracción total.",
           "longDesc": "n.secops no es solo tecnología; es la supervivencia de su negocio. protegemos su reputación y su operación a través de un centro de operaciones de seguridad (SOC) de élite que monitorea, detecta y neutraliza las amenazas antes de que causen impacto.",
           "cta": "solicitar diagnóstico de seguridad"
         },
         "infraops": {
           "title": "n.infraops",
           "fullTitle": "infraestructura inteligente & soporte global",
-          "desc": "gestión moderna de infraestructura crítica con un enfoque en alta disponibilidad y escala.",
+          "desc": "arquitectura finops: nube invisible, elástica y con un uptime tallado en piedra.",
           "longDesc": "n.infraops redefine el soporte técnico tradicional. combinamos la robustez del marco ITIL con la agilidad de un sistema de IA aplicada que actúa como copiloto de nuestras operaciones.",
           "cta": "optimizar mi infraestructura"
         },
         "devarch": {
           "title": "n.devarch",
           "fullTitle": "arquitectura orientada al desarrollador & escala segura",
-          "desc": "arquitectura orientada al desarrollador para escala y rendimiento extremos.",
+          "desc": "el fin de la deuda técnica: ingeniería hexagonal enfocada en la longevidad sin interrupciones.",
           "longDesc": "en n.devarch, transformamos el desarrollo en una ventaja competitiva. creamos nuestras propias soluciones y capacitamos a las empresas para alcanzar una escala extrema.",
           "cta": "escalar mi desarrollo"
         },
         "autoops": {
           "title": "n.autoops",
           "fullTitle": "eficiencia operativa & automatización estratégica",
-          "desc": "transforme su operación con asistentes inteligentes que resuelven cuellos de botella.",
+          "desc": "agentes neuro-digitales y LLMs privados triturando flujos corporativos manuales.",
           "longDesc": "n.autoops es el brazo de inteligencia de ness. que pone a su empresa por delante de la competencia. desarrollamos asistentes personalizados (copilotos) que se encargan de tareas repetitivas.",
           "cta": "programar demo de gabi.os"
         },
@@ -556,7 +556,8 @@ const resources = {
         "vision": "visión",
         "vision_desc": "ser la plataforma modular líder para la transformación digital confiable, reconocida globalmente por la excelencia técnica y la innovación constante.",
         "values": "valores",
-        "history": "nuestra historia y legado"
+        "history": "nuestra historia y legado",
+        "history_title": "nuestra historia y legado"
       },
       "contact": {
         "title": "construyamos el futuro juntos",
@@ -579,7 +580,25 @@ const resources = {
         "whistleblower": {
           "title": "canal de denuncias",
           "desc": "para informar conductas poco éticas o violaciones de cumplimiento de forma totalmente anónima y segura.",
-          "cta": "acceder al canal ético"
+          "cta": "acceder al canal ético",
+          "occurrence_type": "tipo de ocurrencia",
+          "category_select": "seleccione una categoría",
+          "description": "descripción de los hechos",
+          "last_update": "última actualización: 14 de abril de 2024. para dudas adicionales, contacte a nuestro DPO en dpo@ness.com.br",
+          "categories": {
+            "ethics": "violación ética",
+            "harassment": "acoso / discriminación",
+            "fraud": "fraude / corrupción",
+            "security": "fuga de datos / seguridad",
+            "others": "otros"
+          },
+          "form": {
+            "name_placeholder": "su nombre o déjelo en blanco",
+            "contact_placeholder": "email o teléfono para respuesta",
+            "message_placeholder": "detalle lo ocurrido con la mayor cantidad de información posible (fechas, lugares, involucrados)...",
+            "send_button": "enviar denuncia segura",
+            "error": "Error al enviar la denuncia. Por favor, inténtelo de nuevo."
+          }
         }
       },
       "cta": {

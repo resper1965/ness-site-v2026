@@ -17,7 +17,9 @@ import { createAuth } from './auth'
 import { seedVectors, SOLUTIONS_CORPUS } from './seed-vectors'
 import { entries } from './routes/entries'
 import { media } from './routes/media'
+import { marketing } from './routes/marketing'
 import { legacy } from './routes/legacy'
+import { handleMcpRequest } from './mcp'
 
 type Bindings = {
   DB: D1Database
@@ -74,13 +76,14 @@ async function requireAdminOrKey(c: any, next: () => Promise<void>) {
 // ── Root ────────────────────────────────────────────────────────
 app.get('/', (c) => c.json({
   name: 'Canal CMS',
-  version: '0.3.0',
+  version: '0.4.0',
   endpoints: {
     legacy: '/api/{insights,cases,jobs}',
     v1: '/api/v1/collections',
     auth: '/api/auth/*',
     chat: '/api/chat',
     media: '/api/v1/media',
+    marketing: '/api/v1/marketing/*',
   }
 }))
 
@@ -91,6 +94,12 @@ app.route('/api', legacy)
 // Rotas públicas de leitura
 app.route('/api/v1', entries)
 app.route('/api/v1', media)
+app.route('/api/v1', marketing)
+
+// ── MCP Server (Agents Integration) ──────────────────────────────
+app.all('/api/mcp/*', requireAdminOrKey, async (c) => {
+  return handleMcpRequest(c.req.raw, c.env.DB)
+})
 
 // ── Bootstrap admin (setup-key) ─────────────────────────────────
 app.post('/api/setup/admin', async (c) => {

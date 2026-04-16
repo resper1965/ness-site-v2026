@@ -14,13 +14,23 @@ import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/bra
 
 
 
+const BRAND = import.meta.env.VITE_BRAND || 'ness';
+
 const Footer = () => {
   const { t } = useTranslation();
   return (
     <footer className="bg-surface py-16 px-8 border-t border-white/5">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
         <div className="max-w-xs space-y-6">
-          <div className="text-xl text-white font-display lowercase-all">ness<BlueDot /></div>
+          <div className="text-xl text-white font-display lowercase-all">
+            {BRAND === 'trustness' ? (
+              <>trustness<BlueDot /></>
+            ) : BRAND === 'forense' ? (
+              <>forense<BlueDot />io</>
+            ) : (
+              <>ness<BlueDot /></>
+            )}
+          </div>
           <p className="text-sm text-on-surface-variant/60 leading-relaxed font-light">
             {t('hero.subtitle')}
           </p>
@@ -86,7 +96,9 @@ const Footer = () => {
       </div>
       
       <div className="max-w-7xl mx-auto mt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="text-sm text-on-surface-variant/40 font-light">© {FOUNDATION_YEAR}–{CURRENT_YEAR} ness. precision digital engineering. {t('footer.rights')}</p>
+        <p className="text-sm text-on-surface-variant/40 font-light">
+          © {FOUNDATION_YEAR}–{CURRENT_YEAR} {BRAND === 'trustness' ? 'trustness.' : BRAND === 'forense' ? 'forense.io' : 'ness.'} precision digital engineering. {t('footer.rights')}
+        </p>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></div>

@@ -23,6 +23,8 @@ const CELEBRATION_CONFIG = {
 };
 
 
+const BRAND = import.meta.env.VITE_BRAND || 'ness';
+
 const Navbar = () => {
   const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
@@ -46,7 +48,13 @@ const Navbar = () => {
     <>
       <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl glass rounded-full flex justify-between items-center px-6 md:px-8 py-3 z-50 nebula-shadow">
         <Link to="/" className="text-2xl font-display tracking-tighter text-white lowercase-all">
-          ness<BlueDot />
+          {BRAND === 'trustness' ? (
+            <>trustness<BlueDot /></>
+          ) : BRAND === 'forense' ? (
+            <>forense<BlueDot />io</>
+          ) : (
+            <>ness<BlueDot /></>
+          )}
         </Link>
         
         {/* Desktop Menu */}
