@@ -81,12 +81,8 @@ entries.get('/collections/:slug/entries', async (c) => {
     params.push(status)
   }
 
-  if (tenantId) {
-    query += ` AND tenant_id = ?`
-    params.push(tenantId)
-  } else {
-    query += ` AND tenant_id IS NULL`
-  }
+  // TODO: re-enable after tenant_id migration
+  // tenant_id column not yet in DB schema
 
   query += ` ORDER BY created_at DESC LIMIT ? OFFSET ?`
   params.push(limit, offset)
@@ -104,12 +100,7 @@ entries.get('/collections/:slug/entries', async (c) => {
     countQuery += ` AND status = ?`
     countParams.push(status)
   }
-  if (tenantId) {
-    countQuery += ` AND tenant_id = ?`
-    countParams.push(tenantId)
-  } else {
-    countQuery += ` AND tenant_id IS NULL`
-  }
+  // TODO: re-enable after tenant_id migration
   const countResult = await c.env.DB.prepare(countQuery).bind(...countParams).first<{ total: number }>()
 
   // Parse JSON data de cada entry

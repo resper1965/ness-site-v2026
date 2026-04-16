@@ -4,6 +4,34 @@ import { createEntry } from "../lib/api";
 const BRANDS = ["ness", "aegis", "cavan", "tne"];
 const DEPARTMENTS = ["Diretoria", "Engenharia", "Comercial", "Operações", "RH", "Financeiro", "Marketing"];
 
+/* ── Brand config: cor + logo SVG inline (email-safe) ──────────── */
+const BRAND_CONFIG: Record<string, { color: string; name: string; logo: string }> = {
+  ness: {
+    color: "#0A84FF",
+    name: "ness.",
+    logo: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 32" width="120" height="32"><text x="0" y="26" font-family="Arial,sans-serif" font-size="28" font-weight="bold" fill="#0A84FF">ness</text><text x="82" y="26" font-family="Arial,sans-serif" font-size="28" font-weight="bold" fill="#00D4AA">.</text></svg>`,
+  },
+  aegis: {
+    color: "#DC2626",
+    name: "Aegis by ness.",
+    logo: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 32" width="160" height="32"><text x="0" y="26" font-family="Arial,sans-serif" font-size="24" font-weight="bold" fill="#DC2626">Aegis</text><text x="72" y="26" font-family="Arial,sans-serif" font-size="16" fill="#888"> by ness.</text></svg>`,
+  },
+  cavan: {
+    color: "#059669",
+    name: "Cavan",
+    logo: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 32" width="120" height="32"><text x="0" y="26" font-family="Arial,sans-serif" font-size="28" font-weight="bold" fill="#059669">Cavan</text></svg>`,
+  },
+  tne: {
+    color: "#7C3AED",
+    name: "TNE",
+    logo: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 32" width="80" height="32"><text x="0" y="26" font-family="Arial,sans-serif" font-size="28" font-weight="bold" fill="#7C3AED">TNE</text></svg>`,
+  },
+};
+
+function svgToDataUri(svg: string): string {
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+}
+
 export default function SignaturesHub() {
   const [form, setForm] = useState({
     name: "João Silva",
@@ -36,14 +64,8 @@ export default function SignaturesHub() {
     alert("HTML copiado para a área de transferência!");
   };
 
-  const colors = {
-    ness: "#1A56DB",
-    aegis: "#DC2626",
-    cavan: "#059669",
-    tne: "#7C3AED",
-  } as Record<string, string>;
-
-  const brandColor = colors[form.brand] || "#333";
+  const brand = BRAND_CONFIG[form.brand] || BRAND_CONFIG.ness;
+  const logoDataUri = svgToDataUri(brand.logo);
 
   return (
     <div>
@@ -79,7 +101,7 @@ export default function SignaturesHub() {
               <div className="field">
                 <label>Marca</label>
                 <select value={form.brand} onChange={e => setForm({...form, brand: e.target.value})}>
-                  {BRANDS.map(b => <option key={b} value={b}>{b}</option>)}
+                  {BRANDS.map(b => <option key={b} value={b}>{BRAND_CONFIG[b]?.name || b}</option>)}
                 </select>
               </div>
               <div className="field">
@@ -93,7 +115,7 @@ export default function SignaturesHub() {
               <label>URL da Foto (opcional)</label>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                 {form.photo_url ? (
-                  <img src={form.photo_url} alt="Capa" style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: '50%', border: '1px solid var(--border)' }} />
+                  <img src={form.photo_url} alt="Foto" style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: '50%', border: '1px solid var(--border)' }} />
                 ) : (
                   <div style={{ width: 40, height: 40, borderRadius: '50%', border: '1px dashed var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, color: 'var(--text-dim)' }}>Sem</div>
                 )}
@@ -116,7 +138,7 @@ export default function SignaturesHub() {
           
           <div style={{ border: '1px solid var(--border)', padding: '2rem', marginTop: 20, flex: 1, backgroundColor: '#fff', color: '#000', borderRadius: 8, display: 'flex', alignItems: 'center' }}>
             <div id="signature-preview" style={{ width: '100%' }}>
-              <table cellPadding={0} cellSpacing={0} border={0} style={{ fontFamily: 'Arial, sans-serif', fontSize: '14px', color: '#333' }}>
+              <table cellPadding={0} cellSpacing={0} style={{ fontFamily: 'Arial, sans-serif', fontSize: '14px', color: '#333', borderCollapse: 'collapse' }}>
                 <tbody>
                   <tr>
                     {form.photo_url && (
@@ -124,26 +146,30 @@ export default function SignaturesHub() {
                         <img src={form.photo_url} alt={form.name} width="80" height="80" style={{ borderRadius: '50%', objectFit: 'cover' }} />
                       </td>
                     )}
-                    <td style={{ borderLeft: `3px solid ${brandColor}`, paddingLeft: '20px', verticalAlign: 'top' }}>
-                      <p style={{ margin: '0 0 5px 0', fontSize: '18px', fontWeight: 'bold', color: '#111' }}>
+                    <td style={{ borderLeft: `3px solid ${brand.color}`, paddingLeft: '20px', verticalAlign: 'top' }}>
+                      <p style={{ margin: '0 0 4px 0', fontSize: '18px', fontWeight: 'bold', color: '#111' }}>
                         {form.name}
                       </p>
-                      <p style={{ margin: '0 0 10px 0', fontSize: '14px', color: '#666' }}>
-                        {form.role} {form.department ? ` • ${form.department}` : ''}
+                      <p style={{ margin: '0 0 12px 0', fontSize: '13px', color: '#666' }}>
+                        {form.role} {form.department ? ` · ${form.department}` : ''}
                       </p>
-                      <p style={{ margin: '0 0 4px 0' }}>
-                        <a href={`mailto:${form.email}`} style={{ color: brandColor, textDecoration: 'none', fontWeight: 'bold' }}>{form.email}</a>
+                      <p style={{ margin: '0 0 3px 0', fontSize: '13px' }}>
+                        <a href={`mailto:${form.email}`} style={{ color: brand.color, textDecoration: 'none' }}>{form.email}</a>
                       </p>
                       {form.phone && (
-                        <p style={{ margin: '0 0 4px 0', color: '#555' }}>
+                        <p style={{ margin: '0 0 3px 0', fontSize: '13px', color: '#555' }}>
                           {form.phone}
                         </p>
                       )}
                       {form.linkedin && (
-                        <p style={{ margin: '4px 0 0 0', fontSize: '12px' }}>
+                        <p style={{ margin: '0 0 0 0', fontSize: '12px' }}>
                           <a href={form.linkedin} style={{ color: '#0077b5', textDecoration: 'none' }}>LinkedIn</a>
                         </p>
                       )}
+                      {/* Brand Logo */}
+                      <div style={{ marginTop: '14px', paddingTop: '12px', borderTop: '1px solid #e5e5e5' }}>
+                        <img src={logoDataUri} alt={brand.name} height="28" style={{ display: 'block' }} />
+                      </div>
                     </td>
                   </tr>
                 </tbody>

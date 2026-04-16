@@ -274,7 +274,9 @@ app.post('/api/admin/seed-collections', requireAdminOrKey, async (c) => {
   return c.json({ success: true, results })
 })
 
+
 // ── Chat RAG (público) ──────────────────────────────────────────
+
 app.post('/api/chat', async (c) => {
   const { messages } = await c.req.json<{ messages: Array<{ role: string; content: string }> }>()
   const lastMessage = messages[messages.length - 1]?.content || ''
