@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS collections (
 -- ── Entries (documentos genéricos) ──────────────────────────────
 CREATE TABLE IF NOT EXISTS entries (
   id            TEXT PRIMARY KEY,
+  tenant_id     TEXT, -- Referência à organização no Better Auth
   collection_id TEXT NOT NULL,
   data          TEXT NOT NULL DEFAULT '{}',
   slug          TEXT,
@@ -34,10 +35,12 @@ CREATE TABLE IF NOT EXISTS entries (
 );
 
 -- Índices para queries frequentes
+CREATE INDEX IF NOT EXISTS idx_entries_tenant ON entries(tenant_id);
 CREATE INDEX IF NOT EXISTS idx_entries_collection ON entries(collection_id);
 CREATE INDEX IF NOT EXISTS idx_entries_slug ON entries(slug);
 CREATE INDEX IF NOT EXISTS idx_entries_locale ON entries(locale);
 CREATE INDEX IF NOT EXISTS idx_entries_status ON entries(status);
+CREATE INDEX IF NOT EXISTS idx_entries_tenant_collection ON entries(tenant_id, collection_id);
 CREATE INDEX IF NOT EXISTS idx_entries_collection_locale ON entries(collection_id, locale, status);
 
 -- ── Media (uploads R2) ──────────────────────────────────────────

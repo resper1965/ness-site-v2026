@@ -91,7 +91,14 @@ export default function SignaturesHub() {
             </div>
             <div className="field">
               <label>URL da Foto (opcional)</label>
-              <input value={form.photo_url} onChange={e => setForm({...form, photo_url: e.target.value})} />
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                {form.photo_url ? (
+                  <img src={form.photo_url} alt="Capa" style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: '50%', border: '1px solid var(--border)' }} />
+                ) : (
+                  <div style={{ width: 40, height: 40, borderRadius: '50%', border: '1px dashed var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, color: 'var(--text-dim)' }}>Sem</div>
+                )}
+                <input style={{ flex: 1 }} value={form.photo_url} placeholder="https://..." onChange={e => setForm({...form, photo_url: e.target.value})} />
+              </div>
             </div>
             <div className="field">
               <label>URL do LinkedIn</label>

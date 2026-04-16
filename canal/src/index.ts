@@ -31,7 +31,13 @@ type Bindings = {
   ADMIN_SETUP_KEY: string
 }
 
-const app = new Hono<{ Bindings: Bindings }>()
+type Variables = {
+  tenantId?: string;
+  agentSession?: any;
+  session?: any;
+}
+
+const app = new Hono<{ Bindings: Bindings, Variables: Variables }>()
 
 // ── CORS ────────────────────────────────────────────────────────
 app.use('/*', cors({
@@ -40,7 +46,7 @@ app.use('/*', cors({
     'http://localhost:8787',
     'https://canal.ness.workers.dev',
   ],
-  allowHeaders: ['Content-Type', 'Authorization', 'x-setup-key', 'x-session-id'],
+  allowHeaders: ['Content-Type', 'Authorization', 'x-setup-key', 'x-session-id', 'x-tenant-id'],
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
 }))
@@ -51,11 +57,15 @@ app.all('/api/auth/*', (c) => {
   return auth.handler(c.req.raw)
 })
 
-// ── Auth Middleware ──────────────────────────────────────────────
+// ── Auth Middleware (SaaS / Tenant Isolator) ───────────────────
 async function requireSession(c: any, next: () => Promise<void>) {
   const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
   const session = await auth.api.getSession({ headers: c.req.raw.headers })
   if (!session) return c.json({ error: 'Unauthorized' }, 401)
+  
+  // Extrai Tenant explícito, ou da sessão ativa do usuário
+  const tenantId = c.req.header('x-tenant-id') || session.session.activeOrganizationId;
+  c.set('tenantId', tenantId);
   c.set('session', session)
   await next()
 }
@@ -67,8 +77,19 @@ async function requireAdminOrKey(c: any, next: () => Promise<void>) {
     return
   }
   const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
+  
+  // Se for AI Agent usando Token (MCP via Agent Auth)
+  const agentSession = await auth.api.getAgentSession?.({ headers: c.req.raw.headers }).catch(() => null)
+  if (agentSession) {
+    c.set('agentSession', agentSession);
+    await next();
+    return;
+  }
+
   const session = await auth.api.getSession({ headers: c.req.raw.headers })
   if (!session) return c.json({ error: 'Unauthorized' }, 401)
+  const tenantId = c.req.header('x-tenant-id') || session.session.activeOrganizationId;
+  c.set('tenantId', tenantId);
   c.set('session', session)
   await next()
 }
@@ -87,6 +108,12 @@ app.get('/', (c) => c.json({
   }
 }))
 
+// ── Agent Discovery (/.well-known) ──────────────────────────────
+app.all('/.well-known/agent-configuration', (c) => {
+  const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
+  return auth.handler(c.req.raw)
+})
+
 // ── Mount: Rotas legadas (retrocompat site) ─────────────────────
 app.route('/api', legacy)
 
@@ -98,7 +125,12 @@ app.route('/api/v1', marketing)
 
 // ── MCP Server (Agents Integration) ──────────────────────────────
 app.all('/api/mcp/*', requireAdminOrKey, async (c) => {
-  return handleMcpRequest(c.req.raw, c.env.DB)
+  let tenantId = c.get('tenantId') as string | undefined;
+  const agentSession = c.get('agentSession') as any;
+  if (agentSession) {
+    tenantId = c.req.header('x-tenant-id') || agentSession.agent?.organizationId || tenantId;
+  }
+  return handleMcpRequest(c.req.raw, c.env.DB, tenantId)
 })
 
 // ── Bootstrap admin (setup-key) ─────────────────────────────────

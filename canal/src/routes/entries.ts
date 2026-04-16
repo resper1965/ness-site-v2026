@@ -7,6 +7,7 @@
 
 import { Hono } from 'hono'
 import { collections, getCollection, getRequiredFields } from '../collections'
+import { createAuth } from '../auth'
 
 type Env = {
   Bindings: {
@@ -54,6 +55,11 @@ entries.get('/collections/:slug/entries', async (c) => {
   const limit = Math.min(parseInt(c.req.query('limit') || '20', 10), 100)
   const offset = (page - 1) * limit
 
+  // Tenant identification fallback logic
+  const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
+  const session = await auth.api.getSession({ headers: c.req.raw.headers }).catch(() => null)
+  const tenantId = c.req.header('x-tenant-id') || session?.session?.activeOrganizationId
+
   // Buscar collection_id
   const colRow = await c.env.DB.prepare(
     'SELECT id FROM collections WHERE slug = ? LIMIT 1'
@@ -75,6 +81,13 @@ entries.get('/collections/:slug/entries', async (c) => {
     params.push(status)
   }
 
+  if (tenantId) {
+    query += ` AND tenant_id = ?`
+    params.push(tenantId)
+  } else {
+    query += ` AND tenant_id IS NULL`
+  }
+
   query += ` ORDER BY created_at DESC LIMIT ? OFFSET ?`
   params.push(limit, offset)
 
@@ -90,6 +103,12 @@ entries.get('/collections/:slug/entries', async (c) => {
   if (col.hasStatus && status !== 'all') {
     countQuery += ` AND status = ?`
     countParams.push(status)
+  }
+  if (tenantId) {
+    countQuery += ` AND tenant_id = ?`
+    countParams.push(tenantId)
+  } else {
+    countQuery += ` AND tenant_id IS NULL`
   }
   const countResult = await c.env.DB.prepare(countQuery).bind(...countParams).first<{ total: number }>()
 
@@ -125,10 +144,16 @@ entries.get('/collections/:slug/entries/:id', async (c) => {
   const id = c.req.param('id')
   const locale = c.req.query('locale') || c.req.query('lang') || 'pt'
 
+  const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
+  const session = await auth.api.getSession({ headers: c.req.raw.headers }).catch(() => null)
+  const tenantId = c.req.header('x-tenant-id') || session?.session?.activeOrganizationId
+
+  let tSql = tenantId ? 'tenant_id = ?' : 'tenant_id IS NULL';
+
   // Tentar buscar por ID primeiro, depois por slug
   let row = await c.env.DB.prepare(
-    'SELECT * FROM entries WHERE id = ? LIMIT 1'
-  ).bind(id).first()
+    `SELECT * FROM entries WHERE id = ? AND ${tSql} LIMIT 1`
+  ).bind(...(tenantId ? [id, tenantId] : [id])).first()
 
   if (!row && col.hasSlug) {
     // Buscar collection_id primeiro
@@ -138,8 +163,8 @@ entries.get('/collections/:slug/entries/:id', async (c) => {
 
     if (colRow) {
       row = await c.env.DB.prepare(
-        'SELECT * FROM entries WHERE collection_id = ? AND slug = ? AND locale = ? LIMIT 1'
-      ).bind(colRow.id, id, locale).first()
+        `SELECT * FROM entries WHERE collection_id = ? AND slug = ? AND locale = ? AND ${tSql} LIMIT 1`
+      ).bind(colRow.id, id, locale, ...(tenantId ? [tenantId] : [])).first()
     }
   }
 
@@ -172,6 +197,12 @@ entries.post('/collections/:slug/entries', async (c) => {
     return c.json({ error: `Missing required fields: ${missing.join(', ')}` }, 400)
   }
 
+  // Auth/Tenant validation for writes
+  const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
+  const session = await auth.api.getSession({ headers: c.req.raw.headers }).catch(() => null)
+  if (!session) return c.json({ error: 'Unauthorized' }, 401)
+  const tenantId = c.req.header('x-tenant-id') || session.session.activeOrganizationId
+
   // Buscar collection_id
   const colRow = await c.env.DB.prepare(
     'SELECT id FROM collections WHERE slug = ? LIMIT 1'
@@ -191,9 +222,9 @@ entries.post('/collections/:slug/entries', async (c) => {
   const publishedAt = status === 'published' ? now : null
 
   await c.env.DB.prepare(
-    `INSERT INTO entries (id, collection_id, data, slug, locale, status, published_at, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
-  ).bind(id, colRow.id, JSON.stringify(data), slug, locale, status, publishedAt, now, now).run()
+    `INSERT INTO entries (id, tenant_id, collection_id, data, slug, locale, status, published_at, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ).bind(id, tenantId || null, colRow.id, JSON.stringify(data), slug, locale, status, publishedAt, now, now).run()
 
   return c.json({ id, slug, locale, status }, 201)
 })
@@ -206,9 +237,16 @@ entries.put('/collections/:slug/entries/:id', async (c) => {
   const entryId = c.req.param('id')
   const body = await c.req.json<Record<string, unknown>>()
 
+  const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
+  const session = await auth.api.getSession({ headers: c.req.raw.headers }).catch(() => null)
+  if (!session) return c.json({ error: 'Unauthorized' }, 401)
+  const tenantId = c.req.header('x-tenant-id') || session.session.activeOrganizationId
+
+  let tSql = tenantId ? 'tenant_id = ?' : 'tenant_id IS NULL';
+
   const existing = await c.env.DB.prepare(
-    'SELECT * FROM entries WHERE id = ? LIMIT 1'
-  ).bind(entryId).first()
+    `SELECT * FROM entries WHERE id = ? AND ${tSql} LIMIT 1`
+  ).bind(...(tenantId ? [entryId, tenantId] : [entryId])).first()
 
   if (!existing) return c.json({ error: 'Entry not found' }, 404)
 
@@ -226,8 +264,8 @@ entries.put('/collections/:slug/entries/:id', async (c) => {
 
   await c.env.DB.prepare(
     `UPDATE entries SET data = ?, slug = ?, locale = ?, status = ?, published_at = ?, updated_at = ?
-     WHERE id = ?`
-  ).bind(JSON.stringify(mergedData), slug, locale, status, publishedAt, now, entryId).run()
+     WHERE id = ? AND ${tSql}`
+  ).bind(JSON.stringify(mergedData), slug, locale, status, publishedAt, now, entryId, ...(tenantId ? [tenantId] : [])).run()
 
   return c.json({ id: entryId, slug, locale, status, updated: true })
 })
@@ -236,9 +274,16 @@ entries.put('/collections/:slug/entries/:id', async (c) => {
 entries.delete('/collections/:slug/entries/:id', async (c) => {
   const entryId = c.req.param('id')
 
+  const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
+  const session = await auth.api.getSession({ headers: c.req.raw.headers }).catch(() => null)
+  if (!session) return c.json({ error: 'Unauthorized' }, 401)
+  const tenantId = c.req.header('x-tenant-id') || session.session.activeOrganizationId
+
+  let tSql = tenantId ? 'tenant_id = ?' : 'tenant_id IS NULL';
+
   const { success } = await c.env.DB.prepare(
-    'DELETE FROM entries WHERE id = ?'
-  ).bind(entryId).run()
+    `DELETE FROM entries WHERE id = ? AND ${tSql}`
+  ).bind(...(tenantId ? [entryId, tenantId] : [entryId])).run()
 
   return c.json({ success, deleted: entryId })
 })

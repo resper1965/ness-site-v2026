@@ -7,10 +7,12 @@
     "cf-typegen": "wrangler types --env-interface CloudflareBindings"
   },
   "dependencies": {
+    "@better-auth/agent-auth": "^0.4.5",
     "@better-auth/api-key": "^1.6.5",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "ai": "^6.0.162",
     "better-auth": "^1.6.3",
+    "better-sqlite3": "^12.9.0",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.12.12",
     "kysely": "^0.28.16",

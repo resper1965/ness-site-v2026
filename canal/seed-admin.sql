@@ -25,3 +25,24 @@ INSERT OR IGNORE INTO "account" (
   datetime('now'),
   datetime('now')
 );
+
+INSERT OR IGNORE INTO "organization" (
+  "id", "name", "slug", "createdAt", "plan", "usageLimit"
+) VALUES (
+  'org-ness-admin',
+  'Ness Admin',
+  'ness-admin',
+  datetime('now'),
+  'enterprise',
+  9999
+);
+
+INSERT OR IGNORE INTO "member" (
+  "id", "organizationId", "userId", "role", "createdAt"
+) VALUES (
+  'member-admin-01',
+  'org-ness-admin',
+  'admin-ness-01',
+  'owner',
+  datetime('now')
+);

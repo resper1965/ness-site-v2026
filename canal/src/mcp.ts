@@ -37,12 +37,21 @@ server.tool(
     if (!db) return { content: [{ type: "text", text: "BD não conectado" }] }
 
     try {
-      const results = await db.prepare(
-        `SELECT * FROM entries 
-         WHERE collection_id = (SELECT id FROM collections WHERE slug = ?)
-         ORDER BY updated_at DESC
-         LIMIT ?`
-      ).bind(args.slug, args.limit || 50).all()
+      const tenantId = (globalThis as any).__MCP_TENANT
+      let query = `SELECT * FROM entries WHERE collection_id = (SELECT id FROM collections WHERE slug = ?)`
+      const params: any[] = [args.slug]
+      
+      if (tenantId) {
+        query += ` AND tenant_id = ?`
+        params.push(tenantId)
+      } else {
+        query += ` AND tenant_id IS NULL`
+      }
+      
+      query += ` ORDER BY updated_at DESC LIMIT ?`
+      params.push(args.limit || 50)
+
+      const results = await db.prepare(query).bind(...params).all()
 
       // Vamos parsear JSON no return
       const parsed = results.results.map((r: any) => ({
@@ -74,11 +83,12 @@ server.tool(
     if (!db) return { content: [{ type: "text", text: "BD não conectado" }] }
 
     try {
+      const tenantId = (globalThis as any).__MCP_TENANT
       const id = crypto.randomUUID()
       await db.prepare(
-        `INSERT INTO entries (id, collection_id, data, status)
-         VALUES (?, (SELECT id FROM collections WHERE slug = ?), ?, 'published')`
-      ).bind(id, args.slug, args.data).run()
+        `INSERT INTO entries (id, tenant_id, collection_id, data, status)
+         VALUES (?, ?, (SELECT id FROM collections WHERE slug = ?), ?, 'published')`
+      ).bind(id, tenantId || null, args.slug, args.data).run()
 
       return {
         content: [{ type: "text", text: `Criado com sucesso. ID: ${id}` }]
@@ -100,8 +110,9 @@ const transport = new WebStandardStreamableHTTPServerTransport({
 // Conecta o server ao transport de forma permanente para a instância atual do isolates
 server.connect(transport).catch(console.error)
 
-export async function handleMcpRequest(req: Request, db: any) {
+export async function handleMcpRequest(req: Request, db: any, tenantId?: string) {
   // Passa as dependências atachadas à request pro pool local temporário
-  (globalThis as any).__MCP_DB = db
+  (globalThis as any).__MCP_DB = db;
+  (globalThis as any).__MCP_TENANT = tenantId;
   return transport.handleRequest(req)
 }

@@ -169,6 +169,19 @@ export const collections: CollectionDef[] = [
       ]},
     ]
   },
+  {
+    slug: 'forms',
+    label: 'Formulário',
+    labelPlural: 'Formulários',
+    icon: 'Inbox',
+    hasLocale: false,
+    hasSlug: false,
+    hasStatus: true,
+    fields: [
+      { name: 'source', type: 'text', required: true, label: 'Origem' },
+      { name: 'payload', type: 'json', required: true, label: 'Dados' },
+    ]
+  },
 ]
 
 /** Busca uma collection por slug */

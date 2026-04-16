@@ -29,14 +29,41 @@ function FieldInput({
     case "richtext":
       return (
         <div className="field">
-          <label htmlFor={id}>{field.label ?? field.name}</label>
+          <label htmlFor={id} style={{ display: 'flex', justifyContent: 'space-between' }}>
+            {field.label ?? field.name}
+            {field.type === "richtext" && <span style={{ fontSize: 10, color: 'var(--primary)', opacity: 0.8 }}>Markdown / HTML suportado</span>}
+          </label>
           <textarea
             id={id}
             value={(value as string) ?? ""}
             onChange={(e) => onChange(e.target.value)}
             required={field.required}
-            rows={field.type === "richtext" ? 8 : 3}
+            rows={field.type === "richtext" ? 12 : 3}
+            style={field.type === "richtext" ? { fontFamily: "var(--mono)", fontSize: 13, lineHeight: 1.6, padding: '1rem' } : undefined}
           />
+        </div>
+      );
+
+    case "image":
+      return (
+        <div className="field">
+          <label htmlFor={id}>{field.label ?? field.name} (URL da Imagem)</label>
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            {value ? (
+               <img src={value as string} alt="Preview" style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 8, border: '1px solid var(--border)', backgroundColor: 'var(--surface)' }} />
+            ) : (
+               <div style={{ width: 64, height: 64, borderRadius: 8, border: '1px dashed var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-dim)', fontSize: 10, textAlign: 'center', lineHeight: 1.2 }}>Sem<br/>Capa</div>
+            )}
+            <input
+              id={id}
+              type="text"
+              value={(value as string) ?? ""}
+              onChange={(e) => onChange(e.target.value)}
+              required={field.required}
+              placeholder="https://... ou Path do Hub (/media)"
+              style={{ flex: 1 }}
+            />
+          </div>
         </div>
       );
 

@@ -40,7 +40,7 @@ export interface FieldDef {
 
 /** Busca todas as collections registradas */
 export async function fetchCollections(): Promise<CollectionDef[]> {
-  const res = await fetch(`${BASE}/collections`);
+  const res = await fetch(`${BASE}/collections`, { credentials: 'include' });
   const data = await res.json() as { data: CollectionDef[] };
   return (data.data ?? []).map(c => ({
     ...c,
@@ -57,13 +57,13 @@ export async function fetchEntries(
   if (params.locale) qs.set('locale', params.locale);
   if (params.page) qs.set('page', String(params.page));
   if (params.status) qs.set('status', params.status);
-  const res = await fetch(`${BASE}/collections/${slug}/entries?${qs}`);
+  const res = await fetch(`${BASE}/collections/${slug}/entries?${qs}`, { credentials: 'include' });
   return res.json() as Promise<EntryListResponse>;
 }
 
 /** Busca uma entry pelo ID */
 export async function fetchEntry(slug: string, id: string): Promise<Record<string, unknown>> {
-  const res = await fetch(`${BASE}/collections/${slug}/entries/${id}`);
+  const res = await fetch(`${BASE}/collections/${slug}/entries/${id}`, { credentials: 'include' });
   const data = await res.json() as { data: Record<string, unknown> };
   return data.data;
 }
