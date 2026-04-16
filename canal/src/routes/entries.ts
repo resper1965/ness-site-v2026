@@ -1,0 +1,262 @@
+/**
+ * Canal CMS — Generic CRUD Routes for Collections/Entries
+ *
+ * Rotas RESTful que operam sobre qualquer collection registrada.
+ * Resolve a collection pelo slug, valida campos e persiste no D1.
+ */
+
+import { Hono } from 'hono'
+import { collections, getCollection, getRequiredFields } from '../collections'
+
+type Env = {
+  Bindings: {
+    DB: D1Database
+    AI: Ai
+    VECTORIZE: VectorizeIndex
+    MEDIA: R2Bucket
+    BETTER_AUTH_SECRET: string
+    BETTER_AUTH_URL: string
+    ADMIN_SETUP_KEY: string
+  }
+}
+
+const entries = new Hono<Env>()
+
+// ── Lista todas as collections ──────────────────────────────────
+entries.get('/collections', (c) => {
+  return c.json(collections.map(col => ({
+    slug: col.slug,
+    label: col.label,
+    labelPlural: col.labelPlural,
+    icon: col.icon,
+    hasLocale: col.hasLocale,
+    hasSlug: col.hasSlug,
+    hasStatus: col.hasStatus,
+    fieldCount: col.fields.length,
+  })))
+})
+
+// ── Schema de uma collection ────────────────────────────────────
+entries.get('/collections/:slug', (c) => {
+  const col = getCollection(c.req.param('slug'))
+  if (!col) return c.json({ error: 'Collection not found' }, 404)
+  return c.json(col)
+})
+
+// ── Listar entries de uma collection ────────────────────────────
+entries.get('/collections/:slug/entries', async (c) => {
+  const col = getCollection(c.req.param('slug'))
+  if (!col) return c.json({ error: 'Collection not found' }, 404)
+
+  const locale = c.req.query('locale') || c.req.query('lang') || 'pt'
+  const status = c.req.query('status') || 'published'
+  const page = parseInt(c.req.query('page') || '1', 10)
+  const limit = Math.min(parseInt(c.req.query('limit') || '20', 10), 100)
+  const offset = (page - 1) * limit
+
+  // Buscar collection_id
+  const colRow = await c.env.DB.prepare(
+    'SELECT id FROM collections WHERE slug = ? LIMIT 1'
+  ).bind(col.slug).first<{ id: string }>()
+
+  if (!colRow) return c.json({ error: 'Collection not seeded in DB' }, 404)
+
+  // Buscar entries
+  let query = `SELECT * FROM entries WHERE collection_id = ?`
+  const params: unknown[] = [colRow.id]
+
+  if (col.hasLocale) {
+    query += ` AND locale = ?`
+    params.push(locale)
+  }
+
+  if (col.hasStatus && status !== 'all') {
+    query += ` AND status = ?`
+    params.push(status)
+  }
+
+  query += ` ORDER BY created_at DESC LIMIT ? OFFSET ?`
+  params.push(limit, offset)
+
+  const { results } = await c.env.DB.prepare(query).bind(...params).all()
+
+  // Contar total para paginação
+  let countQuery = `SELECT COUNT(*) as total FROM entries WHERE collection_id = ?`
+  const countParams: unknown[] = [colRow.id]
+  if (col.hasLocale) {
+    countQuery += ` AND locale = ?`
+    countParams.push(locale)
+  }
+  if (col.hasStatus && status !== 'all') {
+    countQuery += ` AND status = ?`
+    countParams.push(status)
+  }
+  const countResult = await c.env.DB.prepare(countQuery).bind(...countParams).first<{ total: number }>()
+
+  // Parse JSON data de cada entry
+  const items = (results as any[]).map(row => ({
+    id: row.id,
+    slug: row.slug,
+    locale: row.locale,
+    status: row.status,
+    ...safeParseJSON(row.data),
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    publishedAt: row.published_at,
+  }))
+
+  return c.json({
+    data: items,
+    meta: {
+      collection: col.slug,
+      page,
+      limit,
+      total: countResult?.total ?? 0,
+      totalPages: Math.ceil((countResult?.total ?? 0) / limit),
+    }
+  })
+})
+
+// ── Detalhe de uma entry ────────────────────────────────────────
+entries.get('/collections/:slug/entries/:id', async (c) => {
+  const col = getCollection(c.req.param('slug'))
+  if (!col) return c.json({ error: 'Collection not found' }, 404)
+
+  const id = c.req.param('id')
+  const locale = c.req.query('locale') || c.req.query('lang') || 'pt'
+
+  // Tentar buscar por ID primeiro, depois por slug
+  let row = await c.env.DB.prepare(
+    'SELECT * FROM entries WHERE id = ? LIMIT 1'
+  ).bind(id).first()
+
+  if (!row && col.hasSlug) {
+    // Buscar collection_id primeiro
+    const colRow = await c.env.DB.prepare(
+      'SELECT id FROM collections WHERE slug = ? LIMIT 1'
+    ).bind(col.slug).first<{ id: string }>()
+
+    if (colRow) {
+      row = await c.env.DB.prepare(
+        'SELECT * FROM entries WHERE collection_id = ? AND slug = ? AND locale = ? LIMIT 1'
+      ).bind(colRow.id, id, locale).first()
+    }
+  }
+
+  if (!row) return c.json({ error: 'Entry not found' }, 404)
+
+  const entry = row as any
+  return c.json({
+    id: entry.id,
+    slug: entry.slug,
+    locale: entry.locale,
+    status: entry.status,
+    ...safeParseJSON(entry.data),
+    createdAt: entry.created_at,
+    updatedAt: entry.updated_at,
+    publishedAt: entry.published_at,
+  })
+})
+
+// ── Criar entry (requer auth) ───────────────────────────────────
+entries.post('/collections/:slug/entries', async (c) => {
+  const col = getCollection(c.req.param('slug'))
+  if (!col) return c.json({ error: 'Collection not found' }, 404)
+
+  const body = await c.req.json<Record<string, unknown>>()
+
+  // Validar campos obrigatórios
+  const required = getRequiredFields(col)
+  const missing = required.filter(f => !body[f])
+  if (missing.length > 0) {
+    return c.json({ error: `Missing required fields: ${missing.join(', ')}` }, 400)
+  }
+
+  // Buscar collection_id
+  const colRow = await c.env.DB.prepare(
+    'SELECT id FROM collections WHERE slug = ? LIMIT 1'
+  ).bind(col.slug).first<{ id: string }>()
+
+  if (!colRow) return c.json({ error: 'Collection not seeded in DB' }, 404)
+
+  const id = crypto.randomUUID()
+  const locale = (body.locale as string) || 'pt'
+  const status = (body.status as string) || 'draft'
+  const slug = col.hasSlug ? ((body.slug as string) || generateSlug(body.title as string || id)) : null
+
+  // Separar campos de sistema dos dados
+  const { locale: _l, status: _s, slug: _sl, ...data } = body
+
+  const now = new Date().toISOString()
+  const publishedAt = status === 'published' ? now : null
+
+  await c.env.DB.prepare(
+    `INSERT INTO entries (id, collection_id, data, slug, locale, status, published_at, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ).bind(id, colRow.id, JSON.stringify(data), slug, locale, status, publishedAt, now, now).run()
+
+  return c.json({ id, slug, locale, status }, 201)
+})
+
+// ── Atualizar entry (requer auth) ───────────────────────────────
+entries.put('/collections/:slug/entries/:id', async (c) => {
+  const col = getCollection(c.req.param('slug'))
+  if (!col) return c.json({ error: 'Collection not found' }, 404)
+
+  const entryId = c.req.param('id')
+  const body = await c.req.json<Record<string, unknown>>()
+
+  const existing = await c.env.DB.prepare(
+    'SELECT * FROM entries WHERE id = ? LIMIT 1'
+  ).bind(entryId).first()
+
+  if (!existing) return c.json({ error: 'Entry not found' }, 404)
+
+  const status = (body.status as string) || (existing as any).status
+  const slug = col.hasSlug ? ((body.slug as string) || (existing as any).slug) : null
+  const locale = (body.locale as string) || (existing as any).locale
+
+  // Merge data existing + new
+  const existingData = safeParseJSON((existing as any).data)
+  const { locale: _l, status: _s, slug: _sl, ...newData } = body
+  const mergedData = { ...existingData, ...newData }
+
+  const now = new Date().toISOString()
+  const publishedAt = status === 'published' ? ((existing as any).published_at || now) : null
+
+  await c.env.DB.prepare(
+    `UPDATE entries SET data = ?, slug = ?, locale = ?, status = ?, published_at = ?, updated_at = ?
+     WHERE id = ?`
+  ).bind(JSON.stringify(mergedData), slug, locale, status, publishedAt, now, entryId).run()
+
+  return c.json({ id: entryId, slug, locale, status, updated: true })
+})
+
+// ── Deletar entry (requer auth) ─────────────────────────────────
+entries.delete('/collections/:slug/entries/:id', async (c) => {
+  const entryId = c.req.param('id')
+
+  const { success } = await c.env.DB.prepare(
+    'DELETE FROM entries WHERE id = ?'
+  ).bind(entryId).run()
+
+  return c.json({ success, deleted: entryId })
+})
+
+// ── Helpers ─────────────────────────────────────────────────────
+
+function safeParseJSON(str: unknown): Record<string, unknown> {
+  if (typeof str !== 'string') return {}
+  try { return JSON.parse(str) } catch { return {} }
+}
+
+function generateSlug(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+    .substring(0, 80)
+}
+
+export { entries }

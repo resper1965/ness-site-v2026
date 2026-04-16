@@ -32,5 +32,11 @@
 	],
 	"ai": {
 		"binding": "AI"
-	}
+	},
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "canal-media"
+		}
+	]
 }
