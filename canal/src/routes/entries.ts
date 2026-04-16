@@ -6,6 +6,7 @@
  */
 
 import { Hono } from 'hono'
+import { z } from 'zod'
 import { collections, getCollection, getRequiredFields } from '../collections'
 import { createAuth } from '../auth'
 
@@ -189,11 +190,31 @@ entries.post('/collections/:slug/entries', async (c) => {
   const col = getCollection(c.req.param('slug'))
   if (!col) return c.json({ error: 'Collection not found' }, 404)
 
-  const body = await c.req.json<Record<string, unknown>>()
+  const rawBody = await c.req.json()
 
-  // Validar campos obrigatórios
+  // Build dynamic Zod schema to strip unapproved fields
+  const schemaObj: Record<string, z.ZodTypeAny> = {
+    locale: z.string().optional(),
+    status: z.string().optional(),
+    slug: z.string().optional()
+  }
+  
+  col.fields.forEach(f => {
+    schemaObj[f.name] = f.required ? z.any() : z.any().optional()
+  })
+  
+  const schema = z.object(schemaObj).strip()
+  const parsed = schema.safeParse(rawBody)
+  
+  if (!parsed.success) {
+    return c.json({ error: 'Validation failed', details: parsed.error.issues }, 400)
+  }
+  
+  const body = parsed.data as Record<string, unknown>
+
+  // Additional fallback validation for required fields
   const required = getRequiredFields(col)
-  const missing = required.filter(f => !body[f])
+  const missing = required.filter(f => body[f] === undefined || body[f] === null || body[f] === '')
   if (missing.length > 0) {
     return c.json({ error: `Missing required fields: ${missing.join(', ')}` }, 400)
   }
@@ -236,7 +257,27 @@ entries.put('/collections/:slug/entries/:id', async (c) => {
   if (!col) return c.json({ error: 'Collection not found' }, 404)
 
   const entryId = c.req.param('id')
-  const body = await c.req.json<Record<string, unknown>>()
+  const rawBody = await c.req.json()
+
+  // Build dynamic Zod schema to strip unapproved fields
+  const schemaObj: Record<string, z.ZodTypeAny> = {
+    locale: z.string().optional(),
+    status: z.string().optional(),
+    slug: z.string().optional()
+  }
+  
+  col.fields.forEach(f => {
+    schemaObj[f.name] = z.any().optional() // Updates shouldn't require all fields, just partial
+  })
+  
+  const schema = z.object(schemaObj).strip()
+  const parsed = schema.safeParse(rawBody)
+  
+  if (!parsed.success) {
+    return c.json({ error: 'Validation failed', details: parsed.error.issues }, 400)
+  }
+  
+  const body = parsed.data as Record<string, unknown>
 
   const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
   const session = await auth.api.getSession({ headers: c.req.raw.headers }).catch(() => null)

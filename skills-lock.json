@@ -11,6 +11,11 @@
       "sourceType": "github",
       "computedHash": "be124f3733b037fb8d859f275454ecd1c590759ef9ab184bea35ba1a0a38e14c"
     },
+    "owasp-security": {
+      "source": "hoodini/ai-agents-skills",
+      "sourceType": "github",
+      "computedHash": "96ddeeb1eab361ebb8e18c1770a3baab804526fb94966f644a21ae72cc7841e2"
+    },
     "saas-platforms": {
       "source": "miles990/claude-software-skills",
       "sourceType": "github",

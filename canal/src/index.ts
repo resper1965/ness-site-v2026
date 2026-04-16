@@ -11,7 +11,9 @@
 
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
+import { secureHeaders } from 'hono/secure-headers'
 import { streamText } from 'ai'
+import { z } from 'zod'
 import { createWorkersAI } from 'workers-ai-provider'
 import { createAuth } from './auth'
 import { seedVectors, SOLUTIONS_CORPUS } from './seed-vectors'
@@ -39,7 +41,8 @@ type Variables = {
 
 const app = new Hono<{ Bindings: Bindings, Variables: Variables }>()
 
-// ── CORS ────────────────────────────────────────────────────────
+// ── CORS & Security ───────────────────────────────────────────────
+app.use('/*', secureHeaders())
 app.use('/*', cors({
   origin: [
     'http://localhost:5173',
@@ -133,6 +136,12 @@ app.all('/api/mcp/*', requireAdminOrKey, async (c) => {
   return handleMcpRequest(c.req.raw, c.env.DB, tenantId)
 })
 
+const setupAdminSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+  name: z.string().min(2),
+}).strip();
+
 // ── Bootstrap admin (setup-key) ─────────────────────────────────
 app.post('/api/setup/admin', async (c) => {
   const key = c.req.header('x-setup-key')
@@ -141,9 +150,11 @@ app.post('/api/setup/admin', async (c) => {
   }
 
   const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
-  const { email, password, name } = await c.req.json<{
-    email: string; password: string; name: string
-  }>()
+  
+  const parsed = setupAdminSchema.safeParse(await c.req.json())
+  if (!parsed.success) return c.json({ error: 'Invalid payload', details: parsed.error.issues }, 400)
+  
+  const { email, password, name } = parsed.data
 
   try {
     const result = await auth.api.signUpEmail({
@@ -157,11 +168,21 @@ app.post('/api/setup/admin', async (c) => {
 
 // ── Admin CRUD legado (protegido por session) ───────────────────
 
+const insightSchema = z.object({
+  lang: z.string().default('pt'),
+  slug: z.string(),
+  title: z.string(),
+  tag: z.string(),
+  icon: z.string().optional(),
+  date: z.string(),
+  desc: z.string(),
+  featured: z.number().optional()
+}).strip();
+
 app.post('/api/admin/insights', requireSession, async (c) => {
-  const body = await c.req.json<{
-    lang: string; slug: string; title: string; tag: string;
-    icon?: string; date: string; desc: string; featured?: number
-  }>()
+  const parsed = insightSchema.safeParse(await c.req.json())
+  if (!parsed.success) return c.json({ error: 'Bad Request', details: parsed.error.issues }, 400)
+  const body = parsed.data;
   const { success } = await c.env.DB.prepare(
     `INSERT INTO insights (lang, slug, title, tag, icon, date, desc, featured)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
@@ -178,11 +199,20 @@ app.delete('/api/admin/insights/:id', requireSession, async (c) => {
   return c.json({ success })
 })
 
+const jobSchema = z.object({
+  lang: z.string().default('pt'),
+  title: z.string(),
+  vertical: z.string(),
+  location: z.string(),
+  type: z.string(),
+  desc: z.string(),
+  requirements: z.array(z.string()).default([])
+}).strip();
+
 app.post('/api/admin/jobs', requireSession, async (c) => {
-  const body = await c.req.json<{
-    lang: string; title: string; vertical: string; location: string;
-    type: string; desc: string; requirements: string[]
-  }>()
+  const parsed = jobSchema.safeParse(await c.req.json())
+  if (!parsed.success) return c.json({ error: 'Bad Request', details: parsed.error.issues }, 400)
+  const body = parsed.data;
   const { success } = await c.env.DB.prepare(
     `INSERT INTO jobs (lang, title, vertical, location, type, desc, requirements)
      VALUES (?, ?, ?, ?, ?, ?, ?)`
@@ -193,11 +223,22 @@ app.post('/api/admin/jobs', requireSession, async (c) => {
   return c.json({ success })
 })
 
+const caseSchema = z.object({
+  lang: z.string().default('pt'),
+  client: z.string(),
+  category: z.string(),
+  project: z.string(),
+  result: z.string(),
+  desc: z.string(),
+  stats: z.string(),
+  image: z.string().optional(),
+  featured: z.number().optional()
+}).strip();
+
 app.post('/api/admin/cases', requireSession, async (c) => {
-  const body = await c.req.json<{
-    lang: string; client: string; category: string; project: string;
-    result: string; desc: string; stats: string; image?: string; featured?: number
-  }>()
+  const parsed = caseSchema.safeParse(await c.req.json())
+  if (!parsed.success) return c.json({ error: 'Bad Request', details: parsed.error.issues }, 400)
+  const body = parsed.data;
   const { success } = await c.env.DB.prepare(
     `INSERT INTO cases (lang, client, category, project, result, desc, stats, image, featured)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
