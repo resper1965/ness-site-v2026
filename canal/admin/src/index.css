@@ -2,23 +2,23 @@
 
 
 :root {
-  /* Dark OLED palette */
-  --bg:          #07080c;
-  --surface:     #0e0f16;
-  --surface-2:   #15161f;
-  --surface-3:   #1c1d29;
+  /* Dark OLED palette (Ness Native) */
+  --bg:          #060e20; /* lowest container */
+  --surface:     #0b1326; /* default surface */
+  --surface-2:   #0f172a; /* container low */
+  --surface-3:   #222a3d; /* container high */
   --border:      rgba(255,255,255,0.06);
   --border-hover:rgba(255,255,255,0.12);
 
   /* Text */
-  --text:        #eef0f8;
-  --text-muted:  #5c6080;
-  --text-dim:    #8b90b5;
+  --text:        #dae2fd; /* on-surface */
+  --text-muted:  #87929a; /* on-surface-variant */
+  --text-dim:    #abc1ec;
 
-  /* Accent — blue #3B82F6 */
-  --accent:      #3b82f6;
-  --accent-soft: rgba(59,130,246,0.10);
-  --accent-glow: rgba(59,130,246,0.22);
+  /* Accent — Ness Primary */
+  --accent:      #7bd0ff;
+  --accent-soft: rgba(123,208,255,0.10);
+  --accent-glow: rgba(0,173,232,0.22);
 
   /* Secondary */
   --orange:      #f97316;
@@ -28,8 +28,9 @@
 
   --radius:    12px;
   --radius-sm: 8px;
-  --font:      'Fira Sans', system-ui, sans-serif;
+  --font:      'Inter', system-ui, sans-serif;
   --mono:      'Fira Code', monospace;
+  --display:   'Manrope', sans-serif;
 
   /* Sidebar */
   --sidebar-w: 240px;
@@ -98,11 +99,12 @@ body {
 }
 
 .sidebar-logo {
-  font-family: var(--mono);
-  font-size: 17px;
-  font-weight: 700;
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 800;
   color: var(--text);
   letter-spacing: -0.5px;
+  text-transform: lowercase;
 }
 .sidebar-logo span {
   color: var(--accent);

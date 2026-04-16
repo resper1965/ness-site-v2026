@@ -7,6 +7,7 @@ const InsightsPage   = React.lazy(() => import("./routes/insights"));
 const CasesPage      = React.lazy(() => import("./routes/cases"));
 const JobsPage       = React.lazy(() => import("./routes/jobs"));
 const FormsPage      = React.lazy(() => import("./routes/forms"));
+const ChatsPage      = React.lazy(() => import("./routes/chats"));
 
 const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
       { path: "cases",       element: <CasesPage /> },
       { path: "jobs",        element: <JobsPage /> },
       { path: "forms",       element: <FormsPage /> },
+      { path: "chats",       element: <ChatsPage /> },
     ],
   },
 ]);

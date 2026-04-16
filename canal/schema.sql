@@ -69,3 +69,13 @@ CREATE TABLE newsletter (
   email      TEXT NOT NULL UNIQUE,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+-- ── chats (ai chatbot logs) ─────────────────────────────────
+DROP TABLE IF EXISTS chats;
+CREATE TABLE chats (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  session_id   TEXT    NOT NULL UNIQUE,
+  messages     TEXT    NOT NULL DEFAULT '[]', -- Armazena as interações como JSON {role, content}
+  created_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at   DATETIME DEFAULT CURRENT_TIMESTAMP
+);

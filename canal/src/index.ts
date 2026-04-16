@@ -1,12 +1,17 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
+import { streamText } from 'ai'
+import { createWorkersAI } from 'workers-ai-provider'
 import { createAuth } from './auth'
+import { seedVectors, SOLUTIONS_CORPUS } from './seed-vectors'
 
 type Bindings = {
   DB: D1Database
+  AI: Ai
+  VECTORIZE: VectorizeIndex
   BETTER_AUTH_SECRET: string
   BETTER_AUTH_URL: string
-  ADMIN_SETUP_KEY: string   // env var temporária para proteger o endpoint de bootstrap
+  ADMIN_SETUP_KEY: string
 }
 
 const app = new Hono<{ Bindings: Bindings }>()
@@ -231,6 +236,88 @@ app.get('/api/admin/forms', requireSession, async (c) => {
     'SELECT * FROM forms ORDER BY created_at DESC LIMIT 50'
   ).all()
   return c.json(results)
+})
+
+// Listagem de logs de chat (admin)
+app.get('/api/admin/chats', requireSession, async (c) => {
+  const { results } = await c.env.DB.prepare(
+    'SELECT * FROM chats ORDER BY updated_at DESC LIMIT 50'
+  ).all()
+  return c.json(results)
+})
+
+// ── Seed Vectors (admin — session ou ADMIN_SETUP_KEY) ────────
+app.post('/api/admin/seed-vectors', async (c) => {
+  // Aceita session auth OU x-setup-key header
+  const setupKey = c.req.header('x-setup-key')
+  if (setupKey !== c.env.ADMIN_SETUP_KEY) {
+    // tenta session
+    const session = await createAuth(c.env).api.getSession({ headers: c.req.raw.headers })
+    if (!session) return c.json({ error: 'unauthorized' }, 401)
+  }
+  try {
+    const results = await seedVectors(c.env)
+    return c.json({ success: true, results })
+  } catch (e: any) {
+    return c.json({ success: false, error: e.message }, 500)
+  }
+})
+
+// ── Chat RAG (público — usado pelo chatbot do site) ─────────
+app.post('/api/chat', async (c) => {
+  const { messages } = await c.req.json<{ messages: Array<{ role: string; content: string }> }>()
+  const lastMessage = messages[messages.length - 1]?.content || ''
+
+  // 1. Gerar embedding da pergunta do usuário
+  const queryEmbedding = await c.env.AI.run('@cf/baai/bge-base-en-v1.5', {
+    text: [lastMessage]
+  }) as any
+
+  // 2. Buscar contexto relevante no Vectorize
+  const vectorResults = await c.env.VECTORIZE.query(queryEmbedding.data[0], {
+    topK: 3,
+    returnMetadata: 'all'
+  })
+
+  // 3. Montar contexto RAG
+  const context = vectorResults.matches
+    .map((m: any) => m.metadata?.content || '')
+    .join('\n\n---\n\n')
+
+  // 4. Fallback: se vectorize vazio, usar corpus estático
+  const ragContext = context.trim()
+    ? context
+    : SOLUTIONS_CORPUS.map(s => s.content).join('\n\n---\n\n')
+
+  // 5. System prompt
+  const systemPrompt = `Você é a assistente virtual da ness., uma empresa de tecnologia fundada em 1991 com mais de 34 anos de experiência.
+Você responde dúvidas sobre os serviços da ness. com base EXCLUSIVAMENTE no contexto abaixo.
+Seja conciso, profissional, e direcione o usuário para falar com um consultor quando necessário.
+Se a pergunta não tiver relação com a ness. ou seus serviços, diga educadamente que só pode ajudar com assuntos da ness.
+
+--- CONTEXTO ---
+${ragContext}
+--- FIM DO CONTEXTO ---`
+
+  // 6. Stream response via Vercel AI SDK
+  const workersai = createWorkersAI({ binding: c.env.AI })
+
+  const result = streamText({
+    model: workersai('@cf/meta/llama-3.1-8b-instruct'),
+    system: systemPrompt,
+    messages: messages.map((m: any) => ({ role: m.role, content: m.content })),
+  })
+
+  // 7. Gravar sessão no D1 (fire-and-forget)
+  const sessionId = c.req.header('x-session-id') || crypto.randomUUID()
+  c.executionCtx.waitUntil(
+    c.env.DB.prepare(
+      `INSERT INTO chats (session_id, messages) VALUES (?, ?)
+       ON CONFLICT(session_id) DO UPDATE SET messages = ?, updated_at = CURRENT_TIMESTAMP`
+    ).bind(sessionId, JSON.stringify(messages), JSON.stringify(messages)).run().catch(() => {})
+  )
+
+  return result.toTextStreamResponse()
 })
 
 export default app
