@@ -6,12 +6,21 @@ import { useTranslation } from "react-i18next";
 import { LayoutGrid } from "lucide-react";
 import EmptyState from '../components/EmptyState';
 import { usePageTitle } from '../hooks/usePageTitle';
-
+interface Case {
+  slug?: string;
+  project?: string;
+  client: string;
+  category: string;
+  result: string;
+  desc: string;
+  stats: string;
+  image: string;
+}
 
 const Portfolio = () => {
   const { t, i18n } = useTranslation();
   const [filter, setFilter] = useState("todos");
-  const [cases, setCases] = useState<any[]>([]);
+  const [cases, setCases] = useState<Case[]>([]);
   usePageTitle('portfolio.meta_title', 'portfólio — ness.');
   const [loading, setLoading] = useState(true);
 

@@ -62,7 +62,11 @@ export default function App() {
             {BRAND === 'forense' && (
               <Route path="/" element={<ForenseHome />} />
             )}
-            
+
+            {/* Vertical sub-brand routes (accessible from ness site) */}
+            <Route path="/trustness" element={<TrustnessHome />} />
+            <Route path="/forense" element={<ForenseHome />} />
+
             {/* Shared universal routes */}
             <Route path="/sobre" element={<About />} />
             <Route path="/portfolio" element={<Portfolio />} />

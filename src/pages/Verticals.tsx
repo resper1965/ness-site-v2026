@@ -52,9 +52,10 @@ const Verticals = () => {
         </div>
         
         <div className="grid md:grid-cols-2 gap-12">
-          <motion.div 
+          <motion.a 
+            href="/forense"
             whileHover={{ scale: 1.02 }}
-            className="relative group cursor-pointer border border-white/5 p-12 rounded-[3rem] bg-surface-container-low/20 hover:bg-surface-container-low/40 transition-all"
+            className="block relative group cursor-pointer border border-white/5 p-12 rounded-[3rem] bg-surface-container-low/20 hover:bg-surface-container-low/40 transition-all"
           >
             <div className="mb-8 w-16 h-16 rounded-2xl bg-primary-container/5 border border-primary-container/10 flex items-center justify-center">
               <Fingerprint className="text-primary-container" size={40} />
@@ -68,11 +69,12 @@ const Verticals = () => {
             <div className="mt-8 flex items-center gap-2 text-[10px] text-primary-container uppercase tracking-widest font-bold">
               explorar unidade <ArrowUpRight size={14} />
             </div>
-          </motion.div>
+          </motion.a>
 
-          <motion.div 
+          <motion.a 
+            href="/trustness"
             whileHover={{ scale: 1.02 }}
-            className="relative group cursor-pointer border border-white/5 p-12 rounded-[3rem] bg-surface-container-low/20 hover:bg-surface-container-low/40 transition-all"
+            className="block relative group cursor-pointer border border-white/5 p-12 rounded-[3rem] bg-surface-container-low/20 hover:bg-surface-container-low/40 transition-all"
           >
             <div className="mb-8 w-16 h-16 rounded-2xl bg-primary-container/5 border border-primary-container/10 flex items-center justify-center">
               <ShieldCheck className="text-primary-container" size={40} />
@@ -86,7 +88,7 @@ const Verticals = () => {
             <div className="mt-8 flex items-center gap-2 text-[10px] text-primary-container uppercase tracking-widest font-bold">
               explorar unidade <ArrowUpRight size={14} />
             </div>
-          </motion.div>
+          </motion.a>
         </div>
       </div>
     </section>

@@ -59,7 +59,7 @@ export default function AccountSettingsPage() {
   const [linkedAccounts, setLinkedAccounts] = useState<any[]>([]);
   React.useEffect(() => {
     authClient.listAccounts().then((res) => {
-      if (res.data) setLinkedAccounts(res.data);
+      if (res.data) setLinkedAccounts(res.data.filter((a: any) => a.providerId !== 'credential'));
     });
   }, []);
 
@@ -170,10 +170,10 @@ export default function AccountSettingsPage() {
             
             <div style={{ marginTop: "24px", display: "flex", gap: "8px" }}>
               <button className="btn btn-secondary" onClick={() => handleLinkSocial("google")}>
-                 Logo do Google
+                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12c0-.8-.1-1.6-.3-2.3H12v4.4h5.7c-.2 1.4-1 2.6-2.2 3.4v2.8h3.6C21.2 18.3 22 15.4 22 12V12z"/><path d="M12 22c2.8 0 5.2-.9 6.9-2.5l-3.6-2.8c-.9.6-2.1.9-3.3.9-2.5 0-4.6-1.7-5.4-4H3v2.8C4.7 20 8.1 22 12 22z"/><path d="M6.6 13.6c-.2-.6-.3-1.2-.3-1.8s.1-1.2.3-1.8V7.2H3C2.4 8.7 2 10.3 2 12s.4 3.3 1 4.8l3.6-3.2z"/><path d="M12 5.8c1.5 0 2.9.5 4 1.5l3-3C17.2 2.6 14.8 1.6 12 1.6 8.1 1.6 4.7 3.6 3 7.2l3.6 2.8C7.4 7.5 9.5 5.8 12 5.8z"/></svg> Google
               </button>
               <button className="btn btn-secondary" onClick={() => handleLinkSocial("microsoft")}>
-                 Logo da Microsoft
+                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11.4 24H0V12.6h11.4V24zM24 24H12.6V12.6H24V24zM11.4 11.4H0V0h11.4v11.4zM24 11.4H12.6V0H24v11.4z"/></svg> Microsoft
               </button>
             </div>
           </div>

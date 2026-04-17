@@ -8,11 +8,20 @@ import { usePageTitle } from '../hooks/usePageTitle';
 
 const CANAL_BASE = "https://canal.ness.workers.dev";
 
+interface Case {
+  project: string;
+  client?: string;
+  stats?: string;
+  desc?: string;
+  image?: string;
+  result?: string;
+}
+
 const PortfolioCase = () => {
   const { slug } = useParams<{ slug: string }>();
   const { i18n } = useTranslation();
   const navigate = useNavigate();
-  const [item, setItem] = useState<any | null>(null);
+  const [item, setItem] = useState<Case | null>(null);
   const [loading, setLoading] = useState(true);
   usePageTitle('', item?.project ?? 'case');
 

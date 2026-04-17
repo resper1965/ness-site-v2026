@@ -6,7 +6,7 @@ const app = new Hono().basePath('/api');
 app.get("/insights", async (c) => {
   const lang = c.req.query("lang") || "pt";
   try {
-    const response = await fetch(`https://canal.ness.com.br/api/insights?lang=${lang}`);
+    const response = await fetch(`https://canal.ness.workers.dev/api/insights?lang=${lang}`);
     const data = await response.json();
     return c.json(data);
   } catch (error) {
@@ -17,7 +17,7 @@ app.get("/insights", async (c) => {
 app.get("/jobs", async (c) => {
   const lang = c.req.query("lang") || "pt";
   try {
-    const response = await fetch(`https://canal.ness.com.br/api/jobs?lang=${lang}`);
+    const response = await fetch(`https://canal.ness.workers.dev/api/jobs?lang=${lang}`);
     const data = await response.json();
     return c.json(data);
   } catch (error) {
@@ -28,7 +28,7 @@ app.get("/jobs", async (c) => {
 app.get("/cases", async (c) => {
   const lang = c.req.query("lang") || "pt";
   try {
-    const response = await fetch(`https://canal.ness.com.br/api/cases?lang=${lang}`);
+    const response = await fetch(`https://canal.ness.workers.dev/api/cases?lang=${lang}`);
     const data = await response.json();
     return c.json(data);
   } catch (error) {
@@ -39,7 +39,7 @@ app.get("/cases", async (c) => {
 app.post("/submit-form", async (c) => {
   try {
     const body = await c.req.json();
-    const response = await fetch("https://canal.ness.com.br/api/forms", {
+    const response = await fetch("https://canal.ness.workers.dev/api/forms", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body)
@@ -55,7 +55,7 @@ app.post("/chat", async (c) => {
   let body: any = null;
   try {
     body = await c.req.json();
-    const response = await fetch("https://canal.ness.com.br/api/chat", {
+    const response = await fetch("https://canal.ness.workers.dev/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body)

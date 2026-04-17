@@ -11,13 +11,21 @@ MapPin,
 
 import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
-
+interface Job {
+  id: string;
+  title: string;
+  vertical: string;
+  location: string;
+  type: string;
+  desc: string;
+  requirements: string[];
+}
 
 const Careers = () => {
   const { t, i18n } = useTranslation();
-  const [jobs, setJobs] = useState<any[]>([]);
+  const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedJob, setSelectedJob] = useState<any>(null);
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [filter, setFilter] = useState("todos");
 
   useEffect(() => {
@@ -243,6 +251,18 @@ const Careers = () => {
                             <p className="text-xs text-on-surface-variant/60">{t('careers.form.drag_drop')}</p>
                           </div>
                         </div>
+                      </div>
+                      <div className="flex items-start gap-3 px-4 py-2">
+                        <input 
+                          id="privacy-consent-careers"
+                          name="privacy_consent"
+                          type="checkbox" 
+                          required
+                          className="mt-1 w-4 h-4 bg-white/5 border border-white/10 rounded focus:ring-1 focus:ring-primary-container accent-primary-container cursor-pointer"
+                        />
+                        <label htmlFor="privacy-consent-careers" className="text-[11px] text-on-surface-variant font-light leading-relaxed cursor-pointer">
+                          {t('common.privacy_consent')}
+                        </label>
                       </div>
                       <button className="w-full bg-primary-container text-on-primary py-3.5 rounded-2xl font-display font-semibold uppercase tracking-widest text-xs hover:brightness-110 transition-all shadow-lg shadow-primary-container/20 mt-4">
                         {t('careers.form.send_button')}

@@ -3,12 +3,13 @@
 -- Hash gerado com scrypt (formato Better-Auth: "salt:hash_base64")
 
 INSERT OR IGNORE INTO "user" (
-  "id", "name", "email", "emailVerified", "createdAt", "updatedAt"
+  "id", "name", "email", "emailVerified", "role", "createdAt", "updatedAt"
 ) VALUES (
   'admin-ness-01',
   'Admin Ness',
   'admin@ness.com.br',
   1,
+  'admin',
   datetime('now'),
   datetime('now')
 );

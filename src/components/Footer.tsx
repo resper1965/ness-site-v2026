@@ -47,7 +47,7 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-12 md:gap-24">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 md:gap-24">
           <div className="space-y-4">
             <h4 className="text-[10px] uppercase tracking-widest text-white font-bold">{t('footer.company')}</h4>
             <ul className="space-y-3 text-sm text-on-surface-variant/60 font-light">
@@ -65,6 +65,14 @@ const Footer = () => {
               <li><Link className="hover:text-white transition-all" to="/compliance/privacidade">{t('footer.privacy')}</Link></li>
               <li><Link className="hover:text-white transition-all" to="/compliance/etica">{t('footer.compliance')}</Link></li>
               <li><Link className="hover:text-white transition-all text-primary-container font-medium" to="/compliance/etica">{t('contact.whistleblower.title')}</Link></li>
+            </ul>
+          </div>
+          <div className="space-y-4">
+            <h4 className="text-[10px] uppercase tracking-widest text-white font-bold">Ecossistema</h4>
+            <ul className="space-y-3 text-sm text-on-surface-variant/60 font-light">
+              {BRAND !== 'ness' && <li><a href="https://ness.com.br" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-all">ness.</a></li>}
+              {BRAND !== 'trustness' && <li><a href="/trustness" className="hover:text-white transition-all">trustness.</a></li>}
+              {BRAND !== 'forense' && <li><a href="/forense" className="hover:text-white transition-all">forense.io</a></li>}
             </ul>
           </div>
           <div className="hidden lg:block space-y-4">

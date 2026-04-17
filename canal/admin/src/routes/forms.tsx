@@ -25,25 +25,13 @@ export default function FormsPage() {
     return <div style={{ display: "flex", justifyContent: "center", padding: 64 }}><div className="loader-inline" /></div>;
   }
 
-  if (!activeOrg) {
-    return (
-      <div className="empty-state" style={{ minHeight: 300 }}>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-        </svg>
-        <p>Selecione uma organização para ver os formulários.</p>
-      </div>
-    );
-  }
-
   return (
     <>
       <div className="collection-toolbar" style={{ marginBottom: 16 }}>
         <div className="toolbar-left">
           <span className="toolbar-count">{items.length} {items.length === 1 ? "submissão" : "submissões"}</span>
         </div>
-        <span className="badge badge-new" style={{ fontSize: 10 }}>{activeOrg.slug}</span>
+        {activeOrg && <span className="badge badge-new" style={{ fontSize: 10 }}>{activeOrg.slug}</span>}
       </div>
 
       <div className="card">

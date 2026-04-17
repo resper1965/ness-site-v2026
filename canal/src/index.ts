@@ -9,18 +9,19 @@
  *   /api/admin/*    → Rotas administrativas protegidas
  */
 
-import { Hono } from 'hono'
+import { Hono, Context } from 'hono'
 import { cors } from 'hono/cors'
 import { secureHeaders } from 'hono/secure-headers'
 import { streamText } from 'ai'
 import { z } from 'zod'
 import { createWorkersAI } from 'workers-ai-provider'
 import { createAuth } from './auth'
-import { seedVectors, SOLUTIONS_CORPUS } from './seed-vectors'
+import { seedVectors } from './seed-vectors'
 import { entries } from './routes/entries'
 import { media } from './routes/media'
 import { marketing } from './routes/marketing'
 import { legacy } from './routes/legacy'
+import { aiWriter } from './routes/ai-writer'
 import { handleMcpRequest } from './mcp'
 
 type Bindings = {
@@ -45,9 +46,13 @@ const app = new Hono<{ Bindings: Bindings, Variables: Variables }>()
 app.use('/*', secureHeaders())
 app.use('/*', cors({
   origin: [
+    'http://localhost:3000',
     'http://localhost:5173',
     'http://localhost:8787',
     'https://canal.ness.workers.dev',
+    'https://ness-site2026.pages.dev',
+    'https://ness.com.br',
+    'https://www.ness.com.br',
   ],
   allowHeaders: ['Content-Type', 'Authorization', 'x-setup-key', 'x-session-id', 'x-tenant-id'],
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -61,7 +66,7 @@ app.all('/api/auth/*', (c) => {
 })
 
 // ── Auth Middleware (SaaS / Tenant Isolator) ───────────────────
-async function requireSession(c: any, next: () => Promise<void>) {
+async function requireSession(c: Context<{ Bindings: Bindings, Variables: Variables }>, next: () => Promise<void>) {
   const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
   const session = await auth.api.getSession({ headers: c.req.raw.headers })
   if (!session) return c.json({ error: 'Unauthorized' }, 401)
@@ -73,7 +78,7 @@ async function requireSession(c: any, next: () => Promise<void>) {
   await next()
 }
 
-async function requireAdminOrKey(c: any, next: () => Promise<void>) {
+async function requireAdminOrKey(c: Context<{ Bindings: Bindings, Variables: Variables }>, next: () => Promise<void>) {
   const setupKey = c.req.header('x-setup-key')
   if (setupKey === c.env.ADMIN_SETUP_KEY) {
     await next()
@@ -126,6 +131,10 @@ app.route('/api/v1', entries)
 app.route('/api/v1', media)
 app.route('/api/v1', marketing)
 
+// ── Mount: AI Writer (agente redator) — protegido por auth ─────
+app.use('/api/ai/*', requireSession)
+app.route('/api/ai', aiWriter)
+
 // ── MCP Server (Agents Integration) ──────────────────────────────
 app.all('/api/mcp/*', requireAdminOrKey, async (c) => {
   let tenantId = c.get('tenantId') as string | undefined;
@@ -166,100 +175,65 @@ app.post('/api/setup/admin', async (c) => {
   }
 })
 
-// ── Admin CRUD legado (protegido por session) ───────────────────
+// ── Admin CRUD v3 (gerenciado via collections/entries) ───────────────────
 
-const insightSchema = z.object({
-  lang: z.string().default('pt'),
-  slug: z.string(),
-  title: z.string(),
-  tag: z.string(),
-  icon: z.string().optional(),
-  date: z.string(),
-  desc: z.string(),
-  featured: z.number().optional()
-}).strip();
+app.get('/api/admin/organizations', requireSession, async (c) => {
+  const session = c.get('session')
+  if (session?.user?.role !== 'admin') return c.json({ error: 'Forbidden' }, 403)
 
-app.post('/api/admin/insights', requireSession, async (c) => {
-  const parsed = insightSchema.safeParse(await c.req.json())
-  if (!parsed.success) return c.json({ error: 'Bad Request', details: parsed.error.issues }, 400)
-  const body = parsed.data;
-  const { success } = await c.env.DB.prepare(
-    `INSERT INTO insights (lang, slug, title, tag, icon, date, desc, featured)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
-  ).bind(
-    body.lang, body.slug, body.title, body.tag,
-    body.icon ?? 'FileText', body.date, body.desc, body.featured ?? 0
-  ).run()
-  return c.json({ success })
+  const query = `
+    SELECT 
+      o.*, 
+      (SELECT COUNT(*) FROM member m WHERE m.organizationId = o.id) as memberCount 
+    FROM organization o 
+    ORDER BY o.createdAt DESC
+  `
+  const { results } = await c.env.DB.prepare(query).all()
+  return c.json(results)
 })
 
-app.delete('/api/admin/insights/:id', requireSession, async (c) => {
+app.patch('/api/admin/organizations/:id', requireSession, async (c) => {
+  const session = c.get('session')
+  if (session?.user?.role !== 'admin') return c.json({ error: 'Forbidden' }, 403)
+  
   const id = c.req.param('id')
-  const { success } = await c.env.DB.prepare('DELETE FROM insights WHERE id = ?').bind(id).run()
-  return c.json({ success })
-})
-
-const jobSchema = z.object({
-  lang: z.string().default('pt'),
-  title: z.string(),
-  vertical: z.string(),
-  location: z.string(),
-  type: z.string(),
-  desc: z.string(),
-  requirements: z.array(z.string()).default([])
-}).strip();
-
-app.post('/api/admin/jobs', requireSession, async (c) => {
-  const parsed = jobSchema.safeParse(await c.req.json())
-  if (!parsed.success) return c.json({ error: 'Bad Request', details: parsed.error.issues }, 400)
-  const body = parsed.data;
+  const body = await c.req.json()
+  
+  // Atualiza metadados ou plan
   const { success } = await c.env.DB.prepare(
-    `INSERT INTO jobs (lang, title, vertical, location, type, desc, requirements)
-     VALUES (?, ?, ?, ?, ?, ?, ?)`
-  ).bind(
-    body.lang, body.title, body.vertical, body.location,
-    body.type, body.desc, JSON.stringify(body.requirements ?? [])
-  ).run()
+    'UPDATE organization SET metadata = ? WHERE id = ?'
+  ).bind(JSON.stringify(body.metadata || {}), id).run()
   return c.json({ success })
 })
 
-const caseSchema = z.object({
-  lang: z.string().default('pt'),
-  client: z.string(),
-  category: z.string(),
-  project: z.string(),
-  result: z.string(),
-  desc: z.string(),
-  stats: z.string(),
-  image: z.string().optional(),
-  featured: z.number().optional()
-}).strip();
-
-app.post('/api/admin/cases', requireSession, async (c) => {
-  const parsed = caseSchema.safeParse(await c.req.json())
-  if (!parsed.success) return c.json({ error: 'Bad Request', details: parsed.error.issues }, 400)
-  const body = parsed.data;
-  const { success } = await c.env.DB.prepare(
-    `INSERT INTO cases (lang, client, category, project, result, desc, stats, image, featured)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
-  ).bind(
-    body.lang, body.client, body.category, body.project,
-    body.result, body.desc, body.stats, body.image ?? '', body.featured ?? 0
-  ).run()
-  return c.json({ success })
-})
-
-app.delete('/api/admin/cases/:id', requireSession, async (c) => {
+app.delete('/api/admin/organizations/:id', requireSession, async (c) => {
+  const session = c.get('session')
+  if (session?.user?.role !== 'admin') return c.json({ error: 'Forbidden' }, 403)
   const id = c.req.param('id')
-  const { success } = await c.env.DB.prepare('DELETE FROM cases WHERE id = ?').bind(id).run()
+  
+  await c.env.DB.batch([
+    c.env.DB.prepare('DELETE FROM member WHERE organizationId = ?').bind(id),
+    c.env.DB.prepare('DELETE FROM invitation WHERE organizationId = ?').bind(id),
+    c.env.DB.prepare('DELETE FROM organization WHERE id = ?').bind(id)
+  ])
+  
+  return c.json({ success: true })
+})
+
+app.get('/api/admin/api-keys/:orgId', requireSession, async (c) => {
+  const orgId = c.req.param('orgId')
+  const { results } = await c.env.DB.prepare(
+    'SELECT id, name, createdAt, prefix FROM apikey WHERE metadata LIKE ? ORDER BY createdAt DESC'
+  ).bind(`%"orgId":"${orgId}"%`).all()
+  return c.json(results)
+})
+
+app.delete('/api/admin/api-keys/:id', requireSession, async (c) => {
+  const id = c.req.param('id')
+  const { success } = await c.env.DB.prepare('DELETE FROM apikey WHERE id = ?').bind(id).run()
   return c.json({ success })
 })
 
-app.delete('/api/admin/jobs/:id', requireSession, async (c) => {
-  const id = c.req.param('id')
-  const { success } = await c.env.DB.prepare('DELETE FROM jobs WHERE id = ?').bind(id).run()
-  return c.json({ success })
-})
 
 app.get('/api/admin/forms', requireSession, async (c) => {
   const { results } = await c.env.DB.prepare(
@@ -338,10 +312,20 @@ app.post('/api/chat', async (c) => {
     .map((m: any) => m.metadata?.content || '')
     .join('\n\n---\n\n')
 
-  const ragContext = context.trim()
-    ? context
-    : SOLUTIONS_CORPUS.map(s => s.content).join('\n\n---\n\n')
-
+  let ragContext = context.trim()
+  
+  if (!ragContext) {
+    const fallback = await c.env.DB.prepare(`
+      SELECT payload FROM entries 
+      WHERE collection_id = (SELECT id FROM collections WHERE slug = 'solutions')
+      LIMIT 10
+    `).all()
+    
+    ragContext = fallback.results.map((r: any) => {
+      const p = JSON.parse(r.payload || '{}')
+      return `${p.title || ''}\n${p.content || p.desc || ''}`
+    }).join('\n\n---\n\n')
+  }
   // 4. System prompt
   const systemPrompt = `Você é a assistente virtual da ness., uma empresa de tecnologia fundada em 1991 com mais de 34 anos de experiência.
 Você responde dúvidas sobre os serviços da ness. com base EXCLUSIVAMENTE no contexto abaixo.

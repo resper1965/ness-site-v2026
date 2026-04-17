@@ -109,11 +109,33 @@ const NAV = [
       },
       {
         to: "/saas",
-        label: "Organização",
+        label: "Meu Tenant",
         icon: (
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
             <path d="m9 12 2 2 4-4"/>
+          </svg>
+        ),
+      },
+      {
+        to: "/organizations",
+        label: "Tenants (Admin)",
+        adminOnly: true,
+        icon: (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
+          </svg>
+        ),
+      },
+      {
+        to: "/users",
+        label: "Usuários (Admin)",
+        adminOnly: true,
+        icon: (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
           </svg>
         ),
       },
@@ -142,6 +164,8 @@ const PAGE_META: Record<string, { title: string; sub: string }> = {
   "/forms":   { title: "Formulários",    sub: "Submissões recebidas" },
   "/chats":   { title: "Chatlogs AI",    sub: "Auditoria de interações com IA" },
   "/saas":    { title: "Organização",     sub: "Gestão do workspace e membros" },
+  "/users":   { title: "Gestão Global de Usuários", sub: "Administração de acessos (Super Admin)" },
+  "/organizations": { title: "Gestão Global de Orgs", sub: "Visão central de tenants (Super Admin)" },
 };
 
 const SUPER_ADMIN_EMAILS = ["resper@bekaa.eu", "admin@ness.com.br"];
@@ -166,11 +190,9 @@ function OrgSwitcher({ userEmail }: { userEmail: string }) {
         setCreating(false);
       }
     }
-    if (isSuperAdmin) {
-      document.addEventListener("mousedown", handler);
-      return () => document.removeEventListener("mousedown", handler);
-    }
-  }, [isSuperAdmin]);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   const handleSwitch = async (orgId: string) => {
     await organization.setActive({ organizationId: orgId });
@@ -195,19 +217,7 @@ function OrgSwitcher({ userEmail }: { userEmail: string }) {
   const orgName = activeOrg?.name || "Workspace";
   const orgSlug = activeOrg?.slug || userEmail.split("@")[1]?.split(".")[0];
 
-  // Non-super-admin: static org display (org = email domain)
-  if (!isSuperAdmin) {
-    return (
-      <div className="org-switcher">
-        <div className="org-switcher-btn" style={{ cursor: "default" }}>
-          <div>
-            <div style={{ lineHeight: 1.2 }}>{orgName}</div>
-            {orgSlug && <div className="org-switcher-slug">{orgSlug}</div>}
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // Todos podem ver o menu e criar organizações
 
   // Super admin: full dropdown switcher
   return (
@@ -243,31 +253,33 @@ function OrgSwitcher({ userEmail }: { userEmail: string }) {
           ))}
           <div className="org-dropdown-divider" />
 
-          {creating ? (
-            <div className="org-create-inline">
-              <input
-                autoFocus
-                placeholder="Nome da organização"
-                value={newName}
-                onChange={(e) => setNewName(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleCreate()}
-              />
-              <div className="org-create-actions">
-                <button className="btn btn-sm btn-ghost" onClick={() => { setCreating(false); setNewName(""); }}>
-                  Cancelar
-                </button>
-                <button className="btn btn-sm btn-primary" onClick={handleCreate} disabled={loading || !newName.trim()}>
-                  {loading ? "..." : "Criar"}
-                </button>
+          {isSuperAdmin && (
+            creating ? (
+              <div className="org-create-inline">
+                <input
+                  autoFocus
+                  placeholder="Nome da organização"
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleCreate()}
+                />
+                <div className="org-create-actions">
+                  <button className="btn btn-sm btn-ghost" onClick={() => { setCreating(false); setNewName(""); }}>
+                    Cancelar
+                  </button>
+                  <button className="btn btn-sm btn-primary" onClick={handleCreate} disabled={loading || !newName.trim()}>
+                    {loading ? "..." : "Criar"}
+                  </button>
+                </div>
               </div>
-            </div>
-          ) : (
-            <button className="org-dropdown-create" onClick={() => setCreating(true)}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-              </svg>
-              Nova Organização
-            </button>
+            ) : (
+              <button className="org-dropdown-create" onClick={() => setCreating(true)}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Nova Organização
+              </button>
+            )
           )}
         </div>
       )}
@@ -288,6 +300,7 @@ export default function DashboardLayout() {
   if (isPending) return <div className="loader" />;
   if (!session) return null;
 
+  const isSuperAdmin = SUPER_ADMIN_EMAILS.includes(session.user.email);
   const meta = PAGE_META[location.pathname] ?? { title: "Canal Admin", sub: "" };
 
   async function handleSignOut() {
@@ -312,7 +325,7 @@ export default function DashboardLayout() {
           {NAV.map((group) => (
             <div key={group.section}>
               <div className="nav-section">{group.section}</div>
-              {group.items.map((item) => (
+              {group.items.filter((item: any) => item.adminOnly ? isSuperAdmin : true).map((item: any) => (
                 <NavLink
                   key={item.to}
                   to={item.to}

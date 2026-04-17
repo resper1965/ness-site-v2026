@@ -51,15 +51,18 @@ entries.get('/collections/:slug/entries', async (c) => {
   if (!col) return c.json({ error: 'Collection not found' }, 404)
 
   const locale = c.req.query('locale') || c.req.query('lang') || 'pt'
-  const status = c.req.query('status') || 'published'
   const page = parseInt(c.req.query('page') || '1', 10)
   const limit = Math.min(parseInt(c.req.query('limit') || '20', 10), 100)
   const offset = (page - 1) * limit
 
-  // Tenant identification fallback logic
+  // Tenant identification + session check
   const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
   const session = await auth.api.getSession({ headers: c.req.raw.headers }).catch(() => null)
   const tenantId = c.req.header('x-tenant-id') || session?.session?.activeOrganizationId
+
+  // Security: only authenticated users can request drafts or all entries
+  const requestedStatus = c.req.query('status') || 'published'
+  const status = session ? requestedStatus : 'published'
 
   // Buscar collection_id
   const colRow = await c.env.DB.prepare(

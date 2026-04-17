@@ -204,7 +204,8 @@ const resources = {
         "date": "data",
         "tag": "tag",
         "back": "voltar",
-        "all": "todos"
+        "all": "todos",
+        "privacy_consent": "Eu li e aceito a política de privacidade e os termos de uso."
       },
       "footer": {
         "company": "empresa",
@@ -420,7 +421,8 @@ const resources = {
         "date": "date",
         "tag": "tag",
         "back": "back",
-        "all": "all"
+        "all": "all",
+        "privacy_consent": "I have read and accept the privacy policy and terms of use."
       },
       "footer": {
         "company": "company",
@@ -629,7 +631,8 @@ const resources = {
         "date": "fecha",
         "tag": "etiqueta",
         "back": "volver",
-        "all": "todos"
+        "all": "todos",
+        "privacy_consent": "He leído e acepto la política de privacidad y los términos de uso."
       },
       "footer": {
         "company": "empresa",
@@ -652,6 +655,14 @@ i18n
   .init({
     resources,
     fallbackLng: 'pt',
+    // Only persist manual selections — do NOT auto-detect from browser navigator
+    detection: {
+      order: ['localStorage'],
+      caches: ['localStorage'],
+      lookupLocalStorage: 'ness_lang',
+    },
+    // Default to PT if no stored preference exists
+    lng: localStorage.getItem('ness_lang') || 'pt',
     interpolation: {
       escapeValue: false
     }

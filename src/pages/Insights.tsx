@@ -25,11 +25,19 @@ import {
 
 import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
-
+interface Insight {
+  id?: string;
+  slug?: string;
+  tag: string;
+  date: string;
+  title: string;
+  desc: string;
+  icon: string;
+}
 
 const Insights = () => {
   const { t, i18n } = useTranslation();
-  const [articles, setArticles] = useState<any[]>([]);
+  const [articles, setArticles] = useState<Insight[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

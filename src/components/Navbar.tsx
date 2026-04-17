@@ -48,9 +48,9 @@ const Navbar = () => {
     <>
       <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl glass rounded-full flex justify-between items-center px-6 md:px-8 py-3 z-50 nebula-shadow">
         <Link to="/" className="text-2xl font-display tracking-tighter text-white lowercase-all">
-          {BRAND === 'trustness' ? (
+          {BRAND === 'trustness' || location.pathname === '/trustness' ? (
             <>trustness<BlueDot /></>
-          ) : BRAND === 'forense' ? (
+          ) : BRAND === 'forense' || location.pathname === '/forense' ? (
             <>forense<BlueDot />io</>
           ) : (
             <>ness<BlueDot /></>

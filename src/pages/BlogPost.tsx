@@ -8,11 +8,19 @@ import { usePageTitle } from '../hooks/usePageTitle';
 
 const CANAL_BASE = "https://canal.ness.workers.dev";
 
+interface Insight {
+  title: string;
+  tag?: string;
+  date?: string;
+  desc?: string;
+  content?: string;
+}
+
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const { i18n } = useTranslation();
   const navigate = useNavigate();
-  const [post, setPost] = useState<any | null>(null);
+  const [post, setPost] = useState<Insight | null>(null);
   const [loading, setLoading] = useState(true);
   usePageTitle('', post?.title ?? 'insight');
 

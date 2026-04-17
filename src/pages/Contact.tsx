@@ -193,6 +193,18 @@ const Contact = () => {
                   className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all resize-none"
                 ></textarea>
               </div>
+              <div className="flex items-start gap-3 px-4 py-2">
+                <input 
+                  id="privacy-consent"
+                  name="privacy_consent"
+                  type="checkbox" 
+                  required
+                  className="mt-1 w-4 h-4 bg-white/5 border border-white/10 rounded focus:ring-1 focus:ring-primary-container accent-primary-container cursor-pointer"
+                />
+                <label htmlFor="privacy-consent" className="text-[11px] text-on-surface-variant font-light leading-relaxed cursor-pointer">
+                  {t('common.privacy_consent')}
+                </label>
+              </div>
               <button className="w-full bg-primary-container text-on-primary py-3.5 rounded-2xl font-display font-semibold uppercase tracking-widest text-xs hover:brightness-110 transition-all shadow-lg shadow-primary-container/20">
                 {t('contact.form.send')}
               </button>

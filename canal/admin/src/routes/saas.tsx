@@ -1,7 +1,7 @@
 import * as React from "react";
-import { authClient, organization, agent } from "../lib/auth-client";
+import { authClient, organization, apiKey } from "../lib/auth-client";
 
-type Tab = "overview" | "members" | "plan" | "settings";
+type Tab = "overview" | "members" | "plan" | "settings" | "api-keys";
 
 const SUPER_ADMIN_EMAILS = ["resper@bekaa.eu", "admin@ness.com.br"];
 
@@ -41,6 +41,12 @@ const MailIcon = () => (
 const TrashIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+  </svg>
+);
+
+const KeyIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M2 18v3c0 .6.4 1 1 1h4v-3h3v-3h2l1.4-1.4a6.5 6.5 0 1 0-4-4Z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/>
   </svg>
 );
 
@@ -483,6 +489,155 @@ function SettingsTab({ org }: { org: any }) {
   );
 }
 
+/* ── Tab: API Keys ────────────────────────────────── */
+function ApiKeysTab({ org }: { org: any }) {
+  const [name, setName] = React.useState("");
+  const [generating, setGenerating] = React.useState(false);
+  const [keyData, setKeyData] = React.useState<any>(null);
+  const [error, setError] = React.useState("");
+  const [keys, setKeys] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(false);
+
+  const fetchKeys = async () => {
+    setLoading(true);
+    try {
+      const res = await authClient.$fetch(`/api/admin/api-keys/${org.id}`, { baseURL: window.location.origin });
+      if (res.data) setKeys(res.data as any[]);
+    } catch (e) {
+      console.error("Failed to load keys", e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchKeys();
+  }, [org.id]);
+
+  const handleCreate = async () => {
+    if (!name.trim()) return;
+    setGenerating(true);
+    setError("");
+    setKeyData(null);
+    try {
+      const res = await (apiKey as any).create({
+         name: name.trim(),
+         metadata: { orgId: org.id }
+      });
+      if (res.data) {
+         setKeyData(res.data);
+         fetchKeys();
+      }
+      if (res.error) setError(res.error.message || "Erro ao criar API Key");
+    } catch(e: any) {
+      setError(e.message || "Erro inesperado.");
+    } finally {
+       setGenerating(false);
+    }
+  };
+
+  const handleRevoke = async (id: string, keyName: string) => {
+    if (!confirm(`Revogar a chave "${keyName}"? Integrações irão falhar imediatamente.`)) return;
+    try {
+      const res = await authClient.$fetch(`/api/admin/api-keys/${id}`, { 
+        method: "DELETE", 
+        baseURL: window.location.origin 
+      });
+      if ((res.data as any)?.success) {
+         fetchKeys();
+      } else {
+         alert("Erro ao revogar.");
+      }
+    } catch(err: any) {
+      alert("Erro: " + err.message);
+    }
+  };
+
+  return (
+    <div className="card">
+      <div className="card-header">
+         <span className="card-title" style={{ display: "flex", alignItems: "center", gap: 8 }}><KeyIcon /> Tokens de Acesso (API Keys)</span>
+      </div>
+      <p style={{ color: "var(--text-muted)", fontSize: 13, marginBottom: 20 }}>
+         Gere chaves para agentes MCP, crawlers e integrações M2M se conectarem ao Canal CMS em nome desta Organização.
+      </p>
+
+      {/* Form */}
+      <div className="form">
+        <div className="field">
+           <label>Nome do Token</label>
+           <input type="text" placeholder="Ex: Claude MCP Agent" value={name} onChange={e => setName(e.target.value)} disabled={!!keyData} />
+        </div>
+        {error && <div className="error-msg">{error}</div>}
+        
+        {keyData ? (
+           <div style={{ background: "var(--bg-card)", border: "1px dashed var(--accent)", padding: 16, borderRadius: "var(--radius-md)", marginTop: 16 }}>
+             <h4 style={{ margin: "0 0 8px 0", color: "var(--accent)" }}>Chave Gerada com Sucesso</h4>
+             <p style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 12 }}>Copie o token abaixo. Você não poderá vê-lo novamente.</p>
+             <div style={{ position: "relative" }}>
+               <code style={{ display: "block", padding: "12px 14px", background: "var(--bg)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", wordBreak: "break-all", fontSize: 14 }}>
+                 {keyData.key}
+               </code>
+               <button 
+                  className="btn btn-sm btn-ghost" 
+                  style={{ position: "absolute", right: 6, top: 6 }}
+                  onClick={() => navigator.clipboard.writeText(keyData.key)}
+               >
+                 Copiar
+               </button>
+             </div>
+             <button className="btn btn-secondary" style={{ marginTop: 16, width: "100%" }} onClick={() => { setKeyData(null); setName(""); }}>
+               Gerar outro
+             </button>
+           </div>
+        ) : (
+           <div className="action-row">
+             <button className="btn btn-primary" onClick={handleCreate} disabled={generating || !name.trim()}>
+               {generating ? "Gerando..." : "Gerar Novo Token"}
+             </button>
+           </div>
+        )}
+      </div>
+
+      {keys.length > 0 && (
+        <div style={{ marginTop: 32 }}>
+          <h4 style={{ fontSize: 14, marginBottom: 12 }}>Chaves Ativas</h4>
+          <div className="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Chave</th>
+                  <th>Criada em</th>
+                  <th style={{ width: 80 }}>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {keys.map((k) => (
+                  <tr key={k.id}>
+                    <td><strong>{k.name}</strong></td>
+                    <td className="mono" style={{ fontSize: 13, color: "var(--text-muted)" }}>{k.prefix || "sk_"}••••••••</td>
+                    <td style={{ fontSize: 13, color: "var(--text-muted)" }}>{new Date(k.createdAt).toLocaleDateString("pt-BR")}</td>
+                    <td>
+                      <button 
+                        className="btn btn-sm btn-ghost" 
+                        style={{ color: "var(--danger)" }}
+                        onClick={() => handleRevoke(k.id, k.name)}
+                      >
+                        Revogar
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ── Main Page ────────────────────────────────────── */
 export default function SaasSettingsPage() {
   const { data: session } = authClient.useSession();
@@ -491,7 +646,8 @@ export default function SaasSettingsPage() {
   const [activeTab, setActiveTab] = React.useState<Tab>("overview");
 
   React.useEffect(() => {
-    agent?.list?.().then(({ data }: any) => { if (data) setAgents(data); });
+    // Agents fetched via different API layer if needed
+    setAgents([]);
   }, []);
 
   // Determine user role in this org
@@ -507,6 +663,7 @@ export default function SaasSettingsPage() {
     { key: "overview", label: "Visão Geral", visible: true },
     { key: "members", label: "Membros", visible: isEditor },
     { key: "plan", label: "Plano", visible: true },
+    { key: "api-keys", label: "Desenvolvedor", visible: isAdmin },
     { key: "settings", label: "Configurações", visible: isAdmin },
   ];
 
@@ -515,7 +672,10 @@ export default function SaasSettingsPage() {
       <div className="empty-state" style={{ minHeight: 400 }}>
         <ShieldIcon />
         <h3 style={{ fontSize: 16, fontWeight: 600 }}>Nenhuma organização selecionada</h3>
-        <p>Selecione ou crie uma organização no menu lateral.</p>
+        <p style={{ color: "var(--text-muted)", maxWidth: 460, textAlign: "center", lineHeight: 1.5, marginTop: 12 }}>
+          A página de Organização serve para gerenciar configurações, membros e planos do seu Tenant. 
+          Você não está vinculado a uma organização no momento.
+        </p>
       </div>
     );
   }
@@ -539,6 +699,7 @@ export default function SaasSettingsPage() {
       {activeTab === "overview" && <OverviewTab org={activeOrg} agents={agents} />}
       {activeTab === "members" && isEditor && <MembersTab org={activeOrg} isAdmin={isAdmin} />}
       {activeTab === "plan" && <PlanTab org={activeOrg} />}
+      {activeTab === "api-keys" && isAdmin && <ApiKeysTab org={activeOrg} />}
       {activeTab === "settings" && isAdmin && <SettingsTab org={activeOrg} />}
     </div>
   );

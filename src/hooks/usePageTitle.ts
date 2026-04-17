@@ -7,6 +7,6 @@ export function usePageTitle(titleKey: string, fallback?: string) {
   const { t, i18n } = useTranslation();
   useEffect(() => {
     const resolved = fallback ?? t(titleKey);
-    document.title = `${resolved} — ${BRAND}`;
+    document.title = resolved ? `${BRAND} | ${resolved}` : BRAND;
   }, [titleKey, fallback, t, i18n.language]);
 }

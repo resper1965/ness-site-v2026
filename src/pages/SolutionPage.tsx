@@ -119,7 +119,7 @@ const SolutionPage = () => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
-                    {solution.dashboard?.metrics.map((metric: any, idx: number) => (
+                    {solution.dashboard?.metrics.map((metric: { color: string; value: string; label: string }, idx: number) => (
                       <div key={idx} className="p-4 rounded-2xl bg-white/5 border border-white/5">
                         <motion.div 
                           initial={{ opacity: 0.5 }}
@@ -163,7 +163,7 @@ const SolutionPage = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {solution.workflow?.map((w: any, idx: number) => (
+            {solution.workflow?.map((w: { step: string; name: string; desc?: string }, idx: number) => (
               <motion.div 
                 key={w.step}
                 whileHover={{ y: -5 }} 
@@ -196,7 +196,7 @@ const SolutionPage = () => {
               </h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {solution.useCases.map((useCase: any, i: number) => (
+              {solution.useCases.map((useCase: { title: string; desc: string }, i: number) => (
                 <motion.div 
                   key={i} 
                   whileHover={{ y: -5 }}
@@ -221,11 +221,11 @@ const SolutionPage = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {solution.benefits?.map((benefit: any, i: number) => (
+            {solution.benefits?.map((benefit: { title: string; desc: string }, i: number) => (
               <motion.div 
                 key={i} 
                 whileHover={{ y: -10 }}
-                className="p-10 rounded-[2rem] bg-surface-container-low/20 border border-white/5 hover:bg-surface-container-low/40 hover:border-primary/30 transition-all relative overflow-hidden group flex flex-col"
+                className="p-10 rounded-4xl bg-surface-container-low/20 border border-white/5 hover:bg-surface-container-low/40 hover:border-primary/30 transition-all relative overflow-hidden group flex flex-col"
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/20 transition-all"></div>
                 <div className="relative z-10 flex-1 flex flex-col">
@@ -249,11 +249,11 @@ const SolutionPage = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {solution.services.map((service: any, i: number) => (
+            {solution.services.map((service: { name: string; desc: string }, i: number) => (
               <motion.div 
                 key={i} 
                 whileHover={{ scale: 1.02 }}
-                className="group relative p-10 rounded-[2rem] border border-white/5 bg-surface-container-low/30 hover:bg-surface-container-low/50 overflow-hidden transition-all flex flex-col justify-between"
+                className="group relative p-10 rounded-4xl border border-white/5 bg-surface-container-low/30 hover:bg-surface-container-low/50 overflow-hidden transition-all flex flex-col justify-between"
               >
                 <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/20 transition-all duration-700"></div>
                 <div className="absolute top-8 right-8 opacity-5 group-hover:opacity-10 group-hover:scale-110 transition-all duration-500">
@@ -295,7 +295,7 @@ const SolutionPage = () => {
               {/* Linhas de conexão visuais no fundo pra dar sensação de correlação/pipeline */}
               <div className="absolute inset-x-20 top-1/2 h-px bg-linear-to-r from-transparent via-primary/30 to-transparent -translate-y-1/2 z-0 hidden lg:block"></div>
               
-              {solution.features.map((feat: any, i: number) => (
+              {solution.features.map((feat: { name: string; category?: string }, i: number) => (
                 <motion.div 
                   key={i} 
                   variants={{
@@ -324,7 +324,7 @@ const SolutionPage = () => {
             </div>
             <div className="flex flex-col md:flex-row gap-8 relative mt-16">
               <div className="absolute top-6 left-0 right-0 h-px bg-white/5 hidden md:block z-0"></div>
-              {solution.onboarding.map((step: any, i: number) => (
+              {solution.onboarding.map((step: { step: string; title: string; desc: string }, i: number) => (
                 <motion.div 
                   key={i} 
                   whileHover={{ y: -10 }}
@@ -395,7 +395,7 @@ const SolutionPage = () => {
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-6">
-                    {solution.technicalFeatures.map((feat: any, i: number) => (
+                    {solution.technicalFeatures.map((feat: { title: string; desc: string }, i: number) => (
                       <div key={i} className="p-8 rounded-3xl border border-white/5 bg-surface-container-low/20 hover:border-primary/20 transition-all">
                         <h4 className="text-white font-medium mb-3 flex items-center gap-2">
                           <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
@@ -414,7 +414,7 @@ const SolutionPage = () => {
         <section id="portfólio">
           <h3 className="text-xl md:text-2xl font-display font-semibold text-white mb-10 tracking-tight lowercase">{t('solutions.impact_portfolio', 'portfólio de impacto')}<BlueDot /></h3>
           <div className="grid md:grid-cols-2 gap-8">
-            {solution.portfolio.map((item: any, i: number) => (
+            {solution.portfolio.map((item: { client: string; project: string; result: string }, i: number) => (
               <div key={i} className="p-8 rounded-4xl border border-white/5 bg-linear-to-br from-surface-container-low to-surface-container-lowest">
                 <div className="flex justify-between items-start mb-6">
                   <div>

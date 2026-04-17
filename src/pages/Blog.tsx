@@ -5,11 +5,19 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ShieldCheck, Cloud, Cpu, Brain, Lock, Workflow, FileText, ArrowUpRight } from "lucide-react";
 import EmptyState from '../components/EmptyState';
-import { usePageTitle } from '../hooks/usePageTitle';
+import { usePageTitle } from '../hooks/usePageTitle';interface Insight {
+  id?: string;
+  slug?: string;
+  tag: string;
+  date: string;
+  title: string;
+  desc: string;
+  icon: string;
+}
 
 const Blog = () => {
   const { t, i18n } = useTranslation();
-  const [articles, setArticles] = useState<any[]>([]);
+  const [articles, setArticles] = useState<Insight[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTag, setActiveTag] = useState<string>('all');
   usePageTitle('blog.meta_title', 'insights — ness.');

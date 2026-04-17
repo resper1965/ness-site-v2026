@@ -1,14 +1,16 @@
 import { useState, useEffect, useCallback } from "react";
 import {
-  fetchCollections,
+  fetchCollection,
   fetchEntries,
   createEntry,
   updateEntry,
   deleteEntry,
+  toggleEntryStatus,
   type CollectionDef,
   type FieldDef,
   type EntryMeta,
 } from "../lib/api";
+import AIWriterModal from "../components/AIWriterModal";
 
 const LOCALES = ["pt", "en", "es"];
 
@@ -17,21 +19,55 @@ function FieldInput({
   field,
   value,
   onChange,
+  collection,
+  locale,
+  onAIWrite,
 }: {
   field: FieldDef;
   value: unknown;
   onChange: (v: unknown) => void;
+  collection?: string;
+  locale?: string;
+  onAIWrite?: (field: FieldDef) => void;
 }) {
   const id = `field-${field.name}`;
+  const isTextual = ["text", "textarea", "richtext"].includes(field.type);
+
+  const AIButton = onAIWrite && isTextual ? (
+    <button
+      type="button"
+      onClick={() => onAIWrite(field)}
+      title="Gerar com IA"
+      style={{
+        background: "linear-gradient(135deg, var(--primary) 0%, #0099ff 100%)",
+        border: "none",
+        borderRadius: 6,
+        color: "#fff",
+        cursor: "pointer",
+        fontSize: 11,
+        fontWeight: 600,
+        padding: "0.2rem 0.55rem",
+        letterSpacing: "0.01em",
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 4,
+      }}
+    >
+      ✦ IA
+    </button>
+  ) : null;
 
   switch (field.type) {
     case "textarea":
     case "richtext":
       return (
         <div className="field">
-          <label htmlFor={id} style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {field.label ?? field.name}
-            {field.type === "richtext" && <span style={{ fontSize: 10, color: 'var(--primary)', opacity: 0.8 }}>Markdown / HTML suportado</span>}
+          <label htmlFor={id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span>
+              {field.label ?? field.name}
+              {field.type === "richtext" && <span style={{ fontSize: 10, color: 'var(--primary)', opacity: 0.8, marginLeft: 6 }}>Markdown / HTML</span>}
+            </span>
+            {AIButton}
           </label>
           <textarea
             id={id}
@@ -141,7 +177,10 @@ function FieldInput({
     default:
       return (
         <div className="field">
-          <label htmlFor={id}>{field.label ?? field.name}</label>
+          <label htmlFor={id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span>{field.label ?? field.name}</span>
+            {AIButton}
+          </label>
           <input
             id={id}
             type="text"
@@ -157,6 +196,7 @@ function FieldInput({
 
 /** Colunas visíveis na tabela (max 4 + status + ações) */
 function getTableFields(fields: FieldDef[]): FieldDef[] {
+  if (!fields) return [];
   const priority = ["title", "client", "name", "slug", "tag", "category", "location", "date"];
   const sorted = [...fields].sort((a, b) => {
     const ai = priority.indexOf(a.name);
@@ -177,11 +217,12 @@ export default function CollectionPage({ slug }: { slug: string }) {
   const [editing, setEditing] = useState<Record<string, unknown> | null>(null);
   const [form, setForm] = useState<Record<string, unknown>>({});
   const [saving, setSaving] = useState(false);
+  const [aiWriterField, setAiWriterField] = useState<FieldDef | null>(null);
+  const [togglingId, setTogglingId] = useState<string | null>(null);
 
   // Load collection definition
   useEffect(() => {
-    fetchCollections().then((cols) => {
-      const col = cols.find((c) => c.slug === slug);
+    fetchCollection(slug).then((col) => {
       setCollection(col ?? null);
     });
   }, [slug]);
@@ -252,6 +293,18 @@ export default function CollectionPage({ slug }: { slug: string }) {
     if (!confirm("Remover este item permanentemente?")) return;
     await deleteEntry(slug, id);
     await load();
+  }
+
+  async function handleToggleStatus(item: Record<string, unknown>) {
+    const id = item.id as string;
+    const next = item.status === "published" ? "draft" : "published";
+    setTogglingId(id);
+    try {
+      await toggleEntryStatus(slug, id, next);
+      await load();
+    } finally {
+      setTogglingId(null);
+    }
   }
 
   if (!collection) {
@@ -337,9 +390,33 @@ export default function CollectionPage({ slug }: { slug: string }) {
                       ))}
                       {collection.has_status ? (
                         <td>
-                          <span className={`badge ${item.status === "published" ? "badge-read" : "badge-pending"}`}>
-                            {item.status === "published" ? "Publicado" : "Rascunho"}
-                          </span>
+                          <button
+                            onClick={() => handleToggleStatus(item)}
+                            disabled={togglingId === (item.id as string)}
+                            title={item.status === "published" ? "Clique para despublicar" : "Clique para publicar"}
+                            style={{
+                              appearance: "none",
+                              border: `1.5px solid ${item.status === "published" ? "var(--success, #22c55e)" : "var(--border)"}`,
+                              borderRadius: 20,
+                              padding: "0.2rem 0.65rem",
+                              fontSize: 11,
+                              fontWeight: 600,
+                              cursor: togglingId === (item.id as string) ? "wait" : "pointer",
+                              background: item.status === "published"
+                                ? "color-mix(in srgb, #22c55e 12%, transparent)"
+                                : "transparent",
+                              color: item.status === "published" ? "#4ade80" : "var(--text-dim)",
+                              letterSpacing: "0.02em",
+                              transition: "all 0.15s",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {togglingId === (item.id as string)
+                              ? "…"
+                              : item.status === "published"
+                              ? "✓ Publicado"
+                              : "◯ Rascunho"}
+                          </button>
                         </td>
                       ) : null}
                       <td style={{ color: "var(--text-muted)", fontFamily: "var(--mono)", fontSize: 12 }}>
@@ -442,6 +519,9 @@ export default function CollectionPage({ slug }: { slug: string }) {
                   field={field}
                   value={form[field.name]}
                   onChange={(v) => setForm({ ...form, [field.name]: v })}
+                  collection={slug}
+                  locale={(form.locale as string) ?? locale}
+                  onAIWrite={(f) => setAiWriterField(f)}
                 />
               ))}
 
@@ -454,6 +534,18 @@ export default function CollectionPage({ slug }: { slug: string }) {
             </div>
           </div>
         </div>
+      )}
+
+      {/* AI Writer Modal */}
+      {aiWriterField && (
+        <AIWriterModal
+          field={aiWriterField.name}
+          fieldLabel={aiWriterField.label ?? aiWriterField.name}
+          collection={slug}
+          locale={(form.locale as string) ?? locale}
+          onApply={(text) => setForm({ ...form, [aiWriterField.name]: text })}
+          onClose={() => setAiWriterField(null)}
+        />
       )}
     </>
   );
