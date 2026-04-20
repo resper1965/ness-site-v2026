@@ -55,6 +55,8 @@ app.use('/*', cors({
     'https://www.ness.com.br',
     'https://forense.io',
     'https://www.forense.io',
+    'https://trustness.com.br',
+    'https://www.trustness.com.br',
   ],
   allowHeaders: ['Content-Type', 'Authorization', 'x-setup-key', 'x-session-id', 'x-tenant-id'],
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
