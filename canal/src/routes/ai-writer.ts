@@ -7,6 +7,7 @@
 import { Hono } from 'hono'
 import { streamText } from 'ai'
 import { createWorkersAI } from 'workers-ai-provider'
+import { z } from 'zod'
 
 type Env = {
   Bindings: {
@@ -51,21 +52,33 @@ const COLLECTION_CONTEXT: Record<string, string> = {
   pages: 'conteúdo de páginas institucionais de empresa de tecnologia',
 }
 
+const TONES = ['tecnico', 'consultivo', 'executivo'] as const
+const LOCALES = ['pt', 'en', 'es'] as const
+
+const writeSchema = z.object({
+  brief:      z.string().min(1).max(2000),
+  field:      z.string().min(1).max(50),
+  collection: z.string().min(1).max(50),
+  tone:       z.enum(TONES).default('consultivo'),
+  locale:     z.enum(LOCALES).default('pt'),
+}).strip()
+
 const aiWriter = new Hono<Env>()
 
 aiWriter.post('/write', async (c) => {
-  let body: WriteRequest
+  let rawBody: unknown
   try {
-    body = await c.req.json<WriteRequest>()
+    rawBody = await c.req.json()
   } catch {
     return c.json({ error: 'Invalid JSON' }, 400)
   }
 
-  const { brief, field, collection, tone = 'consultivo', locale = 'pt' } = body
-
-  if (!brief?.trim()) {
-    return c.json({ error: 'brief é obrigatório' }, 400)
+  const parsed = writeSchema.safeParse(rawBody)
+  if (!parsed.success) {
+    return c.json({ error: 'Invalid request', details: parsed.error.issues }, 400)
   }
+
+  const { brief, field, collection, tone, locale } = parsed.data
 
   const fieldInstruction = FIELD_INSTRUCTIONS[field] ?? `conteúdo adequado para o campo "${field}"`
   const toneInstruction = TONE_INSTRUCTIONS[tone] ?? TONE_INSTRUCTIONS.consultivo

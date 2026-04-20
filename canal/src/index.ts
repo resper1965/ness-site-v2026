@@ -53,6 +53,9 @@ app.use('/*', cors({
     'https://ness-site2026.pages.dev',
     'https://ness.com.br',
     'https://www.ness.com.br',
+    // TODO: adicionar domínio final quando confirmado, ex:
+    // 'https://forense.ness.com.br',
+    // 'https://trust.ness.com.br',
   ],
   allowHeaders: ['Content-Type', 'Authorization', 'x-setup-key', 'x-session-id', 'x-tenant-id'],
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],

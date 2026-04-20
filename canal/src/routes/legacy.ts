@@ -23,107 +23,132 @@ const legacy = new Hono<Env>()
 // ── Insights (blog) ─────────────────────────────────────────────
 legacy.get('/insights', async (c) => {
   const lang = c.req.query('lang') || 'pt'
-  const { results } = await c.env.DB.prepare(
-    `SELECT e.id, e.locale as lang, e.slug,
-            json_extract(e.data, '$.title') as title,
-            json_extract(e.data, '$.tag') as tag,
-            json_extract(e.data, '$.icon') as icon,
-            json_extract(e.data, '$.date') as date,
-            json_extract(e.data, '$.desc') as desc,
-            json_extract(e.data, '$.featured') as featured
-     FROM entries e
-     JOIN collections col ON e.collection_id = col.id
-     WHERE col.slug = 'insights' AND e.locale = ? AND e.status = 'published'
-     ORDER BY date DESC`
-  ).bind(lang).all()
-  return c.json(results)
+  try {
+    const { results } = await c.env.DB.prepare(
+      `SELECT e.id, e.locale as lang, e.slug,
+              json_extract(e.data, '$.title') as title,
+              json_extract(e.data, '$.tag') as tag,
+              json_extract(e.data, '$.icon') as icon,
+              json_extract(e.data, '$.date') as date,
+              json_extract(e.data, '$.desc') as desc,
+              json_extract(e.data, '$.featured') as featured
+       FROM entries e
+       JOIN collections col ON e.collection_id = col.id
+       WHERE col.slug = 'insights' AND e.locale = ? AND e.status = 'published'
+       ORDER BY date DESC`
+    ).bind(lang).all()
+    return c.json(results)
+  } catch (err) {
+    console.error('[legacy] /insights DB error:', err instanceof Error ? err.message : String(err))
+    return c.json({ error: 'Service temporarily unavailable' }, 503)
+  }
 })
 
 legacy.get('/insights/:slug', async (c) => {
   const lang = c.req.query('lang') || 'pt'
   const slug = c.req.param('slug')
-  const result = await c.env.DB.prepare(
-    `SELECT e.id, e.locale as lang, e.slug,
-            json_extract(e.data, '$.title') as title,
-            json_extract(e.data, '$.tag') as tag,
-            json_extract(e.data, '$.icon') as icon,
-            json_extract(e.data, '$.date') as date,
-            json_extract(e.data, '$.desc') as desc,
-            json_extract(e.data, '$.body') as body,
-            json_extract(e.data, '$.featured') as featured
-     FROM entries e
-     JOIN collections col ON e.collection_id = col.id
-     WHERE col.slug = 'insights' AND e.slug = ? AND e.locale = ? AND e.status = 'published'
-     LIMIT 1`
-  ).bind(slug, lang).first()
-  if (!result) return c.json({ error: 'Not found' }, 404)
-  return c.json(result)
+  try {
+    const result = await c.env.DB.prepare(
+      `SELECT e.id, e.locale as lang, e.slug,
+              json_extract(e.data, '$.title') as title,
+              json_extract(e.data, '$.tag') as tag,
+              json_extract(e.data, '$.icon') as icon,
+              json_extract(e.data, '$.date') as date,
+              json_extract(e.data, '$.desc') as desc,
+              json_extract(e.data, '$.body') as body,
+              json_extract(e.data, '$.featured') as featured
+       FROM entries e
+       JOIN collections col ON e.collection_id = col.id
+       WHERE col.slug = 'insights' AND e.slug = ? AND e.locale = ? AND e.status = 'published'
+       LIMIT 1`
+    ).bind(slug, lang).first()
+    if (!result) return c.json({ error: 'Not found' }, 404)
+    return c.json(result)
+  } catch (err) {
+    console.error('[legacy] /insights/:slug DB error:', err instanceof Error ? err.message : String(err))
+    return c.json({ error: 'Service temporarily unavailable' }, 503)
+  }
 })
 
 // ── Cases (portfolio) ───────────────────────────────────────────
 legacy.get('/cases', async (c) => {
   const lang = c.req.query('lang') || 'pt'
-  const { results } = await c.env.DB.prepare(
-    `SELECT e.id, e.locale as lang, e.slug,
-            json_extract(e.data, '$.client') as client,
-            json_extract(e.data, '$.category') as category,
-            json_extract(e.data, '$.project') as project,
-            json_extract(e.data, '$.result') as result,
-            json_extract(e.data, '$.desc') as desc,
-            json_extract(e.data, '$.stats') as stats,
-            json_extract(e.data, '$.image') as image,
-            json_extract(e.data, '$.featured') as featured
-     FROM entries e
-     JOIN collections col ON e.collection_id = col.id
-     WHERE col.slug = 'cases' AND e.locale = ? AND e.status = 'published'
-     ORDER BY featured DESC, e.id ASC`
-  ).bind(lang).all()
-  return c.json(results)
+  try {
+    const { results } = await c.env.DB.prepare(
+      `SELECT e.id, e.locale as lang, e.slug,
+              json_extract(e.data, '$.client') as client,
+              json_extract(e.data, '$.category') as category,
+              json_extract(e.data, '$.project') as project,
+              json_extract(e.data, '$.result') as result,
+              json_extract(e.data, '$.desc') as desc,
+              json_extract(e.data, '$.stats') as stats,
+              json_extract(e.data, '$.image') as image,
+              json_extract(e.data, '$.featured') as featured
+       FROM entries e
+       JOIN collections col ON e.collection_id = col.id
+       WHERE col.slug = 'cases' AND e.locale = ? AND e.status = 'published'
+       ORDER BY featured DESC, e.id ASC`
+    ).bind(lang).all()
+    return c.json(results)
+  } catch (err) {
+    console.error('[legacy] /cases DB error:', err instanceof Error ? err.message : String(err))
+    return c.json({ error: 'Service temporarily unavailable' }, 503)
+  }
 })
 
 legacy.get('/cases/:slug', async (c) => {
   const lang = c.req.query('lang') || 'pt'
   const slug = c.req.param('slug')
-  const result = await c.env.DB.prepare(
-    `SELECT e.id, e.locale as lang, e.slug,
-            json_extract(e.data, '$.client') as client,
-            json_extract(e.data, '$.category') as category,
-            json_extract(e.data, '$.project') as project,
-            json_extract(e.data, '$.result') as result,
-            json_extract(e.data, '$.desc') as desc,
-            json_extract(e.data, '$.stats') as stats,
-            json_extract(e.data, '$.image') as image,
-            json_extract(e.data, '$.featured') as featured
-     FROM entries e
-     JOIN collections col ON e.collection_id = col.id
-     WHERE col.slug = 'cases' AND e.slug = ? AND e.locale = ? AND e.status = 'published'
-     LIMIT 1`
-  ).bind(slug, lang).first()
-  if (!result) return c.json({ error: 'Not found' }, 404)
-  return c.json(result)
+  try {
+    const result = await c.env.DB.prepare(
+      `SELECT e.id, e.locale as lang, e.slug,
+              json_extract(e.data, '$.client') as client,
+              json_extract(e.data, '$.category') as category,
+              json_extract(e.data, '$.project') as project,
+              json_extract(e.data, '$.result') as result,
+              json_extract(e.data, '$.desc') as desc,
+              json_extract(e.data, '$.stats') as stats,
+              json_extract(e.data, '$.image') as image,
+              json_extract(e.data, '$.featured') as featured
+       FROM entries e
+       JOIN collections col ON e.collection_id = col.id
+       WHERE col.slug = 'cases' AND e.slug = ? AND e.locale = ? AND e.status = 'published'
+       LIMIT 1`
+    ).bind(slug, lang).first()
+    if (!result) return c.json({ error: 'Not found' }, 404)
+    return c.json(result)
+  } catch (err) {
+    console.error('[legacy] /cases/:slug DB error:', err instanceof Error ? err.message : String(err))
+    return c.json({ error: 'Service temporarily unavailable' }, 503)
+  }
 })
 
 // ── Jobs (carreiras) ────────────────────────────────────────────
 legacy.get('/jobs', async (c) => {
   const lang = c.req.query('lang') || 'pt'
-  const { results } = await c.env.DB.prepare(
-    `SELECT e.id, e.locale as lang,
-            json_extract(e.data, '$.title') as title,
-            json_extract(e.data, '$.vertical') as vertical,
-            json_extract(e.data, '$.location') as location,
-            json_extract(e.data, '$.type') as type,
-            json_extract(e.data, '$.desc') as desc,
-            json_extract(e.data, '$.requirements') as requirements
-     FROM entries e
-     JOIN collections col ON e.collection_id = col.id
-     WHERE col.slug = 'jobs' AND e.locale = ? AND e.status = 'published'
-     ORDER BY e.created_at ASC`
-  ).bind(lang).all()
-  const items = (results as any[]).map(j => ({
-    ...j,
-    requirements: (() => { try { return typeof j.requirements === 'string' ? JSON.parse(j.requirements) : j.requirements } catch { return [] } })()
-  }))
-  return c.json(items)
+  try {
+    const { results } = await c.env.DB.prepare(
+      `SELECT e.id, e.locale as lang,
+              json_extract(e.data, '$.title') as title,
+              json_extract(e.data, '$.vertical') as vertical,
+              json_extract(e.data, '$.location') as location,
+              json_extract(e.data, '$.type') as type,
+              json_extract(e.data, '$.desc') as desc,
+              json_extract(e.data, '$.requirements') as requirements
+       FROM entries e
+       JOIN collections col ON e.collection_id = col.id
+       WHERE col.slug = 'jobs' AND e.locale = ? AND e.status = 'published'
+       ORDER BY e.created_at ASC`
+    ).bind(lang).all()
+    const items = (results as any[]).map(j => ({
+      ...j,
+      requirements: (() => { try { return typeof j.requirements === 'string' ? JSON.parse(j.requirements) : j.requirements } catch { return [] } })()
+    }))
+    return c.json(items)
+  } catch (err) {
+    console.error('[legacy] /jobs DB error:', err instanceof Error ? err.message : String(err))
+    return c.json({ error: 'Service temporarily unavailable' }, 503)
+  }
 })
 
 // ── Newsletter ──────────────────────────────────────────────────
