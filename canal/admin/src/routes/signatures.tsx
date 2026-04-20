@@ -38,7 +38,6 @@ export default function SignaturesHub() {
     phone: "+55 (11) 99999-9999",
     brand: "ness",
     department: "Engenharia",
-    photo_url: "",
     linkedin: "https://linkedin.com/in/joaosilva",
     github: "https://github.com/joaosilva"
   });
@@ -178,23 +177,6 @@ export default function SignaturesHub() {
               </select>
             </div>
 
-            <div className="field">
-              <label style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-muted)', marginBottom: '6px', display: 'block' }}>URL da Foto (Avatar)</label>
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                {form.photo_url ? (
-                  <img src={form.photo_url} alt="Avatar" style={{ width: 44, height: 44, objectFit: 'cover', borderRadius: '50%', border: '2px solid var(--border)', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }} />
-                ) : (
-                  <div style={{ width: 44, height: 44, borderRadius: '50%', border: '2px dashed var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, color: 'var(--text-muted)', backgroundColor: 'var(--bg)' }}>Sem<br/>Foto</div>
-                )}
-                <input 
-                  style={{ flex: 1, padding: '10px 12px', borderRadius: '6px', border: '1px solid var(--border)', backgroundColor: 'var(--bg)', color: 'var(--text)' }}
-                  value={form.photo_url} 
-                  placeholder="https://suafoto.com/perfil.jpg" 
-                  onChange={e => setForm({...form, photo_url: e.target.value})} 
-                />
-              </div>
-            </div>
-
             <div className="form-row-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div className="field">
                 <label style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-muted)', marginBottom: '6px', display: 'block' }}>URL do LinkedIn (Opcional)</label>
@@ -238,42 +220,19 @@ export default function SignaturesHub() {
                 <table cellPadding={0} cellSpacing={0} border={0} style={{ fontFamily: 'Arial, sans-serif', maxWidth: '600px', backgroundColor: '#ffffff', color: '#111827' }}>
                   <tbody>
                     <tr>
-                      {/* Avatar Column */}
-                      {form.photo_url && (
-                        <td valign="top" style={{ paddingRight: '20px', verticalAlign: 'top', paddingTop: '4px' }}>
-                          <img 
-                            src={form.photo_url} 
-                            alt={form.name} 
-                            width="90" 
-                            height="90" 
-                            style={{ width: '90px', height: '90px', borderRadius: '50%', objectFit: 'cover', display: 'block', border: '1px solid #f3f4f6' }} 
-                          />
-                        </td>
-                      )}
-                      
-                      {/* Vertical Separator */}
-                      {form.photo_url && (
-                        <td width="2" style={{ width: '2px', backgroundColor: brand.color }}>
-                          <div style={{ width: '2px', lineHeight: '1px', fontSize: '1px' }}>&nbsp;</div>
-                        </td>
-                      )}
-
-                      {/* Content Column */}
-                      <td valign="top" style={{ paddingLeft: form.photo_url ? '24px' : '0px', verticalAlign: 'top' }}>
-                        
-                        {/* Name & Title Block */}
+                      <td valign="top" style={{ paddingLeft: '0px', verticalAlign: 'top' }}>
                         <table cellPadding={0} cellSpacing={0} border={0} width="100%">
                           <tbody>
                             <tr>
                               <td style={{ paddingBottom: '2px' }}>
-                                <span style={{ fontFamily: 'Arial, sans-serif', fontSize: '20px', fontWeight: 'bold', color: '#111827', margin: '0', lineHeight: '1.2' }}>
+                                <span style={{ fontFamily: 'Arial, sans-serif', fontSize: '20px', fontWeight: 'bold', color: '#111827', margin: '0px', lineHeight: 1.2 }}>
                                   {form.name}
                                 </span>
                               </td>
                             </tr>
                             <tr>
                               <td style={{ paddingBottom: '16px' }}>
-                                <span style={{ fontFamily: 'Arial, sans-serif', fontSize: '13px', color: '#4B5563', margin: '0', letterSpacing: '0.02em', lineHeight: '1.4' }}>
+                                <span style={{ fontFamily: 'Arial, sans-serif', fontSize: '13px', color: '#4B5563', margin: '0px', letterSpacing: '0.02em', lineHeight: 1.4 }}>
                                   <span style={{ fontWeight: 600 }}>{form.role}</span>
                                   {form.department && (
                                     <span> &nbsp;|&nbsp; {form.department}</span>
@@ -283,8 +242,7 @@ export default function SignaturesHub() {
                             </tr>
                           </tbody>
                         </table>
-
-                        {/* Contact Information */}
+                        
                         <table cellPadding={0} cellSpacing={0} border={0} width="100%">
                           <tbody>
                             {form.phone && (
@@ -305,7 +263,6 @@ export default function SignaturesHub() {
                                 </a>
                               </td>
                             </tr>
-                            {/* Branding and Socials */}
                             <tr>
                               <td style={{ paddingTop: '16px', paddingBottom: '4px' }}>
                                 <table cellPadding={0} cellSpacing={0} border={0}>
@@ -313,20 +270,20 @@ export default function SignaturesHub() {
                                     <tr>
                                       <td style={{ paddingRight: '12px', verticalAlign: 'middle' }}>
                                         <a href={`https://${brand.name === 'forense.io' ? 'forense.io' : 'ness.com.br'}`} style={{ textDecoration: 'none', display: 'block' }}>
-                                          <img src={logoDataUri} alt={brand.name} height="18" style={{ display: 'block', height: '18px', border: '0' }} />
+                                          <img alt={brand.name} height="18" src={logoDataUri} style={{ display: 'block', height: '18px', border: '0px' }} />
                                         </a>
                                       </td>
                                       {form.linkedin && (
                                         <td style={{ verticalAlign: 'middle', paddingLeft: '12px', borderLeft: '1px solid #E5E7EB' }}>
                                           <a href={form.linkedin} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', display: 'block', lineHeight: '0' }}>
-                                            <img src={linkedinDataUri} alt="LinkedIn" width="16" height="16" style={{ width: '16px', height: '16px', border: '0', display: 'block' }} />
+                                            <img alt="LinkedIn" width="16" height="16" src={linkedinDataUri} style={{ width: '16px', height: '16px', border: '0px', display: 'block' }} />
                                           </a>
                                         </td>
                                       )}
                                       {form.github && (
                                         <td style={{ verticalAlign: 'middle', paddingLeft: '8px' }}>
                                           <a href={form.github} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', display: 'block', lineHeight: '0' }}>
-                                            <img src={githubDataUri} alt="GitHub" width="16" height="16" style={{ width: '16px', height: '16px', border: '0', display: 'block' }} />
+                                            <img alt="GitHub" width="16" height="16" src={githubDataUri} style={{ width: '16px', height: '16px', border: '0px', display: 'block' }} />
                                           </a>
                                         </td>
                                       )}
