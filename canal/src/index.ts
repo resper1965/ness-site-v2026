@@ -102,19 +102,9 @@ async function requireAdminOrKey(c: Context<{ Bindings: Bindings, Variables: Var
   await next()
 }
 
-// ── Root ────────────────────────────────────────────────────────
-app.get('/', (c) => c.json({
-  name: 'Canal CMS',
-  version: '0.4.0',
-  endpoints: {
-    legacy: '/api/{insights,cases,jobs}',
-    v1: '/api/v1/collections',
-    auth: '/api/auth/*',
-    chat: '/api/chat',
-    media: '/api/v1/media',
-    marketing: '/api/v1/marketing/*',
-  }
-}))
+// ── Root (A05: no info disclosure) ──────────────────────────────
+app.get('/', (c) => c.json({ name: 'Canal CMS', status: 'ok' }))
+
 
 // ── Agent Discovery (/.well-known) ──────────────────────────────
 app.all('/.well-known/agent-configuration', (c) => {
@@ -290,10 +280,43 @@ app.post('/api/admin/seed-collections', requireAdminOrKey, async (c) => {
 })
 
 
-// ── Chat RAG (público) ──────────────────────────────────────────
+// ── Chat rate limiter — A04: Insecure Design ────────────────────
+const chatRateMap = new Map<string, { count: number; resetAt: number }>()
+const CHAT_RATE_LIMIT = 20
+const CHAT_RATE_WINDOW = 60_000
 
+function isChatRateLimited(ip: string): boolean {
+  const now = Date.now()
+  const entry = chatRateMap.get(ip)
+  if (!entry || now > entry.resetAt) {
+    chatRateMap.set(ip, { count: 1, resetAt: now + CHAT_RATE_WINDOW })
+    return false
+  }
+  if (entry.count >= CHAT_RATE_LIMIT) return true
+  entry.count++
+  return false
+}
+
+const chatSchema = z.object({
+  messages: z.array(z.object({
+    role: z.enum(['user', 'assistant', 'system']),
+    content: z.string().max(4000),
+  })).min(1).max(20),
+})
+
+// ── Chat RAG (público) ──────────────────────────────────────────
 app.post('/api/chat', async (c) => {
-  const { messages } = await c.req.json<{ messages: Array<{ role: string; content: string }> }>()
+  const clientIp = c.req.header('cf-connecting-ip') || c.req.header('x-forwarded-for') || 'unknown'
+  if (isChatRateLimited(clientIp)) {
+    return c.json({ error: 'Too many requests. Please wait.' }, 429)
+  }
+
+  const rawBody = await c.req.json()
+  const chatParsed = chatSchema.safeParse(rawBody)
+  if (!chatParsed.success) {
+    return c.json({ error: 'Invalid request' }, 400)
+  }
+  const { messages } = chatParsed.data
   const lastMessage = messages[messages.length - 1]?.content || ''
 
   // 1. Embedding da pergunta

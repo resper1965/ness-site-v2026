@@ -10,6 +10,7 @@
  */
 
 import { Hono } from 'hono'
+import { z } from 'zod'
 
 type Env = {
   Bindings: {
@@ -126,36 +127,63 @@ legacy.get('/jobs', async (c) => {
 })
 
 // ── Newsletter ──────────────────────────────────────────────────
+const newsletterSchema = z.object({
+  email: z.string().email().max(254),
+})
+
 legacy.post('/newsletter', async (c) => {
   try {
-    const { email } = await c.req.json<{ email: string }>()
-    if (!email || !email.includes('@')) return c.json({ error: 'Invalid email' }, 400)
+    const body = await c.req.json()
+    const parsed = newsletterSchema.safeParse(body)
+    if (!parsed.success) return c.json({ error: 'Invalid email' }, 400)
+    const { email } = parsed.data
     const existing = await c.env.DB.prepare(
       'SELECT id FROM newsletter WHERE email = ? LIMIT 1'
     ).bind(email).first()
-    if (existing) return c.json({ success: true, message: 'already_subscribed' })
+    // Always return success — prevents email enumeration (A07)
+    if (existing) return c.json({ success: true })
     await c.env.DB.prepare(
       "INSERT INTO newsletter (email) VALUES (?)"
     ).bind(email).run()
-    return c.json({ success: true, message: 'subscribed' })
-  } catch {
+    return c.json({ success: true })
+  } catch (err) {
+    console.error('[security] newsletter error:', err instanceof Error ? err.message : String(err))
     return c.json({ error: 'Failed' }, 500)
   }
 })
 
 // ── Form submission ─────────────────────────────────────────────
+const ALLOWED_FORM_TYPES = ['contact', 'careers', 'whistleblower', 'newsletter'] as const
+
+const formSchema = z.object({
+  type: z.enum(ALLOWED_FORM_TYPES),
+  name: z.string().max(200).optional(),
+  email: z.string().email().max(254).optional(),
+  message: z.string().max(5000).optional(),
+  phone: z.string().max(30).optional(),
+  company: z.string().max(200).optional(),
+  subject: z.string().max(300).optional(),
+  // extra fields stored but bounded
+  extra: z.record(z.string(), z.string().max(1000)).optional(),
+})
+
 legacy.post('/submit-form', async (c) => {
   try {
     const body = await c.req.json()
-    const source = (body as any)?.type || 'unknown_form'
+    const parsed = formSchema.safeParse(body)
+    if (!parsed.success) {
+      return c.json({ error: 'Invalid form payload', details: parsed.error.issues }, 400)
+    }
+    const { type, ...rest } = parsed.data
     const { success } = await c.env.DB.prepare(
       "INSERT INTO forms (payload, source, status) VALUES (?, ?, 'new')"
-    ).bind(JSON.stringify(body), source).run()
+    ).bind(JSON.stringify(rest), type).run()
     if (success) {
       return c.json({ success: true, message: 'Formulário registrado.' })
     }
-    throw new Error('Falha na inserção')
-  } catch {
+    throw new Error('DB insert failed')
+  } catch (err) {
+    console.error('[security] form submission error:', err instanceof Error ? err.message : String(err))
     return c.json({ error: 'Failed to submit form' }, 500)
   }
 })

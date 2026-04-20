@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, Calendar, Tag, FileText } from "lucide-react";
+import DOMPurify from 'dompurify';
 import { usePageTitle } from '../hooks/usePageTitle';
 
 const CANAL_BASE = "https://canal.ness.workers.dev";
@@ -104,7 +105,10 @@ const BlogPost = () => {
           {post.content ? (
             <div
               className="text-on-surface-variant text-sm leading-relaxed space-y-4"
-              dangerouslySetInnerHTML={{ __html: post.content }}
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content, {
+                ALLOWED_TAGS: ['p','br','strong','em','b','i','ul','ol','li','h2','h3','h4','blockquote','code','pre','a','img'],
+                ALLOWED_ATTR: ['href','src','alt','class','target','rel'],
+              }) }}
             />
           ) : (
             <div className="flex flex-col items-center py-16 text-center">

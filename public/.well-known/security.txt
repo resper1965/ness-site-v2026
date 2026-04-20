@@ -1,0 +1,7 @@
+Contact: mailto:seguranca@ness.com.br
+Contact: https://ness.com.br/compliance
+Preferred-Languages: pt, en
+Expires: 2027-04-20T00:00:00.000Z
+Encryption: https://ness.com.br/.well-known/pgp-key.txt
+Policy: https://ness.com.br/compliance
+Hiring: https://ness.com.br/careers
