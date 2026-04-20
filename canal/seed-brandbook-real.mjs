@@ -34,8 +34,6 @@ const brandbook = [
 
   // LOGOS E NOMECLATURAS (Composição Visual)
   { title: 'ness.', slug: 'logo-ness', category: 'logo', brand: 'ness', desc: 'Marca Principal', usage_notes: 'Sempre caixa baixa. Ponto na cor #00ade8. O resto varia entre branco/preto conforme o fundo.' },
-  { title: 'trustness.', slug: 'logo-trustness', category: 'logo', brand: 'trustness', desc: 'Marca Ecossistema Trust/Auditoria', usage_notes: 'Sempre caixa baixa. Ponto na cor #00ade8.' },
-  { title: 'forense.io', slug: 'logo-forense', category: 'logo', brand: 'forense', desc: 'Marca Ecossistema Forense Digital', usage_notes: 'Sempre caixa baixa. Ponto entre "forense" e "io" na cor #00ade8.' },
 
   // SOLUÇÕES / SERVIÇOS
   { title: 'n.secops', slug: 'logo-nsecops', category: 'logo', brand: 'ness', desc: 'Serviço: Resiliência Operacional & Continuidade', usage_notes: 'Sempre caixa baixa. Ponto na cor #00ade8.' },

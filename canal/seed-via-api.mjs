@@ -33,16 +33,12 @@ const brandbook = [
   { title: 'Text White', slug: 'branco-texto', category: 'cor', brand: 'ness', hex_value: '#F0F0F5', desc: 'Cor principal de texto sobre fundos escuros.', usage_notes: 'Para texto secundário usar #A0A0B8.' },
   { title: 'Inter', slug: 'inter-sans', category: 'tipografia', brand: 'ness', desc: 'Fonte principal para UI. Pesos: 400, 500, 600, 700.', usage_notes: 'Usar em admin panel, formulários e tabelas.' },
   { title: 'JetBrains Mono', slug: 'jetbrains-mono', category: 'tipografia', brand: 'ness', desc: 'Fonte monospace para código, IDs e dados técnicos.', usage_notes: 'Usar para code blocks, logs e outputs.' },
-  { title: 'ness. Logo Dark', slug: 'ness-logo-dark', category: 'logo', brand: 'ness', desc: 'Logo principal para fundo escuro. SVG.', usage_notes: 'Mínimo 120px de largura. Sempre com o ponto final.' },
-  { title: 'Aegis Shield', slug: 'aegis-logo', category: 'logo', brand: 'aegis', desc: 'Logo da vertical Aegis (cibersegurança).', usage_notes: 'Usar apenas em contextos de segurança e compliance.' },
+  { title: 'ness. Logo Dark', slug: 'ness-logo-dark', category: 'logo', brand: 'ness', desc: 'Logo principal para fundo escuro. SVG.', usage_notes: 'Mínimo 120px de largura. Sempre com o ponto final.' }
 ];
 
 // ── SIGNATURES ──────────────────────────────────────────────────
 const signatures = [
-  { name: 'Ricardo Esperança', slug: 'ricardo-esperanca', role: 'CEO & Founder', email: 'resper@bekaa.eu', phone: '+351 912 345 678', brand: 'ness', department: 'Diretoria', linkedin: 'https://linkedin.com/in/ricardoesperanca' },
-  { name: 'Ana Silva', slug: 'ana-silva', role: 'CTO', email: 'ana.silva@ness.com.br', phone: '+55 11 98765 4321', brand: 'ness', department: 'Engenharia', linkedin: 'https://linkedin.com/in/anasilva-tech' },
-  { name: 'Marcos Oliveira', slug: 'marcos-oliveira', role: 'Head of Cybersecurity', email: 'marcos@aegis.ness.com.br', phone: '+55 11 91234 5678', brand: 'aegis', department: 'Engenharia', linkedin: 'https://linkedin.com/in/marcosoliveira-sec' },
-  { name: 'Carla Mendes', slug: 'carla-mendes', role: 'Diretora Comercial', email: 'carla.mendes@ness.com.br', phone: '+55 11 97654 3210', brand: 'ness', department: 'Comercial', linkedin: 'https://linkedin.com/in/carlamendes' },
+  { name: 'Ricardo Esper', slug: 'ricardo-esper', role: 'CEO & Founder', email: 'resper@ness.com.br', phone: '+55 11 91234 5678', brand: 'ness', department: 'Diretoria', linkedin: 'https://linkedin.com/in/ricardoesper' },
 ];
 
 // ── INSIGHTS ────────────────────────────────────────────────────
@@ -62,15 +58,15 @@ const cases = [
 
 // ── JOBS ────────────────────────────────────────────────────────
 const jobs = [
-  { title: 'Engenheiro(a) de Segurança Sênior', vertical: 'segurança', location: 'São Paulo, SP (Híbrido)', type: 'Full-time', desc: 'Liderar operações de segurança ofensiva e defensiva no SOC Aegis.', requirements: ['5+ anos em cibersegurança', 'CISSP, CEH ou equivalente', 'Experiência com SIEM/SOAR', 'Cloud security', 'Inglês avançado'] },
+  { title: 'Engenheiro(a) de Segurança Sênior', vertical: 'segurança', location: 'São Paulo, SP (Híbrido)', type: 'Full-time', desc: 'Liderar operações de segurança ofensiva e defensiva no SOC da ness.', requirements: ['5+ anos em cibersegurança', 'CISSP, CEH ou equivalente', 'Experiência com SIEM/SOAR', 'Cloud security', 'Inglês avançado'] },
   { title: 'Dev Full-Stack (Edge/Workers)', vertical: 'engenharia', location: 'Remoto (Brasil/Portugal)', type: 'Full-time', desc: 'Plataformas SaaS na edge com Cloudflare Workers, D1 e Hono.', requirements: ['3+ anos TypeScript', 'Cloudflare Workers / edge', 'React/Next.js', 'SQL (D1/PostgreSQL)', 'AI/LLM diferencial'] },
   { title: 'Consultor(a) de Privacidade e LGPD', vertical: 'segurança', location: 'São Paulo, SP', type: 'Full-time', desc: 'Consultoria em adequação LGPD para clientes enterprise.', requirements: ['Formação em Direito ou Tecnologia', 'Certificação DPO/CDPO', '2+ anos LGPD/GDPR', 'NIST, ISO 27701', 'Comunicação C-Level'] },
 ];
 
 // ── PAGES ───────────────────────────────────────────────────────
 const pages = [
-  { title: 'Sobre a ness.', slug: 'sobre', meta_title: 'Sobre a ness. | Tecnologia desde 1991', meta_description: 'A ness. é uma empresa de tecnologia com 34+ anos de experiência.', body: '## Quem Somos\n\nA **ness.** é uma empresa de tecnologia fundada em 1991.\n\n## Verticais\n\n- **ness. Infrastructure** — Data center, redes, telecom\n- **Aegis by ness.** — SOC, SIEM, LGPD, pentest\n- **ness. Cloud** — Multi-cloud, edge, serverless\n- **ness. AI** — RAG, agentes MCP, automação cognitiva' },
-  { title: 'Nossos Serviços', slug: 'servicos', meta_title: 'Serviços | ness. Tecnologia', meta_description: 'Infraestrutura, cibersegurança, cloud e IA para empresas.', body: '## Serviços\n\n### 🏗️ Infraestrutura & Redes\nProjeto e gestão de infraestrutura corporativa.\n\n### 🛡️ Cibersegurança (Aegis)\nSOC 24x7, SIEM, pentest, compliance.\n\n### ☁️ Cloud & Edge\nMigração cloud-first, multi-cloud.\n\n### 🤖 Inteligência Artificial\nRAG corporativo, agentes MCP, Workers AI.' },
+  { title: 'Sobre a ness.', slug: 'sobre', meta_title: 'Sobre a ness. | Tecnologia desde 1991', meta_description: 'A ness. é uma empresa de tecnologia focada em entregar precisão operacional.', body: '## Quem Somos\n\nA **ness.** é uma empresa de tecnologia pautada na excelência e precisão.\n\n## Verticais (Services/Solutions)\n\n- **n.secops** — Resiliência Cibernética e Segurança Integrada\n- **n.devarch** — Engenharia de Software e Plataformas\n- **n.infraops** — Infraestrutura Crítica e Suporte\n- **n.autoops** — Eficiência Operacional e Automação' },
+  { title: 'Nossos Serviços', slug: 'servicos', meta_title: 'Serviços | ness. Tecnologia', meta_description: 'Infraestrutura, cibersegurança, automação e desenvolvimento de sistemas.', body: '## Serviços\n\n### 🛡️ n.secops\nSegurança e resposta a incidentes contínua.\n\n### ⚙️ n.infraops\nMonitoramento e gestão de missão crítica.\n\n### 💻 n.devarch\nArquiteturas de software para o engenheiro moderno.\n\n### 🤖 n.autoops\nAutomação orientada pro eficiência.' },
 ];
 
 // ── FORMS (submissions de exemplo) ──────────────────────────────

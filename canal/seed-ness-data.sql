@@ -79,8 +79,8 @@ FROM collections c WHERE c.slug = 'brandbook';
 INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, status, data, published_at, created_at, updated_at)
 SELECT 
   'bb-logo-002', NULL,
-  c.id, 'aegis-logo', 'pt', 'published',
-  json('{"title":"Aegis Shield","category":"logo","brand":"aegis","desc":"Logo da vertical Aegis (cibersegurança e privacidade). Ícone de escudo com shield gradient.","usage_notes":"Usar apenas em contextos de segurança, LGPD, SOC e compliance. Nunca misturar com logo ness. no mesmo espaço."}'),
+  c.id, 'ness-logo', 'pt', 'published',
+  json('{"title":"ness. Shield","category":"logo","brand":"ness","desc":"Logo da vertical ness. (cibersegurança e privacidade). Ícone de escudo com shield gradient.","usage_notes":"Usar apenas em contextos de segurança, LGPD, SOC e compliance. Nunca misturar com logo ness. no mesmo espaço."}'),
   datetime('now'), datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'brandbook';
 
@@ -98,7 +98,6 @@ INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, statu
 SELECT 
   'sig-002', NULL,
   c.id, 'ana-silva', 'pt', 'published',
-  json('{"name":"Ana Silva","role":"CTO","email":"ana.silva@ness.com.br","phone":"+55 11 98765 4321","brand":"ness","department":"Engenharia","linkedin":"https://linkedin.com/in/anasilva-tech"}'),
   datetime('now'), datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'signatures';
 
@@ -106,7 +105,6 @@ INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, statu
 SELECT 
   'sig-003', NULL,
   c.id, 'marcos-oliveira', 'pt', 'published',
-  json('{"name":"Marcos Oliveira","role":"Head of Cybersecurity","email":"marcos@aegis.ness.com.br","phone":"+55 11 91234 5678","brand":"aegis","department":"Engenharia","linkedin":"https://linkedin.com/in/marcosoliveira-sec"}'),
   datetime('now'), datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'signatures';
 
@@ -114,7 +112,6 @@ INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, statu
 SELECT 
   'sig-004', NULL,
   c.id, 'carla-mendes', 'pt', 'published',
-  json('{"name":"Carla Mendes","role":"Diretora Comercial","email":"carla.mendes@ness.com.br","phone":"+55 11 97654 3210","brand":"ness","department":"Comercial","linkedin":"https://linkedin.com/in/carlamendes"}'),
   datetime('now'), datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'signatures';
 
@@ -132,7 +129,7 @@ INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, statu
 SELECT 
   'ins-v3-002', NULL,
   c.id, 'zero-trust-alem-do-perimetro', 'pt', 'published',
-  json('{"title":"Zero Trust: Além do Perímetro em 2026","tag":"Segurança","icon":"Shield","date":"2026-03-22","desc":"O modelo Zero Trust evoluiu de buzzword para padrão regulatório. Como implementar ZTNA em ambientes híbridos sem quebrar a produtividade.","featured":true,"body":"## O Fim do Perímetro\n\nA arquitetura tradicional de firewall + VPN não funciona mais. Com 73% dos colaboradores em regime híbrido, cada dispositivo é um potencial vetor de ataque.\n\n### Pilares do Zero Trust Moderno\n\n- **Identity-first:** Cada request é autenticada. Sem exceções.\n- **Least Privilege:** Acesso mínimo necessário, revogável em tempo real.\n- **Continuous Verification:** Postura do dispositivo reavaliada a cada sessão.\n\n### Stack Recomendada\n\n| Camada | Tecnologia | Função |\n|--------|-----------|--------|\n| Identity | Cloudflare Access | ZTNA + SSO |\n| Network | Cloudflare Tunnel | Replace VPN |\n| Endpoint | CrowdStrike | EDR/XDR |\n| Monitoring | Aegis SIEM | Correlation |"}'),
+  json('{"title":"Zero Trust: Além do Perímetro em 2026","tag":"Segurança","icon":"Shield","date":"2026-03-22","desc":"O modelo Zero Trust evoluiu de buzzword para padrão regulatório. Como implementar ZTNA em ambientes híbridos sem quebrar a produtividade.","featured":true,"body":"## O Fim do Perímetro\n\nA arquitetura tradicional de firewall + VPN não funciona mais. Com 73% dos colaboradores em regime híbrido, cada dispositivo é um potencial vetor de ataque.\n\n### Pilares do Zero Trust Moderno\n\n- **Identity-first:** Cada request é autenticada. Sem exceções.\n- **Least Privilege:** Acesso mínimo necessário, revogável em tempo real.\n- **Continuous Verification:** Postura do dispositivo reavaliada a cada sessão.\n\n### Stack Recomendada\n\n| Camada | Tecnologia | Função |\n|--------|-----------|--------|\n| Identity | Cloudflare Access | ZTNA + SSO |\n| Network | Cloudflare Tunnel | Replace VPN |\n| Endpoint | CrowdStrike | EDR/XDR |\n| Monitoring | ness. SIEM | Correlation |"}'),
   datetime('now'), datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'insights';
 
@@ -140,7 +137,7 @@ INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, statu
 SELECT 
   'ins-v3-003', NULL,
   c.id, 'lgpd-multas-2026-cenario', 'pt', 'published',
-  json('{"title":"LGPD em 2026: Multas, Fiscalização e Como se Preparar","tag":"Compliance","icon":"FileCheck","date":"2026-04-01","desc":"A ANPD intensificou a fiscalização em 2026. Análise das multas aplicadas e um checklist prático para adequação de PMEs.","featured":false,"body":"## Panorama Regulatório\n\nA ANPD aplicou R$ 52 milhões em multas no primeiro trimestre de 2026 — um aumento de 340% em relação ao mesmo período de 2025.\n\n### Setores Mais Afetados\n\n1. Saúde (32% das autuações)\n2. Fintechs (28%)\n3. E-commerce (19%)\n4. Educação (12%)\n\n### Checklist de Adequação\n\n- [ ] Mapeamento de dados pessoais (ROPA)\n- [ ] Política de privacidade atualizada\n- [ ] DPO nomeado e registrado na ANPD\n- [ ] Procedimento de resposta a incidentes\n- [ ] Treinamento anual para colaboradores\n\n> A plataforma **Aegis** da ness. automatiza o ROPA e gera relatórios DPIA em minutos, não semanas."}'),
+  json('{"title":"LGPD em 2026: Multas, Fiscalização e Como se Preparar","tag":"Compliance","icon":"FileCheck","date":"2026-04-01","desc":"A ANPD intensificou a fiscalização em 2026. Análise das multas aplicadas e um checklist prático para adequação de PMEs.","featured":false,"body":"## Panorama Regulatório\n\nA ANPD aplicou R$ 52 milhões em multas no primeiro trimestre de 2026 — um aumento de 340% em relação ao mesmo período de 2025.\n\n### Setores Mais Afetados\n\n1. Saúde (32% das autuações)\n2. Fintechs (28%)\n3. E-commerce (19%)\n4. Educação (12%)\n\n### Checklist de Adequação\n\n- [ ] Mapeamento de dados pessoais (ROPA)\n- [ ] Política de privacidade atualizada\n- [ ] DPO nomeado e registrado na ANPD\n- [ ] Procedimento de resposta a incidentes\n- [ ] Treinamento anual para colaboradores\n\n> A plataforma **ness.** da ness. automatiza o ROPA e gera relatórios DPIA em minutos, não semanas."}'),
   datetime('now'), datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'insights';
 
@@ -158,7 +155,7 @@ INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, statu
 SELECT 
   'case-v3-001', NULL,
   c.id, 'banco-nacional-soc-24x7', 'pt', 'published',
-  json('{"client":"Instituição Financeira Nacional","category":"segurança","project":"SOC 24x7 com SIEM Integrado","result":"Redução de 89% no tempo de resposta a incidentes","desc":"Implementação de Centro de Operações de Segurança com monitoramento contínuo, correlação de eventos via Aegis SIEM e resposta automatizada a incidentes para uma das maiores instituições financeiras do Brasil.","stats":"89% faster response | 24/7 coverage | 15M events/day","featured":true}'),
+  json('{"client":"Instituição Financeira Nacional","category":"segurança","project":"SOC 24x7 com SIEM Integrado","result":"Redução de 89% no tempo de resposta a incidentes","desc":"Implementação de Centro de Operações de Segurança com monitoramento contínuo, correlação de eventos via ness. SIEM e resposta automatizada a incidentes para uma das maiores instituições financeiras do Brasil.","stats":"89% faster response | 24/7 coverage | 15M events/day","featured":true}'),
   datetime('now'), datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'cases';
 
@@ -166,7 +163,7 @@ INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, statu
 SELECT 
   'case-v3-002', NULL,
   c.id, 'hospital-rede-lgpd', 'pt', 'published',
-  json('{"client":"Rede Hospitalar","category":"compliance","project":"Adequação LGPD Completa","result":"100% de conformidade ANPD em 4 meses","desc":"Programa completo de adequação à LGPD para rede com 12 unidades hospitalares. Incluiu mapeamento de 340 processos, ROPA automatizado via Aegis, treinamento de 2.800 colaboradores e implementação de consent management.","stats":"340 processos mapeados | 12 unidades | 4 meses","featured":true}'),
+  json('{"client":"Rede Hospitalar","category":"compliance","project":"Adequação LGPD Completa","result":"100% de conformidade ANPD em 4 meses","desc":"Programa completo de adequação à LGPD para rede com 12 unidades hospitalares. Incluiu mapeamento de 340 processos, ROPA automatizado via ness., treinamento de 2.800 colaboradores e implementação de consent management.","stats":"340 processos mapeados | 12 unidades | 4 meses","featured":true}'),
   datetime('now'), datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'cases';
 
@@ -184,7 +181,7 @@ INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, statu
 SELECT 
   'job-001', NULL,
   c.id, NULL, 'pt', 'published',
-  json('{"title":"Engenheiro(a) de Segurança Sênior","vertical":"segurança","location":"São Paulo, SP (Híbrido)","type":"Full-time","desc":"Buscamos profissional sênior para liderar operações de segurança ofensiva e defensiva para nossos clientes enterprise. Atuação no SOC Aegis com gestão de incidentes e threat hunting.","requirements":["5+ anos em cibersegurança","Certificação CISSP, CEH ou equivalente","Experiência com SIEM/SOAR","Conhecimento em cloud security (AWS/Azure/GCP)","Inglês avançado"]}'),
+  json('{"title":"Engenheiro(a) de Segurança Sênior","vertical":"segurança","location":"São Paulo, SP (Híbrido)","type":"Full-time","desc":"Buscamos profissional sênior para liderar operações de segurança ofensiva e defensiva para nossos clientes enterprise. Atuação no SOC ness. com gestão de incidentes e threat hunting.","requirements":["5+ anos em cibersegurança","Certificação CISSP, CEH ou equivalente","Experiência com SIEM/SOAR","Conhecimento em cloud security (AWS/Azure/GCP)","Inglês avançado"]}'),
   datetime('now'), datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'jobs';
 
@@ -192,7 +189,7 @@ INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, statu
 SELECT 
   'job-002', NULL,
   c.id, NULL, 'pt', 'published',
-  json('{"title":"Desenvolvedor(a) Full-Stack (Edge/Workers)","vertical":"engenharia","location":"Remoto (Brasil/Portugal)","type":"Full-time","desc":"Desenvolvimento de plataformas SaaS na edge com Cloudflare Workers, D1 e Hono. Projetos incluem Canal CMS e Aegis Platform. Stack: TypeScript, React, Workers AI.","requirements":["3+ anos com TypeScript","Experiência com Cloudflare Workers ou edge computing","React/Next.js","SQL (D1/PostgreSQL)","Familiaridade com AI/LLM é diferencial"]}'),
+  json('{"title":"Desenvolvedor(a) Full-Stack (Edge/Workers)","vertical":"engenharia","location":"Remoto (Brasil/Portugal)","type":"Full-time","desc":"Desenvolvimento de plataformas SaaS na edge com Cloudflare Workers, D1 e Hono. Projetos incluem Canal CMS e ness. Platform. Stack: TypeScript, React, Workers AI.","requirements":["3+ anos com TypeScript","Experiência com Cloudflare Workers ou edge computing","React/Next.js","SQL (D1/PostgreSQL)","Familiaridade com AI/LLM é diferencial"]}'),
   datetime('now'), datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'jobs';
 
@@ -200,7 +197,7 @@ INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, statu
 SELECT 
   'job-003', NULL,
   c.id, NULL, 'pt', 'published',
-  json('{"title":"Consultor(a) de Privacidade e LGPD","vertical":"segurança","location":"São Paulo, SP","type":"Full-time","desc":"Consultoria em adequação LGPD para clientes enterprise. Atuação com mapeamento de dados, DPIA, ROPA e treinamentos. Uso da plataforma Aegis para automação de processos de privacidade.","requirements":["Formação em Direito ou Tecnologia","Certificação DPO/CDPO","2+ anos com projetos LGPD/GDPR","Conhecimento em frameworks de privacidade (NIST, ISO 27701)","Habilidade de comunicação com C-Level"]}'),
+  json('{"title":"Consultor(a) de Privacidade e LGPD","vertical":"segurança","location":"São Paulo, SP","type":"Full-time","desc":"Consultoria em adequação LGPD para clientes enterprise. Atuação com mapeamento de dados, DPIA, ROPA e treinamentos. Uso da plataforma ness. para automação de processos de privacidade.","requirements":["Formação em Direito ou Tecnologia","Certificação DPO/CDPO","2+ anos com projetos LGPD/GDPR","Conhecimento em frameworks de privacidade (NIST, ISO 27701)","Habilidade de comunicação com C-Level"]}'),
   datetime('now'), datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'jobs';
 
@@ -210,7 +207,7 @@ INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, statu
 SELECT 
   'page-001', NULL,
   c.id, 'sobre', 'pt', 'published',
-  json('{"title":"Sobre a ness.","meta_title":"Sobre a ness. | Tecnologia desde 1991","meta_description":"A ness. é uma empresa de tecnologia fundada em 1991 com mais de 34 anos de experiência em infraestrutura, segurança e cloud.","body":"## Quem Somos\n\nA **ness.** é uma empresa de tecnologia fundada em 1991, com mais de 34 anos de experiência em soluções críticas para empresas. Atuamos nas verticais de **Infraestrutura**, **Cibersegurança**, **Cloud** e **Inteligência Artificial**.\n\n## Nossas Verticais\n\n- **ness. Infrastructure** — Data center, redes, telecom\n- **Aegis by ness.** — SOC, SIEM, LGPD, pentest\n- **ness. Cloud** — Multi-cloud, edge computing, serverless\n- **ness. AI** — RAG, agentes MCP, automação cognitiva\n\n## Números\n\n| Métrica | Valor |\n|---------|-------|\n| Anos de mercado | 34+ |\n| Clientes ativos | 200+ |\n| Profissionais | 150+ |\n| Uptime médio | 99.97% |"}'),
+  json('{"title":"Sobre a ness.","meta_title":"Sobre a ness. | Tecnologia desde 1991","meta_description":"A ness. é uma empresa de tecnologia fundada em 1991 com mais de 34 anos de experiência em infraestrutura, segurança e cloud.","body":"## Quem Somos\n\nA **ness.** é uma empresa de tecnologia fundada em 1991, com mais de 34 anos de experiência em soluções críticas para empresas. Atuamos nas verticais de **Infraestrutura**, **Cibersegurança**, **Cloud** e **Inteligência Artificial**.\n\n## Nossas Verticais\n\n- **ness. Infrastructure** — Data center, redes, telecom\n- **ness. by ness.** — SOC, SIEM, LGPD, pentest\n- **ness. Cloud** — Multi-cloud, edge computing, serverless\n- **ness. AI** — RAG, agentes MCP, automação cognitiva\n\n## Números\n\n| Métrica | Valor |\n|---------|-------|\n| Anos de mercado | 34+ |\n| Clientes ativos | 200+ |\n| Profissionais | 150+ |\n| Uptime médio | 99.97% |"}'),
   datetime('now'), datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'pages';
 
@@ -218,7 +215,7 @@ INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, statu
 SELECT 
   'page-002', NULL,
   c.id, 'servicos', 'pt', 'published',
-  json('{"title":"Nossos Serviços","meta_title":"Serviços | ness. Tecnologia","meta_description":"Conheça os serviços da ness.: infraestrutura, cibersegurança, cloud computing e inteligência artificial para empresas.","body":"## Serviços\n\n### 🏗️ Infraestrutura & Redes\nProjeto, implementação e gestão de infraestrutura corporativa. Data centers, redes complexas e telecomunicações.\n\n### 🛡️ Cibersegurança (Aegis)\nSOC 24x7, SIEM, pentest, compliance LGPD/GDPR, resposta a incidentes e threat intelligence.\n\n### ☁️ Cloud & Edge Computing\nMigração cloud-first, multi-cloud (AWS/Azure/Cloudflare), edge computing com Workers e otimização de custos.\n\n### 🤖 Inteligência Artificial\nRAG corporativo, agentes MCP, automação de processos com LLMs, analytics preditivo e Workers AI.\n\n---\n\n> **Fale com um consultor:** [contato@ness.com.br](mailto:contato@ness.com.br)"}'),
+  json('{"title":"Nossos Serviços","meta_title":"Serviços | ness. Tecnologia","meta_description":"Conheça os serviços da ness.: infraestrutura, cibersegurança, cloud computing e inteligência artificial para empresas.","body":"## Serviços\n\n### 🏗️ Infraestrutura & Redes\nProjeto, implementação e gestão de infraestrutura corporativa. Data centers, redes complexas e telecomunicações.\n\n### 🛡️ Cibersegurança (ness.)\nSOC 24x7, SIEM, pentest, compliance LGPD/GDPR, resposta a incidentes e threat intelligence.\n\n### ☁️ Cloud & Edge Computing\nMigração cloud-first, multi-cloud (AWS/Azure/Cloudflare), edge computing com Workers e otimização de custos.\n\n### 🤖 Inteligência Artificial\nRAG corporativo, agentes MCP, automação de processos com LLMs, analytics preditivo e Workers AI.\n\n---\n\n> **Fale com um consultor:** [contato@ness.com.br](mailto:contato@ness.com.br)"}'),
   datetime('now'), datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'pages';
 
