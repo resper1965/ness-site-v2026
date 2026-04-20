@@ -14,7 +14,8 @@ interface Insight {
   tag?: string;
   date?: string;
   desc?: string;
-  content?: string;
+  body?: string;    // field from Canal CMS
+  content?: string; // legacy alias
 }
 
 const BlogPost = () => {
@@ -102,20 +103,35 @@ const BlogPost = () => {
           transition={{ delay: 0.2 }}
           className="prose prose-invert prose-sm max-w-none"
         >
-          {post.content ? (
-            <div
-              className="text-on-surface-variant text-sm leading-relaxed space-y-4"
-              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content, {
-                ALLOWED_TAGS: ['p','br','strong','em','b','i','ul','ol','li','h2','h3','h4','blockquote','code','pre','a','img'],
-                ALLOWED_ATTR: ['href','src','alt','class','target','rel'],
-              }) }}
-            />
-          ) : (
-            <div className="flex flex-col items-center py-16 text-center">
-              <FileText size={40} className="text-on-surface-variant/20 mb-4" />
-              <p className="text-on-surface-variant/40 text-sm">conteúdo completo em breve.</p>
-            </div>
-          )}
+          {(() => {
+            const rawBody = post.body ?? post.content ?? '';
+            if (!rawBody) return (
+              <div className="flex flex-col items-center py-16 text-center">
+                <FileText size={40} className="text-on-surface-variant/20 mb-4" />
+                <p className="text-on-surface-variant/40 text-sm">conteúdo completo em breve.</p>
+              </div>
+            );
+            // Convert markdown headings/lists to basic HTML if raw is markdown
+            const html = rawBody
+              .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+              .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+              .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+              .replace(/\*(.+?)\*/g, '<em>$1</em>')
+              .replace(/^- (.+)$/gm, '<li>$1</li>')
+              .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+              .replace(/\n\n/g, '</p><p>')
+              .replace(/^(?!<[hup])/gm, '')
+            ;
+            return (
+              <div
+                className="text-on-surface-variant text-sm leading-relaxed space-y-4 prose prose-invert prose-sm max-w-none"
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html, {
+                  ALLOWED_TAGS: ['p','br','strong','em','b','i','ul','ol','li','h2','h3','h4','blockquote','code','pre','a','img'],
+                  ALLOWED_ATTR: ['href','src','alt','class','target','rel'],
+                }) }}
+              />
+            );
+          })()}
         </motion.div>
 
         {/* CTA */}
