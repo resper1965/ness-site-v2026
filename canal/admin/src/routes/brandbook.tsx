@@ -84,9 +84,9 @@ export default function BrandbookHub() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
               {logos.map((logo: any) => {
                 const isSynthetic = !logo.preview_url;
-                
+                const parts = logo.title.split('.');
+
                 const handleDownloadSVG = () => {
-                  const parts = logo.title.split('.');
                   const width = logo.title.length * 15 + 10;
                   
                   let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} 32" width="${width}" height="32">`;
@@ -106,13 +106,55 @@ export default function BrandbookHub() {
 
                   const blob = new Blob([svg], { type: 'image/svg+xml' });
                   const url = URL.createObjectURL(blob);
+                  downloadUrl(url, `${logo.title.replace('.', '')}-logo-transparent.svg`);
+                };
+
+                const handleDownloadPNG = () => {
+                  // Use a canvas to draw with the document's loaded fonts
+                  const canvas = document.createElement('canvas');
+                  const ctx = canvas.getContext('2d');
+                  if (!ctx) return;
+                  
+                  // Setup size with some padding, high-res for better quality
+                  const scale = 4;
+                  canvas.width = (logo.title.length * 15 + 20) * scale;
+                  canvas.height = 40 * scale;
+                  
+                  ctx.scale(scale, scale);
+                  ctx.clearRect(0, 0, canvas.width, canvas.height);
+                  ctx.font = '500 26px Montserrat, Arial, sans-serif';
+                  ctx.textBaseline = 'top';
+                  
+                  let currentX = 0;
+                  // First text part
+                  ctx.fillStyle = '#0b1326';
+                  ctx.fillText(parts[0], currentX, 4);
+                  currentX += ctx.measureText(parts[0]).width - 2; // adjust spacing
+                  
+                  if (parts.length > 1) {
+                    // Dot
+                    ctx.fillStyle = '#00ade8';
+                    ctx.fillText('.', currentX, 4);
+                    currentX += ctx.measureText('.').width - 2;
+                    
+                    // Second part
+                    if (parts[1]) {
+                      ctx.fillStyle = '#0b1326';
+                      ctx.fillText(parts[1], currentX, 4);
+                    }
+                  }
+                  
+                  const url = canvas.toDataURL('image/png');
+                  downloadUrl(url, `${logo.title.replace('.', '')}-logo-transparent.png`);
+                };
+
+                const downloadUrl = (url: string, filename: string) => {
                   const a = document.createElement('a');
                   a.href = url;
-                  a.download = `${logo.title.replace('.', '')}-logo-transparent.svg`;
+                  a.download = filename;
                   document.body.appendChild(a);
                   a.click();
                   document.body.removeChild(a);
-                  URL.revokeObjectURL(url);
                 };
 
                 return (
@@ -122,7 +164,7 @@ export default function BrandbookHub() {
                     ) : (
                       <div style={{ height: 100, backgroundColor: 'var(--surface-3)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8, boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.05)' }}>
                         <span style={{ fontWeight: 500, fontFamily: 'Montserrat, sans-serif', fontSize: 26, letterSpacing: '-0.03em', color: 'var(--text)' }}>
-                          {logo.title.split('.').map((part: string, i: number, arr: string[]) => (
+                          {parts.map((part: string, i: number, arr: string[]) => (
                             <span key={i}>
                               {part}
                               {i < arr.length - 1 && <span style={{ color: '#00ade8' }}>.</span>}
@@ -133,26 +175,37 @@ export default function BrandbookHub() {
                     )}
                     <div style={{ fontWeight: 600, marginTop: 16, fontSize: 13, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
                       {logo.title}
-                      {isSynthetic ? (
+                    </div>
+                    {isSynthetic ? (
+                      <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '12px' }}>
                         <button 
-                          onClick={handleDownloadSVG}
-                          style={{ background: 'var(--accent)', color: '#fff', border: 'none', cursor: 'pointer', padding: '4px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}
-                          title="Baixar Logotipo Vetorial (SVG de fundo transparente)"
+                          onClick={handleDownloadPNG}
+                          style={{ background: 'var(--accent)', color: '#fff', border: 'none', cursor: 'pointer', padding: '4px 12px', borderRadius: 4, fontSize: 11, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', boxShadow: '0 2px 4px rgba(0, 173, 232, 0.2)' }}
+                          title="Baixar Logotipo Vetorial (PNG Transparente Alta Qualidade)"
                         >
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                          PNG
+                        </button>
+                        <button 
+                          onClick={handleDownloadSVG}
+                          style={{ background: 'transparent', color: 'var(--text-muted)', border: '1px solid var(--border)', cursor: 'pointer', padding: '4px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}
+                          title="Baixar Logotipo Vetorial (SVG de fundo transparente)"
+                        >
                           SVG
                         </button>
-                      ) : (
-                        <button 
+                      </div>
+                    ) : (
+                      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '12px' }}>
+                         <button 
                           onClick={() => navigator.clipboard.writeText(logo.title)}
-                          style={{ background: 'transparent', border: 'none', cursor: 'pointer', opacity: 0.5, padding: 2 }}
+                          style={{ background: 'transparent', border: '1px solid var(--border)', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px 8px', borderRadius: 4, fontSize: 11 }}
                           title="Copiar texto do logo"
                         >
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                          Copiar Nome
                         </button>
-                      )}
-                    </div>
-                    <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>{logo.brand}</div>
+                      </div>
+                    )}
+                    <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8 }}>{logo.brand}</div>
                   </div>
                 );
               })}
