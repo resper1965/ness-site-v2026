@@ -3,11 +3,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { 
-LayoutGrid,
-  Menu,
-  X,
-  Sparkles} from "lucide-react";
+import { Menu, X, Sparkles } from "lucide-react";
 
 import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
@@ -34,7 +30,7 @@ const Navbar = () => {
   const menuItems = [
     { key: "solutions", label: t("nav.solutions"), to: "/solucoes" },
     { key: "sobre", label: t("nav.about"), to: "/sobre" },
-    { key: "portfólio", label: t("nav.portfolio"), to: "/portfólio" },
+    { key: "portfolio", label: t("nav.portfolio"), to: "/portfolio" },
     { key: "blog", label: t("nav.blog"), to: "/blog" },
     { key: "carreiras", label: t("nav.careers"), to: "/carreiras" },
     { key: "contato", label: t("nav.contact"), to: "/contato" }
@@ -94,12 +90,12 @@ const Navbar = () => {
             ))}
           </div>
 
-          <button className="hidden lg:flex text-on-surface-variant hover:text-white transition-colors">
-            <LayoutGrid size={20} />
-          </button>
-          <button className="hidden sm:flex bg-primary-container text-on-primary px-6 py-2 rounded-full font-display font-bold text-xs uppercase scale-95 active:scale-90 transition-all hover:brightness-110">
+          <Link
+            to="/contato"
+            className="hidden sm:flex bg-primary-container text-on-primary px-6 py-2 rounded-full font-display font-bold text-xs uppercase scale-95 active:scale-90 transition-all hover:brightness-110"
+          >
             {t('nav.contact')}
-          </button>
+          </Link>
           
           {/* Hamburger Button */}
           <button 
@@ -164,9 +160,13 @@ const Navbar = () => {
                 transition={{ delay: 0.6 }}
                 className="pt-8 border-t border-white/5"
               >
-                <button className="w-full bg-primary-container text-on-primary py-4 rounded-2xl font-display font-bold uppercase tracking-widest text-sm">
-                  começar agora
-                </button>
+                <Link
+                  to="/contato"
+                  onClick={() => setIsOpen(false)}
+                  className="w-full block text-center bg-primary-container text-on-primary py-4 rounded-2xl font-display font-bold uppercase tracking-widest text-sm"
+                >
+                  {t('nav.cta')}
+                </Link>
               </motion.div>
             </div>
           </motion.div>

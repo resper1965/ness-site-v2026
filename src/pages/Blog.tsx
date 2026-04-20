@@ -5,7 +5,9 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ShieldCheck, Cloud, Cpu, Brain, Lock, Workflow, FileText, ArrowUpRight } from "lucide-react";
 import EmptyState from '../components/EmptyState';
-import { usePageTitle } from '../hooks/usePageTitle';interface Insight {
+import { usePageTitle } from '../hooks/usePageTitle';
+import { CANAL_BASE } from '../config/api';
+interface Insight {
   id?: string;
   slug?: string;
   tag: string;
@@ -26,7 +28,7 @@ const Blog = () => {
     const fetchInsights = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/insights?lang=${i18n.language}`);
+        const response = await fetch(`${CANAL_BASE}/api/insights?lang=${i18n.language}`);
         if (!response.ok) throw new Error("API error");
         const data = await response.json();
         setArticles(data);

@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { LayoutGrid } from "lucide-react";
 import EmptyState from '../components/EmptyState';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { CANAL_BASE } from '../config/api';
 interface Case {
   slug?: string;
   project?: string;
@@ -28,7 +29,7 @@ const Portfolio = () => {
     const fetchCases = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/cases?lang=${i18n.language}`);
+        const response = await fetch(`${CANAL_BASE}/api/cases?lang=${i18n.language}`);
         if (!response.ok) throw new Error("API error");
         const data = await response.json();
         setCases(data);

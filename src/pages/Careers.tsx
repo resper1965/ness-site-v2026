@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
+import { CANAL_BASE } from '../config/api';
 import { 
 MapPin,
   X,
@@ -33,7 +34,7 @@ const Careers = () => {
     const fetchJobs = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/jobs?lang=${i18n.language}`);
+        const response = await fetch(`${CANAL_BASE}/api/jobs?lang=${i18n.language}`);
         if (!response.ok) throw new Error("API error");
         const data = await response.json();
         setJobs(data);
@@ -215,7 +216,7 @@ const Careers = () => {
                           hasAttachment: !!formData.get("cv")
                         };
                         try {
-                          const response = await fetch("/api/submit-form", {
+                          const response = await fetch(`${CANAL_BASE}/api/submit-form`, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify(payload)

@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
+import { CANAL_BASE } from '../config/api';
 import { 
 Mail,
   Phone,
@@ -126,7 +127,7 @@ const Contact = () => {
                   message: formData.get("message")
                 };
                 try {
-                  const response = await fetch("/api/submit-form", {
+                  const response = await fetch(`${CANAL_BASE}/api/submit-form`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(payload)

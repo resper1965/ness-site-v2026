@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
+import { CANAL_BASE } from '../config/api';
 import { 
 /**
  * @license
@@ -46,7 +47,7 @@ const Insights = () => {
     const fetchInsights = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/insights?lang=${i18n.language}`);
+        const response = await fetch(`${CANAL_BASE}/api/insights?lang=${i18n.language}`);
         if (!response.ok) throw new Error("API error");
         const data = await response.json();
         // Show only the 3 most recent

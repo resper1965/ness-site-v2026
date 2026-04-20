@@ -2,6 +2,7 @@ import BlueDot from '../components/BlueDot';
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
+import { CANAL_BASE } from '../config/api';
 import { 
 Send,
   X,
@@ -30,7 +31,7 @@ const ChatbotWidget = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/chat", {
+      const response = await fetch(`${CANAL_BASE}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userMsg })

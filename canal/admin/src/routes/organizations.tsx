@@ -34,7 +34,7 @@ export default function OrganizationsPage() {
         baseURL: window.location.origin
       });
       if (req.error) {
-        setErrorMsg(req.error.message || "Erro ao carregar organizações.");
+        setErrorMsg((req.error as { message?: string }).message ?? "Erro ao carregar organizações.");
       } else {
         setOrgs((req.data as any) || []);
       }
