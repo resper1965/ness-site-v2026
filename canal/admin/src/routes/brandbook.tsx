@@ -87,9 +87,27 @@ export default function BrandbookHub() {
                   {logo.preview_url ? (
                     <img src={logo.preview_url} alt={logo.title} style={{ maxWidth: '100%', maxHeight: 100, objectFit: 'contain' }} />
                   ) : (
-                    <div style={{ height: 100, backgroundColor: 'var(--surface-3)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 6, color: 'var(--text-muted)', fontSize: 12 }}>Sem imagem</div>
+                    <div style={{ height: 100, backgroundColor: 'var(--surface-3)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8, boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.05)' }}>
+                      <span style={{ fontWeight: 600, fontFamily: 'Montserrat, sans-serif', fontSize: 26, letterSpacing: '-0.03em', color: 'var(--text)' }}>
+                        {logo.title.split('.').map((part: string, i: number, arr: string[]) => (
+                          <span key={i}>
+                            {part}
+                            {i < arr.length - 1 && <span style={{ color: '#00ade8' }}>.</span>}
+                          </span>
+                        ))}
+                      </span>
+                    </div>
                   )}
-                  <div style={{ fontWeight: 600, marginTop: 10, fontSize: 14 }}>{logo.title}</div>
+                  <div style={{ fontWeight: 600, marginTop: 16, fontSize: 13, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px' }}>
+                    {logo.title}
+                    <button 
+                      onClick={() => navigator.clipboard.writeText(logo.title)}
+                      style={{ background: 'transparent', border: 'none', cursor: 'pointer', opacity: 0.5, padding: 2 }}
+                      title="Copiar texto do logo"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                    </button>
+                  </div>
                   <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{logo.brand}</div>
                 </div>
               ))}
