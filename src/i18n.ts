@@ -12,7 +12,8 @@ const resources = {
         "blog": "blog",
         "careers": "carreiras",
         "contact": "contato",
-        "services": "serviços"
+        "services": "serviços",
+        "cta": "começar agora"
       },
       "hero": {
         "tag": "engenharia digital de precisão",
@@ -76,11 +77,20 @@ const resources = {
       },
       "services": {
         "title": "serviços profissionais",
-        "subtitle": "expertise técnica e estratégica para acelerar sua jornada de transformação e segurança."
+        "subtitle": "expertise técnica e estratégica para acelerar sua jornada de transformação e segurança.",
+        "items": [
+          { "title": "Consultoria em IA & Dados", "desc": "Estratégia para implementação de copilotos e orquestração de conhecimento corporativo.", "tags": ["RAG", "LLM Ops", "Data Strategy"] },
+          { "title": "Resposta a Incidentes (IR)", "desc": "Atuação tática em crises cibernéticas, contenção de danos e recuperação de ambientes.", "tags": ["War Room", "Forensics", "Crisis Mgmt"] },
+          { "title": "Engenharia de Plataforma", "desc": "Design de arquiteturas escaláveis e pipelines de entrega contínua de alta performance.", "tags": ["Cloud Native", "DevOps", "Scalability"] },
+          { "title": "Governança & Compliance", "desc": "Automação de GRC e adequação dinâmica a normas globais e regulamentações.", "tags": ["ISO 27001", "LGPD", "Risk Audit"] }
+        ]
       },
       "verticals": {
         "title": "unidades verticais de negócio",
-        "subtitle": "ecossistemas dedicados que potencializam a inteligência e confiança digital."
+        "subtitle": "ecossistemas dedicados que potencializam a inteligência e confiança digital.",
+        "forense": { "desc": "líder em investigação digital e resposta a incidentes complexos. unimos tecnologia proprietária e expertise humana para desvendar o invisível." },
+        "trustness": { "desc": "consultoria estratégica em governança, riscos e conformidade. criando alicerces sólidos para que sua empresa cresça com segurança e ética." },
+        "cta": "explorar unidade"
       },
       "blog": {
         "title": "conhecimento técnico",
@@ -198,6 +208,7 @@ const resources = {
         "see_all": "ver tudo",
         "view_all": "ver tudo",
         "start_now": "começar agora",
+        "learn_more": "saiba mais",
         "contact_expert": "falar com um especialista",
         "loading": "carregando...",
         "result": "resultado",
@@ -206,6 +217,9 @@ const resources = {
         "back": "voltar",
         "all": "todos",
         "privacy_consent": "Eu li e aceito a política de privacidade e os termos de uso."
+      },
+      "compliance": {
+        "eyebrow": "compliance — ness. precision"
       },
       "footer": {
         "company": "empresa",
@@ -216,7 +230,15 @@ const resources = {
         "newsletter": "insights sobre segurança digital.",
         "rights": "todos os direitos reservados.",
         "updates": "updates",
-        "status": "system live status: optimal"
+        "status": "system live status: optimal",
+        "ecosystem": "ecossistema",
+        "email_placeholder": "seu e-mail",
+        "locations": ["brasil", "portugal", "chile", "peru", "colômbia", "estados unidos"]
+      },
+      "a11y": {
+        "close": "fechar",
+        "subscribe": "inscrever",
+        "send": "enviar"
       },
       "forense": {
         "title": "forense.io",
@@ -401,7 +423,8 @@ const resources = {
         "blog": "blog",
         "careers": "careers",
         "contact": "contact",
-        "services": "services"
+        "services": "services",
+        "cta": "get started"
       },
       "hero": {
         "tag": "precision digital engineering",
@@ -465,11 +488,20 @@ const resources = {
       },
       "services": {
         "title": "professional services",
-        "subtitle": "technical and strategic expertise to accelerate your transformation and security journey."
+        "subtitle": "technical and strategic expertise to accelerate your transformation and security journey.",
+        "items": [
+          { "title": "AI & Data Consulting", "desc": "Strategy for implementing copilots and corporate knowledge orchestration.", "tags": ["RAG", "LLM Ops", "Data Strategy"] },
+          { "title": "Incident Response (IR)", "desc": "Tactical response to cyber crises, damage containment, and environment recovery.", "tags": ["War Room", "Forensics", "Crisis Mgmt"] },
+          { "title": "Platform Engineering", "desc": "Design of scalable architectures and high-performance continuous delivery pipelines.", "tags": ["Cloud Native", "DevOps", "Scalability"] },
+          { "title": "Governance & Compliance", "desc": "GRC automation and dynamic adaptation to global standards and regulations.", "tags": ["ISO 27001", "GDPR", "Risk Audit"] }
+        ]
       },
       "verticals": {
         "title": "vertical business units",
-        "subtitle": "dedicated ecosystems that enhance digital intelligence and trust."
+        "subtitle": "dedicated ecosystems that enhance digital intelligence and trust.",
+        "forense": { "desc": "leader in digital investigation and response to complex incidents. we combine proprietary technology and human expertise to uncover the invisible." },
+        "trustness": { "desc": "strategic consulting in governance, risk, and compliance. building solid foundations for your company to grow with security and ethics." },
+        "cta": "explore unit"
       },
       "blog": {
         "title": "technical knowledge",
@@ -587,6 +619,7 @@ const resources = {
         "see_all": "see all",
         "view_all": "view all",
         "start_now": "start now",
+        "learn_more": "learn more",
         "contact_expert": "talk to an expert",
         "loading": "loading...",
         "result": "result",
@@ -595,6 +628,9 @@ const resources = {
         "back": "back",
         "all": "all",
         "privacy_consent": "I have read and accept the privacy policy and terms of use."
+      },
+      "compliance": {
+        "eyebrow": "compliance — ness. precision"
       },
       "footer": {
         "company": "company",
@@ -605,7 +641,15 @@ const resources = {
         "newsletter": "insights on digital security.",
         "rights": "all rights reserved.",
         "updates": "updates",
-        "status": "system live status: optimal"
+        "status": "system live status: optimal",
+        "ecosystem": "ecosystem",
+        "email_placeholder": "your email",
+        "locations": ["brazil", "portugal", "chile", "peru", "colombia", "united states"]
+      },
+      "a11y": {
+        "close": "close",
+        "subscribe": "subscribe",
+        "send": "send"
       },
       "forense": {
         "title": "forense.io",
@@ -790,7 +834,8 @@ const resources = {
         "blog": "blog",
         "careers": "carreras",
         "contact": "contacto",
-        "services": "servicios"
+        "services": "servicios",
+        "cta": "empezar ahora"
       },
       "hero": {
         "tag": "ingeniería digital de precisión",
@@ -854,11 +899,20 @@ const resources = {
       },
       "services": {
         "title": "servicios profesionales",
-        "subtitle": "experiencia técnica y estratégica para acelerar su viaje de transformación y seguridad."
+        "subtitle": "experiencia técnica y estratégica para acelerar su viaje de transformación y seguridad.",
+        "items": [
+          { "title": "Consultoría en IA & Datos", "desc": "Estrategia para la implementación de copilotos y orquestación del conocimiento corporativo.", "tags": ["RAG", "LLM Ops", "Data Strategy"] },
+          { "title": "Respuesta a Incidentes (IR)", "desc": "Respuesta táctica a cibercrisis, contención de daños y recuperación de entornos.", "tags": ["War Room", "Forensics", "Crisis Mgmt"] },
+          { "title": "Ingeniería de Plataforma", "desc": "Diseño de arquitecturas escalables y pipelines de entrega continua de alto rendimiento.", "tags": ["Cloud Native", "DevOps", "Scalability"] },
+          { "title": "Gobernanza & Cumplimiento", "desc": "Automatización de GRC y adaptación dinámica a normas globales y regulaciones.", "tags": ["ISO 27001", "GDPR", "Risk Audit"] }
+        ]
       },
       "verticals": {
         "title": "unidades de negocio verticales",
-        "subtitle": "ecosistemas dedicados que potencian la inteligencia y la confianza digital."
+        "subtitle": "ecosistemas dedicados que potencian la inteligencia y la confianza digital.",
+        "forense": { "desc": "líder en investigación digital y respuesta a incidentes complejos. combinamos tecnología propia y experiencia humana para descubrir lo invisible." },
+        "trustness": { "desc": "consultoría estratégica en gobernanza, riesgos y cumplimiento. creando bases sólidas para que su empresa crezca con seguridad y ética." },
+        "cta": "explorar unidad"
       },
       "blog": {
         "title": "conocimiento técnico",
@@ -969,6 +1023,7 @@ const resources = {
         "see_all": "ver todo",
         "view_all": "ver todo",
         "start_now": "empezar ahora",
+        "learn_more": "saber más",
         "contact_expert": "hablar con un experto",
         "loading": "cargando...",
         "result": "resultado",
@@ -977,6 +1032,9 @@ const resources = {
         "back": "volver",
         "all": "todos",
         "privacy_consent": "He leído e acepto la política de privacidad y los términos de uso."
+      },
+      "compliance": {
+        "eyebrow": "compliance — ness. precision"
       },
       "footer": {
         "company": "empresa",
@@ -987,7 +1045,15 @@ const resources = {
         "newsletter": "información sobre seguridad digital.",
         "rights": "todos los derechos reservados.",
         "updates": "actualizaciones",
-        "status": "system live status: optimal"
+        "status": "system live status: optimal",
+        "ecosystem": "ecosistema",
+        "email_placeholder": "su correo",
+        "locations": ["brasil", "portugal", "chile", "perú", "colombia", "estados unidos"]
+      },
+      "a11y": {
+        "close": "cerrar",
+        "subscribe": "suscribir",
+        "send": "enviar"
       },
       "forense": {
         "title": "forense.io",

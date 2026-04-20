@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import { 
 AlertTriangle} from "lucide-react";
 
-import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
 
 
@@ -96,7 +95,7 @@ const Compliance = () => {
             animate={{ x: 0, opacity: 1 }}
             className="text-primary-container font-mono text-xs uppercase tracking-[0.3em] mb-6"
           >
-            compliance — ness. precision
+            {t('compliance.eyebrow')}
           </motion.div>
           <h1 className="text-4xl md:text-6xl font-display font-semibold text-white tracking-tighter mb-6 lowercase-all">
             {current.title}<BlueDot />
@@ -180,7 +179,7 @@ const Compliance = () => {
                       throw new Error("Failed to submit");
                     }
                   } catch (error) {
-                    alert("Erro ao enviar denúncia. Por favor, tente novamente.");
+                    alert(t('contact.whistleblower.form.error'));
                   }
                 }}
               >
@@ -210,7 +209,7 @@ const Compliance = () => {
                   <textarea name="message" required rows={6} placeholder="detalhe o ocorrido com o máximo de informações possíveis (datas, locais, envolvidos)..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all resize-none"></textarea>
                 </div>
                 <button className="w-full bg-primary-container text-on-primary py-5 rounded-2xl font-display font-bold uppercase tracking-widest text-sm hover:brightness-110 transition-all shadow-xl shadow-primary-container/20">
-                  enviar denúncia segura
+                  {t('contact.whistleblower.form.send_button')}
                 </button>
               </form>
             </div>
@@ -220,7 +219,7 @@ const Compliance = () => {
 
         <div className="mt-24 p-8 rounded-3xl bg-surface-container-low/30 border border-white/5">
           <p className="text-sm text-on-surface-variant font-light italic">
-            última atualização: 14 de abril de 2024. para dúvidas adicionais, entre em contato com nosso DPO em dpo@ness.com.br
+            {t('contact.whistleblower.last_update')}
           </p>
         </div>
       </div>

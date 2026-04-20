@@ -9,7 +9,6 @@ MapPin,
   Clock,
   Upload} from "lucide-react";
 
-import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
 interface Job {
   id: string;
@@ -134,7 +133,7 @@ const Careers = () => {
                   onClick={() => setSelectedJob(job)}
                   className="w-full bg-white/5 hover:bg-white/10 text-white py-4 rounded-2xl font-display font-bold uppercase tracking-widest text-xs transition-all border border-white/10"
                 >
-                  saiba mais
+                  {t('common.learn_more')}
                 </button>
               </motion.div>
             ))

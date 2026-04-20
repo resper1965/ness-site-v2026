@@ -8,7 +8,6 @@ Send,
   MessageSquare,
   Bot} from "lucide-react";
 
-import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
 
 
@@ -105,7 +104,11 @@ const ChatbotWidget = () => {
                   <p className="text-[10px] text-primary-container uppercase tracking-widest font-bold">{t('chatbot.status')}</p>
                 </div>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-on-surface-variant hover:text-white transition-colors">
+              <button
+                onClick={() => setIsOpen(false)}
+                aria-label={t('a11y.close')}
+                className="text-on-surface-variant hover:text-white transition-colors"
+              >
                 <X size={20} />
               </button>
             </div>
@@ -142,7 +145,11 @@ const ChatbotWidget = () => {
                 placeholder={t('chatbot.placeholder')}
                 className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
               />
-              <button type="submit" className="w-12 h-12 bg-primary-container text-on-primary rounded-xl flex items-center justify-center hover:brightness-110 transition-all">
+              <button
+                type="submit"
+                aria-label={t('a11y.send')}
+                className="w-12 h-12 bg-primary-container text-on-primary rounded-xl flex items-center justify-center hover:brightness-110 transition-all"
+              >
                 <Send size={18} />
               </button>
             </form>
@@ -154,6 +161,8 @@ const ChatbotWidget = () => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
+        aria-label={isOpen ? t('a11y.close') : 'Gabi.OS'}
+        aria-expanded={isOpen}
         className="w-16 h-16 bg-primary-container text-on-primary rounded-2xl flex items-center justify-center shadow-2xl shadow-primary-container/40 relative group"
       >
         <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 border-2 border-surface rounded-full"></div>

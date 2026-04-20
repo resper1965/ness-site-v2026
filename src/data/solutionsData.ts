@@ -1,6 +1,40 @@
 import { ShieldCheck, Cloud, Cpu, Brain, Gavel } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
-export const solutionsData: any = {
+interface DashboardMetric { value: string; label: string; color: string }
+interface DashboardData {
+  title: string;
+  mainStat: { value: string; label: string };
+  metrics: DashboardMetric[];
+  progress: { label: string; value: string; subLabel: string };
+}
+interface WorkflowStep { step: string; name: string; desc: string }
+interface Benefit { title: string; desc: string }
+interface Service { name: string; desc: string }
+interface UseCase { title: string; desc: string }
+interface Feature { name: string; category: string }
+interface OnboardingStep { step: string; title: string; desc: string }
+interface TechnicalFeature { title: string; desc: string }
+interface PortfolioEntry { client: string; project: string; result: string }
+
+export interface SolutionData {
+  icon: LucideIcon;
+  bgImage: string;
+  overview?: string;
+  dashboard: DashboardData;
+  workflow: WorkflowStep[];
+  benefits: Benefit[];
+  services: Service[];
+  ctaLabel: string;
+  useCases?: UseCase[];
+  features?: Feature[];
+  onboarding?: OnboardingStep[];
+  technicalFeatures?: TechnicalFeature[];
+  portfolio: PortfolioEntry[];
+}
+
+export const solutionsData: Record<string, SolutionData> = {
+
   "secops": {
     icon: ShieldCheck,
     bgImage: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2000",

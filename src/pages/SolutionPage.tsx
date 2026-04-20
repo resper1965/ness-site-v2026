@@ -13,7 +13,6 @@ import {
   ChevronDown
 } from "lucide-react";
 
-import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
 
 
@@ -47,7 +46,7 @@ const SolutionPage = () => {
             animate={{ scale: 1, opacity: 0.3 }}
             transition={{ duration: 1.5 }}
             src={solution.bgImage}
-            alt={`${solution.title} Background`}
+            alt={`ness. ${slug} background`}
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
           />
