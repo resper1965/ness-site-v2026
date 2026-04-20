@@ -1,55 +1,26 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import BlueDot from '../components/BlueDot';
-import React, {  } from "react";
+import React from "react";
 import { motion } from "motion/react";
 import { useTranslation } from "react-i18next";
-import { 
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
+import { usePageTitle } from '../hooks/usePageTitle';
+import { ShieldCheck, Brain, Scale, Network } from "lucide-react";
 
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-  ShieldCheck, 
-  Brain, 
-  Scale, 
-  Network} from "lucide-react";
-
-import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
-
-
+const ICONS = [Brain, ShieldCheck, Network, Scale];
 
 const Services = () => {
   const { t } = useTranslation();
-  const services = [
-    {
-      title: "Consultoria em IA & Dados",
-      desc: "Estratégia para implementação de copilotos e orquestração de conhecimento corporativo.",
-      icon: Brain,
-      tags: ["RAG", "LLM Ops", "Data Strategy"]
-    },
-    {
-      title: "Resposta a Incidentes (IR)",
-      desc: "Atuação tática em crises cibernéticas, contenção de danos e recuperação de ambientes.",
-      icon: ShieldCheck,
-      tags: ["War Room", "Forensics", "Crisis Mgmt"]
-    },
-    {
-      title: "Engenharia de Plataforma",
-      desc: "Design de arquiteturas escaláveis e pipelines de entrega contínua de alta performance.",
-      icon: Network,
-      tags: ["Cloud Native", "DevOps", "Scalability"]
-    },
-    {
-      title: "Governança & Compliance",
-      desc: "Automação de GRC e adequação dinâmica a normas globais e regulamentações.",
-      icon: Scale,
-      tags: ["ISO 27001", "LGPD", "Risk Audit"]
-    }
-  ];
+
+  usePageTitle('services.meta_title', 'serviços — ness.');
+  const services = [0, 1, 2, 3].map((i) => ({
+    title: t(`services.items.${i}.title`),
+    desc: t(`services.items.${i}.desc`),
+    icon: ICONS[i],
+    tags: (t(`services.items.${i}.tags`, { returnObjects: true }) as string[])
+  }));
 
   return (
     <section id="serviços" className="py-24 bg-surface-container-lowest px-8 border-t border-white/5 relative overflow-hidden">
@@ -107,6 +78,5 @@ const Services = () => {
     </section>
   );
 };
-
 
 export default Services;

@@ -7,7 +7,7 @@ import { ArrowLeft, Calendar, Tag, FileText } from "lucide-react";
 import DOMPurify from 'dompurify';
 import { usePageTitle } from '../hooks/usePageTitle';
 
-const CANAL_BASE = "https://canal.ness.workers.dev";
+import { CANAL_BASE } from '../config/api';
 
 interface Insight {
   title: string;

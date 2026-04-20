@@ -3,6 +3,7 @@ import React, {  } from "react";
 import { motion } from "motion/react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { usePageTitle } from '../hooks/usePageTitle';
 import { 
 AlertTriangle} from "lucide-react";
 
@@ -11,6 +12,7 @@ AlertTriangle} from "lucide-react";
 
 const Compliance = () => {
   const { t } = useTranslation();
+  usePageTitle('compliance.meta_title', 'compliance — ness.');
   const { type } = useParams();
 
   const content = {

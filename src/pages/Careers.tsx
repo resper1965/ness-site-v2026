@@ -2,6 +2,7 @@ import BlueDot from '../components/BlueDot';
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
+import { usePageTitle } from '../hooks/usePageTitle';
 import { 
 MapPin,
   X,
@@ -22,6 +23,7 @@ interface Job {
 
 const Careers = () => {
   const { t, i18n } = useTranslation();
+  usePageTitle('careers.meta_title', 'carreiras — ness.');
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);

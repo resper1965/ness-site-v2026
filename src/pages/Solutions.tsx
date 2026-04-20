@@ -3,6 +3,7 @@ import React, {  } from "react";
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { usePageTitle } from '../hooks/usePageTitle';
 import { 
 /**
  * @license
@@ -27,6 +28,7 @@ import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/bra
 
 const Solutions = () => {
   const { t } = useTranslation();
+  usePageTitle('solutions.meta_title', 'soluções — ness.');
   const solutions = [
     {
       slug: "secops",

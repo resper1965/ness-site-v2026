@@ -4,12 +4,14 @@ import AnimatedCounter from '../components/AnimatedCounter';
 import React from "react";
 import { motion } from "motion/react";
 import { useTranslation, Trans } from "react-i18next";
+import { usePageTitle } from '../hooks/usePageTitle';
 import { Target, Eye, Heart, Shield, Globe, Cpu } from "lucide-react";
 
 import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
 const About = () => {
   const { t } = useTranslation();
+  usePageTitle('about.meta_title', 'sobre — ness.');
 
   const timeline = [
     { year: "1991", desc: t('about.timeline.1991', "ness. é fundada como terceirização da área de tecnologia de um grande grupo econômico.") },

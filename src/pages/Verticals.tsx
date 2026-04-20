@@ -1,28 +1,17 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import BlueDot from '../components/BlueDot';
-import React, {  } from "react";
+import React from "react";
 import { motion } from "motion/react";
 import { useTranslation } from "react-i18next";
-import { 
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-  ShieldCheck, 
-  Fingerprint, 
-  ArrowUpRight} from "lucide-react";
-
-import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
-
-
+import { usePageTitle } from '../hooks/usePageTitle';
+import { ShieldCheck, Fingerprint, ArrowUpRight } from "lucide-react";
 
 const Verticals = () => {
   const { t } = useTranslation();
+  usePageTitle('verticals.meta_title', 'verticais — ness.');
   return (
     <section className="py-24 bg-surface px-8 border-t border-white/5 relative overflow-hidden">
       {/* Immersive Background for Verticals */}
@@ -64,10 +53,10 @@ const Verticals = () => {
               forense<span className="text-primary-container">.</span>io
             </h3>
             <p className="text-on-surface-variant leading-relaxed font-light">
-              líder em investigação digital e resposta a incidentes complexos. unimos tecnologia proprietária e expertise humana para desvendar o invisível.
+              {t('verticals.forense.desc')}
             </p>
             <div className="mt-8 flex items-center gap-2 text-[10px] text-primary-container uppercase tracking-widest font-bold">
-              explorar unidade <ArrowUpRight size={14} />
+              {t('verticals.cta')} <ArrowUpRight size={14} />
             </div>
           </motion.a>
 
@@ -83,10 +72,10 @@ const Verticals = () => {
               trustness<BlueDot />
             </h3>
             <p className="text-on-surface-variant leading-relaxed font-light">
-              consultoria estratégica em governança, riscos e conformidade. criando alicerces sólidos para que sua empresa cresça com segurança e ética.
+              {t('verticals.trustness.desc')}
             </p>
             <div className="mt-8 flex items-center gap-2 text-[10px] text-primary-container uppercase tracking-widest font-bold">
-              explorar unidade <ArrowUpRight size={14} />
+              {t('verticals.cta')} <ArrowUpRight size={14} />
             </div>
           </motion.a>
         </div>
@@ -94,6 +83,5 @@ const Verticals = () => {
     </section>
   );
 };
-
 
 export default Verticals;

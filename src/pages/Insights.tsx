@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { usePageTitle } from '../hooks/usePageTitle';
 import { 
 /**
  * @license
@@ -37,6 +38,7 @@ interface Insight {
 
 const Insights = () => {
   const { t, i18n } = useTranslation();
+  usePageTitle('insights.meta_title', 'insights — ness.');
   const [articles, setArticles] = useState<Insight[]>([]);
   const [loading, setLoading] = useState(true);
 

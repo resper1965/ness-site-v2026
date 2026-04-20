@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { usePageTitle } from '../hooks/usePageTitle';
 import { solutionsData } from "../data/solutionsData";
 import { 
   ChevronLeft,
@@ -18,6 +19,7 @@ import {
 
 const SolutionPage = () => {
   const { t } = useTranslation();
+  usePageTitle('solution.meta_title', 'solução — ness.');
   const { slug } = useParams();
   const navigate = useNavigate();
   const solution = slug ? solutionsData[slug] : null;

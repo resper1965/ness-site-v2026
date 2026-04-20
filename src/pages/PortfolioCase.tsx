@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { usePageTitle } from '../hooks/usePageTitle';
 
-const CANAL_BASE = "https://canal.ness.workers.dev";
+import { CANAL_BASE } from '../config/api';
 
 interface Case {
   project: string;
