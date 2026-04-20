@@ -82,35 +82,80 @@ export default function BrandbookHub() {
              </div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
-              {logos.map((logo: any) => (
-                <div key={logo.id} style={{ border: '1px solid var(--border)', borderRadius: 8, padding: '1rem', textAlign: 'center', background: 'var(--surface-2)' }}>
-                  {logo.preview_url ? (
-                    <img src={logo.preview_url} alt={logo.title} style={{ maxWidth: '100%', maxHeight: 100, objectFit: 'contain' }} />
-                  ) : (
-                    <div style={{ height: 100, backgroundColor: 'var(--surface-3)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8, boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.05)' }}>
-                      <span style={{ fontWeight: 600, fontFamily: 'Montserrat, sans-serif', fontSize: 26, letterSpacing: '-0.03em', color: 'var(--text)' }}>
-                        {logo.title.split('.').map((part: string, i: number, arr: string[]) => (
-                          <span key={i}>
-                            {part}
-                            {i < arr.length - 1 && <span style={{ color: '#00ade8' }}>.</span>}
-                          </span>
-                        ))}
-                      </span>
+              {logos.map((logo: any) => {
+                const isSynthetic = !logo.preview_url;
+                
+                const handleDownloadSVG = () => {
+                  const parts = logo.title.split('.');
+                  const width = logo.title.length * 15 + 10;
+                  
+                  let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} 32" width="${width}" height="32">`;
+                  svg += `<style>@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&amp;display=swap'); text { font-family: 'Montserrat', Arial, sans-serif; }</style>`;
+                  
+                  if (parts.length === 1) {
+                    svg += `<text x="0" y="26" font-size="26" font-weight="500" letter-spacing="-0.03em" fill="#0b1326">${parts[0]}</text>`;
+                  } else {
+                    const p0Width = parts[0].length * 15;
+                    svg += `<text x="0" y="26" font-size="26" font-weight="500" letter-spacing="-0.03em" fill="#0b1326">${parts[0]}</text>`;
+                    svg += `<text x="${p0Width}" y="26" font-size="26" font-weight="500" letter-spacing="-0.03em" fill="#00ade8">.</text>`;
+                    if (parts[1]) {
+                      svg += `<text x="${p0Width + 9}" y="26" font-size="26" font-weight="500" letter-spacing="-0.03em" fill="#0b1326">${parts[1]}</text>`;
+                    }
+                  }
+                  svg += `</svg>`;
+
+                  const blob = new Blob([svg], { type: 'image/svg+xml' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `${logo.title.replace('.', '')}-logo-transparent.svg`;
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                  URL.revokeObjectURL(url);
+                };
+
+                return (
+                  <div key={logo.id} style={{ border: '1px solid var(--border)', borderRadius: 8, padding: '1rem', textAlign: 'center', background: 'var(--surface-2)', position: 'relative' }}>
+                    {logo.preview_url ? (
+                      <img src={logo.preview_url} alt={logo.title} style={{ maxWidth: '100%', maxHeight: 100, objectFit: 'contain' }} />
+                    ) : (
+                      <div style={{ height: 100, backgroundColor: 'var(--surface-3)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8, boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.05)' }}>
+                        <span style={{ fontWeight: 500, fontFamily: 'Montserrat, sans-serif', fontSize: 26, letterSpacing: '-0.03em', color: 'var(--text)' }}>
+                          {logo.title.split('.').map((part: string, i: number, arr: string[]) => (
+                            <span key={i}>
+                              {part}
+                              {i < arr.length - 1 && <span style={{ color: '#00ade8' }}>.</span>}
+                            </span>
+                          ))}
+                        </span>
+                      </div>
+                    )}
+                    <div style={{ fontWeight: 600, marginTop: 16, fontSize: 13, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+                      {logo.title}
+                      {isSynthetic ? (
+                        <button 
+                          onClick={handleDownloadSVG}
+                          style={{ background: 'var(--accent)', color: '#fff', border: 'none', cursor: 'pointer', padding: '4px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}
+                          title="Baixar Logotipo Vetorial (SVG de fundo transparente)"
+                        >
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                          SVG
+                        </button>
+                      ) : (
+                        <button 
+                          onClick={() => navigator.clipboard.writeText(logo.title)}
+                          style={{ background: 'transparent', border: 'none', cursor: 'pointer', opacity: 0.5, padding: 2 }}
+                          title="Copiar texto do logo"
+                        >
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                        </button>
+                      )}
                     </div>
-                  )}
-                  <div style={{ fontWeight: 600, marginTop: 16, fontSize: 13, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px' }}>
-                    {logo.title}
-                    <button 
-                      onClick={() => navigator.clipboard.writeText(logo.title)}
-                      style={{ background: 'transparent', border: 'none', cursor: 'pointer', opacity: 0.5, padding: 2 }}
-                      title="Copiar texto do logo"
-                    >
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
-                    </button>
+                    <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>{logo.brand}</div>
                   </div>
-                  <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{logo.brand}</div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

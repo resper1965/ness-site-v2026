@@ -9,17 +9,17 @@ const BRAND_CONFIG: Record<string, { color: string; name: string; logo: string }
   ness: {
     color: "#000000",
     name: "ness.",
-    logo: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 32" width="60" height="16"><text x="0" y="26" font-family="Arial,sans-serif" font-size="28" font-weight="bold" fill="#000">ness</text><text x="60" y="26" font-family="Arial,sans-serif" font-size="28" font-weight="bold" fill="#00ade8">.</text></svg>`,
+    logo: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 32" width="60" height="16"><text x="0" y="26" font-family="Arial,sans-serif" font-size="28" font-weight="500" fill="#000">ness</text><text x="60" y="26" font-family="Arial,sans-serif" font-size="28" font-weight="500" fill="#00ade8">.</text></svg>`,
   },
   trustness: {
     color: "#2563EB",
     name: "trustness.",
-    logo: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 32" width="80" height="16"><text x="0" y="26" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#2563EB">trustness</text><text x="110" y="26" font-family="Arial,sans-serif" font-size="28" font-weight="bold" fill="#00ade8">.</text></svg>`,
+    logo: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 32" width="80" height="16"><text x="0" y="26" font-family="Arial,sans-serif" font-size="26" font-weight="500" fill="#2563EB">trustness</text><text x="110" y="26" font-family="Arial,sans-serif" font-size="28" font-weight="500" fill="#00ade8">.</text></svg>`,
   },
   forense: {
     color: "#052e16",
     name: "forense.io",
-    logo: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 32" width="70" height="16"><text x="0" y="26" font-family="Arial,sans-serif" font-size="24" font-weight="bold" fill="#052e16">forense</text><text x="85" y="26" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#00ade8">.</text><text x="95" y="26" font-family="Arial,sans-serif" font-size="24" font-weight="bold" fill="#052e16">io</text></svg>`,
+    logo: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 32" width="70" height="16"><text x="0" y="26" font-family="Arial,sans-serif" font-size="24" font-weight="500" fill="#052e16">forense</text><text x="85" y="26" font-family="Arial,sans-serif" font-size="26" font-weight="500" fill="#00ade8">.</text><text x="95" y="26" font-family="Arial,sans-serif" font-size="24" font-weight="500" fill="#052e16">io</text></svg>`,
   },
 };
 
