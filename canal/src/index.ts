@@ -115,11 +115,13 @@ app.all('/.well-known/agent-configuration', (c) => {
 // ── Mount: Rotas legadas (retrocompat site) ─────────────────────
 app.route('/api', legacy)
 
-// ── Mount: API v1 (CMS genérico) — protegidas por auth ─────────
-// Rotas públicas de leitura
+// ── Mount: API v1 (CMS genérico) ────────────────────────────────
+// Leitura pública
 app.route('/api/v1', entries)
-app.route('/api/v1', media)
 app.route('/api/v1', marketing)
+// Upload requer sessão (P0: evitar abuso do R2)
+app.use('/api/v1/media/upload', requireSession)
+app.route('/api/v1', media)
 
 // ── Mount: AI Writer (agente redator) — protegido por auth ─────
 app.use('/api/content-agent/*', requireSession)
@@ -225,7 +227,10 @@ app.delete('/api/admin/api-keys/:id', requireSession, async (c) => {
 })
 
 
+// P0: forms e chats contêm dados sensíveis de leads — role=admin obrigatório
 app.get('/api/admin/forms', requireSession, async (c) => {
+  const session = c.get('session')
+  if (session?.user?.role !== 'admin') return c.json({ error: 'Forbidden' }, 403)
   const { results } = await c.env.DB.prepare(
     'SELECT * FROM forms ORDER BY created_at DESC LIMIT 50'
   ).all()
@@ -233,6 +238,8 @@ app.get('/api/admin/forms', requireSession, async (c) => {
 })
 
 app.get('/api/admin/chats', requireSession, async (c) => {
+  const session = c.get('session')
+  if (session?.user?.role !== 'admin') return c.json({ error: 'Forbidden' }, 403)
   const { results } = await c.env.DB.prepare(
     'SELECT * FROM chats ORDER BY updated_at DESC LIMIT 50'
   ).all()
