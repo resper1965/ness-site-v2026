@@ -189,7 +189,7 @@ export default function SignaturesHub() {
                             {/* Name */}
                             <tr>
                               <td style={{ paddingBottom: "1px" }}>
-                                <span style={{ fontFamily: "Arial,Helvetica,sans-serif", fontSize: "15px", fontWeight: "bold",
+                                <span style={{ fontFamily: "Arial,Helvetica,sans-serif", fontSize: "15px", fontWeight: 500,
                                   color: "#111827", letterSpacing: "0.08em", textTransform: "uppercase" }}>
                                   {form.name}
                                 </span>
