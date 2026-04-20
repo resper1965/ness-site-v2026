@@ -109,6 +109,7 @@ export const collections: CollectionDef[] = [
       ]},
       { name: 'desc', type: 'textarea', label: 'Descrição' },
       { name: 'requirements', type: 'json', label: 'Requisitos' },
+      { name: 'featured', type: 'boolean', label: 'Destaque', defaultValue: false },
     ]
   },
   {

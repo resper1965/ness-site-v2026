@@ -19,6 +19,7 @@ type Env = {
     BETTER_AUTH_SECRET: string
     BETTER_AUTH_URL: string
     ADMIN_SETUP_KEY: string
+    RESEND_API_KEY: string
   }
 }
 
@@ -58,7 +59,12 @@ entries.get('/collections/:slug/entries', async (c) => {
   // Tenant identification + session check
   const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
   const session = await auth.api.getSession({ headers: c.req.raw.headers }).catch(() => null)
-  const tenantId = c.req.header('x-tenant-id') || session?.session?.activeOrganizationId
+  // SECURITY (P0): Removed unvalidated x-tenant-id header override to fix IDOR.
+  // Must rely strictly on the active organization the user authenticated into.
+  const authTenantId = session?.session?.activeOrganizationId
+  // Also support server-to-server calls that use valid API keys where no active session org is given
+  // Ideally MCP or worker bindings pass context, but here we fallback strictly.
+  const tenantId = authTenantId || null
 
   // Security: only authenticated users can request drafts or all entries
   const requestedStatus = c.req.query('status') || 'published'
@@ -151,7 +157,7 @@ entries.get('/collections/:slug/entries/:id', async (c) => {
 
   const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
   const session = await auth.api.getSession({ headers: c.req.raw.headers }).catch(() => null)
-  const tenantId = c.req.header('x-tenant-id') || session?.session?.activeOrganizationId
+  const tenantId = session?.session?.activeOrganizationId || null // Removed header bypass
 
   let tSql = tenantId ? 'tenant_id = ?' : 'tenant_id IS NULL';
 
@@ -188,6 +194,29 @@ entries.get('/collections/:slug/entries/:id', async (c) => {
   })
 })
 
+// ── Helpers de Schema Dinâmico ──────────────────────────────────
+function getZodType(type: string): z.ZodTypeAny {
+  switch (type) {
+    case 'text':
+    case 'textarea':
+    case 'richtext':
+    case 'slug':
+    case 'select':
+    case 'relation':
+    case 'date':
+    case 'image':
+      return z.string()
+    case 'number':
+      return z.number()
+    case 'boolean':
+      return z.boolean()
+    case 'json':
+      return z.any()
+    default:
+      return z.any()
+  }
+}
+
 // ── Criar entry (requer auth) ───────────────────────────────────
 entries.post('/collections/:slug/entries', async (c) => {
   const col = getCollection(c.req.param('slug'))
@@ -195,7 +224,7 @@ entries.post('/collections/:slug/entries', async (c) => {
 
   const rawBody = await c.req.json()
 
-  // Build dynamic Zod schema to strip unapproved fields
+  // Build dynamic Zod schema based on collection definition (P0 fixed)
   const schemaObj: Record<string, z.ZodTypeAny> = {
     locale: z.string().optional(),
     status: z.string().optional(),
@@ -203,7 +232,11 @@ entries.post('/collections/:slug/entries', async (c) => {
   }
   
   col.fields.forEach(f => {
-    schemaObj[f.name] = f.required ? z.any() : z.any().optional()
+    let fieldSchema = getZodType(f.type)
+    if (!f.required) {
+      fieldSchema = fieldSchema.nullish() // allows null or undefined
+    }
+    schemaObj[f.name] = fieldSchema
   })
   
   const schema = z.object(schemaObj).strip()
@@ -226,7 +259,9 @@ entries.post('/collections/:slug/entries', async (c) => {
   const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
   const session = await auth.api.getSession({ headers: c.req.raw.headers }).catch(() => null)
   if (!session) return c.json({ error: 'Unauthorized' }, 401)
-  const tenantId = c.req.header('x-tenant-id') || session.session.activeOrganizationId
+  
+  // Security P0: Protect IDOR
+  const tenantId = session.session.activeOrganizationId || null
 
   // Buscar collection_id
   const colRow = await c.env.DB.prepare(
@@ -270,7 +305,7 @@ entries.put('/collections/:slug/entries/:id', async (c) => {
   }
   
   col.fields.forEach(f => {
-    schemaObj[f.name] = z.any().optional() // Updates shouldn't require all fields, just partial
+    schemaObj[f.name] = getZodType(f.type).nullish() // Updates represent partial changes, make everything optional
   })
   
   const schema = z.object(schemaObj).strip()
@@ -285,7 +320,8 @@ entries.put('/collections/:slug/entries/:id', async (c) => {
   const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
   const session = await auth.api.getSession({ headers: c.req.raw.headers }).catch(() => null)
   if (!session) return c.json({ error: 'Unauthorized' }, 401)
-  const tenantId = c.req.header('x-tenant-id') || session.session.activeOrganizationId
+  
+  const tenantId = session.session.activeOrganizationId || null // Fixed IDOR bypass
 
   let tSql = tenantId ? 'tenant_id = ?' : 'tenant_id IS NULL';
 
@@ -322,7 +358,8 @@ entries.delete('/collections/:slug/entries/:id', async (c) => {
   const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
   const session = await auth.api.getSession({ headers: c.req.raw.headers }).catch(() => null)
   if (!session) return c.json({ error: 'Unauthorized' }, 401)
-  const tenantId = c.req.header('x-tenant-id') || session.session.activeOrganizationId
+  
+  const tenantId = session.session.activeOrganizationId || null // Fixed IDOR bypass
 
   let tSql = tenantId ? 'tenant_id = ?' : 'tenant_id IS NULL';
 
@@ -331,6 +368,59 @@ entries.delete('/collections/:slug/entries/:id', async (c) => {
   ).bind(...(tenantId ? [entryId, tenantId] : [entryId])).run()
 
   return c.json({ success, deleted: entryId })
+})
+
+// ── Encaminhar formulário via email (Resend) ────────────────────
+entries.post('/collections/forms/entries/:id/forward', async (c) => {
+  const entryId = c.req.param('id')
+  
+  const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
+  const session = await auth.api.getSession({ headers: c.req.raw.headers }).catch(() => null)
+  if (!session) return c.json({ error: 'Unauthorized' }, 401)
+  
+  const tenantId = session.session.activeOrganizationId || null // Fixed IDOR bypass
+
+  let tSql = tenantId ? 'tenant_id = ?' : 'tenant_id IS NULL';
+
+  const existing = await c.env.DB.prepare(
+    `SELECT * FROM entries WHERE id = ? AND collection_id = 'forms' AND ${tSql} LIMIT 1`
+  ).bind(...(tenantId ? [entryId, tenantId] : [entryId])).first()
+
+  if (!existing) return c.json({ error: 'Entry not found' }, 404)
+
+  const body = await c.req.json().catch(() => ({}))
+  const emails = body.emails as string[]
+  if (!emails || emails.length === 0) return c.json({ error: 'No emails provided' }, 400)
+
+  // Use Resend to send the payload
+  const data = safeParseJSON(existing.data)
+  
+  const htmlStr = `
+    <h2>Novo formulário recebido: ${data.source || 'Website'}</h2>
+    <p>Detalhes da submissão (#${entryId}):</p>
+    <pre style="background:#f4f4f4;padding:16px;border-radius:4px;">${JSON.stringify(data.payload, null, 2)}</pre>
+  `
+
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${c.env.RESEND_API_KEY}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      from: 'Sistema <noreply@ness.com.br>',
+      to: emails,
+      subject: `Novo contato via ${data.source || 'Website'}`,
+      html: htmlStr
+    })
+  })
+
+  if (!res.ok) {
+    const errorText = await res.text()
+    return c.json({ error: 'Failed to send email: ' + errorText }, 500)
+  }
+
+  return c.json({ success: true, forwardedTo: emails })
 })
 
 // ── Helpers ─────────────────────────────────────────────────────

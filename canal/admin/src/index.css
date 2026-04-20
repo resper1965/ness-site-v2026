@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 
@@ -99,16 +100,16 @@ body {
 }
 
 .sidebar-logo {
-  font-family: var(--display);
+  font-family: 'Montserrat', sans-serif;
   font-size: 19px;
-  font-weight: 800;
-  color: var(--text);
+  font-weight: 500;
+  color: #ffffff;
   letter-spacing: -0.5px;
   text-transform: lowercase;
 }
 .sidebar-logo span {
-  color: var(--accent);
-  text-shadow: 0 0 12px var(--accent-glow);
+  color: #00ade8;
+  text-shadow: 0 0 12px rgba(0,173,232,0.4);
 }
 
 .sidebar-nav {
@@ -412,13 +413,14 @@ tr:hover td { background: var(--accent-soft); }
   padding: 40px;
 }
 .login-logo {
-  font-family: var(--mono);
+  font-family: 'Montserrat', sans-serif;
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 500;
+  color: #ffffff;
   letter-spacing: -0.5px;
   margin-bottom: 6px;
 }
-.login-logo span { color: var(--accent); text-shadow: 0 0 12px var(--accent-glow); }
+.login-logo span { color: #00ade8; text-shadow: 0 0 12px rgba(0,173,232,0.4); }
 .login-card h2 { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
 .login-card .subtitle { color: var(--text-muted); font-size: 13px; margin-bottom: 28px; }
 

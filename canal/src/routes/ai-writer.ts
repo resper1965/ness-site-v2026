@@ -114,7 +114,7 @@ Responda APENAS com o texto solicitado, sem explicações, aspas ou formatação
     const workersai = createWorkersAI({ binding: c.env.AI })
 
     const result = await streamText({
-      model: workersai('@cf/meta/llama-3.1-8b-instruct-fp8'),
+      model: workersai('@cf/meta/llama-3.1-8b-instruct'),
       system: systemPrompt,
       messages: [
         {

@@ -151,6 +151,28 @@ export async function toggleEntryStatus(slug: string, id: string, status: 'publi
   return res.json();
 }
 
+/** Altera status de destaque (featured) de uma entry */
+export async function toggleEntryFeatured(slug: string, id: string, featured: boolean) {
+  const res = await fetch(`${BASE}/collections/${slug}/entries/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ featured }),
+  });
+  return res.json();
+}
+
+/** Encaminha um formulário via email (Resend) */
+export async function forwardForm(id: string, emails: string[]) {
+  const res = await fetch(`${BASE}/collections/forms/entries/${id}/forward`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ emails }),
+  });
+  return res.json();
+}
+
 export interface AIWriteParams {
   brief: string;
   field: string;
@@ -180,18 +202,9 @@ export async function generateWithAI(params: AIWriteParams): Promise<ReadableStr
         controller.close();
         return;
       }
-      const chunk = decoder.decode(value, { stream: true });
-      // SSE format: "0:\"text\"\n" — extract the text part
-      const lines = chunk.split('\n').filter(Boolean);
-      for (const line of lines) {
-        if (line.startsWith('0:')) {
-          try {
-            const text = JSON.parse(line.slice(2));
-            controller.enqueue(text);
-          } catch {
-            // ignore parse errors on incomplete chunks
-          }
-        }
+      const text = decoder.decode(value, { stream: true });
+      if (text) {
+        controller.enqueue(text);
       }
     },
   });

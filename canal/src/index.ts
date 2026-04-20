@@ -32,6 +32,7 @@ type Bindings = {
   BETTER_AUTH_SECRET: string
   BETTER_AUTH_URL: string
   ADMIN_SETUP_KEY: string
+  RESEND_API_KEY: string
 }
 
 type Variables = {

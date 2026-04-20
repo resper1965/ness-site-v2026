@@ -1,6 +1,9 @@
 import BlueDot from '../components/BlueDot';
 import ChatPreview from '../components/ChatPreview';
 import EmergencyChatModal from '../components/EmergencyChatModal';
+import SolutionHeroBackground from '../components/solutions/SolutionHeroBackground';
+import SolutionExecutiveDashboard from '../components/solutions/SolutionExecutiveDashboard';
+import SolutionServicesGrid from '../components/solutions/SolutionServicesGrid';
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Link, useParams, useNavigate } from "react-router-dom";
@@ -42,21 +45,7 @@ const SolutionPage = () => {
       className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen overflow-hidden"
     >
       {/* Immersive Background for Solution Page */}
-      <div className="absolute inset-0 z-0">
-          <motion.img 
-            initial={{ scale: 1.1, opacity: 0 }}
-            animate={{ scale: 1, opacity: 0.3 }}
-            transition={{ duration: 1.5 }}
-            src={solution.bgImage}
-            alt={`ness. ${slug} background`}
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-          />
-        <div className="absolute inset-0 bg-linear-to-b from-surface-container-lowest/40 via-surface-container-lowest/90 to-surface-container-lowest z-10"></div>
-        
-        {/* Decorative Glow */}
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 blur-[150px] rounded-full -translate-y-1/2 translate-x-1/3 z-10"></div>
-      </div>
+      <SolutionHeroBackground bgImage={solution.bgImage} slug={slug!} />
 
       <div className="relative z-20 max-w-7xl mx-auto">
         <Link to="/" className="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary mb-12 transition-colors group">
@@ -102,55 +91,7 @@ const SolutionPage = () => {
             {slug === 'autoops' ? (
               <ChatPreview />
             ) : (
-              <div className="relative glass p-8 md:p-12 rounded-[3rem] border border-white/10 nebula-shadow overflow-hidden">
-                <div className="absolute top-0 right-0 p-6">
-                  <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
-                    <span className="text-[10px] text-green-500 font-bold uppercase tracking-widest">{t('solutions.active_resilience')}</span>
-                  </div>
-                </div>
-                
-                <div className="space-y-10">
-                  <div className="flex justify-between items-end">
-                    <h3 className="text-xs uppercase tracking-[0.2em] text-primary font-bold">{solution.dashboard?.title || 'executive dashboard'}</h3>
-                    <div className="text-right">
-                      <div className="text-3xl font-display font-bold text-white tracking-tighter">{solution.dashboard?.mainStat.value || '99.9%'}</div>
-                      <div className="text-[10px] text-on-surface-variant uppercase tracking-widest">{solution.dashboard?.mainStat.label || 'uptime operacional'}</div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    {solution.dashboard?.metrics.map((metric: { color: string; value: string; label: string }, idx: number) => (
-                      <div key={idx} className="p-4 rounded-2xl bg-white/5 border border-white/5">
-                        <motion.div 
-                          initial={{ opacity: 0.5 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
-                          className={`${metric.color} text-xl font-bold mb-1`}
-                        >
-                          {metric.value}
-                        </motion.div>
-                        <div className="text-[10px] text-on-surface-variant uppercase tracking-widest">{metric.label}</div>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <h4 className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">{solution.dashboard?.progress.label}</h4>
-                      <span className="text-[10px] text-primary font-mono">{solution.dashboard?.progress.value} {solution.dashboard?.progress.subLabel}</span>
-                    </div>
-                    <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-                      <motion.div 
-                        initial={{ width: 0 }}
-                        whileInView={{ width: solution.dashboard?.progress.value }}
-                        transition={{ duration: 1.5, ease: "easeOut" }}
-                        className="h-full bg-linear-to-r from-primary to-primary-container"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <SolutionExecutiveDashboard slug={slug!} dashboard={solution.dashboard} />
             )}
           </motion.div>
         </div>
@@ -242,38 +183,7 @@ const SolutionPage = () => {
         </section>
 
         {/* NEW Soluções Estratégicas (Full Width SaaS Modules) */}
-        <section id="serviços" className="mb-24">
-          <div className="text-center mb-12">
-            <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase">
-              {t('solutions.strategic_solutions', 'soluções estratégicas')}<BlueDot />
-            </h3>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {solution.services.map((service: { name: string; desc: string }, i: number) => (
-              <motion.div 
-                key={i} 
-                whileHover={{ scale: 1.02 }}
-                className="group relative p-10 rounded-4xl border border-white/5 bg-surface-container-low/30 hover:bg-surface-container-low/50 overflow-hidden transition-all flex flex-col justify-between"
-              >
-                <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/20 transition-all duration-700"></div>
-                <div className="absolute top-8 right-8 opacity-5 group-hover:opacity-10 group-hover:scale-110 transition-all duration-500">
-                  <Icon size={140} />
-                </div>
-                
-                <div className="relative z-10 flex-1 flex flex-col">
-                  <div className="w-14 h-14 rounded-2xl bg-primary-container/20 flex items-center justify-center mb-8 border border-primary-container/20 shadow-[0_0_20px_rgba(var(--primary-container-rgb),0.15)] group-hover:shadow-[0_0_30px_rgba(var(--primary-container-rgb),0.3)] transition-shadow">
-                    <Icon className="text-primary-container" size={26} />
-                  </div>
-                  <h4 className="text-white font-display text-xl lg:text-2xl font-semibold mb-4 tracking-tight drop-shadow-md group-hover:text-primary-container transition-colors">{service.name}</h4>
-                  <p className="text-on-surface-variant font-light leading-relaxed flex-1">{service.desc}</p>
-                </div>
-                
-
-              </motion.div>
-            ))}
-          </div>
-        </section>
+        <SolutionServicesGrid services={solution.services} t={t} icon={Icon} />
 
         {/* NEW O Arsenal Técnico (Features Legadas) */}
         {solution.features && (

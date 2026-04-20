@@ -34,15 +34,6 @@ const NAV = [
           </svg>
         ),
       },
-      {
-        to: "/pages",
-        label: "Páginas",
-        icon: (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
-          </svg>
-        ),
-      },
     ],
   },
   {
@@ -109,7 +100,7 @@ const NAV = [
       },
       {
         to: "/saas",
-        label: "Meu Tenant",
+        label: "Sua Empresa",
         icon: (
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
@@ -119,7 +110,7 @@ const NAV = [
       },
       {
         to: "/organizations",
-        label: "Tenants (Admin)",
+        label: "Gestão de Empresas (Admin)",
         adminOnly: true,
         icon: (
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -157,15 +148,14 @@ const PAGE_META: Record<string, { title: string; sub: string }> = {
   "/":        { title: "Insights",       sub: "Artigos e publicações do blog" },
   "/cases":   { title: "Cases",          sub: "Portfólio de projetos e cases" },
   "/jobs":    { title: "Vagas",          sub: "Oportunidades publicadas" },
-  "/pages":       { title: "Páginas",        sub: "Páginas estáticas do site" },
   "/media":       { title: "Media",          sub: "Galeria de imagens e arquivos" },
   "/brandbook":   { title: "Brandbook",      sub: "Assets de marca do grupo" },
   "/signatures":  { title: "Assinaturas",    sub: "Assinaturas de email corporativas" },
   "/forms":   { title: "Formulários",    sub: "Submissões recebidas" },
   "/chats":   { title: "Chatlogs AI",    sub: "Auditoria de interações com IA" },
-  "/saas":    { title: "Organização",     sub: "Gestão do workspace e membros" },
+  "/saas":    { title: "Sua Empresa",     sub: "Gestão do workspace e membros" },
   "/users":   { title: "Gestão Global de Usuários", sub: "Administração de acessos (Super Admin)" },
-  "/organizations": { title: "Gestão Global de Orgs", sub: "Visão central de tenants (Super Admin)" },
+  "/organizations": { title: "Gestão Global de Empresas", sub: "Visão central de workspaces (Super Admin)" },
 };
 
 const SUPER_ADMIN_EMAILS = ["resper@bekaa.eu", "admin@ness.com.br"];

@@ -6,6 +6,8 @@ import {
   updateEntry,
   deleteEntry,
   toggleEntryStatus,
+  toggleEntryFeatured,
+  forwardForm,
   type CollectionDef,
   type FieldDef,
   type EntryMeta,
@@ -219,6 +221,7 @@ export default function CollectionPage({ slug }: { slug: string }) {
   const [saving, setSaving] = useState(false);
   const [aiWriterField, setAiWriterField] = useState<FieldDef | null>(null);
   const [togglingId, setTogglingId] = useState<string | null>(null);
+  const [togglingFeaturedId, setTogglingFeaturedId] = useState<string | null>(null);
 
   // Load collection definition
   useEffect(() => {
@@ -307,6 +310,18 @@ export default function CollectionPage({ slug }: { slug: string }) {
     }
   }
 
+  async function handleToggleFeatured(item: Record<string, unknown>) {
+    const id = item.id as string;
+    const next = !item.featured;
+    setTogglingFeaturedId(id);
+    try {
+      await toggleEntryFeatured(slug, id, next);
+      await load();
+    } finally {
+      setTogglingFeaturedId(null);
+    }
+  }
+
   if (!collection) {
     return (
       <div className="empty-state">
@@ -315,7 +330,8 @@ export default function CollectionPage({ slug }: { slug: string }) {
     );
   }
 
-  const tableFields = getTableFields(collection.fields);
+  const tableFields = getTableFields(collection.fields).filter(f => f.name !== 'featured');
+  const hasFeatured = collection.fields.some(f => f.name === 'featured');
 
   return (
     <>
@@ -373,6 +389,7 @@ export default function CollectionPage({ slug }: { slug: string }) {
                     {tableFields.map((f) => (
                       <th key={f.name}>{f.label ?? f.name}</th>
                     ))}
+                    {hasFeatured ? <th>Destaque</th> : null}
                     {collection.has_status ? <th>Status</th> : null}
                     <th>Data</th>
                     <th></th>
@@ -388,6 +405,30 @@ export default function CollectionPage({ slug }: { slug: string }) {
                             : String(item[f.name] ?? "—")}
                         </td>
                       ))}
+                      {hasFeatured ? (
+                        <td>
+                          <button
+                            onClick={() => handleToggleFeatured(item)}
+                            disabled={togglingFeaturedId === (item.id as string)}
+                            title={item.featured ? "Remover destaque" : "Destacar"}
+                            style={{
+                              appearance: "none",
+                              border: `1px solid ${item.featured ? "var(--primary)" : "var(--border)"}`,
+                              borderRadius: 4,
+                              padding: "0.2rem 0.5rem",
+                              fontSize: 10,
+                              fontWeight: 600,
+                              cursor: togglingFeaturedId === (item.id as string) ? "wait" : "pointer",
+                              background: item.featured ? "color-mix(in srgb, var(--primary) 12%, transparent)" : "transparent",
+                              color: item.featured ? "var(--primary)" : "var(--text-dim)",
+                              transition: "all 0.15s",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {togglingFeaturedId === (item.id as string) ? "…" : item.featured ? "★ Destacado" : "☆ Fixar"}
+                          </button>
+                        </td>
+                      ) : null}
                       {collection.has_status ? (
                         <td>
                           <button
