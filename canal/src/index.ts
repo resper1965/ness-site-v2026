@@ -72,7 +72,7 @@ async function requireSession(c: Context<{ Bindings: Bindings, Variables: Variab
   if (!session) return c.json({ error: 'Unauthorized' }, 401)
   
   // Extrai Tenant explícito, ou da sessão ativa do usuário
-  const tenantId = c.req.header('x-tenant-id') || session.session.activeOrganizationId;
+  const tenantId = c.req.header('x-tenant-id') || session?.session?.activeOrganizationId || undefined;
   c.set('tenantId', tenantId);
   c.set('session', session)
   await next()
@@ -96,7 +96,7 @@ async function requireAdminOrKey(c: Context<{ Bindings: Bindings, Variables: Var
 
   const session = await auth.api.getSession({ headers: c.req.raw.headers })
   if (!session) return c.json({ error: 'Unauthorized' }, 401)
-  const tenantId = c.req.header('x-tenant-id') || session.session.activeOrganizationId;
+  const tenantId = c.req.header('x-tenant-id') || session?.session?.activeOrganizationId || undefined;
   c.set('tenantId', tenantId);
   c.set('session', session)
   await next()
@@ -132,8 +132,8 @@ app.route('/api/v1', media)
 app.route('/api/v1', marketing)
 
 // ── Mount: AI Writer (agente redator) — protegido por auth ─────
-app.use('/api/ai/*', requireSession)
-app.route('/api/ai', aiWriter)
+app.use('/api/content-agent/*', requireSession)
+app.route('/api/content-agent', aiWriter)
 
 // ── MCP Server (Agents Integration) ──────────────────────────────
 app.all('/api/mcp/*', requireAdminOrKey, async (c) => {

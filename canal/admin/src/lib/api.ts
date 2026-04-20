@@ -161,7 +161,7 @@ export interface AIWriteParams {
 
 /** Gera conteúdo assistido por IA (streaming) */
 export async function generateWithAI(params: AIWriteParams): Promise<ReadableStream<string>> {
-  const res = await fetch('/api/ai/write', {
+  const res = await fetch('/api/content-agent/write', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

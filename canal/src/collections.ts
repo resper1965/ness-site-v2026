@@ -52,6 +52,7 @@ export const collections: CollectionDef[] = [
     hasSlug: true,
     hasStatus: true,
     fields: [
+      { name: 'published', type: 'boolean', label: 'Publicado', defaultValue: false },
       { name: 'title', type: 'text', required: true, label: 'Título' },
       { name: 'tag', type: 'select', label: 'Tag', options: [
         'Segurança', 'IA', 'Cloud', 'Infraestrutura', 'Dados',
@@ -74,6 +75,7 @@ export const collections: CollectionDef[] = [
     hasSlug: true,
     hasStatus: true,
     fields: [
+      { name: 'published', type: 'boolean', label: 'Publicado', defaultValue: false },
       { name: 'client', type: 'text', required: true, label: 'Cliente' },
       { name: 'category', type: 'select', label: 'Categoria', options: [
         'infraestrutura', 'segurança', 'cloud', 'telecomunicações',
@@ -96,6 +98,7 @@ export const collections: CollectionDef[] = [
     hasSlug: false,
     hasStatus: true,
     fields: [
+      { name: 'published', type: 'boolean', label: 'Publicado', defaultValue: false },
       { name: 'title', type: 'text', required: true, label: 'Título' },
       { name: 'vertical', type: 'select', label: 'Vertical', options: [
         'engenharia', 'segurança', 'comercial', 'operações', 'dados'
@@ -106,21 +109,6 @@ export const collections: CollectionDef[] = [
       ]},
       { name: 'desc', type: 'textarea', label: 'Descrição' },
       { name: 'requirements', type: 'json', label: 'Requisitos' },
-    ]
-  },
-  {
-    slug: 'pages',
-    label: 'Página',
-    labelPlural: 'Páginas',
-    icon: 'Layout',
-    hasLocale: true,
-    hasSlug: true,
-    hasStatus: true,
-    fields: [
-      { name: 'title', type: 'text', required: true, label: 'Título' },
-      { name: 'body', type: 'richtext', label: 'Conteúdo' },
-      { name: 'meta_title', type: 'text', label: 'Meta Title' },
-      { name: 'meta_description', type: 'textarea', label: 'Meta Description' },
     ]
   },
   {
