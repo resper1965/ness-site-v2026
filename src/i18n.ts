@@ -217,6 +217,178 @@ const resources = {
         "rights": "todos os direitos reservados.",
         "updates": "updates",
         "status": "system live status: optimal"
+      },
+      "forense": {
+        "title": "forense.io",
+        "tabTitle": "análise forense digital & incident response",
+        "hero": {
+          "tag": "cadeia de custódia",
+          "tag2": "preservada",
+          "subtitle": "especialização em forense digital seguindo ISO 27037/27042 — perícia judicial, investigação corporativa e resposta a incidentes.",
+          "cta1": "solicitar perícia",
+          "cta2": "ver recursos forenses"
+        },
+        "why": {
+          "title": "por que importa",
+          "desc": "Evidências digitais são voláteis e podem ser destruídas em minutos. Forense digital é essencial para investigações judiciais, resposta a incidentes e compliance. forense.io realiza perícias com metodologia ISO 27037/27042, preservando cadeia de custódia e produzindo laudos defensáveis em juízo.",
+          "items": {
+            "ransomware": {
+              "title": "ransomware",
+              "subtitle": "Determinar ponto de entrada e escopo do comprometimento",
+              "desc": "Forense de memória (RAM), discos (clonagem bit-a-bit) e logs para mapear TTPs do atacante e extensão do incidente."
+            },
+            "datalen": {
+              "title": "vazamento de dados",
+              "subtitle": "Rastrear como dados sensíveis saíram da empresa",
+              "desc": "Análise de acesso a BD, logs de rede, e-mails e dispositivos para identificar vetor de exfiltração e autoria."
+            },
+            "judicial": {
+              "title": "processo judicial",
+              "subtitle": "Perícia de dispositivo apreendido (notebook, smartphone)",
+              "desc": "Perito judicial credenciado realiza exame técnico com relatório estruturado e defesa oral em audiência."
+            },
+            "corp": {
+              "title": "investigação corporativa",
+              "subtitle": "Fraude interna ou violação de propriedade intelectual",
+              "desc": "Forense de endpoints (e-mails, WhatsApp, Drive) com respeito a LGPD e cadeia de custódia preservada."
+            }
+          }
+        },
+        "resources": {
+          "title": "recursos principais",
+          "desc": "expertise forense completo seguindo padrões internacionais",
+          "items": {
+            "disk": { "title": "Análise de Discos", "desc": "Clonagem bit-a-bit, recuperação de arquivos deletados, análise de filesystem (NTFS, ext4, APFS)." },
+            "ram": { "title": "Forense de Memória (RAM)", "desc": "Análise de processos, conexões de rede, malware em memória e credenciais voláteis." },
+            "mobile": { "title": "Mobile Forensics", "desc": "Extração lógica/física de smartphones (iOS/Android), análise de apps, WhatsApp, Telegram." },
+            "network": { "title": "Network Forensics", "desc": "Análise de PCAP, logs de firewall, IDS/IPS, reconstrução de sessões HTTP/HTTPS." },
+            "timeline": { "title": "Timeline Analysis", "desc": "Reconstrução cronológica de eventos (file system, registry, logs) para entender sequência do ataque." },
+            "custodian": { "title": "Cadeia de Custódia", "desc": "Documentação completa da preservação, coleta, transporte e análise de evidências (ISO 27037)." },
+            "report": { "title": "Relatórios Periciais", "desc": "Laudos técnicos estruturados com metodologia ISO 27042, reprodutíveis e defensáveis em juízo." },
+            "testimony": { "title": "Testemunho Especializado", "desc": "Defesa oral de laudo em audiências judiciais com linguagem acessível ao jurídico." },
+            "counter": { "title": "Contraprova e Reexame", "desc": "Análise crítica de laudos de terceiros e identificação de falhas metodológicas." },
+            "preservation": { "title": "Preservação de Evidências", "desc": "Coleta on-site ou remota com ferramentas certificadas e hash criptográfico para integridade." }
+          }
+        },
+        "metrics": {
+          "title": "métricas forenses",
+          "checks": [
+            "Track record de excelência pericial",
+            "Cadeia de custódia preservada via ISO 27037",
+            "Metodologia ISO 27042 para laudos defensáveis",
+            "Atendimento a incidentes críticos em tempo recorde"
+          ],
+          "stats": {
+            "pericias": { "label": "perícias", "value": "450+" },
+            "laudos": { "label": "laudos aceitos", "value": "100%" },
+            "iso": { "label": "preservação", "value": "ISO" },
+            "assitencia": { "label": "resposta", "value": "24/7" }
+          }
+        },
+        "process": {
+          "title": "processo pericial",
+          "desc": "De contato inicial a laudo final em 2-4 semanas, seguindo rigorosos protocolos de preservação.",
+          "steps": {
+            "s1": { "step": "01", "title": "Triagem", "desc": "Entendimento do caso, tipo de evidência, urgência e objetivos." },
+            "s2": { "step": "02", "title": "Coleta", "desc": "Preservação on-site ou remota com ferramentas certificadas." },
+            "s3": { "step": "03", "title": "Análise", "desc": "Exame técnico seguindo metodologia ISO 27042 e NIST." },
+            "s4": { "step": "04", "title": "Laudo", "desc": "Relatório técnico estruturado com achados e conclusões." },
+            "s5": { "step": "05", "title": "Defesa", "desc": "Apresentação executiva ou testemunho especializado em juízo." }
+          }
+        },
+        "cta": {
+          "title": "precisa de perícia ou investigação?",
+          "desc": "solicite análise forense especializada para incidentes, processos judiciais ou investigações corporativas.",
+          "btn": "falar com perito"
+        }
+      },
+      "trustness": {
+        "title": "trustness",
+        "tabTitle": "auditoria e conformidade",
+        "hero": {
+          "tag": "auditoria e conformidade",
+          "subtitle": "auditorias independentes, assessments de segurança e consultoria em conformidade (ISO 27001, LGPD, SOC 2) — com relatórios executivos e roadmaps acionáveis.",
+          "cta1": "solicitar assessment",
+          "cta2": "falar com especialista"
+        },
+        "why": {
+          "title": "por que importa",
+          "desc": "Clientes B2B, investidores e reguladores exigem evidências de conformidade. ISO 27001 e SOC 2 viraram pré-requisitos para fechar grandes contratos. trustness. realiza auditorias independentes com metodologia reconhecida, relatórios executivos e roadmaps priorizados — entregando confiança demonstrável.",
+          "items": {
+            "sgsi": {
+              "title": "SGSI estruturado",
+              "subtitle": "Startup quer ISO 27001 mas não tem SGSI estruturado",
+              "desc": "Implementamos SGSI completo: políticas, procedimentos, avaliação de riscos, controles técnicos e organizacionais — pronto para auditoria."
+            },
+            "lgpd": {
+              "title": "adequação LGPD",
+              "subtitle": "Empresa precisa auditoria LGPD independente antes da ANPD",
+              "desc": "Gap analysis LGPD, ROPA, DPIAs, políticas e relatório executivo com roadmap de adequação priorizado."
+            },
+            "exec": {
+              "title": "visibilidade executiva",
+              "subtitle": "Board quer visibilidade de postura de segurança mas TI só fala técnico",
+              "desc": "Assessment executivo com score de maturidade, benchmarks de mercado e roadmap de investimento."
+            },
+            "gap": {
+              "title": "remediação de gaps",
+              "subtitle": "Auditoria externa encontrou achados críticos e empresa quer remediação",
+              "desc": "Consultoria para implementação de controles, remediação de gaps e preparação para re-auditoria."
+            },
+            "dpo": {
+              "title": "DPOaaS.online",
+              "subtitle": "Conformidade demonstrável para LGPD/GDPR/CCPA",
+              "desc": "DPO certificado dedicado + plataforma n.privacy incluída para gestão contínua de privacidade."
+            }
+          }
+        },
+        "resources": {
+          "title": "recursos principais",
+          "desc": "suite completo de auditoria e consultoria em conformidade",
+          "items": {
+            "ass": { "title": "Assessments de Segurança", "desc": "Avaliação de maturidade em cibersegurança com frameworks reconhecidos (NIST CSF, CIS, ISO 27001)." },
+            "audit": { "title": "Auditorias de Conformidade", "desc": "Auditorias independentes ISO 27001, ISO 27701, SOC 2, PCI-DSS, LGPD com relatórios executivos." },
+            "iso": { "title": "Implementação ISO 27001", "desc": "Projeto estruturado para certificação ISO 27001: SGSI, políticas, controles e preparação para auditoria." },
+            "pen": { "title": "Penetration Testing", "desc": "Pentest externo/interno, web apps, APIs, infraestrutura e social engineering com relatórios técnicos." },
+            "vuln": { "title": "Vulnerability Assessment", "desc": "Varredura e análise de vulnerabilidades com priorização por criticidade e impacto no negócio." },
+            "gov": { "title": "Governança de Segurança", "desc": "Estruturação de comitês de segurança, políticas, procedimentos e frameworks de governança." },
+            "due": { "title": "Due Diligence de Fornecedores", "desc": "Avaliação de segurança e privacidade de vendors críticos com questionários e evidências." },
+            "train": { "title": "Treinamentos e Awareness", "desc": "Programas de conscientização em segurança e privacidade customizados para diferentes públicos." },
+            "reg": { "title": "Assessoria Regulatória", "desc": "Consultoria para conformidade com regulamentações setoriais (BACEN, SUSEP, ANS, ANATEL)." }
+          }
+        },
+        "metrics": {
+          "title": "métricas de excelência",
+          "checks": [
+            "Track record de auditorias e certificações",
+            "Metodologia reconhecida internacionalmente",
+            "Relatórios executivos e roadmaps priorizados",
+            "Foco em confiança demonstrável para stakeholders"
+          ],
+          "stats": {
+            "fw": { "label": "frameworks", "value": "15+" },
+            "cert": { "label": "certificações", "value": "100%" },
+            "comp": { "label": "compliance score", "value": "A+" },
+            "stake": { "label": "stakeholders", "value": "800+" }
+          }
+        },
+        "process": {
+          "title": "processo de auditoria",
+          "desc": "De kickoff a relatório final em 4–8 semanas, garantindo conformidade e confiança.",
+          "steps": {
+            "s1": { "step": "01", "title": "Kickoff e Escopo", "desc": "Alinhamento de objetivos, escopo e timeline do projeto." },
+            "s2": { "step": "02", "title": "Coleta de Evidências", "desc": "Questionários, entrevistas e análise documental rigorosa." },
+            "s3": { "step": "03", "title": "Análise e Gap Analysis", "desc": "Comparação com frameworks e identificação de riscos." },
+            "s4": { "step": "04", "title": "Relatório e Apresentação", "desc": "Score de maturidade e roadmap de recomendações." },
+            "s5": { "step": "05", "title": "Plano de Remediação", "desc": "Acompanhamento até a certificação ou adequação total." }
+          }
+        },
+        "cta": {
+          "title": "precisa de auditoria ou certificação?",
+          "desc": "solicite assessment de segurança, auditoria de conformidade ou consultoria especializada para certificação ISO ou SOC 2.",
+          "btn1": "solicitar assessment",
+          "btn2": "falar com consultor"
+        }
       }
     }
   },
@@ -434,6 +606,178 @@ const resources = {
         "rights": "all rights reserved.",
         "updates": "updates",
         "status": "system live status: optimal"
+      },
+      "forense": {
+        "title": "forense.io",
+        "tabTitle": "digital forensics & incident response",
+        "hero": {
+          "tag": "chain of custody",
+          "tag2": "preserved",
+          "subtitle": "specialization in digital forensics following ISO 27037/27042 — judicial expertise, corporate investigation, and incident response.",
+          "cta1": "request forensics",
+          "cta2": "view forensic resources"
+        },
+        "why": {
+          "title": "why it matters",
+          "desc": "Digital evidence is volatile and can be destroyed in minutes. Digital forensics is essential for judicial investigations, incident response, and compliance. forense.io conducts expertise with ISO 27037/27042 methodology, preserving the chain of custody and producing defensible reports in court.",
+          "items": {
+            "ransomware": {
+              "title": "ransomware",
+              "subtitle": "Determine entry point and scope of compromise",
+              "desc": "Memory forensics (RAM), disks (bit-by-bit cloning), and logs to map attacker TTPs and incident extent."
+            },
+            "datalen": {
+              "title": "data leak",
+              "subtitle": "Track how sensitive data left the company",
+              "desc": "Analysis of DB access, network logs, emails, and devices to identify exfiltration vector and authorship."
+            },
+            "judicial": {
+              "title": "judicial process",
+              "subtitle": "Expertise of seized device (notebook, smartphone)",
+              "desc": "Accredited judicial expert performs technical examination with structured report and oral defense in hearing."
+            },
+            "corp": {
+              "title": "corporate investigation",
+              "subtitle": "Internal fraud or intellectual property violation",
+              "desc": "Endpoint forensics (emails, WhatsApp, Drive) with respect to LGPD/GDPR and preserved chain of custody."
+            }
+          }
+        },
+        "resources": {
+          "title": "core resources",
+          "desc": "complete forensic expertise following international standards",
+          "items": {
+            "disk": { "title": "Disk Analysis", "desc": "Bit-by-bit cloning, deleted file recovery, filesystem analysis (NTFS, ext4, APFS)." },
+            "ram": { "title": "Memory Forensics (RAM)", "desc": "Analysis of processes, network connections, malware in memory, and volatile credentials." },
+            "mobile": { "title": "Mobile Forensics", "desc": "Logical/physical extraction of smartphones (iOS/Android), app analysis, WhatsApp, Telegram." },
+            "network": { "title": "Network Forensics", "desc": "PCAP analysis, firewall logs, IDS/IPS, HTTP/HTTPS session reconstruction." },
+            "timeline": { "title": "Timeline Analysis", "desc": "Chronological reconstruction of events (file system, registry, logs) to understand the attack sequence." },
+            "custodian": { "title": "Chain of Custody", "desc": "Complete documentation of evidence preservation, collection, transport, and analysis (ISO 27037)." },
+            "report": { "title": "Expert Reports", "desc": "Structured technical reports with ISO 27042 methodology, reproducible and defensible in court." },
+            "testimony": { "title": "Expert Testimony", "desc": "Oral defense of report in judicial hearings with language accessible to legal professionals." },
+            "counter": { "title": "Counterproof and Re-examination", "desc": "Critical analysis of third-party reports and identification of methodological flaws." },
+            "preservation": { "title": "Evidence Preservation", "desc": "On-site or remote collection with certified tools and cryptographic hash for integrity." }
+          }
+        },
+        "metrics": {
+          "title": "forensic metrics",
+          "checks": [
+            "Track record of forensic excellence",
+            "Chain of custody preserved via ISO 27037",
+            "ISO 27042 methodology for defensible reports",
+            "Critical incident response in record time"
+          ],
+          "stats": {
+            "pericias": { "label": "expertises", "value": "450+" },
+            "laudos": { "label": "reports accepted", "value": "100%" },
+            "iso": { "label": "preservation", "value": "ISO" },
+            "assitencia": { "label": "response", "value": "24/7" }
+          }
+        },
+        "process": {
+          "title": "forensic process",
+          "desc": "From initial contact to final report in 2-4 weeks, following rigorous preservation protocols.",
+          "steps": {
+             "s1": { "step": "01", "title": "Triage", "desc": "Understanding the case, type of evidence, urgency, and objectives." },
+             "s2": { "step": "02", "title": "Collection", "desc": "On-site or remote preservation with certified tools." },
+             "s3": { "step": "03", "title": "Analysis", "desc": "Technical examination following ISO 27042 and NIST methodology." },
+             "s4": { "step": "04", "title": "Report", "desc": "Structured technical report with findings and conclusions." },
+             "s5": { "step": "05", "title": "Defense", "desc": "Executive presentation or expert testimony in court." }
+          }
+        },
+        "cta": {
+          "title": "need forensics or investigation?",
+          "desc": "request specialized forensic analysis for incidents, judicial processes, or corporate investigations.",
+          "btn": "talk to an expert"
+        }
+      },
+      "trustness": {
+        "title": "trustness",
+        "tabTitle": "audit and compliance",
+        "hero": {
+          "tag": "audit and compliance",
+          "subtitle": "independent audits, security assessments, and compliance consulting (ISO 27001, GDPR, SOC 2) — with executive reports and actionable roadmaps.",
+          "cta1": "request assessment",
+          "cta2": "talk to a specialist"
+        },
+        "why": {
+          "title": "why it matters",
+          "desc": "B2B customers, investors, and regulators demand evidence of compliance. ISO 27001 and SOC 2 have become prerequisites for closing large contracts. trustness. performs independent audits with recognized methodology, executive reports, and prioritized roadmaps — delivering demonstrable trust.",
+          "items": {
+            "sgsi": {
+              "title": "structured ISMS",
+              "subtitle": "Startup wants ISO 27001 but lacks structured ISMS",
+              "desc": "We implement a complete ISMS: policies, procedures, risk assessment, technical and organizational controls — ready for audit."
+            },
+            "lgpd": {
+              "title": "GDPR adequacy",
+              "subtitle": "Company needs independent GDPR audit before regulators",
+              "desc": "GDPR gap analysis, ROPA, DPIAs, policies, and executive report with prioritized adequacy roadmap."
+            },
+            "exec": {
+              "title": "executive visibility",
+              "subtitle": "Board wants visibility of security posture but IT is too technical",
+              "desc": "Executive assessment with maturity score, market benchmarks, and investment roadmap."
+            },
+            "gap": {
+              "title": "gap remediation",
+              "subtitle": "External audit found critical findings and company needs remediation",
+              "desc": "Consulting for control implementation, gap remediation, and preparation for re-audit."
+            },
+            "dpo": {
+              "title": "DPOaaS.online",
+              "subtitle": "Demonstrable compliance for LGPD/GDPR/CCPA",
+              "desc": "Dedicated certified DPO + included n.privacy platform for continuous privacy management."
+            }
+          }
+        },
+        "resources": {
+          "title": "core resources",
+          "desc": "complete suite of audit and compliance consulting",
+          "items": {
+            "ass": { "title": "Security Assessments", "desc": "Cybersecurity maturity assessment with recognized frameworks (NIST CSF, CIS, ISO 27001)." },
+            "audit": { "title": "Compliance Audits", "desc": "Independent audits ISO 27001, ISO 27701, SOC 2, PCI-DSS, GDPR with executive reports." },
+            "iso": { "title": "ISO 27001 Implementation", "desc": "Structured project for ISO 27001 certification: ISMS, policies, controls, and audit preparation." },
+            "pen": { "title": "Penetration Testing", "desc": "External/internal pentest, web apps, APIs, infrastructure, and social engineering with technical reports." },
+            "vuln": { "title": "Vulnerability Assessment", "desc": "Scanning and analysis of vulnerabilities prioritized by criticality and business impact." },
+            "gov": { "title": "Security Governance", "desc": "Structuring of security committees, policies, procedures, and governance frameworks." },
+            "due": { "title": "Vendor Due Diligence", "desc": "Security and privacy assessment of critical vendors via questionnaires and evidence." },
+            "train": { "title": "Training & Awareness", "desc": "Security and privacy awareness programs customized for different audiences." },
+            "reg": { "title": "Regulatory Advisory", "desc": "Consulting for compliance with sector-specific financial and telecom regulations." }
+          }
+        },
+        "metrics": {
+          "title": "metrics of excellence",
+          "checks": [
+            "Track record of audits and certifications",
+            "Internationally recognized methodology",
+            "Executive reports and prioritized roadmaps",
+            "Focus on demonstrable trust for stakeholders"
+          ],
+          "stats": {
+            "fw": { "label": "frameworks", "value": "15+" },
+            "cert": { "label": "certifications", "value": "100%" },
+            "comp": { "label": "compliance score", "value": "A+" },
+            "stake": { "label": "stakeholders", "value": "800+" }
+          }
+        },
+        "process": {
+          "title": "audit process",
+          "desc": "From kickoff to final report in 4–8 weeks, ensuring compliance and trust.",
+          "steps": {
+             "s1": { "step": "01", "title": "Kickoff and Scope", "desc": "Alignment of project objectives, scope, and timeline." },
+             "s2": { "step": "02", "title": "Evidence Collection", "desc": "Questionnaires, interviews, and rigorous document analysis." },
+             "s3": { "step": "03", "title": "Analysis and Gap Analysis", "desc": "Comparison with frameworks and risk identification." },
+             "s4": { "step": "04", "title": "Report and Presentation", "desc": "Maturity score and roadmap of recommendations." },
+             "s5": { "step": "05", "title": "Remediation Plan", "desc": "Follow-up until certification or full compliance." }
+          }
+        },
+        "cta": {
+          "title": "need an audit or certification?",
+          "desc": "request a security assessment, compliance audit, or specialized consulting for ISO or SOC 2 certification.",
+          "btn1": "request assessment",
+          "btn2": "talk to a consultant"
+        }
       }
     }
   },
@@ -644,6 +988,178 @@ const resources = {
         "rights": "todos los derechos reservados.",
         "updates": "actualizaciones",
         "status": "system live status: optimal"
+      },
+      "forense": {
+        "title": "forense.io",
+        "tabTitle": "análisis forense digital & respuesta a incidentes",
+        "hero": {
+          "tag": "cadena de custodia",
+          "tag2": "preservada",
+          "subtitle": "especialización en auditoría forense digital bajo la norma ISO 27037/27042 — peritaje judicial, investigación corporativa y respuesta a incidentes.",
+          "cta1": "solicitar peritaje",
+          "cta2": "ver recursos forenses"
+        },
+        "why": {
+          "title": "por qué importa",
+          "desc": "La evidencia digital es volátil y puede destruirse en minutos. El análisis forense es vital para el cumplimiento, juicios o investigaciones corporativas. forense.io sigue marcos internacionales meticulosamente para preservar la evidencia legal.",
+          "items": {
+            "ransomware": {
+              "title": "ransomware",
+              "subtitle": "Determinar punto de entrada y alcance de brecha",
+              "desc": "Análisis forense de RAM y clonación de disco (bit a bit) para mapear el alcance."
+            },
+            "datalen": {
+              "title": "fuga de datos",
+              "subtitle": "Rastrear extracción de datos",
+              "desc": "Análisis de accesos a BD, red y e-mails para identificar la fuente de exfiltración material."
+            },
+            "judicial": {
+              "title": "proceso judicial",
+              "subtitle": "Peritaje de dispositivos confiscados (laptops, smartphones)",
+              "desc": "Apoyo a investigadores generando dictámenes técnicos verificados para cortes legales."
+            },
+            "corp": {
+              "title": "investigación corporativa",
+              "subtitle": "Fraude interno",
+              "desc": "Trazabilidad completa con privacidad a través de revisiones e-mail/endpoints."
+            }
+          }
+        },
+        "resources": {
+          "title": "recursos principales",
+          "desc": "peritaje forense completo bajo estándares internacionales",
+          "items": {
+             "disk": { "title": "Análisis de Discos", "desc": "Clonación bit a bit, recuperación de archivos, sistemas (NTFS, ext4, APFS)." },
+             "ram": { "title": "Forense de Memoria (RAM)", "desc": "Análisis de procesos, red, malware residente en memoria y credenciales." },
+             "mobile": { "title": "Mobile Forensics", "desc": "Extracción lógica/física de iOS/Android, análisis SMS, WhatsApp, Telegram." },
+             "network": { "title": "Network Forensics", "desc": "Análisis PCAP, logs de cortafuegos, IDS, reconstrucción web HTTP." },
+             "timeline": { "title": "Timeline Analysis", "desc": "Reconstrucción cronológica de sistemas de archivo y registros de la máquina." },
+             "custodian": { "title": "Cadena de Custodia", "desc": "Documentación validada de la custodia legal desde recolección (ISO 27037)." },
+             "report": { "title": "Dictámenes Periciales", "desc": "Laudos estructurados aptos para la defensa legal." },
+             "testimony": { "title": "Testimonio Especializado", "desc": "Apoyo y exposición oral validada por expertos del sector." },
+             "counter": { "title": "Contraprueba", "desc": "Reevaluación meticulosa para hallar falencias en análisis ajenos." },
+             "preservation": { "title": "Preservación Legal", "desc": "Criptografía y aseguramiento pericial en toma de datos física/remota." }
+          }
+        },
+        "metrics": {
+          "title": "métricas forenses",
+          "checks": [
+            "Casos verificados mundialmente",
+            "Preservación certificada ISO",
+            "Meticuloso reporte defensible judicialmente",
+            "Tiempos de acción de élite"
+          ],
+          "stats": {
+             "pericias": { "label": "peritajes", "value": "450+" },
+             "laudos": { "label": "aceptos judicialmente", "value": "100%" },
+             "iso": { "label": "preservación", "value": "ISO" },
+             "assitencia": { "label": "asistencia", "value": "24/7" }
+          }
+        },
+        "process": {
+          "title": "proceso pericial",
+          "desc": "Atención técnica especializada completada y reporte en 2 a 4 semanas.",
+          "steps": {
+             "s1": { "step": "01", "title": "Triaje", "desc": "Visión y recolección analítica." },
+             "s2": { "step": "02", "title": "Recolecta", "desc": "Asegurar integridad de datos forense." },
+             "s3": { "step": "03", "title": "Análisis", "desc": "Rastrear bajo normativas NIST, ISO." },
+             "s4": { "step": "04", "title": "Laudo", "desc": "Firma del informe de pruebas digitales." },
+             "s5": { "step": "05", "title": "Defensa", "desc": "Soporte de evidencias final en mesa corporativa/legal." }
+          }
+        },
+        "cta": {
+          "title": "¿necesita investigación pericial?",
+          "desc": "solicite análisis forense especializado o apoyo en incidentes corporativos y penales.",
+          "btn": "hablar con perito"
+        }
+      },
+      "trustness": {
+        "title": "trustness",
+        "tabTitle": "auditoría y cumplimiento",
+        "hero": {
+          "tag": "auditoría y cumplimiento",
+          "subtitle": "auditorías independientes, assessments de seguridad y consultoría en conformidad (ISO 27001, GDPR, SOC 2) — informes ejecutivos.",
+          "cta1": "solicitar assessment",
+          "cta2": "hablar con especialista"
+        },
+        "why": {
+          "title": "por qué importa",
+          "desc": "¿Busca confianza demostrable? ISO y acreditaciones reguladoras son exigidas para cierres empresariales B2B y gubernamentales. trustness. audita independientemente el estado de su plataforma frente a marcos top globales.",
+          "items": {
+             "sgsi": {
+              "title": "marco ISO 27001",
+              "subtitle": "SGSI estructurado en despliegue",
+              "desc": "Diseñamos un mapa SGSI global de controles y roles para auditorías de éxito."
+            },
+             "lgpd": {
+              "title": "adequación LGPD/GDPR",
+              "subtitle": "Cumplimiento normativo transfronterizo",
+              "desc": "Brechas resueltas con diseño de privacidad: PIA, ROPA y flujos protegidos."
+            },
+             "exec": {
+              "title": "gobernanza ejecutiva",
+              "subtitle": "Roadmap de seguridad corporativa para C-Levels",
+              "desc": "Informes estratégicos sin tecnicismos en la comprensión de los presupuestos y la rentabilidad (ROI)."
+            },
+             "gap": {
+              "title": "evaluación y remediación",
+              "subtitle": "Soporte tras hallazgos externos",
+              "desc": "Consultoría continua para revertir no-conformidades y sellarlas a futuro."
+            },
+             "dpo": {
+              "title": "DPOaaS",
+              "subtitle": "Gestión continua unificada de privacidad",
+              "desc": "Soporte Data Protection Officer bajo demanda avalado corporativamente."
+            }
+          }
+        },
+        "resources": {
+          "title": "recursos principales",
+          "desc": "plataforma auditora para su madurez estructural y tecnológica",
+          "items": {
+             "ass": { "title": "Asesorías", "desc": "Maturity assessments y brechas comparadas base ISO/NIST." },
+             "audit": { "title": "Auditorías de Conformidad", "desc": "Auditoría formal como contraparte independiente." },
+             "iso": { "title": "ISO 27001 Readiness", "desc": "Preparación proactiva y estructuración SGSI de primer nivel." },
+             "pen": { "title": "Pentesting Validado", "desc": "Evaluación web, red perimetral, ingeniería y caja negra (Blackbox)." },
+             "vuln": { "title": "Gestión de Vulnerabilidades", "desc": "Detección recurrente con CVSS enfocado en impacto comercial crítico." },
+             "gov": { "title": "Risk & Governance", "desc": "Creación de comités operacionales de Ciberseguridad." },
+             "due": { "title": "Due Diligence Externa", "desc": "Evaluación de cadena de suministros y sus normativas." },
+             "train": { "title": "Entrenamiento Interno", "desc": "Educación corporativa anti-phishing con test en vivo." },
+             "reg": { "title": "Asistencia Reguladora Regional", "desc": "Atender normativos locales BACEN, finanzas, entre otros." }
+          }
+        },
+        "metrics": {
+          "title": "métricas de excelencia",
+          "checks": [
+            "Track record internacional validado",
+            "Roadmaps priorizados según criticidad de negocio",
+            "Mapeo con reportes visuales al directorio",
+            "Garantía de confianza entre proveedores globales"
+          ],
+          "stats": {
+             "fw": { "label": "frameworks", "value": "15+" },
+             "cert": { "label": "certificaciones", "value": "100%" },
+             "comp": { "label": "compliance score", "value": "A+" },
+             "stake": { "label": "stakeholders", "value": "800+" }
+          }
+        },
+        "process": {
+          "title": "proceso de auditoría",
+          "desc": "Mapeo a validación en tan solo 4-8 semanas.",
+          "steps": {
+             "s1": { "step": "01", "title": "Visión Inicial", "desc": "Cronograma y metas integrales." },
+             "s2": { "step": "02", "title": "Evidencias", "desc": "Investigación, documentaciones e IA validada." },
+             "s3": { "step": "03", "title": "Brechas de Seguridad", "desc": "Detección de irregularidades de control." },
+             "s4": { "step": "04", "title": "Recomendaciones Técnicas", "desc": "Cierre detallado propuesto operativamente." },
+             "s5": { "step": "05", "title": "Certificación Asistida", "desc": "Acompañamiento a logro incesante." }
+          }
+        },
+        "cta": {
+          "title": "¿necesita una re-auditoría o certificación?",
+          "desc": "hable con nuestros CISO y auditores especializados en certificaciones tecnológicas de élite.",
+          "btn1": "solicitar assessment",
+          "btn2": "hablar con consultor"
+        }
       }
     }
   }
