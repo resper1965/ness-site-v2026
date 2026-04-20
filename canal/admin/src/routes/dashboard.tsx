@@ -99,6 +99,22 @@ const NAV = [
         ),
       },
       {
+        to: "/account",
+        label: "Minha Conta",
+        icon: (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        ),
+      },
+    ],
+  },
+  {
+    section: "Administração",
+    ownerOnly: true,
+    items: [
+      {
         to: "/saas",
         label: "Sua Empresa",
         icon: (
@@ -108,10 +124,15 @@ const NAV = [
           </svg>
         ),
       },
+    ],
+  },
+  {
+    section: "Sistema Total",
+    adminOnly: true,
+    items: [
       {
         to: "/organizations",
-        label: "Gestão de Empresas (Admin)",
-        adminOnly: true,
+        label: "Gestão Global de Empresas",
         icon: (
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
@@ -121,22 +142,11 @@ const NAV = [
       },
       {
         to: "/users",
-        label: "Usuários (Admin)",
-        adminOnly: true,
+        label: "Usuários da Plataforma",
         icon: (
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
             <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-          </svg>
-        ),
-      },
-      {
-        to: "/account",
-        label: "Minha Conta",
-        icon: (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
           </svg>
         ),
       },
@@ -280,6 +290,7 @@ function OrgSwitcher({ userEmail }: { userEmail: string }) {
 /* ── Dashboard Layout ─────────────────────────────── */
 export default function DashboardLayout() {
   const { data: session, isPending } = useSession();
+  const { data: activeOrg } = authClient.useActiveOrganization();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -291,6 +302,9 @@ export default function DashboardLayout() {
   if (!session) return null;
 
   const isSuperAdmin = SUPER_ADMIN_EMAILS.includes(session.user.email);
+  const myMembership = activeOrg?.members?.find((m: any) => m.userId === session?.user?.id || m.user?.email === session?.user?.email);
+  const myRole = myMembership?.role || "member";
+
   const meta = PAGE_META[location.pathname] ?? { title: "Canal Admin", sub: "" };
 
   async function handleSignOut() {
@@ -312,22 +326,35 @@ export default function DashboardLayout() {
         <OrgSwitcher userEmail={session.user.email} />
 
         <nav className="sidebar-nav">
-          {NAV.map((group) => (
-            <div key={group.section}>
-              <div className="nav-section">{group.section}</div>
-              {group.items.filter((item: any) => item.adminOnly ? isSuperAdmin : true).map((item: any) => (
-                <NavLink
-                  key={item.to}
-                  to={item.to}
-                  end={item.end}
-                  className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
-                >
-                  {item.icon}
-                  {item.label}
-                </NavLink>
-              ))}
-            </div>
-          ))}
+          {NAV.map((group: any) => {
+            if (group.adminOnly && !isSuperAdmin) return null;
+            if (group.ownerOnly && !isSuperAdmin && myRole !== "owner") return null;
+
+            const visibleItems = group.items.filter((item: any) => {
+              if (item.adminOnly && !isSuperAdmin) return false;
+              if (item.ownerOnly && !isSuperAdmin && myRole !== "owner") return false;
+              return true;
+            });
+
+            if (visibleItems.length === 0) return null;
+
+            return (
+              <div key={group.section}>
+                <div className="nav-section">{group.section}</div>
+                {visibleItems.map((item: any) => (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    end={item.end}
+                    className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
+                  >
+                    {item.icon}
+                    {item.label}
+                  </NavLink>
+                ))}
+              </div>
+            );
+          })}
         </nav>
 
         <div className="sidebar-footer">
