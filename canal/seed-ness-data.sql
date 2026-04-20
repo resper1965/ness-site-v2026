@@ -98,6 +98,7 @@ INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, statu
 SELECT 
   'sig-002', NULL,
   c.id, 'ana-silva', 'pt', 'published',
+  json('{"name":"Ana Silva","role":"Head of Design","email":"ana@ness.com.br","phone":"+55 11 99999-9999","brand":"ness","department":"Design"}'),
   datetime('now'), datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'signatures';
 
@@ -105,6 +106,7 @@ INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, statu
 SELECT 
   'sig-003', NULL,
   c.id, 'marcos-oliveira', 'pt', 'published',
+  json('{"name":"Marcos Oliveira","role":"CTO","email":"marcos@ness.com.br","phone":"+55 11 99999-9999","brand":"ness","department":"Tech"}'),
   datetime('now'), datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'signatures';
 
@@ -112,67 +114,98 @@ INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, statu
 SELECT 
   'sig-004', NULL,
   c.id, 'carla-mendes', 'pt', 'published',
+  json('{"name":"Carla Mendes","role":"COO","email":"carla@ness.com.br","phone":"+55 11 99999-9999","brand":"ness","department":"Operações"}'),
   datetime('now'), datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'signatures';
 
--- ── INSIGHTS: Conteúdo editorial ────────────────────────────────
+-- ── INSIGHTS: ZTNA e n.secops ────────────────────────────────
+DELETE FROM entries WHERE collection_id = (SELECT id FROM collections WHERE slug = 'insights');
 
 INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, status, data, published_at, created_at, updated_at)
 SELECT 
-  'ins-v3-001', NULL,
-  c.id, 'ia-generativa-empresas-2026', 'pt', 'published',
-  json('{"title":"IA Generativa nas Empresas: O Que Mudou em 2026","tag":"IA","icon":"Brain","date":"2026-04-10","desc":"A adoção de IA generativa saltou de projetos piloto para operações críticas. Analisamos como empresas brasileiras estão integrando LLMs em processos de atendimento, operações e tomada de decisão.","featured":true,"body":"## A Revolução Silenciosa\n\nEm 2026, a IA generativa não é mais novidade — é infraestrutura. Empresas que há dois anos experimentavam chatbots agora operam pipelines completos de automação cognitiva.\n\n### Principais Tendências\n\n1. **RAG Corporativo** — Retrieval-Augmented Generation sobre bases de conhecimento proprietárias\n2. **Agentes MCP** — Model Context Protocol permite que LLMs acessem ferramentas empresariais\n3. **IA on Edge** — Modelos rodando em Workers/CDN para latência sub-100ms\n\n### O Papel da ness.\n\nComo integradora, a ness. implementa pipelines RAG sobre Cloudflare Workers AI, permitindo que empresas mantenham seus dados on-premise enquanto usam modelos de última geração."}'),
-  datetime('now'), datetime('now'), datetime('now')
+  'ins-ztna-001', NULL, c.id, 'ztna-e-o-fim-das-vpns', 'pt', 'published',
+  json('{"title":"ZTNA e o Fim das VPNs: O Padrão n.secops","tag":"Segurança","icon":"Shield","date":"2025-06-15","desc":"A transição para Zero Trust Network Access (ZTNA) redefiniu a segurança corporativa. Veja como Ricardo Esper e Agnaldo Silva lideram essa mudança na ness.","featured":true,"body":"## A Segurança Sem Perímetro\n\nOperar com VPNs convencionais provou ser o calcanhar de Aquiles das corporações. Com a adoção de ZTNA (Zero Trust Network Access), a filosofia muda de ''confie e verifique'' para ''nunca confie, sempre verifique''.\n\nSegundo **Ricardo Esper**, especialista em IA, Cybersegurança e Contrainteligência da ness., ''A arquitetura Zero Trust não apenas mitiga movimentos laterais de malware, mas transforma a postura de defesa em algo orgânico.''\n\n### O Papel do n.secops e Implantação\n\n**Agnaldo Silva**, responsável pelo SecOps, PMO e Implantação, reforça que a implementação do n.secops com ZTNA exige governança clara. ''Não se trata apenas de software. É uma mudança cultural gerenciada que implementamos camada por camada, garantindo máxima segurança sem atrito operacional.''\n\nCom o n.secops, a implantação de ZTNA torna-se previsível e letal contra ameaças."}'),
+  '2025-06-15 10:00:00', '2025-06-15 10:00:00', '2025-06-15 10:00:00'
 FROM collections c WHERE c.slug = 'insights';
 
 INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, status, data, published_at, created_at, updated_at)
 SELECT 
-  'ins-v3-002', NULL,
-  c.id, 'zero-trust-alem-do-perimetro', 'pt', 'published',
-  json('{"title":"Zero Trust: Além do Perímetro em 2026","tag":"Segurança","icon":"Shield","date":"2026-03-22","desc":"O modelo Zero Trust evoluiu de buzzword para padrão regulatório. Como implementar ZTNA em ambientes híbridos sem quebrar a produtividade.","featured":true,"body":"## O Fim do Perímetro\n\nA arquitetura tradicional de firewall + VPN não funciona mais. Com 73% dos colaboradores em regime híbrido, cada dispositivo é um potencial vetor de ataque.\n\n### Pilares do Zero Trust Moderno\n\n- **Identity-first:** Cada request é autenticada. Sem exceções.\n- **Least Privilege:** Acesso mínimo necessário, revogável em tempo real.\n- **Continuous Verification:** Postura do dispositivo reavaliada a cada sessão.\n\n### Stack Recomendada\n\n| Camada | Tecnologia | Função |\n|--------|-----------|--------|\n| Identity | Cloudflare Access | ZTNA + SSO |\n| Network | Cloudflare Tunnel | Replace VPN |\n| Endpoint | CrowdStrike | EDR/XDR |\n| Monitoring | ness. SIEM | Correlation |"}'),
-  datetime('now'), datetime('now'), datetime('now')
+  'ins-agent-001', NULL, c.id, 'modelos-agenticos-no-suporte', 'pt', 'published',
+  json('{"title":"Modelos Agênticos no Suporte e a IA Gabi","tag":"IA","icon":"Brain","date":"2025-08-20","desc":"A Inteligência Artificial Gabi transformou a resolução de chamados e a segurança usando tecnologias de modelos agênticos autônomos.","featured":true,"body":"## IA que Resolve\n\nA tecnologia de modelos agênticos na segurança da informação marca a virada onde a IA deixa de ser passiva para atuar autonomamente.\n\n### A Gabi na ness.\n\nNa ness., temos a **Gabi**, uma IA nativa projetada para o ecossistema cibernético.\n\n**Ismael Araujo**, especialista em Infraestrutura, ITSM e Suporte, observa: ''Com a Gabi operando os modelos agênticos, chamados de infraestrutura e incidentes de segurança são triados e frequentemente resolvidos autonomamente na nossa base. A automação no suporte não é o futuro, é a realidade atual que entregamos.''"}'),
+  '2025-08-20 14:30:00', '2025-08-20 14:30:00', '2025-08-20 14:30:00'
 FROM collections c WHERE c.slug = 'insights';
 
 INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, status, data, published_at, created_at, updated_at)
 SELECT 
-  'ins-v3-003', NULL,
-  c.id, 'lgpd-multas-2026-cenario', 'pt', 'published',
-  json('{"title":"LGPD em 2026: Multas, Fiscalização e Como se Preparar","tag":"Compliance","icon":"FileCheck","date":"2026-04-01","desc":"A ANPD intensificou a fiscalização em 2026. Análise das multas aplicadas e um checklist prático para adequação de PMEs.","featured":false,"body":"## Panorama Regulatório\n\nA ANPD aplicou R$ 52 milhões em multas no primeiro trimestre de 2026 — um aumento de 340% em relação ao mesmo período de 2025.\n\n### Setores Mais Afetados\n\n1. Saúde (32% das autuações)\n2. Fintechs (28%)\n3. E-commerce (19%)\n4. Educação (12%)\n\n### Checklist de Adequação\n\n- [ ] Mapeamento de dados pessoais (ROPA)\n- [ ] Política de privacidade atualizada\n- [ ] DPO nomeado e registrado na ANPD\n- [ ] Procedimento de resposta a incidentes\n- [ ] Treinamento anual para colaboradores\n\n> A plataforma **ness.** da ness. automatiza o ROPA e gera relatórios DPIA em minutos, não semanas."}'),
-  datetime('now'), datetime('now'), datetime('now')
+  'ins-priv-001', NULL, c.id, 'privacidade-como-diferencial', 'pt', 'published',
+  json('{"title":"Privacidade, Compliance e Standards","tag":"Compliance","icon":"FileCheck","date":"2025-10-10","desc":"Por que a conformidade vai além de documentos? Como a governança e LGPD criam um escudo de confiança nos negócios modernos.","featured":false,"body":"## A Maturidade da LGPD\n\n**Barbara Alencar**, especialista em Privacidade e LGPD, aborda a importância contínua: ''A adequação falha quando é tratada como projeto com data fim. Ela deve ser um ciclo.'' Para isso, os sistemas são auditados rigorosamente.\n\nA governança orquestrada por **Monica Yoshida**, focada em Standards e Compliance, alinha essas regras. ''Mapeamos a aderência a normas como a ISO 27001 junto da LGPD, trazendo resiliência jurídica e operacional.''"}'),
+  '2025-10-10 09:00:00', '2025-10-10 09:00:00', '2025-10-10 09:00:00'
 FROM collections c WHERE c.slug = 'insights';
 
 INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, status, data, published_at, created_at, updated_at)
 SELECT 
-  'ins-v3-004', NULL,
-  c.id, 'cloudflare-workers-edge-computing', 'pt', 'published',
-  json('{"title":"Edge Computing com Cloudflare Workers: Guia Prático","tag":"Cloud","icon":"Cloud","date":"2026-03-15","desc":"Workers, D1, R2, Vectorize — como a ness. construiu toda sua stack SaaS na edge. Arquitetura, custos e lições aprendidas.","featured":false,"body":"## Por Que Edge?\n\nLatência importa. Cada 100ms de delay reduz conversões em 7%. Com Workers, o código roda em 300+ data centers globalmente.\n\n### Stack Canal CMS\n\n- **Runtime:** Cloudflare Workers (Hono)\n- **Database:** D1 (SQLite distribuído)\n- **Storage:** R2 (S3-compatible, zero egress)\n- **AI:** Workers AI (@cf/meta/llama-3.1-8b)\n- **Search:** Vectorize (embeddings RAG)\n\n### Custos Reais\n\nPara 100k requests/dia:\n- Workers: $5/mês\n- D1: $0 (no free tier)\n- R2: $0.015/GB armazenado\n- **Total: ~$8/mês**\n\nComparado a $45+ equivalente na AWS."}'),
-  datetime('now'), datetime('now'), datetime('now')
+  'ins-dev-001', NULL, c.id, 'modelos-de-gestao-e-dev-agil', 'pt', 'published',
+  json('{"title":"Software de Alta Performance, Gestão e Modelos de Precificação","tag":"Desenvolvimento","icon":"Code","date":"2025-11-25","desc":"Alinhando engenharia refinada à previsibilidade financeira de curto e longo prazo.","featured":false,"body":"## Construindo Pontes entre Técnico e Financeiro\n\n**Thiago Bertuzzi**, especialista em Desenvolvimento, eleva o patamar técnico dos produtos que rodam na edge e infraestruturas complexas. O código ágil otimiza o uso de nuvem.\n\nComplementando isso, **Daniel Ajzen**, focado em modelos de precificação e gestão, garante sustentação financeira: ''Nossos modelos trazem clareza. Você paga pelo que escala, evitando excessos de licenciamentos ineficientes e TCO flácido.''"}'),
+  '2025-11-25 11:30:00', '2025-11-25 11:30:00', '2025-11-25 11:30:00'
+FROM collections c WHERE c.slug = 'insights';
+
+INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, status, data, published_at, created_at, updated_at)
+SELECT 
+  'ins-cirt-001', NULL, c.id, 'n-cirt-crises-ciberneticas-e-forense', 'pt', 'published',
+  json('{"title":"Atendimento n.cirt e Forense nas Crises Cibernéticas","tag":"CIRT","icon":"Activity","date":"2026-02-12","desc":"O plano de contingência e preservação legal essenciais em um incidente cibernético.","featured":true,"body":"## The Breach\n\nOs primeiros 30 minutos ditam o impacto de um ataque de ransomware ou exfiltração.\n\nSegundo **Rogério Salerno**, especialista em Forense da ness.: ''O atendimento com *n.cirt* foca não só em conter a ameaça rapidamente, mas em assegurar que cada passo mantenha a cadeia de custódia inquebrável para fins legais e de seguro cibernético. A análise forense ocorre em linha com a resposta ao incidente.''"}'),
+  '2026-02-12 16:20:00', '2026-02-12 16:20:00', '2026-02-12 16:20:00'
 FROM collections c WHERE c.slug = 'insights';
 
 -- ── CASES: Projetos clientes ────────────────────────────────────
+DELETE FROM entries WHERE collection_id = (SELECT id FROM collections WHERE slug = 'cases');
 
 INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, status, data, published_at, created_at, updated_at)
 SELECT 
-  'case-v3-001', NULL,
-  c.id, 'banco-nacional-soc-24x7', 'pt', 'published',
-  json('{"client":"Instituição Financeira Nacional","category":"segurança","project":"SOC 24x7 com SIEM Integrado","result":"Redução de 89% no tempo de resposta a incidentes","desc":"Implementação de Centro de Operações de Segurança com monitoramento contínuo, correlação de eventos via ness. SIEM e resposta automatizada a incidentes para uma das maiores instituições financeiras do Brasil.","stats":"89% faster response | 24/7 coverage | 15M events/day","featured":true}'),
-  datetime('now'), datetime('now'), datetime('now')
+  'case-energia-001', NULL, c.id, 'suporte-ot-energia', 'pt', 'published',
+  json('{"client":"Alupar, TBE e Nova Energia","category":"infraestrutura","project":"Suporte Técnico e Segurança em Redes OT","result":"Governança crítica e cibersegurança em redes OT no Setor Elétrico.","desc":"Grandes corporações não param. A ness. unificou o suporte técnico integrando segurança profunda nas redes OT (Operational Technology) e IT para Alupar, TBE e Nova Energia. O ambiente SCADA protegido garantiu compliance operacional sem gargalos.","stats":"0 Downtime | OT/IT Resilience | Atendimento 24/7","featured":true}'),
+  '2025-05-10 08:30:00', '2025-05-10 08:30:00', '2025-05-10 08:30:00'
 FROM collections c WHERE c.slug = 'cases';
 
 INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, status, data, published_at, created_at, updated_at)
 SELECT 
-  'case-v3-002', NULL,
-  c.id, 'hospital-rede-lgpd', 'pt', 'published',
-  json('{"client":"Rede Hospitalar","category":"compliance","project":"Adequação LGPD Completa","result":"100% de conformidade ANPD em 4 meses","desc":"Programa completo de adequação à LGPD para rede com 12 unidades hospitalares. Incluiu mapeamento de 340 processos, ROPA automatizado via ness., treinamento de 2.800 colaboradores e implementação de consent management.","stats":"340 processos mapeados | 12 unidades | 4 meses","featured":true}'),
-  datetime('now'), datetime('now'), datetime('now')
+  'case-ionic-health', NULL, c.id, 'soc-global-ionic-health', 'pt', 'published',
+  json('{"client":"ionic.health","category":"segurança","project":"IT em Health Tech e SOC n.secops Global","result":"Operações e SOC de Health Tech rodando em mais de 40 países.","desc":"A ionic.health, atuando com dados críticos de saúde, demandava proteção blindada internacionalmente. A ness. aplicou o n.secops, coordenando defesas preditivas, acesso e suporte em IT para dispositivos em mais de 40 países de forma orquestrada.","stats":"+40 Países | 100% Compliance Médico | 24/7 Global","featured":true}'),
+  '2025-09-05 10:45:00', '2025-09-05 10:45:00', '2025-09-05 10:45:00'
 FROM collections c WHERE c.slug = 'cases';
 
 INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, status, data, published_at, created_at, updated_at)
 SELECT 
-  'case-v3-003', NULL,
-  c.id, 'varejo-cloud-migration', 'pt', 'published',
-  json('{"client":"Varejo Nacional","category":"cloud","project":"Migração Cloud-First","result":"45% de redução em custos de infraestrutura","desc":"Migração de data center on-premise para arquitetura multi-cloud (AWS + Cloudflare) para rede varejista com 200 lojas. Inclui CDN, WAF, DDoS protection e failover automático.","stats":"200 lojas | 45% cost reduction | 99.99% uptime","featured":false}'),
-  datetime('now'), datetime('now'), datetime('now')
+  'case-comercial-001', NULL, c.id, 'privacidade-lgpd-comercial-esperanca', 'pt', 'published',
+  json('{"client":"Comercial Esperança","category":"compliance","project":"Adequação LGPD e Gestão de Privacidade","result":"Estrutura interna voltada para proteção total ao consumidor final.","desc":"O Comercial Esperança contou com a ness. para identificar pontos cegos e construir uma cultura rígida de Privacidade e LGPD. Criamos rastreabilidade e treinamos funcionários da matriz ao PDV, mitigando vazamentos e atendendo as demandas da ANPD.","stats":"Adequação Certificada | ROPA Centralizado","featured":false}'),
+  '2025-12-01 11:00:00', '2025-12-01 11:00:00', '2025-12-01 11:00:00'
+FROM collections c WHERE c.slug = 'cases';
+
+INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, status, data, published_at, created_at, updated_at)
+SELECT 
+  'case-leite-tosto', NULL, c.id, 'gestao-nsecops-leite-tosto-barros', 'pt', 'published',
+  json('{"client":"Leite Tosto e Barros Associados","category":"segurança","project":"Gestão de n.secops e Blindagem","result":"Segregação estanque via n.secops para dados sigilosos na área jurídica.","desc":"Lidando com segredos de justiça, a Leite Tosto e Barros requereu máxima fortificação. A ness. aplicou o framework n.secops estruturado, implementando controles de acesso profundos e um combate automatizado contra ransomware no escritório.","stats":"Dados Segregados | Mitigação Autônoma","featured":false}'),
+  '2026-01-20 13:20:00', '2026-01-20 13:20:00', '2026-01-20 13:20:00'
+FROM collections c WHERE c.slug = 'cases';
+
+INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, status, data, published_at, created_at, updated_at)
+SELECT 
+  'case-target-trading', NULL, c.id, 'gestao-ti-target-trading', 'pt', 'published',
+  json('{"client":"Target Trading","category":"infraestrutura","project":"Gestão de TI de Alta Performance","result":"Latência mínima e segurança cibernética para operações financeiras.","desc":"Os ecossistemas de trading não toleram delays. A ness. operou a gestão profunda de TI da Target Trading, modernizando conexões vitais e trazendo o suporte estruturado para orquestrar as movimentações com compliance global irretocável.","stats":"Low Latency | Zero Falhas em Ordens Críticas","featured":false}'),
+  '2026-03-05 15:30:00', '2026-03-05 15:30:00', '2026-03-05 15:30:00'
+FROM collections c WHERE c.slug = 'cases';
+
+INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, status, data, published_at, created_at, updated_at)
+SELECT 
+  'case-cavan-001', NULL, c.id, 'gestao-e-atendimento-cavan', 'pt', 'published',
+  json('{"client":"Cavan S/A","category":"suporte","project":"Gestão e Atendimento de TI (Desde 1991)","result":"De on-premise raiz para a nuvem híbrida ao longo das décadas.","desc":"Desde 1991 a Cavan S/A atesta a dedicação no longo prazo da ness. Nós fomos responsáveis por toda a evolução de infraestrutura e gestão e atendimento de TI do cliente, renovando arquiteturas de dados e suporte tático ininterruptamente.","stats":"35 Anos de Suporte | Renovação Constante","featured":true}'),
+  '2026-04-02 09:00:00', '2026-04-02 09:00:00', '2026-04-02 09:00:00'
+FROM collections c WHERE c.slug = 'cases';
+
+INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, status, data, published_at, created_at, updated_at)
+SELECT 
+  'case-abes-001', NULL, c.id, 'n-secops-abes', 'pt', 'published',
+  json('{"client":"ABES","category":"segurança","project":"Implementação do n.secops Institucional","result":"Plataforma segura e robusta para os maiores players de software.","desc":"A Associação Brasileira das Empresas de Software (ABES) exigiu o estado-da-arte na adoção do n.secops. Mais do que alertas na borda, a gestão contínua fortificou o seu back-office para atuar adequadamente nas frentes corporativas e industriais.","stats":"Nível Governamental | Detecção L1 Autônoma","featured":true}'),
+  '2026-04-18 10:15:00', '2026-04-18 10:15:00', '2026-04-18 10:15:00'
 FROM collections c WHERE c.slug = 'cases';
 
 -- ── JOBS: Vagas abertas ─────────────────────────────────────────
@@ -221,18 +254,18 @@ FROM collections c WHERE c.slug = 'pages';
 
 -- ── FORMS: Exemplos de submissões ───────────────────────────────
 
-INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, status, data, created_at, updated_at)
+INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, status, data, published_at, created_at, updated_at)
 SELECT 
   'form-001', NULL,
   c.id, NULL, 'pt', 'published',
   json('{"source":"site-contato","payload":{"nome":"João Pereira","email":"joao@empresa.com.br","assunto":"Orçamento SOC","mensagem":"Gostaria de receber um orçamento para implementação de SOC 24x7 para nossa empresa. Temos 500 colaboradores e infraestrutura híbrida."}}'),
-  datetime('now'), datetime('now')
+  NULL, datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'forms';
 
-INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, status, data, created_at, updated_at)
+INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, status, data, published_at, created_at, updated_at)
 SELECT 
   'form-002', NULL,
   c.id, NULL, 'pt', 'published',
   json('{"source":"site-newsletter","payload":{"email":"maria@startup.io","nome":"Maria Costa","interesse":"IA e Automação"}}'),
-  datetime('now'), datetime('now')
+  NULL, datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'forms';
