@@ -160,7 +160,7 @@ const Compliance = () => {
                   e.preventDefault();
                   const formData = new FormData(e.currentTarget);
                   const payload = {
-                    formType: "whistleblowing",
+                    formType: "whistleblower",
                     name: formData.get("name") || "Anônimo",
                     email: formData.get("email") || "N/A",
                     subject: formData.get("subject"),

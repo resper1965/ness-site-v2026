@@ -6,9 +6,7 @@ import { motion } from "motion/react";
 import { useTranslation, Trans } from "react-i18next";
 import { Target, Eye, Heart, Shield, Globe, Cpu } from "lucide-react";
 
-const FOUNDATION_YEAR = 1991;
-const CURRENT_YEAR = new Date().getFullYear();
-const YEARS_OF_LEGACY = CURRENT_YEAR - FOUNDATION_YEAR;
+import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
 const About = () => {
   const { t } = useTranslation();
