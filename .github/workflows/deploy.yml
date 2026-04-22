@@ -47,6 +47,10 @@ jobs:
         working-directory: ./canal
         run: npm install
 
+      - name: Build Canal Admin
+        working-directory: ./canal/admin
+        run: npm install && npm run build
+
       - name: Deploy Canal CMS (Backend + Admin Assets)
         uses: cloudflare/wrangler-action@v3
         with:
