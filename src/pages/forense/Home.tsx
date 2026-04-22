@@ -36,7 +36,7 @@ export default function ForenseHome() {
             className="max-w-5xl space-y-10"
           >
             <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-display font-medium text-white leading-[1.05] tracking-tighter lowercase-all">
-              {t("forense.title")}<BlueDot /><br />
+              forense<BlueDot />io<br />
               <span className="text-white/90 drop-shadow-[0_0_20px_rgba(0,173,232,0.4)]">{t("forense.hero.tag")}</span> {t("forense.hero.tag2")}
             </h1>
             <p className="text-lg md:text-2xl text-on-surface-variant max-w-3xl leading-relaxed font-light">

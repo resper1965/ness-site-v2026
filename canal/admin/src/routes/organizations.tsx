@@ -8,7 +8,7 @@ export default function OrganizationsPage() {
   const [errorMsg, setErrorMsg] = useState("");
 
   const SUPER_ADMIN_EMAILS = ["resper@bekaa.eu", "admin@ness.com.br"];
-  const isSuperAdmin = SUPER_ADMIN_EMAILS.includes(session?.user?.email || "");
+  const isSuperAdmin = session?.user?.role === 'admin' || SUPER_ADMIN_EMAILS.includes(session?.user?.email || "");
 
   useEffect(() => {
     if (isSuperAdmin) {

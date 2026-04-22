@@ -18,60 +18,60 @@ const Compliance = () => {
 
   const content = {
     termos: {
-      title: "termos de uso",
-      desc: "regras e diretrizes para utilização de nossas plataformas e serviços.",
+      title: t('compliance.terms.title', "termos de uso"),
+      desc: t('compliance.terms.desc', "regras e diretrizes para utilização de nossas plataformas e serviços."),
       sections: [
         {
-          h: "1. aceitação",
-          p: "ao acessar nossas soluções, você concorda em cumprir estes termos e todas as leis e regulamentos aplicáveis."
+          h: t('compliance.terms.sec1.h', "1. aceitação"),
+          p: t('compliance.terms.sec1.p', "ao acessar nossas soluções, você concorda em cumprir estes termos e todas as leis e regulamentos aplicáveis.")
         },
         {
-          h: "2. propriedade intelectual",
-          p: "todo o conteúdo, software e metodologias da ness. são protegidos por direitos de propriedade intelectual e não podem ser reproduzidos sem autorização prevía."
+          h: t('compliance.terms.sec2.h', "2. propriedade intelectual"),
+          p: t('compliance.terms.sec2.p', "todo o conteúdo, software e metodologias da ness. são protegidos por direitos de propriedade intelectual e não podem ser reproduzidos sem autorização prevía.")
         },
         {
-          h: "3. responsabilidade",
-          p: "a ness. se compromete com a máxima disponibilidade e segurança, mas não se responsabiliza por danos decorrentes do uso indevido das credenciais por parte do usuário."
+          h: t('compliance.terms.sec3.h', "3. responsabilidade"),
+          p: t('compliance.terms.sec3.p', "a ness. se compromete com a máxima disponibilidade e segurança, mas não se responsabiliza por danos decorrentes do uso indevido das credenciais por parte do usuário.")
         }
       ]
     },
     privacidade: {
-      title: "política de privacidade",
-      desc: "como tratamos seus dados com segurança e transparência.",
+      title: t('compliance.privacy.title', "política de privacidade"),
+      desc: t('compliance.privacy.desc', "como tratamos seus dados com segurança e transparência."),
       sections: [
         {
-          h: "1. coleta de dados",
-          p: "coletamos apenas as informações necessárias para fornecer nossos serviços de engenharia e segurança, como dados de contato corporativo e logs técnicos de segurança."
+          h: t('compliance.privacy.sec1.h', "1. coleta de dados"),
+          p: t('compliance.privacy.sec1.p', "coletamos apenas as informações necessárias para fornecer nossos serviços de engenharia e segurança, como dados de contato corporativo e logs técnicos de segurança.")
         },
         {
-          h: "2. finalidade",
-          p: "seus dados são utilizados exclusivamente para a execução de contratos, suporte técnico, melhoria de nossas soluções e conformidade legal (LGPD)."
+          h: t('compliance.privacy.sec2.h', "2. finalidade"),
+          p: t('compliance.privacy.sec2.p', "seus dados são utilizados exclusivamente para a execução de contratos, suporte técnico, melhoria de nossas soluções e conformidade legal (LGPD).")
         },
         {
-          h: "3. segurança",
-          p: "implementamos medidas técnicas e organizacionais de ponta, incluindo criptografia e controle de acesso rigoroso, para proteger suas informações contra acessos não autorizados."
+          h: t('compliance.privacy.sec3.h', "3. segurança"),
+          p: t('compliance.privacy.sec3.p', "implementamos medidas técnicas e organizacionais de ponta, incluindo criptografia e controle de acesso rigoroso, para proteger suas informações contra acessos não autorizados.")
         },
         {
-          h: "4. seus direitos",
-          p: "você tem o direito de acessar, corrigir, excluir ou solicitar a portabilidade de seus dados a qualquer momento através do nosso canal de privacidade."
+          h: t('compliance.privacy.sec4.h', "4. seus direitos"),
+          p: t('compliance.privacy.sec4.p', "você tem o direito de acessar, corrigir, excluir ou solicitar a portabilidade de seus dados a qualquer momento através do nosso canal de privacidade.")
         }
       ]
     },
     etica: {
-      title: "compliance & ética",
-      desc: "nosso compromisso com a integridade e conduta ética global.",
+      title: t('compliance.ethics.title', "compliance & ética"),
+      desc: t('compliance.ethics.desc', "nosso compromisso com a integridade e conduta ética global."),
       sections: [
         {
-          h: "1. código de conduta",
-          p: "operamos sob os mais altos padrões de ética profissional, combatendo qualquer forma de corrupção, discriminação ou conduta antiética."
+          h: t('compliance.ethics.sec1.h', "1. código de conduta"),
+          p: t('compliance.ethics.sec1.p', "operamos sob os mais altos padrões de ética profissional, combatendo qualquer forma de corrupção, discriminação ou conduta antiética.")
         },
         {
-          h: "2. canal de denúncias",
-          p: "mantemos um canal independente e anônimo para relato de violações ao nosso código de conduta ou legislações vigentes."
+          h: t('compliance.ethics.sec2.h', "2. canal de denúncias"),
+          p: t('compliance.ethics.sec2.p', "mantemos um canal independente e anônimo para relato de violacões ao nosso código de conduta ou legislações vigentes.")
         },
         {
-          h: "3. certificações",
-          p: "nossas operações são auditadas e seguem frameworks internacionais como ISO 27001 e SOC2, garantindo governança de classe mundial."
+          h: t('compliance.ethics.sec3.h', "3. certificações"),
+          p: t('compliance.ethics.sec3.p', "nossas operações são auditadas e seguem frameworks internacionais como ISO 27001 e SOC2, garantindo governança de classe mundial.")
         }
       ]
     }
@@ -189,11 +189,11 @@ const Compliance = () => {
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.name_optional')}</label>
-                    <input name="name" type="text" placeholder="seu nome ou deixe em branco" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" />
+                    <input name="name" type="text" placeholder={t('contact.form.name_placeholder', 'seu nome ou deixe em branco')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"  aria-label="Input field" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.contact_optional')}</label>
-                    <input name="email" type="text" placeholder="email ou telefone para retorno" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" />
+                    <input name="email" type="text" placeholder={t('contact.form.email_placeholder', 'email ou telefone para retorno')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"  aria-label="Input field" />
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -209,7 +209,7 @@ const Compliance = () => {
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.whistleblower.description')}</label>
-                  <textarea name="message" required rows={6} placeholder="detalhe o ocorrido com o máximo de informações possíveis (datas, locais, envolvidos)..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all resize-none"></textarea>
+                  <textarea name="message" required rows={6} placeholder={t('contact.whistleblower.desc_placeholder', 'detalhe o ocorrido com o máximo de informações possíveis (datas, locais, envolvidos)...')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all resize-none"></textarea>
                 </div>
                 <button className="w-full bg-primary-container text-on-primary py-5 rounded-2xl font-display font-bold uppercase tracking-widest text-sm hover:brightness-110 transition-all shadow-xl shadow-primary-container/20">
                   {t('contact.whistleblower.form.send_button')}

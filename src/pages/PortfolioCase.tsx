@@ -18,6 +18,7 @@ interface Case {
 }
 
 const PortfolioCase = () => {
+  const { t } = useTranslation();
   const { slug } = useParams<{ slug: string }>();
   const { i18n } = useTranslation();
   const navigate = useNavigate();
@@ -67,7 +68,7 @@ const PortfolioCase = () => {
           to="/portfolio"
           className="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-xs uppercase tracking-widest font-bold mb-12"
         >
-          <ArrowLeft size={14} /> portfolio
+          <ArrowLeft size={14} /> {t('portfolio.case.back', 'portfolio')}
         </Link>
 
         {/* Hero image */}
@@ -112,7 +113,7 @@ const PortfolioCase = () => {
             transition={{ delay: 0.2 }}
             className="p-8 rounded-4xl bg-surface-container-low border border-white/5 mb-12"
           >
-            <div className="text-[10px] uppercase tracking-widest text-on-surface-variant/60 font-bold mb-2">resultado</div>
+            <div className="text-[10px] uppercase tracking-widest text-on-surface-variant/60 font-bold mb-2">{t('portfolio.result')}</div>
             <div className="text-white text-lg font-display font-semibold">{item.result}</div>
           </motion.div>
         )}
@@ -123,13 +124,13 @@ const PortfolioCase = () => {
             to="/portfolio"
             className="inline-flex items-center gap-2 border border-white/10 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors"
           >
-            <ArrowLeft size={12} /> todos os cases
+            <ArrowLeft size={12} /> {t('portfolio.case.all', 'todos os cases')}
           </Link>
           <Link
             to="/contato"
             className="inline-flex items-center gap-2 bg-primary-container text-on-primary px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform"
           >
-            falar com especialista <ExternalLink size={12} />
+            {t('portfolio.case.talk', 'falar com especialista')} <ExternalLink size={12} />
           </Link>
         </div>
       </div>

@@ -140,10 +140,10 @@ const About = () => {
 
         {/* ── Metrics ────────────────────────────────────────────── */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 border-t border-white/5 pt-16 mt-8 mb-16">
-          <AnimatedCounter value={YEARS_OF_LEGACY} label="anos de operação" suffix="+" duration={1500} />
-          <AnimatedCounter value={30} label="países atendidos" suffix="+" duration={2000} />
-          <AnimatedCounter value={500} label="projetos globais" suffix="+" duration={2500} />
-          <AnimatedCounter value={99} label="sla / uptime" suffix="%" duration={3000} />
+          <AnimatedCounter value={YEARS_OF_LEGACY} label={t('about.metrics.legacy', 'anos de operação')} suffix="+" duration={1500} />
+          <AnimatedCounter value={30} label={t('about.metrics.countries', 'países atendidos')} suffix="+" duration={2000} />
+          <AnimatedCounter value={500} label={t('about.metrics.projects', 'projetos globais')} suffix="+" duration={2500} />
+          <AnimatedCounter value={99} label={t('about.metrics.uptime', 'sla / uptime')} suffix="%" duration={3000} />
         </div>
 
         {/* ── Timeline ─────────────────────────────────────────── */}

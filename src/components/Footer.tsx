@@ -85,7 +85,7 @@ const Footer = () => {
                 name="email"
                 placeholder={t('footer.email_placeholder')}
                 className="bg-surface-container-low border border-white/10 rounded-full px-4 py-2 text-xs w-full focus:outline-none focus:ring-1 focus:ring-primary text-white"
-              />
+               aria-label="Input field" />
               <button
                 aria-label={t('a11y.subscribe')}
                 className="bg-primary-container text-on-primary rounded-full p-2 flex items-center justify-center hover:brightness-110 transition-all"

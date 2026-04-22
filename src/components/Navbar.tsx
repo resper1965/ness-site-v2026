@@ -7,22 +7,24 @@ import { Menu, X, Sparkles } from "lucide-react";
 
 import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
-const CELEBRATION_CONFIG = {
-  active: true, // Set to true to enable celebration
-  label: `${YEARS_OF_LEGACY} anos`,
-  title: `${YEARS_OF_LEGACY} anos de engenharia de precisão`,
-  message: `estamos celebrando ${YEARS_OF_LEGACY} anos de inovação, resiliência e parcerias de sucesso. obrigado por fazer parte da nossa história.`,
-  startDate: "2024-04-14", // User will provide the exact date
-  durationDays: 7,
-  foundationYear: FOUNDATION_YEAR,
-  currentYear: CURRENT_YEAR
-};
 
 
 const BRAND = import.meta.env.VITE_BRAND || 'ness';
 
 const Navbar = () => {
   const { t, i18n } = useTranslation();
+
+  const CELEBRATION_CONFIG = {
+    active: true,
+    label: t('nav.celebration.label', { years: YEARS_OF_LEGACY }),
+    title: t('nav.celebration.title', { years: YEARS_OF_LEGACY }),
+    message: t('nav.celebration.message', { years: YEARS_OF_LEGACY }),
+    startDate: "2024-04-14",
+    durationDays: 7,
+    foundationYear: FOUNDATION_YEAR,
+    currentYear: CURRENT_YEAR
+  };
+
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === "/";

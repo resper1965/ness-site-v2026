@@ -72,7 +72,7 @@ INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, statu
 SELECT 
   'bb-logo-001', NULL,
   c.id, 'ness-logo-dark', 'pt', 'published',
-  json('{"title":"ness. Logo Dark","category":"logo","brand":"ness","desc":"Logo principal da ness. para fundo escuro. Formato SVG.","usage_notes":"Usar sobre fundos #1A1A2E ou mais escuros. Mínimo 120px de largura. Sempre com o ponto final."}'),
+  json('{"title":"ness. Logo Dark","category":"logo","brand":"ness","desc":"Logo principal da ness. para fundo escuro. Formato SVG.","usage_notes":"Usar sobre fundos #1A1A2E ou mais escuros. Mínimo 120px de largura. Sempre com o ponto final.","preview_url":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20180%2056%22%20width%3D%22110%22%20height%3D%2256%22%3E%3Ctext%20x%3D%220%22%20y%3D%2244%22%20font-family%3D%22Arial%2CHelvetica%2Csans-serif%22%20font-size%3D%2244%22%20font-weight%3D%22400%22%20fill%3D%22%23F0F0F5%22%20letter-spacing%3D%22-2%22%3Eness%3C%2Ftext%3E%3Ccircle%20cx%3D%22166%22%20cy%3D%2240%22%20r%3D%228%22%20fill%3D%22%2300D4AA%22%2F%3E%3C%2Fsvg%3E"}'),
   datetime('now'), datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'brandbook';
 
@@ -80,7 +80,7 @@ INSERT OR IGNORE INTO entries (id, tenant_id, collection_id, slug, locale, statu
 SELECT 
   'bb-logo-002', NULL,
   c.id, 'ness-logo', 'pt', 'published',
-  json('{"title":"ness. Shield","category":"logo","brand":"ness","desc":"Logo da vertical ness. (cibersegurança e privacidade). Ícone de escudo com shield gradient.","usage_notes":"Usar apenas em contextos de segurança, LGPD, SOC e compliance. Nunca misturar com logo ness. no mesmo espaço."}'),
+  json('{"title":"ness. Shield","category":"logo","brand":"ness","desc":"Logo da vertical ness. (cibersegurança e privacidade). Ícone de escudo com shield gradient.","usage_notes":"Usar apenas em contextos de segurança, LGPD, SOC e compliance. Nunca misturar com logo ness. no mesmo espaço.","preview_url":"data:image/svg+xml;charset=utf-8,%3Csvg%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%230A84FF%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12%2022s8-4%208-10V5l-8-3-8%203v7c0%206%208%2010%208%2010z%22%2F%3E%3C%2Fsvg%3E"}'),
   datetime('now'), datetime('now'), datetime('now')
 FROM collections c WHERE c.slug = 'brandbook';
 

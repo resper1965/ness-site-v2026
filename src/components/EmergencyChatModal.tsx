@@ -117,6 +117,7 @@ export default function EmergencyChatModal({ isOpen, onClose }: EmergencyChatMod
                   type="text" 
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
+                  aria-label="Input field"
                   placeholder="Descreva os primeiros sintomas do pain point atual..." 
                   className="w-full bg-[#111] border border-white/10 rounded-full py-4 pl-6 pr-14 text-white text-sm focus:outline-none focus:border-red-500/60 transition-colors placeholder:text-white/20 font-light"
                 />

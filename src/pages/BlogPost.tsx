@@ -19,6 +19,7 @@ interface Insight {
 }
 
 const BlogPost = () => {
+  const { t } = useTranslation();
   const { slug } = useParams<{ slug: string }>();
   const { i18n } = useTranslation();
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ const BlogPost = () => {
           to="/blog"
           className="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-xs uppercase tracking-widest font-bold mb-12"
         >
-          <ArrowLeft size={14} /> blog
+          <ArrowLeft size={14} /> {t('blog.back', 'blog')}
         </Link>
 
         {/* Meta */}
@@ -108,7 +109,7 @@ const BlogPost = () => {
             if (!rawBody) return (
               <div className="flex flex-col items-center py-16 text-center">
                 <FileText size={40} className="text-on-surface-variant/20 mb-4" />
-                <p className="text-on-surface-variant/40 text-sm">conteúdo completo em breve.</p>
+                <p className="text-on-surface-variant/40 text-sm">{t('blog.comingSoon')}</p>
               </div>
             );
             // Convert markdown headings/lists to basic HTML if raw is markdown
@@ -140,13 +141,13 @@ const BlogPost = () => {
             to="/blog"
             className="inline-flex items-center gap-2 text-xs text-on-surface-variant hover:text-primary transition-colors uppercase tracking-widest font-bold"
           >
-            <ArrowLeft size={12} /> todos os insights
+            <ArrowLeft size={12} /> {t('blog.all_insights', 'todos os insights')}
           </Link>
           <Link
             to="/contato"
             className="px-6 py-2 rounded-full bg-primary-container text-on-primary text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform"
           >
-            falar com especialista
+            {t('blog.talk_expert', 'falar com especialista')}
           </Link>
         </div>
       </div>

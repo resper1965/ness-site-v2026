@@ -52,7 +52,7 @@ const Contact = () => {
                 transition={{ delay: 0.2 }}
                 className="text-primary-container font-mono text-xs uppercase tracking-[0.3em] mb-6"
               >
-                get in touch — ness. precision
+                {t('contact.badge', 'get in touch — ness. precision')}
               </motion.div>
               <h1 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight leading-tight mb-6 lowercase">
                 {t('contact.title')}<BlueDot />
@@ -152,7 +152,7 @@ const Contact = () => {
                     required
                     placeholder={t('contact.form.name_placeholder')} 
                     className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
-                  />
+                   aria-label="Input field" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.company')}</label>
@@ -162,7 +162,7 @@ const Contact = () => {
                     required
                     placeholder={t('contact.form.company_placeholder')} 
                     className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
-                  />
+                   aria-label="Input field" />
                 </div>
               </div>
               <div className="space-y-2">
@@ -173,7 +173,7 @@ const Contact = () => {
                   required
                   placeholder={t('contact.form.email_placeholder')} 
                   className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
-                />
+                 aria-label="Input field" />
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.subject')}</label>
@@ -202,7 +202,7 @@ const Contact = () => {
                   type="checkbox" 
                   required
                   className="mt-1 w-4 h-4 bg-white/5 border border-white/10 rounded focus:ring-1 focus:ring-primary-container accent-primary-container cursor-pointer"
-                />
+                 aria-label="Input field" />
                 <label htmlFor="privacy-consent" className="text-[11px] text-on-surface-variant font-light leading-relaxed cursor-pointer">
                   {t('common.privacy_consent')}
                 </label>

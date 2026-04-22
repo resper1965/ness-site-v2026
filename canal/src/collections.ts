@@ -5,6 +5,8 @@
  * Essas definições alimentam a API CRUD genérica e o admin panel.
  */
 
+export type GovernancePolicy = 'autonomous' | 'assisted' | 'protected'
+
 export type FieldType =
   | 'text'
   | 'textarea'
@@ -37,6 +39,7 @@ export interface CollectionDef {
   hasLocale: boolean       // se entries têm campo locale
   hasSlug: boolean         // se entries têm campo slug
   hasStatus: boolean       // se entries têm draft/published
+  governance: GovernancePolicy  // autonomous | assisted | protected
   fields: FieldDef[]
 }
 
@@ -51,6 +54,7 @@ export const collections: CollectionDef[] = [
     hasLocale: true,
     hasSlug: true,
     hasStatus: true,
+    governance: 'autonomous',
     fields: [
       { name: 'published', type: 'boolean', label: 'Publicado', defaultValue: false },
       { name: 'title', type: 'text', required: true, label: 'Título' },
@@ -74,6 +78,7 @@ export const collections: CollectionDef[] = [
     hasLocale: true,
     hasSlug: true,
     hasStatus: true,
+    governance: 'autonomous',
     fields: [
       { name: 'published', type: 'boolean', label: 'Publicado', defaultValue: false },
       { name: 'client', type: 'text', required: true, label: 'Cliente' },
@@ -97,6 +102,7 @@ export const collections: CollectionDef[] = [
     hasLocale: true,
     hasSlug: false,
     hasStatus: true,
+    governance: 'assisted',
     fields: [
       { name: 'published', type: 'boolean', label: 'Publicado', defaultValue: false },
       { name: 'title', type: 'text', required: true, label: 'Título' },
@@ -120,6 +126,7 @@ export const collections: CollectionDef[] = [
     hasLocale: false,
     hasSlug: true,
     hasStatus: true,
+    governance: 'protected',
     fields: [
       { name: 'title', type: 'text', required: true, label: 'Nome do Asset' },
       { name: 'category', type: 'select', label: 'Categoria', options: [
@@ -143,6 +150,7 @@ export const collections: CollectionDef[] = [
     hasLocale: false,
     hasSlug: true,
     hasStatus: true,
+    governance: 'protected',
     fields: [
       { name: 'name', type: 'text', required: true, label: 'Nome Completo' },
       { name: 'role', type: 'text', required: true, label: 'Cargo' },
@@ -166,9 +174,80 @@ export const collections: CollectionDef[] = [
     hasLocale: false,
     hasSlug: false,
     hasStatus: true,
+    governance: 'protected',
     fields: [
       { name: 'source', type: 'text', required: true, label: 'Origem' },
       { name: 'payload', type: 'json', required: true, label: 'Dados' },
+    ]
+  },
+  // ── Collections Editoriais (Comunicação Institucional) ──────────
+  {
+    slug: 'comunicados',
+    label: 'Comunicado',
+    labelPlural: 'Comunicados',
+    icon: 'Megaphone',
+    hasLocale: true,
+    hasSlug: true,
+    hasStatus: true,
+    governance: 'assisted',
+    fields: [
+      { name: 'title', type: 'text', required: true, label: 'Título' },
+      { name: 'type', type: 'select', label: 'Tipo', options: [
+        'posicionamento', 'nota oficial', 'release', 'interno', 'parceria'
+      ]},
+      { name: 'urgency', type: 'select', label: 'Urgência', options: [
+        'baixa', 'média', 'alta', 'crítica'
+      ]},
+      { name: 'date', type: 'date', required: true, label: 'Data' },
+      { name: 'summary', type: 'textarea', required: true, label: 'Resumo' },
+      { name: 'body', type: 'richtext', label: 'Conteúdo Completo' },
+      { name: 'approved_by', type: 'text', label: 'Aprovado por' },
+      { name: 'channels', type: 'json', label: 'Canais de Distribuição' },
+    ]
+  },
+  {
+    slug: 'social_posts',
+    label: 'Post Social',
+    labelPlural: 'Posts Sociais',
+    icon: 'Share2',
+    hasLocale: true,
+    hasSlug: false,
+    hasStatus: true,
+    governance: 'autonomous',
+    fields: [
+      { name: 'platform', type: 'select', required: true, label: 'Plataforma', options: [
+        'linkedin', 'x', 'instagram', 'facebook', 'threads'
+      ]},
+      { name: 'content', type: 'textarea', required: true, label: 'Conteúdo' },
+      { name: 'hashtags', type: 'text', label: 'Hashtags' },
+      { name: 'media_url', type: 'image', label: 'Mídia' },
+      { name: 'scheduled_at', type: 'date', label: 'Agendado para' },
+      { name: 'cta_url', type: 'text', label: 'Link CTA' },
+      { name: 'tone', type: 'select', label: 'Tom', options: [
+        'institucional', 'técnico', 'informal', 'thought-leadership'
+      ]},
+    ]
+  },
+  {
+    slug: 'newsletters',
+    label: 'Newsletter',
+    labelPlural: 'Newsletters',
+    icon: 'Newspaper',
+    hasLocale: true,
+    hasSlug: true,
+    hasStatus: true,
+    governance: 'assisted',
+    fields: [
+      { name: 'title', type: 'text', required: true, label: 'Assunto' },
+      { name: 'preheader', type: 'text', label: 'Pré-header' },
+      { name: 'body', type: 'richtext', required: true, label: 'Corpo do Email' },
+      { name: 'audience', type: 'select', label: 'Audiência', options: [
+        'clientes', 'prospects', 'parceiros', 'interno', 'todos'
+      ]},
+      { name: 'scheduled_at', type: 'date', label: 'Agendado para' },
+      { name: 'cta_text', type: 'text', label: 'Texto do CTA' },
+      { name: 'cta_url', type: 'text', label: 'URL do CTA' },
+      { name: 'cover', type: 'image', label: 'Imagem de Capa' },
     ]
   },
 ]

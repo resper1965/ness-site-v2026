@@ -65,7 +65,7 @@ const Portfolio = () => {
             animate={{ x: 0, opacity: 1 }}
             className="text-primary-container font-mono text-xs uppercase tracking-[0.3em] mb-6"
           >
-            portfólio de impacto — ness. precision
+            {t('portfolio.badge', 'portfólio de impacto — ness. precision')}
           </motion.div>
           <h1 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight mb-6 lowercase">
             {t('portfolio.title')}<BlueDot />
@@ -87,7 +87,7 @@ const Portfolio = () => {
                   : "bg-white/5 text-on-surface-variant hover:bg-white/10"
               }`}
             >
-              {cat === "todos" ? t('common.all') : cat}
+              {cat === "todos" ? t('common.all') : t(`portfolio.categories.${cat}`, cat)}
             </button>
           ))}
         </div>
@@ -102,8 +102,8 @@ const Portfolio = () => {
             <div className="col-span-full">
               <EmptyState
                 icon={LayoutGrid}
-                title="nenhum case encontrado."
-                subtitle="nosso time está preparando novos cases. volte em breve."
+                title={t('portfolio.empty.title', 'nenhum case encontrado.')}
+                subtitle={t('portfolio.empty.subtitle', 'nosso time está preparando novos cases. volte em breve.')}
               />
             </div>
           ) : (
@@ -183,7 +183,7 @@ const Portfolio = () => {
               </Link>
               <div className="flex items-center gap-2 opacity-60">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
-                <p className="text-[10px] uppercase tracking-widest font-bold">100% de confidencialidade</p>
+                <p className="text-[10px] uppercase tracking-widest font-bold">{t('portfolio.confidentiality', '100% de confidencialidade')}</p>
               </div>
             </div>
           </div>

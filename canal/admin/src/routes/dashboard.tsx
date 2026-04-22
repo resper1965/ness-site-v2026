@@ -171,7 +171,7 @@ const PAGE_META: Record<string, { title: string; sub: string }> = {
 const SUPER_ADMIN_EMAILS = ["resper@bekaa.eu", "admin@ness.com.br"];
 
 /* ── Org Switcher Component ────────────────────────── */
-function OrgSwitcher({ userEmail }: { userEmail: string }) {
+function OrgSwitcher({ userEmail, isSuperAdmin }: { userEmail: string; isSuperAdmin: boolean }) {
   const { data: activeOrg } = authClient.useActiveOrganization();
   const { data: orgs } = authClient.useListOrganizations();
   const [open, setOpen] = useState(false);
@@ -180,7 +180,15 @@ function OrgSwitcher({ userEmail }: { userEmail: string }) {
   const [loading, setLoading] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const isSuperAdmin = SUPER_ADMIN_EMAILS.includes(userEmail);
+  // Auto-activate ness for admins who don't have an active org
+  useEffect(() => {
+    if (isSuperAdmin && !activeOrg && orgs?.length) {
+      const nessOrg = orgs.find((o: any) => o.slug === 'ness');
+      if (nessOrg) {
+        organization.setActive({ organizationId: nessOrg.id });
+      }
+    }
+  }, [isSuperAdmin, activeOrg, orgs]);
 
   // Close on outside click
   useEffect(() => {
@@ -260,6 +268,7 @@ function OrgSwitcher({ userEmail }: { userEmail: string }) {
                   autoFocus
                   placeholder="Nome da organização"
                   value={newName}
+                  aria-label="Nome da organização"
                   onChange={(e) => setNewName(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleCreate()}
                 />
@@ -301,7 +310,7 @@ export default function DashboardLayout() {
   if (isPending) return <div className="loader" />;
   if (!session) return null;
 
-  const isSuperAdmin = SUPER_ADMIN_EMAILS.includes(session.user.email);
+  const isSuperAdmin = session.user.role === 'admin' || SUPER_ADMIN_EMAILS.includes(session.user.email);
   const myMembership = activeOrg?.members?.find((m: any) => m.userId === session?.user?.id || m.user?.email === session?.user?.email);
   const myRole = myMembership?.role || "member";
 
@@ -323,7 +332,7 @@ export default function DashboardLayout() {
         </div>
 
         {/* Org Switcher */}
-        <OrgSwitcher userEmail={session.user.email} />
+        <OrgSwitcher userEmail={session.user.email} isSuperAdmin={isSuperAdmin} />
 
         <nav className="sidebar-nav">
           {NAV.map((group: any) => {

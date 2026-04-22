@@ -234,20 +234,20 @@ const Careers = () => {
                     >
                       <div className="space-y-2">
                         <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.full_name')}</label>
-                        <input name="name" type="text" required placeholder="seu nome" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" />
+                        <input name="name" type="text" required placeholder="seu nome" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"  aria-label="Input field" />
                       </div>
                       <div className="space-y-2">
                         <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.email')}</label>
-                        <input name="email" type="email" required placeholder="email@exemplo.com" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" />
+                        <input name="email" type="email" required placeholder="email@exemplo.com" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"  aria-label="Input field" />
                       </div>
                       <div className="space-y-2">
                         <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.linkedin')}</label>
-                        <input name="linkedin" type="url" placeholder="https://linkedin.com/in/..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" />
+                        <input name="linkedin" type="url" placeholder="https://linkedin.com/in/..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"  aria-label="Input field" />
                       </div>
                       <div className="space-y-2">
                         <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.attach_cv')}</label>
                         <div className="relative group/upload">
-                          <input name="cv" type="file" accept=".pdf" required className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                          <input name="cv" type="file" accept=".pdf" required className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"  aria-label="Input field" />
                           <div className="w-full bg-white/5 border border-dashed border-white/20 rounded-2xl px-6 py-8 text-center group-hover/upload:border-primary-container/50 transition-all">
                             <Upload className="mx-auto text-on-surface-variant/40 mb-2 group-hover/upload:text-primary-container transition-colors" size={24} />
                             <p className="text-xs text-on-surface-variant/60">{t('careers.form.drag_drop')}</p>
@@ -261,7 +261,7 @@ const Careers = () => {
                           type="checkbox" 
                           required
                           className="mt-1 w-4 h-4 bg-white/5 border border-white/10 rounded focus:ring-1 focus:ring-primary-container accent-primary-container cursor-pointer"
-                        />
+                         aria-label="Input field" />
                         <label htmlFor="privacy-consent-careers" className="text-[11px] text-on-surface-variant font-light leading-relaxed cursor-pointer">
                           {t('common.privacy_consent')}
                         </label>

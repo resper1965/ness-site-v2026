@@ -27,7 +27,7 @@ function svgToDataUri(svg: string): string {
 /* ─── Inline ness. logo: wordmark + colored dot ─── */
 function buildLogo(brand: string) {
   if (brand === "forense") {
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 56" width="120" height="56"><text x="0" y="44" font-family="Arial,Helvetica,sans-serif" font-size="36" font-weight="400" fill="#052e16" letter-spacing="-1">forense</text><circle cx="197" cy="40" r="6" fill="#00ade8"/><text x="204" y="44" font-family="Arial,Helvetica,sans-serif" font-size="36" font-weight="400" fill="#052e16">io</text></svg>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 56" width="120" height="56"><text x="0" y="44" font-family="Arial,Helvetica,sans-serif" font-size="36" font-weight="400" fill="#052e16" letter-spacing="-1">forense</text><circle cx="120" cy="40" r="6" fill="#00ade8"/><text x="128" y="44" font-family="Arial,Helvetica,sans-serif" font-size="36" font-weight="400" fill="#052e16" letter-spacing="-1">io</text></svg>`;
   }
   if (brand === "trustness") {
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 56" width="140" height="56"><text x="0" y="44" font-family="Arial,Helvetica,sans-serif" font-size="36" font-weight="400" fill="#1e40af" letter-spacing="-1">trustness</text><circle cx="247" cy="40" r="6" fill="#00ade8"/></svg>`;
@@ -126,6 +126,7 @@ export default function SignaturesHub() {
                 <label style={LABEL_STYLE}>{label}</label>
                 <input type={type} style={FIELD_STYLE}
                   value={(form as Record<string,string>)[key]}
+                  aria-label={label}
                   placeholder={placeholder}
                   onChange={e => setForm({ ...form, [key]: e.target.value })}
                 />
@@ -208,7 +209,7 @@ export default function SignaturesHub() {
                               <td style={{ paddingBottom: "3px" }}>
                                 <table cellPadding={0} cellSpacing={0} border={0}><tbody><tr>
                                   <td valign="middle" style={{ paddingRight: "6px" }}>
-                                    <img src={emailUri} width="14" height="14" alt="" style={{ display: "block", border: "0" }} />
+                                    <img src={emailUri} width="14" height="14" alt=" " style={{ display: "block", border: "0" }} />
                                   </td>
                                   <td valign="middle">
                                     <a href={`mailto:${form.email}`}
@@ -225,7 +226,7 @@ export default function SignaturesHub() {
                                 <td style={{ paddingBottom: "10px" }}>
                                   <table cellPadding={0} cellSpacing={0} border={0}><tbody><tr>
                                     <td valign="middle" style={{ paddingRight: "6px" }}>
-                                      <img src={phoneUri} width="14" height="14" alt="" style={{ display: "block", border: "0" }} />
+                                      <img src={phoneUri} width="14" height="14" alt=" " style={{ display: "block", border: "0" }} />
                                     </td>
                                     <td valign="middle">
                                       <a href={`tel:${form.phone.replace(/[^0-9+]/g, "")}`}

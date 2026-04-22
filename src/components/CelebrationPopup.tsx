@@ -1,5 +1,6 @@
 import BlueDot from '../components/BlueDot';
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "motion/react";
 import { 
 PartyPopper} from "lucide-react";
@@ -8,17 +9,14 @@ import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/bra
 
 const CELEBRATION_CONFIG = {
   active: true,
-  label: `${YEARS_OF_LEGACY} anos`,
-  title: `${YEARS_OF_LEGACY} anos de engenharia de precisão`,
-  message: `estamos celebrando ${YEARS_OF_LEGACY} anos de inovação, resiliência e parcerias de sucesso. obrigado por fazer parte da nossa história.`,
   startDate: '1991-06-12', // fundação da ness.
   durationDays: 7,
   foundationYear: FOUNDATION_YEAR,
   currentYear: CURRENT_YEAR
 };
 
-
 const CelebrationPopup = () => {
+  const { t } = useTranslation();
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -65,18 +63,18 @@ const CelebrationPopup = () => {
               </div>
               
               <h2 className="text-4xl font-display font-bold text-white mb-6 tracking-tighter lowercase-all">
-                {CELEBRATION_CONFIG.title}<BlueDot />
+                {t('celebration.title', { years: YEARS_OF_LEGACY, defaultValue: `${YEARS_OF_LEGACY} anos de engenharia de precisão` })}<BlueDot />
               </h2>
               
               <p className="text-on-surface-variant font-light leading-relaxed mb-10">
-                {CELEBRATION_CONFIG.message}
+                {t('celebration.message', { years: YEARS_OF_LEGACY, defaultValue: `estamos celebrando ${YEARS_OF_LEGACY} anos de inovação, resiliência e parcerias de sucesso. obrigado por fazer parte da nossa história.` })}
               </p>
               
               <button 
                 onClick={closePopup}
                 className="bg-primary-container text-on-primary px-12 py-4 rounded-full font-display font-bold uppercase tracking-widest text-xs hover:brightness-110 transition-all shadow-xl shadow-primary-container/20"
               >
-                continuar navegando
+                {t('celebration.continue_btn', 'continuar navegando')}
               </button>
             </div>
           </motion.div>

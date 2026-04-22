@@ -38,5 +38,26 @@
 			"binding": "MEDIA",
 			"bucket_name": "canal-media"
 		}
-	]
+	],
+	"queues": {
+		"producers": [
+			{
+				"binding": "QUEUE",
+				"queue": "canal-tasks-queue"
+			}
+		],
+		"consumers": [
+			{
+				"queue": "canal-tasks-queue",
+				"max_batch_size": 10,
+				"max_retries": 3,
+				"max_batch_timeout": 5
+			}
+		]
+	},
+	"triggers": {
+		"crons": [
+			"0 0 * * 0"
+		]
+	}
 }

@@ -76,7 +76,7 @@ const Blog = () => {
             animate={{ x: 0, opacity: 1 }}
             className="text-primary-container font-mono text-xs uppercase tracking-[0.3em] mb-6"
           >
-            blog — ness. insights
+            {t('blog.badge', 'blog — ness. insights')}
           </motion.div>
           <h1 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight mb-6 lowercase">
             {t('blog.title')}<BlueDot />
@@ -114,8 +114,8 @@ const Blog = () => {
             <div className="col-span-full">
               <EmptyState
                 icon={FileText}
-                title="nenhum insight encontrado."
-                subtitle="novos conteúdos em breve. fique de olho."
+                title={t('blog.empty_title', "nenhum insight encontrado.")}
+                subtitle={t('blog.empty_subtitle', "novos conteúdos em breve. fique de olho.")}
               />
             </div>
           ) : (
@@ -147,7 +147,7 @@ const Blog = () => {
                     to={`/blog/${slug}`}
                     className="flex items-center gap-2 text-[10px] text-primary-container uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity"
                   >
-                    ler artigo completo <ArrowUpRight size={14} />
+                    {t('blog.read_article', 'ler artigo completo')} <ArrowUpRight size={14} />
                   </Link>
                 </motion.article>
               );

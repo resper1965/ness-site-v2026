@@ -128,9 +128,15 @@ app.route('/api/v1', marketing)
 app.use('/api/v1/media/upload', requireSession)
 app.route('/api/v1', media)
 
+import { aiRoutes } from './routes/ai'
+
 // ── Mount: AI Writer (agente redator) — protegido por auth ─────
 app.use('/api/content-agent/*', requireSession)
 app.route('/api/content-agent', aiWriter)
+
+// ── Mount: AI Routes (rascunho de governança) protegidas ─────
+app.use('/api/ai/*', requireSession)
+app.route('/api/ai', aiRoutes)
 
 // ── MCP Server (Agents Integration) ──────────────────────────────
 app.all('/api/mcp/*', requireAdminOrKey, async (c) => {
@@ -139,7 +145,7 @@ app.all('/api/mcp/*', requireAdminOrKey, async (c) => {
   if (agentSession) {
     tenantId = c.req.header('x-tenant-id') || agentSession.agent?.organizationId || tenantId;
   }
-  return handleMcpRequest(c.req.raw, c.env.DB, tenantId)
+  return handleMcpRequest(c.req.raw, c.env.DB, tenantId, c.env)
 })
 
 const setupAdminSchema = z.object({
@@ -181,8 +187,8 @@ app.get('/api/admin/organizations', requireSession, async (c) => {
   const query = `
     SELECT 
       o.*, 
-      (SELECT COUNT(*) FROM member m WHERE m.organizationId = o.id) as memberCount 
-    FROM organization o 
+      (SELECT COUNT(*) FROM "member" m WHERE m.organizationId = o.id) as memberCount 
+    FROM "organization" o 
     ORDER BY o.createdAt DESC
   `
   const { results } = await c.env.DB.prepare(query).all()
@@ -198,7 +204,7 @@ app.patch('/api/admin/organizations/:id', requireSession, async (c) => {
   
   // Atualiza metadados ou plan
   const { success } = await c.env.DB.prepare(
-    'UPDATE organization SET metadata = ? WHERE id = ?'
+    'UPDATE "organization" SET metadata = ? WHERE id = ?'
   ).bind(JSON.stringify(body.metadata || {}), id).run()
   return c.json({ success })
 })
@@ -209,9 +215,9 @@ app.delete('/api/admin/organizations/:id', requireSession, async (c) => {
   const id = c.req.param('id')
   
   await c.env.DB.batch([
-    c.env.DB.prepare('DELETE FROM member WHERE organizationId = ?').bind(id),
-    c.env.DB.prepare('DELETE FROM invitation WHERE organizationId = ?').bind(id),
-    c.env.DB.prepare('DELETE FROM organization WHERE id = ?').bind(id)
+    c.env.DB.prepare('DELETE FROM "member" WHERE organizationId = ?').bind(id),
+    c.env.DB.prepare('DELETE FROM "invitation" WHERE organizationId = ?').bind(id),
+    c.env.DB.prepare('DELETE FROM "organization" WHERE id = ?').bind(id)
   ])
   
   return c.json({ success: true })
@@ -270,19 +276,21 @@ app.post('/api/admin/seed-collections', requireAdminOrKey, async (c) => {
     const id = crypto.randomUUID()
     try {
       await c.env.DB.prepare(
-        `INSERT INTO collections (id, slug, label, label_plural, icon, has_locale, has_slug, has_status, fields, sort_order)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `INSERT INTO collections (id, slug, label, label_plural, icon, has_locale, has_slug, has_status, governance, fields, sort_order)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
          ON CONFLICT(slug) DO UPDATE SET
            label = excluded.label,
            label_plural = excluded.label_plural,
            icon = excluded.icon,
+           governance = excluded.governance,
            fields = excluded.fields`
       ).bind(
         id, col.slug, col.label, col.labelPlural ?? col.label + 's',
         col.icon, col.hasLocale ? 1 : 0, col.hasSlug ? 1 : 0, col.hasStatus ? 1 : 0,
+        col.governance,
         JSON.stringify(col.fields), collections.indexOf(col)
       ).run()
-      results.push({ slug: col.slug, status: 'ok' })
+      results.push({ slug: col.slug, status: 'ok', governance: col.governance })
     } catch (e: any) {
       results.push({ slug: col.slug, status: 'error', error: e.message })
     }
@@ -392,4 +400,11 @@ ${ragContext}
   return result.toTextStreamResponse()
 })
 
-export default app
+import { queueHandler } from './queue'
+import { cronHandler } from './cron'
+
+export default {
+  fetch: app.fetch,
+  queue: queueHandler,
+  scheduled: cronHandler
+}
