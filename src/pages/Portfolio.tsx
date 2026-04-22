@@ -149,6 +149,8 @@ const Portfolio = () => {
                       <img
                         src={imageUrl}
                         alt={item.project}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-60"
                         referrerPolicy="no-referrer"
                       />

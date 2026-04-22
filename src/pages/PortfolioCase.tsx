@@ -81,6 +81,8 @@ const PortfolioCase = () => {
             <img
               src={item.image}
               alt={item.project}
+              loading="eager"
+              decoding="async"
               className="w-full h-full object-cover opacity-70"
               referrerPolicy="no-referrer"
             />
