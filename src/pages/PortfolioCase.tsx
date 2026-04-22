@@ -95,7 +95,18 @@ const PortfolioCase = () => {
             )}
             {item.stats && (
               <span className="px-3 py-1 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container text-[10px] font-bold uppercase tracking-widest">
-                {item.stats}
+                {(() => {
+                  try {
+                    if (item.stats.startsWith('{')) {
+                      const obj = JSON.parse(item.stats);
+                      const key = Object.keys(obj)[0];
+                      if (key) return `${key.replace(/_/g, ' ')}: ${obj[key]}`;
+                    }
+                    return item.stats;
+                  } catch {
+                    return item.stats;
+                  }
+                })()}
               </span>
             )}
           </div>
