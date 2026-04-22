@@ -13,7 +13,12 @@ const resources = {
         "careers": "carreiras",
         "contact": "contato",
         "services": "serviços",
-        "cta": "começar agora"
+        "cta": "começar agora",
+        "celebration": {
+          "label": "{{years}} Anos",
+          "title": "Celebrando {{years}} Anos",
+          "message": "Há {{years}} anos construindo o futuro da engenharia e segurança digital com precisão."
+        }
       },
       "hero": {
         "tag": "engenharia digital de precisão",
@@ -704,7 +709,12 @@ const resources = {
         "careers": "careers",
         "contact": "contact",
         "services": "services",
-        "cta": "get started"
+        "cta": "get started",
+        "celebration": {
+          "label": "{{years}} Years",
+          "title": "Celebrating {{years}} Years",
+          "message": "For {{years}} years building the future of engineering and digital security with precision."
+        }
       },
       "hero": {
         "tag": "precision digital engineering",
@@ -1395,7 +1405,12 @@ const resources = {
         "careers": "carreras",
         "contact": "contacto",
         "services": "servicios",
-        "cta": "empezar ahora"
+        "cta": "empezar ahora",
+        "celebration": {
+          "label": "{{years}} Años",
+          "title": "Celebrando {{years}} Años",
+          "message": "Hace {{years}} años construyendo el futuro de la ingeniería y seguridad digital con precisión."
+        }
       },
       "hero": {
         "tag": "ingeniería digital de precisión",

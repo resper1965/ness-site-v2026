@@ -110,6 +110,27 @@ const Portfolio = () => {
             <AnimatePresence mode="popLayout">
               {filteredCases.map((item, i) => {
                 const slug = item.slug ?? item.project?.toLowerCase().replace(/\s+/g, '-');
+                
+                // Parse stats JSON to a readable badge metric
+                let highlightStat = '';
+                try {
+                  if (item.stats && item.stats.startsWith('{')) {
+                    const statsObj = JSON.parse(item.stats);
+                    const keys = Object.keys(statsObj);
+                    if (keys.length > 0) {
+                      const keyName = keys[0].replace(/_/g, ' ');
+                      highlightStat = `${keyName}: ${statsObj[keys[0]]}`;
+                    }
+                  } else {
+                    highlightStat = item.stats;
+                  }
+                } catch {
+                  highlightStat = item.stats || '';
+                }
+
+                // Placeholder image if empty
+                const imageUrl = item.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(item.client)}&background=random&color=fff&size=512`;
+
                 return (
                 <Link
                   to={`/portfolio/${slug}`}
@@ -126,17 +147,19 @@ const Portfolio = () => {
                   >
                     <div className="aspect-video overflow-hidden relative">
                       <img
-                        src={item.image}
+                        src={imageUrl}
                         alt={item.project}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-60"
                         referrerPolicy="no-referrer"
                       />
                       <div className="absolute inset-0 bg-linear-to-t from-surface-container-lowest to-transparent" />
-                      <div className="absolute top-6 right-6">
-                        <div className="px-4 py-2 rounded-full bg-primary-container/20 border border-primary-container/30 backdrop-blur-md">
-                          <span className="text-[10px] text-primary-container font-bold uppercase tracking-widest">{item.stats}</span>
+                      {highlightStat && (
+                        <div className="absolute top-6 right-6">
+                          <div className="px-4 py-2 rounded-full bg-primary-container/20 border border-primary-container/30 backdrop-blur-md">
+                            <span className="text-[10px] text-primary-container font-bold uppercase tracking-widest">{highlightStat}</span>
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                     <div className="p-8 flex-1 flex flex-col">
                       <div className="mb-6">
