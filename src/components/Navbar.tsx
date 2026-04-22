@@ -16,9 +16,9 @@ const Navbar = () => {
 
   const CELEBRATION_CONFIG = {
     active: true,
-    label: t('nav.celebration.label', { years: YEARS_OF_LEGACY }),
-    title: t('nav.celebration.title', { years: YEARS_OF_LEGACY }),
-    message: t('nav.celebration.message', { years: YEARS_OF_LEGACY }),
+    label: t('nav.celebration.label', { years: YEARS_OF_LEGACY, defaultValue: `${YEARS_OF_LEGACY} Anos` }),
+    title: t('nav.celebration.title', { years: YEARS_OF_LEGACY, defaultValue: `Celebrando ${YEARS_OF_LEGACY} Anos` }),
+    message: t('nav.celebration.message', { years: YEARS_OF_LEGACY, defaultValue: `Há ${YEARS_OF_LEGACY} anos construindo o futuro com precisão.` }),
     startDate: "2024-04-14",
     durationDays: 7,
     foundationYear: FOUNDATION_YEAR,
