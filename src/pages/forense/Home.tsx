@@ -8,7 +8,10 @@ import { useTranslation } from "react-i18next";
 
 export default function ForenseHome() {
   const { t } = useTranslation();
-  usePageTitle(t("forense.title"), t("forense.tabTitle"));
+  usePageTitle({
+    title: 'perícia digital e investigação forense',
+    description: 'forense.io — Perícia digital, resposta a incidentes, análise de ransomware, preservação de evidências e assistência técnica judicial. Laudos com validade processual e cadeia de custódia ISO 27037.',
+  });
   
   return (
     <main>

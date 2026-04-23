@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import ChatbotWidget from './components/ChatbotWidget';
 import CelebrationPopup from './components/CelebrationPopup';
 import ScrollToTop from './components/ScrollToTop';
+import SchemaOrg from './components/SchemaOrg';
 import { BRAND } from './config/brand';
 
 const Home = lazy(() => import('./pages/Home'));
@@ -37,6 +38,7 @@ function PageLoader() {
 export default function App() {
   return (
     <div className="min-h-screen">
+      <SchemaOrg type="organization" />
       <ScrollToTop />
       <Navbar />
       <CelebrationPopup />

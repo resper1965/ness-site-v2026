@@ -1,0 +1,36 @@
+# ness. IT Company — robots.txt
+# https://ness.com.br | https://trustness.com.br | https://forense.io
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_headers
+Disallow: /_redirects
+
+# AI Crawlers — welcome
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: bingbot
+Allow: /
+
+# Sitemaps
+Sitemap: https://ness.com.br/sitemap.xml
+Sitemap: https://trustness.com.br/sitemap.xml
+Sitemap: https://forense.io/sitemap.xml

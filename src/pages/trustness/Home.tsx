@@ -8,7 +8,10 @@ import { useTranslation } from "react-i18next";
 
 export default function TrustnessHome() {
   const { t } = useTranslation();
-  usePageTitle(t("trustness.title"), t("trustness.tabTitle"));
+  usePageTitle({
+    title: 'governança, risco e compliance',
+    description: 'trustness. é a vertical de GRC da ness. Consultoria em LGPD, ISO 27001, gestão de riscos, auditoria de segurança, pentest e DPO as a Service para corporações nacionais.',
+  });
   
   return (
     <main>

@@ -9,7 +9,10 @@ import { usePageTitle } from '../hooks/usePageTitle';
 
 const Hero = () => {
   const { t } = useTranslation();
-  usePageTitle('', 'precision digital engineering');
+  usePageTitle({
+    title: 'tecnologia digital de precisão',
+    description: 'ness. é uma plataforma modular de transformação digital corporativa B2B desde 1991. Especialistas em DevSecOps, LGPD, segurança cibernética, perícia digital e engenharia de software de alta performance.',
+  });
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-surface-container-lowest">
       {/* Immersive Background */}
