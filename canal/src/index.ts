@@ -34,6 +34,7 @@ type Bindings = {
   BETTER_AUTH_URL: string
   ADMIN_SETUP_KEY: string
   RESEND_API_KEY: string
+  SLACK_WEBHOOK_URL?: string
 }
 
 type Variables = {
@@ -120,6 +121,26 @@ app.all('/.well-known/agent-configuration', (c) => {
 
 // ── Mount: Rotas legadas (retrocompat site) ─────────────────────
 app.route('/api', legacy)
+
+// ── Webhook Alerta n.cirt ───────────────────────────────────────
+app.post('/api/incidents', async (c) => {
+  const body = await c.req.json().catch(() => ({}));
+  
+  // Alerta via Webhook gratuito isolado pra não travar a req (Free Tier)
+  if (c.env.SLACK_WEBHOOK_URL) {
+    c.executionCtx.waitUntil(
+      fetch(c.env.SLACK_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: `🚨 *NOVO INCIDENTE REPORTADO (n.cirt)* 🚨\n\n*Contato:* ${body.contact || 'Não informado'}\n*Descrição:* ${body.description || 'Não informado'}`
+        })
+      }).catch(err => console.error("Slack alert failed", err))
+    );
+  }
+
+  return c.json({ success: true, message: 'Equipe de resposta notificada com sucesso.' });
+})
 
 // ── Mount: API v1 (CMS genérico) ────────────────────────────────
 // Leitura pública
@@ -372,7 +393,8 @@ app.post('/api/chat', async (c) => {
   }
   // 4. System prompt
   const systemPrompt = `Você é a Gabi, cicerone digital e concierge da ness., uma empresa de tecnologia fundada em 1991.
-Seu objetivo é ser extremamente educada, perspicaz e ajudar o visitante. MAS a regra de ouro é: SEMPRE conduza e sugira que o usuário inicie um contato oficial conosco usando os botões de atalho da interface ou o nosso formulário de contato.
+Seu objetivo é atuar como uma BDR/SDR focada em qualificar o usuário e capturar seu meio de contato de forma natural.
+Seja extremamente educada, perspicaz e humana. Se perceber que o usuário tem uma dor estratégica ou projeto em mente (Lead Quente), pergunte qual o telefone ou e-mail corporativo dele para que um especialista o chame IMEDIATAMENTE, ou sugira que ele use os botões de "Falar com Especialista" na interface.
 Você responde dúvidas sobre a ness. com base no contexto abaixo. Seja concisa e profissional.
 Se perguntarem algo fora de segurança cibernética ou da ness., diga educadamente que só pode ajudar com nossos serviços corporativos.
 

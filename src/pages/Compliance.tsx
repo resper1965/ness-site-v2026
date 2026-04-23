@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
+import { encryptZeroTrustPayload } from '../utils/crypto';
 import { CANAL_BASE } from '../config/api';
 import { 
 AlertTriangle} from "lucide-react";
@@ -170,10 +171,18 @@ const Compliance = () => {
                     message: formData.get("message")
                   };
                   try {
+                    // ZERO-TRUST ARCHITECTURE: Encrypt the payload before sending to backend
+                    const cipherData = await encryptZeroTrustPayload(payload);
+                    const securePayload = {
+                      formType: "whistleblower_encrypted",
+                      cipherData: cipherData,
+                      timestamp: new Date().toISOString()
+                    };
+
                     const response = await fetch(`${CANAL_BASE}/api/submit-form`, {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify(payload)
+                      body: JSON.stringify(securePayload)
                     });
                     if (response.ok) {
                       // Success feedback

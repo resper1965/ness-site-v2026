@@ -70,6 +70,15 @@ entries.get('/collections/:slug/entries', async (c) => {
   const requestedStatus = c.req.query('status') || 'published'
   const status = session ? requestedStatus : 'published'
 
+  // EDGE CACHING P2: Avoid hitting D1 if public read (Free Tier protection)
+  const isCacheable = !tenantId && status === 'published'
+  const cacheKey = new Request(c.req.url)
+  
+  if (isCacheable) {
+    const cachedRes = await caches.default.match(cacheKey)
+    if (cachedRes) return cachedRes
+  }
+
   // Buscar collection_id
   const colRow = await c.env.DB.prepare(
     'SELECT id FROM collections WHERE slug = ? LIMIT 1'
@@ -135,7 +144,7 @@ entries.get('/collections/:slug/entries', async (c) => {
     publishedAt: row.published_at,
   }))
 
-  return c.json({
+  const resData = {
     data: items,
     meta: {
       collection: col.slug,
@@ -144,7 +153,17 @@ entries.get('/collections/:slug/entries', async (c) => {
       total: countResult?.total ?? 0,
       totalPages: Math.ceil((countResult?.total ?? 0) / limit),
     }
-  })
+  }
+
+  if (isCacheable) {
+    const response = c.json(resData)
+    // Cache on Edge for 5 minutes (300 seconds)
+    response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=300')
+    c.executionCtx.waitUntil(caches.default.put(cacheKey, response.clone()))
+    return response
+  }
+
+  return c.json(resData)
 })
 
 // ── Detalhe de uma entry ────────────────────────────────────────
@@ -158,6 +177,14 @@ entries.get('/collections/:slug/entries/:id', async (c) => {
   const auth = createAuth(c.env.DB, c.env.BETTER_AUTH_SECRET, c.env.BETTER_AUTH_URL)
   const session = await auth.api.getSession({ headers: c.req.raw.headers }).catch(() => null)
   const tenantId = session?.session?.activeOrganizationId || null // Removed header bypass
+
+  // EDGE CACHING P2: Single Entry
+  const isCacheable = !tenantId
+  const cacheKey = new Request(c.req.url)
+  if (isCacheable) {
+    const cachedRes = await caches.default.match(cacheKey)
+    if (cachedRes) return cachedRes
+  }
 
   let tSql = tenantId ? 'tenant_id = ?' : 'tenant_id IS NULL';
 
@@ -182,7 +209,7 @@ entries.get('/collections/:slug/entries/:id', async (c) => {
   if (!row) return c.json({ error: 'Entry not found' }, 404)
 
   const entry = row as any
-  return c.json({
+  const resData = {
     id: entry.id,
     slug: entry.slug,
     locale: entry.locale,
@@ -191,7 +218,17 @@ entries.get('/collections/:slug/entries/:id', async (c) => {
     createdAt: entry.created_at,
     updatedAt: entry.updated_at,
     publishedAt: entry.published_at,
-  })
+  }
+
+  if (isCacheable) {
+    const response = c.json(resData)
+    // Cache on Edge for 5 minutes (300 seconds)
+    response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=300')
+    c.executionCtx.waitUntil(caches.default.put(cacheKey, response.clone()))
+    return response
+  }
+
+  return c.json(resData)
 })
 
 // ── Helpers de Schema Dinâmico ──────────────────────────────────
