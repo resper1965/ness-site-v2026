@@ -16,7 +16,7 @@ Para sites públicos consumirem os dados gerenciados aqui, utilize a nossa Base 
 A integração server-side ocorre injetando o Token API (gerado ao lado) nos **Cabeçalhos (Headers)** da sua requisição HTTP:
 
 \`\`\`javascript
-const response = await fetch("https://canal.ness.workers.dev/api/v1/collections/insights/entries", {
+const response = await fetch("https://canal.ness.com.br/api/v1/collections/insights/entries", {
   method: "GET",
   headers: {
     "Authorization": "Bearer sk_suachave_aqui",

@@ -4,7 +4,7 @@
  */
 import fetch from 'node-fetch'; // if needed, but fetch is global in Node >= 18
 
-const BASE = 'https://canal.ness.workers.dev/api/v1';
+const BASE = 'https://canal.ness.com.br/api/v1';
 
 async function seed(collection, data) {
   const res = await fetch(`${BASE}/collections/${collection}/entries`, {

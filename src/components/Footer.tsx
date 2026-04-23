@@ -155,7 +155,7 @@ const Footer = () => {
             <span className="text-[10px] uppercase tracking-tighter text-on-surface-variant/40 font-bold">{t('footer.status')}</span>
           </div>
           <a
-            href="https://canal.ness.workers.dev"
+            href="https://canal.ness.com.br"
             target="_blank"
             rel="noopener noreferrer"
             title="canal"

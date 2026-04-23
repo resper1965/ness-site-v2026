@@ -52,7 +52,7 @@ app.use('/*', cors({
     'http://localhost:3000',
     'http://localhost:5173',
     'http://localhost:8787',
-    'https://canal.ness.workers.dev',
+    'https://canal.ness.com.br',
     'https://ness-site2026.pages.dev',
     'https://ness.com.br',
     'https://www.ness.com.br',

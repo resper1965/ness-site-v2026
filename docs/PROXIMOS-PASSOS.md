@@ -30,7 +30,7 @@ No painel: **Workers → canal → Settings → Variables → Add variable (encr
 Após o deploy do Worker:
 
 ```bash
-curl -X POST https://canal.ness.workers.dev/api/setup/admin \
+curl -X POST https://canal.ness.com.br/api/setup/admin \
   -H "Content-Type: application/json" \
   -H "x-setup-key: SEU_ADMIN_SETUP_KEY" \
   -d '{"email":"admin@ness.com.br","password":"...","name":"Admin"}'
@@ -41,7 +41,7 @@ curl -X POST https://canal.ness.workers.dev/api/setup/admin \
 Sem isso o chatbot Gabi.OS responde sem contexto real da empresa.
 
 ```bash
-curl -X POST https://canal.ness.workers.dev/api/admin/seed-vectors \
+curl -X POST https://canal.ness.com.br/api/admin/seed-vectors \
   -H "x-setup-key: SEU_ADMIN_SETUP_KEY"
 ```
 
@@ -54,7 +54,7 @@ npm run build
 ```
 
 No painel CF Pages: **Settings → Environment Variables**
-- Confirmar que `CANAL_WORKER_URL = https://canal.ness.workers.dev` está definido
+- Confirmar que `CANAL_WORKER_URL = https://canal.ness.com.br` está definido
 - `VITE_CANAL_BASE_URL` deve ficar **vazio** (as chamadas usam o proxy Functions)
 
 ---

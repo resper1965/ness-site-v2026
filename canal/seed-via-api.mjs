@@ -5,7 +5,7 @@
  * Uso: node seed-via-api.mjs
  */
 
-const BASE = 'https://canal.ness.workers.dev/api/v1';
+const BASE = 'https://canal.ness.com.br/api/v1';
 
 // ── Helpers ─────────────────────────────────────────────────────
 async function seed(collection, data) {

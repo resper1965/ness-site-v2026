@@ -24,7 +24,7 @@ async function startServer() {
     app.get("/api/insights", async (req, res) => {
       const lang = req.query.lang || "pt";
       try {
-        const response = await fetch(`https://canal.ness.workers.dev/api/insights?lang=${lang}`);
+        const response = await fetch(`https://canal.ness.com.br/api/insights?lang=${lang}`);
         if (!response.ok) throw new Error("Canal unreachable");
         const data = await response.json();
         res.json(data);
@@ -38,7 +38,7 @@ async function startServer() {
     app.get("/api/jobs", async (req, res) => {
       const lang = req.query.lang || "pt";
       try {
-        const response = await fetch(`https://canal.ness.workers.dev/api/jobs?lang=${lang}`);
+        const response = await fetch(`https://canal.ness.com.br/api/jobs?lang=${lang}`);
         if (!response.ok) throw new Error("Canal unreachable");
         const data = await response.json();
         res.json(data);
@@ -52,7 +52,7 @@ async function startServer() {
     app.get("/api/cases", async (req, res) => {
       const lang = req.query.lang || "pt";
       try {
-        const response = await fetch(`https://canal.ness.workers.dev/api/cases?lang=${lang}`);
+        const response = await fetch(`https://canal.ness.com.br/api/cases?lang=${lang}`);
         if (!response.ok) throw new Error("Canal unreachable");
         const data = await response.json();
         res.json(data);
@@ -65,7 +65,7 @@ async function startServer() {
     // API Route for Form Submissions (Contact, Careers, Whistleblowing)
     app.post("/api/submit-form", async (req, res) => {
       try {
-        const response = await fetch("https://canal.ness.workers.dev/api/forms", {
+        const response = await fetch("https://canal.ness.com.br/api/forms", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(req.body)
@@ -81,7 +81,7 @@ async function startServer() {
     // API Route for Chatbot (Gabi.OS) — proxies to canal RAG endpoint
     app.post("/api/chat", async (req, res) => {
       try {
-        const response = await fetch("https://canal.ness.workers.dev/api/chat", {
+        const response = await fetch("https://canal.ness.com.br/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(req.body)
@@ -106,7 +106,7 @@ async function startServer() {
     app.get("/api/insights", async (c) => {
       const lang = c.req.query("lang") || "pt";
       try {
-        const response = await fetch(`https://canal.ness.workers.dev/api/insights?lang=${lang}`);
+        const response = await fetch(`https://canal.ness.com.br/api/insights?lang=${lang}`);
         const data = await response.json();
         return c.json(data);
       } catch (error) {
@@ -117,7 +117,7 @@ async function startServer() {
     app.get("/api/jobs", async (c) => {
       const lang = c.req.query("lang") || "pt";
       try {
-        const response = await fetch(`https://canal.ness.workers.dev/api/jobs?lang=${lang}`);
+        const response = await fetch(`https://canal.ness.com.br/api/jobs?lang=${lang}`);
         const data = await response.json();
         return c.json(data);
       } catch (error) {
@@ -128,7 +128,7 @@ async function startServer() {
     app.get("/api/cases", async (c) => {
       const lang = c.req.query("lang") || "pt";
       try {
-        const response = await fetch(`https://canal.ness.workers.dev/api/cases?lang=${lang}`);
+        const response = await fetch(`https://canal.ness.com.br/api/cases?lang=${lang}`);
         const data = await response.json();
         return c.json(data);
       } catch (error) {
@@ -139,7 +139,7 @@ async function startServer() {
     app.post("/api/submit-form", async (c) => {
       try {
         const body = await c.req.json();
-        const response = await fetch("https://canal.ness.workers.dev/api/forms", {
+        const response = await fetch("https://canal.ness.com.br/api/forms", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
@@ -154,7 +154,7 @@ async function startServer() {
     app.post("/api/chat", async (c) => {
       try {
         const body = await c.req.json();
-        const response = await fetch("https://canal.ness.workers.dev/api/chat", {
+        const response = await fetch("https://canal.ness.com.br/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)

@@ -7,12 +7,12 @@ This system is an enterprise-grade Serverless framework running on Cloudflare Wo
 - **Environment**: Cloudflare Workers
 - **Database**: D1 (Relational SQLite)
 - **Primary Auth Tool**: Better Auth v1 (Supports AgentAuth & Delegated MCP Models)
-- **Primary Domain (Backend)**: `https://canal.ness.workers.dev`
+- **Primary Domain (Backend)**: `https://canal.ness.com.br`
 
 ## Model Context Protocol (MCP) Interface
 The platform supports MCP natively. You do NOT need to write scraping scripts; you must connect using JSON-RPC through the designated MCP endpoint.
 
-- **Endpoint**: `https://canal.ness.workers.dev/api/mcp/`
+- **Endpoint**: `https://canal.ness.com.br/api/mcp/`
 - **Method**: HTTP POST
 - **Payload**: Standard MCP JSON-RPC 2.0 (e.g. `{"jsonrpc": "2.0", "method": "tools/list", "id": 1}`)
 

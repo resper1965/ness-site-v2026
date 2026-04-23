@@ -12,7 +12,7 @@ Essa fase foca puramente em interligar a infraestrutura de Cloudflare Pages (Fro
 - **Workers (Canal CMS)**: Realizar o push da branch Claude para a `main`, efetuar o merge e rodar `wrangler deploy` na subpasta `canal/`.
   - Configurar remotamente via dashboard CF: `BETTER_AUTH_SECRET`, `ADMIN_SETUP_KEY`, e `RESEND_API_KEY`.
 - **Pages (Site Frontend)**:
-  - Definir `CANAL_WORKER_URL` = `https://canal.ness.workers.dev` no ambiente de Produção do Pages.
+  - Definir `CANAL_WORKER_URL` = `https://canal.ness.com.br` no ambiente de Produção do Pages.
   - Limpar a variável antiga `VITE_CANAL_BASE_URL`.
 
 ### 1.2 Bootstrapping de Dados

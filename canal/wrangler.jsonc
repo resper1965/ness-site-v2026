@@ -6,6 +6,9 @@
 	"compatibility_flags": [
 		"nodejs_compat"
 	],
+	"routes": [
+		{ "pattern": "canal.ness.com.br", "custom_domain": true }
+	],
 	"assets": {
 		"directory": "./admin/dist",
 		"binding": "ASSETS",
@@ -19,7 +22,7 @@
 		}
 	],
 	"vars": {
-		"BETTER_AUTH_URL": "https://canal.ness.workers.dev"
+		"BETTER_AUTH_URL": "https://canal.ness.com.br"
 	},
 	"alias": {
 		"better-auth/adapters/kysely": "./node_modules/better-auth/dist/db/adapter-kysely.mjs"

@@ -52,7 +52,7 @@ export function createAuth(db: D1Database, secret: string, baseURL: string) {
 
     // ── Trusted origins ─────────────────────────────────────────
     trustedOrigins: [
-      "https://canal.ness.workers.dev",
+      "https://canal.ness.com.br",
       "http://localhost:8787",
       "http://localhost:5173",
       "http://localhost:5174"
