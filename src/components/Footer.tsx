@@ -51,7 +51,7 @@ const Footer = () => {
           </p>
           <div className="flex gap-4">
             {[
-              { Icon: Linkedin, url: "https://www.linkedin.com/company/ness-tecnologia/" },
+              { Icon: Linkedin, url: "https://www.linkedin.com/company/nesstec" },
               { Icon: Instagram, url: "https://www.instagram.com/ness.tecnologia/" },
               { Icon: Facebook,  url: "https://www.facebook.com/nesstecnologia" },
             ].map((social, i) => (
