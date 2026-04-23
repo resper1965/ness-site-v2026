@@ -12,7 +12,7 @@ export async function seedVectors(env: any) {
   const results: string[] = []
 
   const dbRes = await env.DB.prepare(`
-    SELECT e.id, e.payload, e.slug 
+    SELECT e.id, e.data as payload, e.slug 
     FROM entries e 
     JOIN collections c ON e.collection_id = c.id 
     WHERE c.slug IN ('solutions', 'insights', 'cases')

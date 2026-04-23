@@ -23,6 +23,7 @@ import { marketing } from './routes/marketing'
 import { legacy } from './routes/legacy'
 import { aiWriter } from './routes/ai-writer'
 import { handleMcpRequest } from './mcp'
+import { MODEL_HEAVY } from './ai/models'
 
 type Bindings = {
   DB: D1Database
@@ -370,10 +371,10 @@ app.post('/api/chat', async (c) => {
     }).join('\n\n---\n\n')
   }
   // 4. System prompt
-  const systemPrompt = `Você é a assistente virtual da ness., uma empresa de tecnologia fundada em 1991 com mais de 34 anos de experiência.
-Você responde dúvidas sobre os serviços da ness. com base EXCLUSIVAMENTE no contexto abaixo.
-Seja conciso, profissional, e direcione o usuário para falar com um consultor quando necessário.
-Se a pergunta não tiver relação com a ness. ou seus serviços, diga educadamente que só pode ajudar com assuntos da ness.
+  const systemPrompt = `Você é a Gabi, cicerone digital e concierge da ness., uma empresa de tecnologia fundada em 1991.
+Seu objetivo é ser extremamente educada, perspicaz e ajudar o visitante. MAS a regra de ouro é: SEMPRE conduza e sugira que o usuário inicie um contato oficial conosco usando os botões de atalho da interface ou o nosso formulário de contato.
+Você responde dúvidas sobre a ness. com base no contexto abaixo. Seja concisa e profissional.
+Se perguntarem algo fora de segurança cibernética ou da ness., diga educadamente que só pode ajudar com nossos serviços corporativos.
 
 --- CONTEXTO ---
 ${ragContext}
@@ -383,7 +384,7 @@ ${ragContext}
   const workersai = createWorkersAI({ binding: c.env.AI })
 
   const result = streamText({
-    model: workersai('@cf/meta/llama-3.1-8b-instruct'),
+    model: workersai(MODEL_HEAVY),
     system: systemPrompt,
     messages: messages.map((m: any) => ({ role: m.role, content: m.content })),
   })

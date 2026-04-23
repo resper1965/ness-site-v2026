@@ -2,6 +2,7 @@ import BlueDot from '../components/BlueDot';
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { CANAL_BASE } from '../config/api';
 import { Send, X, MessageSquare, Bot } from "lucide-react";
 
@@ -13,9 +14,10 @@ type ApiMessage = { role: 'user' | 'assistant'; content: string };
 
 const ChatbotWidget = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<DisplayMessage[]>([
-    { role: 'bot', content: t('chatbot.welcome') }
+    { role: 'bot', content: "Olá! Eu sou a Gabi, cicerone digital da ness.\nUse os atalhos abaixo para abrir um chamado rápido, ou digite sua dúvida caso queira bater papo." }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -173,6 +175,28 @@ const ChatbotWidget = () => {
                 </div>
               ))}
               <div ref={scrollRef} />
+            </div>
+
+            {/* Quick Replies */}
+            <div className="px-4 pb-4 pt-2 flex gap-2 overflow-x-auto scrollbar-hide shrink-0 snap-x">
+              <button 
+                type="button"
+                onClick={() => { setIsOpen(false); navigate('/contato'); }}
+                className="whitespace-nowrap px-4 py-2 bg-primary-container/10 border border-primary-container/30 text-primary-container text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-primary-container hover:text-on-primary transition-all snap-start shadow-xl shadow-primary-container/5">
+                Falar com Especialista
+              </button>
+              <button 
+                type="button"
+                onClick={() => { setIsOpen(false); navigate('/solucoes/cirt'); }}
+                className="whitespace-nowrap px-4 py-2 bg-red-500/10 border border-red-500/30 text-red-400 text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-red-500 hover:text-white transition-all snap-start shadow-xl shadow-red-500/5">
+                Incidente (n.cirt)
+              </button>
+              <button 
+                type="button"
+                onClick={() => { setIsOpen(false); navigate('/compliance/etica'); }}
+                className="whitespace-nowrap px-4 py-2 bg-primary-container/10 border border-primary-container/30 text-primary-container text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-primary-container hover:text-on-primary transition-all snap-start shadow-xl shadow-primary-container/5">
+                Ouvidoria DPO
+              </button>
             </div>
 
             {/* Input */}
