@@ -75,7 +75,15 @@ const SolutionPage = () => {
               {solution.overview || t(`solutions.${slug}.longDesc`)}
             </p>
             <div className="flex gap-4 pt-4">
-              <button className="bg-primary-container text-on-primary px-8 py-3 rounded-full font-display font-semibold text-sm hover:brightness-110 transition-all">
+              <button 
+                onClick={() => {
+                  if (slug === 'cirt') {
+                    setIsEmergencyChatOpen(true);
+                  } else {
+                    navigate('/contato');
+                  }
+                }}
+                className="bg-primary-container text-on-primary px-8 py-3 rounded-full font-display font-semibold text-sm hover:brightness-110 transition-all">
                 {t(`solutions.${slug}.cta`)}
               </button>
             </div>

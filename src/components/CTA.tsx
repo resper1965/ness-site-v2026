@@ -1,5 +1,6 @@
 import React, {  } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
@@ -21,9 +22,9 @@ const CTA = () => {
             </p>
           </div>
           <div className="flex flex-col gap-3 w-full md:w-auto shrink-0">
-            <button className="bg-white text-surface px-8 py-3 rounded-full font-display font-semibold text-sm hover:bg-primary-container hover:text-on-primary transition-all shadow-lg shadow-primary-container/20">
+            <Link to="/contato" className="bg-white text-surface px-8 py-3 rounded-full font-display font-semibold text-sm hover:bg-primary-container hover:text-on-primary transition-all shadow-lg shadow-primary-container/20 text-center">
               {t('cta.button')}
-            </button>
+            </Link>
             <p className="text-on-surface-variant/50 text-center text-xs font-light">{t('cta.support')}</p>
           </div>
         </div>

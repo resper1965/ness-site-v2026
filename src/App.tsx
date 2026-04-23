@@ -70,6 +70,8 @@ export default function App() {
             <Route path="/blog/:slug"      element={<BlogPost />} />
             <Route path="/carreiras"       element={<Careers />} />
             <Route path="/contato"         element={<Contact />} />
+            <Route path="/contact"         element={<Contact />} />
+            <Route path="/about"           element={<About />} />
             <Route path="/compliance/:type" element={<Compliance />} />
             <Route path="*"               element={<NotFound />} />
           </Routes>
