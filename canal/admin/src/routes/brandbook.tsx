@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router";
 import { fetchEntries } from "../lib/api";
 import { authClient } from "../lib/auth-client";
 
@@ -29,9 +30,14 @@ export default function BrandbookHub() {
 
   return (
     <div>
-      <div className="collection-toolbar" style={{ marginBottom: 20 }}>
-        <h2>Brandbook {activeOrg ? `— ${activeOrg.name}` : "— Global (Ness)"}</h2>
-        {activeOrg && <span className="badge badge-new" style={{ fontSize: 10 }}>{activeOrg.slug}</span>}
+      <div className="collection-toolbar" style={{ marginBottom: 20, display: "flex", alignItems: "center" }}>
+        <h2>Brandbook {activeOrg ? `— ${activeOrg.name}` : "— Acesso Global (Bekaa)"}</h2>
+        {activeOrg && <span className="badge badge-new" style={{ fontSize: 10, marginLeft: 8 }}>{activeOrg.slug}</span>}
+        <div style={{ marginLeft: "auto" }}>
+          <Link to="/crud/brandbook" className="btn btn-primary btn-sm">
+            Gerenciar Cadastros (CRUD)
+          </Link>
+        </div>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>

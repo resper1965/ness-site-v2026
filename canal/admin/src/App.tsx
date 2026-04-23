@@ -1,5 +1,5 @@
 import * as React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter, RouterProvider, useParams } from "react-router";
 
 const LoginPage = React.lazy(() => import("./routes/login"));
 const DashboardLayout = React.lazy(() => import("./routes/dashboard"));
@@ -14,9 +14,13 @@ const AccountSettingsPage = React.lazy(() => import("./routes/account"));
 const UsersPage = React.lazy(() => import("./routes/users"));
 const OrganizationsPage = React.lazy(() => import("./routes/organizations"));
 
-/** Wrapper para passar slug como prop */
 function CollectionRoute({ slug }: { slug: string }) {
   return <CollectionPage slug={slug} />;
+}
+
+function DynamicCrudRoute() {
+  const { slug } = useParams();
+  return <CollectionPage slug={slug!} />;
 }
 
 const router = createBrowserRouter([
@@ -38,6 +42,7 @@ const router = createBrowserRouter([
       { path: "account", element: <AccountSettingsPage /> },
       { path: "users", element: <UsersPage /> },
       { path: "organizations", element: <OrganizationsPage /> },
+      { path: "crud/:slug", element: <DynamicCrudRoute /> },
     ],
   },
 ]);

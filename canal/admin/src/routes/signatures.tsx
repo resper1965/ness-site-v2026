@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import { createEntry } from "../lib/api";
 
 const BRANDS = ["ness", "trustness", "forense"];
@@ -27,13 +28,13 @@ function svgToDataUri(svg: string): string {
 /* ─── Inline ness. logo: wordmark + colored dot ─── */
 function buildLogo(brand: string) {
   if (brand === "forense") {
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 56" width="120" height="56"><text x="0" y="44" font-family="Arial,Helvetica,sans-serif" font-size="36" font-weight="400" fill="#052e16" letter-spacing="-1">forense</text><circle cx="120" cy="40" r="6" fill="#00ade8"/><text x="128" y="44" font-family="Arial,Helvetica,sans-serif" font-size="36" font-weight="400" fill="#052e16" letter-spacing="-1">io</text></svg>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 56" width="120" height="56"><text x="0" y="44" font-family="Arial,Helvetica,sans-serif" font-size="34" font-weight="600" fill="#052e16" letter-spacing="-1.5">forense</text><circle cx="120" cy="44" r="5" fill="#00ade8"/><text x="128" y="44" font-family="Arial,Helvetica,sans-serif" font-size="34" font-weight="600" fill="#052e16" letter-spacing="-1.5">io</text></svg>`;
   }
   if (brand === "trustness") {
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 56" width="140" height="56"><text x="0" y="44" font-family="Arial,Helvetica,sans-serif" font-size="36" font-weight="400" fill="#1e40af" letter-spacing="-1">trustness</text><circle cx="247" cy="40" r="6" fill="#00ade8"/></svg>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 56" width="140" height="56"><text x="0" y="44" font-family="Arial,Helvetica,sans-serif" font-size="34" font-weight="600" fill="#1e40af" letter-spacing="-1.5">trustness</text><circle cx="150" cy="44" r="5" fill="#00ade8"/></svg>`;
   }
   // default: ness.
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 56" width="110" height="56"><text x="0" y="44" font-family="Arial,Helvetica,sans-serif" font-size="44" font-weight="400" fill="#111827" letter-spacing="-2">ness</text><circle cx="166" cy="40" r="8" fill="#00ade8"/></svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 56" width="100" height="56"><text x="0" y="44" font-family="Arial,Helvetica,sans-serif" font-size="40" font-weight="600" fill="#0b1326" letter-spacing="-1.5">ness</text><circle cx="94" cy="44" r="6" fill="#00ade8"/></svg>`;
 }
 
 export default function SignaturesHub() {
@@ -100,10 +101,15 @@ export default function SignaturesHub() {
             Layout profissional — pronto para Gmail e Outlook.
           </p>
         </div>
-        <button className="btn btn-primary" onClick={handleSave} disabled={saving}
-          style={{ padding: "10px 20px", borderRadius: "8px", fontWeight: 500 }}>
-          {saving ? "Salvando..." : "Salvar no Histórico"}
-        </button>
+        <div style={{ display: "flex", gap: "12px" }}>
+          <Link to="/crud/signatures" className="btn btn-ghost" style={{ padding: "10px 20px", borderRadius: "8px", fontWeight: 500 }}>
+            Gerenciar Cadastros
+          </Link>
+          <button className="btn btn-primary" onClick={handleSave} disabled={saving}
+            style={{ padding: "10px 20px", borderRadius: "8px", fontWeight: 500 }}>
+            {saving ? "Salvando..." : "Salvar no Histórico"}
+          </button>
+        </div>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "minmax(320px,1fr) minmax(500px,1.4fr)", gap: "24px", alignItems: "start" }}>
@@ -288,9 +294,12 @@ export default function SignaturesHub() {
                     </tr>
                     <tr>
                       <td colSpan={3} align="center" style={{ paddingTop: "2px" }}>
-                        <span style={{ fontFamily: "Arial,Helvetica,sans-serif", fontSize: "10px", color: "#9ca3af" }}>
+                        <span style={{ fontFamily: "Arial,Helvetica,sans-serif", fontSize: "10px", lineHeight: "1.4", display: "inline-block", color: "#9ca3af" }}>
                           {"Este e-mail pode conter "}
                           <span style={{ color: "#6b7280" }}>informações confidenciais</span>
+                          {"."}<br />
+                          {"This e-mail may contain "}
+                          <span style={{ color: "#6b7280" }}>confidential information</span>
                           {"."}
                         </span>
                       </td>

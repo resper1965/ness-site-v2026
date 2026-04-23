@@ -180,12 +180,12 @@ function OrgSwitcher({ userEmail, isSuperAdmin }: { userEmail: string; isSuperAd
   const [loading, setLoading] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  // Auto-activate ness for admins who don't have an active org
+  // Auto-activate bekaa for super admins who don't have an active org
   useEffect(() => {
     if (isSuperAdmin && !activeOrg && orgs?.length) {
-      const nessOrg = orgs.find((o: any) => o.slug === 'ness');
-      if (nessOrg) {
-        organization.setActive({ organizationId: nessOrg.id });
+      const bekaaOrg = orgs.find((o: any) => o.slug === 'bekaa');
+      if (bekaaOrg) {
+        organization.setActive({ organizationId: bekaaOrg.id });
       }
     }
   }, [isSuperAdmin, activeOrg, orgs]);
