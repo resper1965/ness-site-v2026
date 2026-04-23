@@ -142,6 +142,33 @@ app.post('/api/incidents', async (c) => {
   return c.json({ success: true, message: 'Equipe de resposta notificada com sucesso.' });
 })
 
+// ── Webhook Agêntico (Omnichannel / Teams / WhatsApp) ────────────────
+app.post('/api/webhooks/omnichannel', async (c) => {
+  const body = await c.req.json().catch(() => ({}));
+  
+  // Verifica token de segurança básico do Webhook
+  const authHeader = c.req.header('Authorization');
+  if (authHeader !== `Bearer ${c.env.ADMIN_SETUP_KEY}`) {
+    return c.json({ error: 'Unauthorized webhook' }, 401);
+  }
+
+  if (!body.message) {
+    return c.json({ error: 'Malformed payload' }, 400);
+  }
+
+  // Aciona a IA do Workers em background (para não gerar Timeout na API de terceiros)
+  // Futuramente, a IA pode processar a string e despachar uma API para a plataforma de destino
+  c.executionCtx.waitUntil(
+    (async () => {
+       console.log(`[OmniChannel Agent] Processing message from ${body.source}:`, body.message)
+       // AI Logic seria instanciada aqui
+    })()
+  );
+
+  return c.json({ status: 'queued', agent: 'omni-triage' });
+})
+
+
 // ── Mount: API v1 (CMS genérico) ────────────────────────────────
 // Leitura pública
 app.route('/api/v1', entries)
@@ -394,8 +421,13 @@ app.post('/api/chat', async (c) => {
   // 4. System prompt
   const systemPrompt = `Você é a Gabi, cicerone digital e concierge da ness., uma empresa de tecnologia fundada em 1991.
 Seu objetivo é atuar como uma BDR/SDR focada em qualificar o usuário e capturar seu meio de contato de forma natural.
-Seja extremamente educada, perspicaz e humana. Se perceber que o usuário tem uma dor estratégica ou projeto em mente (Lead Quente), pergunte qual o telefone ou e-mail corporativo dele para que um especialista o chame IMEDIATAMENTE, ou sugira que ele use os botões de "Falar com Especialista" na interface.
-Você responde dúvidas sobre a ness. com base no contexto abaixo. Seja concisa e profissional.
+
+DIRETRIZ DE INCIDENTES (N.CIRT TRIAGE):
+Se o usuário reportar que está sofrendo um ATAQUE, RANSOMWARE, VAZAMENTO ou INCIDENTE CRÍTICO neste exato momento:
+1. Mude seu tom para extrema seriedade e urgência (Modo SOC).
+2. Peça que ele utilize o botão vermelho "Reportar Incidente" na tela para acionamento imediato do SLA-0, e pergunte a extensão do impacto (quais sistemas pararam).
+
+Seja concisa, profissional e extremamente educada.
 Se perguntarem algo fora de segurança cibernética ou da ness., diga educadamente que só pode ajudar com nossos serviços corporativos.
 
 --- CONTEXTO ---
