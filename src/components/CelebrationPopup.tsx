@@ -63,7 +63,7 @@ const CelebrationPopup = () => {
               </div>
               
               <h2 className="text-4xl font-display font-bold text-white mb-6 tracking-tighter lowercase-all">
-                {t('celebration.title', { years: YEARS_OF_LEGACY, defaultValue: `${YEARS_OF_LEGACY} anos de engenharia de precisão` })}<BlueDot />
+                {t('celebration.title', { years: YEARS_OF_LEGACY, defaultValue: `${YEARS_OF_LEGACY} anos de tecnologia de precisão` })}<BlueDot />
               </h2>
               
               <p className="text-on-surface-variant font-light leading-relaxed mb-10">

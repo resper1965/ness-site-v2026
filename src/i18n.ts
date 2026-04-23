@@ -158,7 +158,7 @@ const resources = {
         "title": "cases de sucesso",
         "subtitle": "demonstramos nossa autoridade através de resultados mensuráveis. cada projeto é um compromisso com a excelência técnica e a resiliência do negócio.",
         "cta_title": "quer resultados como estes?",
-        "cta_desc": "estamos prontos para aplicar nossa engenharia de precisão no seu próximo grande desafio.",
+        "cta_desc": "estamos prontos para aplicar nossa tecnologia de precisão no seu próximo grande desafio.",
         "badge": "portfólio de impacto — ness. precision",
         "empty": {
           "title": "nenhum case encontrado.",

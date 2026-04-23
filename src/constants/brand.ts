@@ -5,7 +5,12 @@ export const FOUNDATION_MONTH = 6; // junho
 export const FOUNDATION_DAY = 12;
 
 export const CURRENT_YEAR = new Date().getFullYear();
-export const YEARS_OF_LEGACY = CURRENT_YEAR - FOUNDATION_YEAR;
+
+/** Calcula anos completos desde a fundação, baseado na data exata (12 de junho) */
+const now = new Date();
+const hadAnniversaryThisYear =
+  now.getMonth() > 5 || (now.getMonth() === 5 && now.getDate() >= 12);
+export const YEARS_OF_LEGACY = CURRENT_YEAR - FOUNDATION_YEAR - (hadAnniversaryThisYear ? 0 : 1);
 
 /** Data formatada por locale */
 export const FOUNDATION_DATE_PT = '12 de junho de 1991';
