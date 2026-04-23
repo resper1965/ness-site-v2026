@@ -59,3 +59,13 @@ Será necessário rodar a importação segura de toda a branch da pipeline do Cl
 1. Checkout da master atual (`origin/main`).
 2. Fast-fusion ou cherry-pick dos 5 commits visuais, estruturais e lógicos do `origin/claude/organize-project-structure-uVacT` via git CLI.
 3. Tratamento de qualquer mínimo conflito no `Functions` para bater de frente com a estabilidade de rotas atual.
+
+---
+
+## 4. Evolução Futura: Arquitetura Agêntica (Cloudflare Agents SDK)
+
+A evolução final mapeada do Backlog transforma o Canal Reativo e Passivo em um **Ecossistema de IA Agêntica** (Autonomia), utilizando *Durable Objects* e *Tools/Functions* do Cloudflare Workers:
+
+### Epic 8: Operações Ativas de Conteúdo e Cyber
+- **Redator Chefe (Autonomia Média):** Agente em background com leitura no D1 detectando publicações via Webhooks/Cron. Produzirá posts no LinkedIn com insights dinâmicos, rascunhará Newsletters e executará `fetch()` nativo em inglês/espanhol para cruzar notícias, exigindo do Humano apenas a flag `publish: true`.
+- **Response n.cirt (Autonomia Frontline):** A tela `EmergencyChatModal` será guiada por uma malha autônoma. O Agente entrevistará Socraticamente o usuário para extrair *Indicadores de Comprometimento (IoC)* da invasão e efetuará bloqueios nos APIs dos clientes acionando `Tools` reais ANTES do analista acordar, unindo o Service Desk NESS ao SOC de forma hiperacelerada e logada sem estado mudo.
