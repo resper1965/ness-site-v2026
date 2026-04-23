@@ -26,8 +26,8 @@ const Navbar = () => {
   const location = useLocation();
   const isHome = location.pathname === "/";
 
-  // Items exclusive to ness.com.br — hidden on sub-brand domains
-  const nessOnlyKeys = ['solutions', 'carreiras'];
+  // Only solutions differ per brand — all other pages are shared
+  const nessOnlyKeys = ['solutions'];
 
   const allMenuItems = [
     { key: "solutions", label: t("nav.solutions"), to: "/solucoes" },
