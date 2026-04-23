@@ -64,8 +64,9 @@ Será necessário rodar a importação segura de toda a branch da pipeline do Cl
 
 ## 4. Evolução Futura: Arquitetura Agêntica (Cloudflare Agents SDK)
 
-A evolução final mapeada do Backlog transforma o Canal Reativo e Passivo em um **Ecossistema de IA Agêntica** (Autonomia), utilizando *Durable Objects* e *Tools/Functions* do Cloudflare Workers:
+O plano culminante transforma o Canal Institucional em uma **Máquina Ativa de Aquisição B2B e Engenharia de Venda**. Utilizando os *Durable Objects* da Cloudflare (memória de estado) combinados a *Tools Autônomos*, os Agentes atuarão em 3 frentes de receita:
 
-### Epic 8: Operações Ativas de Conteúdo e Cyber
-- **Redator Chefe (Autonomia Média):** Agente em background com leitura no D1 detectando publicações via Webhooks/Cron. Produzirá posts no LinkedIn com insights dinâmicos, rascunhará Newsletters e executará `fetch()` nativo em inglês/espanhol para cruzar notícias, exigindo do Humano apenas a flag `publish: true`.
-- **Response n.cirt (Autonomia Frontline):** A tela `EmergencyChatModal` será guiada por uma malha autônoma. O Agente entrevistará Socraticamente o usuário para extrair *Indicadores de Comprometimento (IoC)* da invasão e efetuará bloqueios nos APIs dos clientes acionando `Tools` reais ANTES do analista acordar, unindo o Service Desk NESS ao SOC de forma hiperacelerada e logada sem estado mudo.
+### Epic 8: Convergência B2B, Triage e Omnichannel (Agentes Institucionais)
+- **SDR / Presales Engineer:** A IA atuará no front do site. Se detectar dores estratégicas no visitante, em vez de respostas genéricas, qualificará o Lead (Lead Scoring) e utilizará integrações (ex: Google Calendar API) para engatilhar reuniões qualificadas com Diretores diretamente no chat.
+- **Triagem "Paramédica" n.cirt:** No acionamento de incidentes reais no site, o Agente isolará o lead atacado via `EmergencyChatModal`. Ele notificará instantaneamente a NESS (Webhook/Slack SLA 0) e iniciará contenção inicial retórica para mapear IoCs (Prontuário Autônomo) e acalmar o usuário antes da invasão tática humana.
+- **Máquina de Conteúdo Omnichannel:** Trabalhando invisível no servidor na madrugada, o Agente monitorará inputs e notícias globais, escrevendo e enfileirando (Queues) conteúdos otimizados nativamente para **Blogs de SEO**, **Newsletters Semanais** e **Postagens do LinkedIn**. Ele cruza os casos de sucesso reais do D1 para sustentar toda a esteira Inbound de forma ininterrupta, dependendo apenas do botão "Aprovar" no painel humano.
