@@ -268,7 +268,7 @@ const SolutionPage = () => {
                 if (slug === 'cirt') {
                   setIsEmergencyChatOpen(true);
                 } else {
-                  navigate('/contact');
+                  navigate('/contato');
                 }
               }}
               className="bg-white text-surface px-10 py-5 rounded-full font-display font-semibold uppercase tracking-widest text-sm hover:bg-primary-container hover:text-on-primary hover:scale-105 transition-all shadow-lg shadow-primary-container/20 whitespace-nowrap">
