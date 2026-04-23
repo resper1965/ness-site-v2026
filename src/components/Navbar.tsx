@@ -26,7 +26,10 @@ const Navbar = () => {
   const location = useLocation();
   const isHome = location.pathname === "/";
 
-  const menuItems = [
+  // Items exclusive to ness.com.br — hidden on sub-brand domains
+  const nessOnlyKeys = ['solutions', 'carreiras'];
+
+  const allMenuItems = [
     { key: "solutions", label: t("nav.solutions"), to: "/solucoes" },
     { key: "sobre", label: t("nav.about"), to: "/sobre" },
     { key: "portfolio", label: t("nav.portfolio"), to: "/portfolio" },
@@ -34,6 +37,10 @@ const Navbar = () => {
     { key: "carreiras", label: t("nav.careers"), to: "/carreiras" },
     { key: "contato", label: t("nav.contact"), to: "/contato" }
   ];
+
+  const menuItems = BRAND === 'ness'
+    ? allMenuItems
+    : allMenuItems.filter(item => !nessOnlyKeys.includes(item.key));
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
