@@ -2,14 +2,13 @@ import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { AnimatePresence } from "motion/react";
 
-// Layout components — immediate load (shell)
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ChatbotWidget from './components/ChatbotWidget';
 import CelebrationPopup from './components/CelebrationPopup';
 import ScrollToTop from './components/ScrollToTop';
+import { BRAND } from './config/brand';
 
-// Pages — lazy loaded (code splitting)
 const Home = lazy(() => import('./pages/Home'));
 const TrustnessHome = lazy(() => import('./pages/trustness/Home'));
 const ForenseHome = lazy(() => import('./pages/forense/Home'));
@@ -18,7 +17,6 @@ const Solutions = lazy(() => import('./pages/Solutions'));
 const Services = lazy(() => import('./pages/Services'));
 const Verticals = lazy(() => import('./pages/Verticals'));
 const SolutionPage = lazy(() => import('./pages/SolutionPage'));
-const Insights = lazy(() => import('./pages/Insights'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Portfolio = lazy(() => import('./pages/Portfolio'));
@@ -26,7 +24,7 @@ const PortfolioCase = lazy(() => import('./pages/PortfolioCase'));
 const Careers = lazy(() => import('./pages/Careers'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Compliance = lazy(() => import('./pages/Compliance'));
-const NotFound   = lazy(() => import('./pages/NotFound'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 function PageLoader() {
   return (
@@ -35,8 +33,6 @@ function PageLoader() {
     </div>
   );
 }
-
-const BRAND = import.meta.env.VITE_BRAND || 'ness';
 
 export default function App() {
   return (
@@ -48,38 +44,34 @@ export default function App() {
       <AnimatePresence mode="wait">
         <Suspense fallback={<PageLoader />}>
           <Routes>
-            {BRAND === 'ness' && (
+            {/* Home page — determined by detected domain/brand */}
+            {BRAND === 'trustness' && <Route path="/" element={<TrustnessHome />} />}
+            {BRAND === 'forense'   && <Route path="/" element={<ForenseHome />} />}
+            {BRAND === 'ness'      && (
               <>
                 <Route path="/" element={<Home />} />
                 <Route path="/solucoes" element={<Solutions />} />
                 <Route path="/solucoes/:slug" element={<SolutionPage />} />
+                <Route path="/servicos" element={<Services />} />
+                <Route path="/verticais" element={<Verticals />} />
               </>
             )}
 
-            {BRAND === 'trustness' && (
-              <Route path="/" element={<TrustnessHome />} />
-            )}
-
-            {BRAND === 'forense' && (
-              <Route path="/" element={<ForenseHome />} />
-            )}
-
-            {/* Vertical sub-brand routes (accessible from ness site) */}
+            {/* Sub-brand pages — accessible from any domain */}
             <Route path="/trustness" element={<TrustnessHome />} />
-            <Route path="/forense" element={<ForenseHome />} />
+            <Route path="/forense"   element={<ForenseHome />} />
 
-            {/* Shared universal routes */}
-            <Route path="/sobre" element={<About />} />
-            <Route path="/portfolio" element={<Portfolio />} />
-            {/* legacy redirect for accented route */}
-            <Route path="/portfólio" element={<Portfolio />} />
+            {/* Universal shared routes */}
+            <Route path="/sobre"           element={<About />} />
+            <Route path="/portfolio"       element={<Portfolio />} />
+            <Route path="/portfólio"       element={<Portfolio />} />
             <Route path="/portfolio/:slug" element={<PortfolioCase />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/carreiras" element={<Careers />} />
-            <Route path="/contato" element={<Contact />} />
+            <Route path="/blog"            element={<Blog />} />
+            <Route path="/blog/:slug"      element={<BlogPost />} />
+            <Route path="/carreiras"       element={<Careers />} />
+            <Route path="/contato"         element={<Contact />} />
             <Route path="/compliance/:type" element={<Compliance />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="*"               element={<NotFound />} />
           </Routes>
         </Suspense>
       </AnimatePresence>

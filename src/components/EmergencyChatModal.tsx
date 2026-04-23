@@ -53,6 +53,9 @@ export default function EmergencyChatModal({ isOpen, onClose }: EmergencyChatMod
     setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
     setLoading(true);
 
+    // Placeholder for streaming response
+    setMessages(prev => [...prev, { role: 'bot', content: '' }]);
+
     try {
       const response = await fetch(`${CANAL_BASE}/api/chat`, {
         method: 'POST',
@@ -65,15 +68,32 @@ export default function EmergencyChatModal({ isOpen, onClose }: EmergencyChatMod
           ],
         }),
       });
-      if (!response.ok) throw new Error('api error');
-      const data = await response.json();
-      const reply = data.reply || 'Sinal recebido. Um especialista da ness. será alocado em instantes.';
-      setMessages(prev => [...prev, { role: 'bot', content: reply }]);
+      if (!response.ok || !response.body) throw new Error('api error');
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        setMessages(prev => {
+          const updated = [...prev];
+          updated[updated.length - 1] = {
+            role: 'bot',
+            content: updated[updated.length - 1].content + chunk,
+          };
+          return updated;
+        });
+      }
     } catch {
-      setMessages(prev => [...prev, {
-        role: 'bot',
-        content: 'Conexão com a central n.cirt temporariamente indisponível. Ligue imediatamente para o número de emergência da ness.',
-      }]);
+      setMessages(prev => {
+        const updated = [...prev];
+        updated[updated.length - 1] = {
+          role: 'bot',
+          content: 'Conexão com a central n.cirt temporariamente indisponível. Ligue imediatamente para o número de emergência da ness.',
+        };
+        return updated;
+      });
     } finally {
       setLoading(false);
     }
@@ -147,18 +167,16 @@ export default function EmergencyChatModal({ isOpen, onClose }: EmergencyChatMod
                     }
                   `}>
                     {msg.content}
+                    {loading && idx === messages.length - 1 && msg.role === 'bot' && msg.content === '' && (
+                      <span className="inline-flex gap-1">
+                        <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      </span>
+                    )}
                   </div>
                 </motion.div>
               ))}
-              {loading && (
-                <div className="flex justify-start">
-                  <div className="bg-white/5 border border-red-500/20 p-4 rounded-2xl rounded-tl-none flex gap-1">
-                    <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                  </div>
-                </div>
-              )}
               <div ref={chatEndRef} />
             </div>
 

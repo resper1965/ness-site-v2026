@@ -1,13 +1,9 @@
 import BlueDot from '../components/BlueDot';
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { CANAL_BASE } from '../config/api';
-import { 
-Send,
-  X,
-  MessageSquare,
-  Bot} from "lucide-react";
+import { Send, X, MessageSquare, Bot } from "lucide-react";
 
 
 
@@ -21,15 +17,20 @@ const ChatbotWidget = () => {
   const [messages, setMessages] = useState<DisplayMessage[]>([
     { role: 'bot', content: t('chatbot.welcome') }
   ]);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || loading) return;
 
     const userMsg = input;
-    setInput("");
+    setInput('');
 
     // Build API history from display messages (skip welcome, map bot→assistant)
     const apiHistory: ApiMessage[] = messages
@@ -39,6 +40,9 @@ const ChatbotWidget = () => {
     setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
     setLoading(true);
 
+    // Add empty bot message placeholder for streaming
+    setMessages(prev => [...prev, { role: 'bot', content: '' }]);
+
     try {
       const response = await fetch(`${CANAL_BASE}/api/chat`, {
         method: 'POST',
@@ -47,11 +51,32 @@ const ChatbotWidget = () => {
           messages: [...apiHistory, { role: 'user', content: userMsg }],
         }),
       });
-      if (!response.ok) throw new Error('api error');
-      const data = await response.json();
-      setMessages(prev => [...prev, { role: 'bot', content: data.reply || t('chatbot.error') }]);
+
+      if (!response.ok || !response.body) throw new Error('api error');
+
+      // Read the text stream chunk by chunk and update the last message in real time
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        setMessages(prev => {
+          const updated = [...prev];
+          updated[updated.length - 1] = {
+            role: 'bot',
+            content: updated[updated.length - 1].content + chunk,
+          };
+          return updated;
+        });
+      }
     } catch {
-      setMessages(prev => [...prev, { role: 'bot', content: t('chatbot.error') }]);
+      setMessages(prev => {
+        const updated = [...prev];
+        updated[updated.length - 1] = { role: 'bot', content: t('chatbot.error') };
+        return updated;
+      });
     } finally {
       setLoading(false);
     }
@@ -127,27 +152,27 @@ const ChatbotWidget = () => {
             </div>
 
             {/* Messages */}
-            <div id="chat-scroll" className="flex-1 overflow-y-auto p-6 space-y-4 scrollbar-hide">
+            <div className="flex-1 overflow-y-auto p-6 space-y-4 scrollbar-hide">
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[80%] p-4 rounded-2xl text-sm font-light leading-relaxed whitespace-pre-wrap ${
-                    msg.role === 'user' 
-                      ? 'bg-primary-container text-on-primary rounded-tr-none' 
+                    msg.role === 'user'
+                      ? 'bg-primary-container text-on-primary rounded-tr-none'
                       : 'bg-white/5 text-white border border-white/10 rounded-tl-none'
                   }`}>
+                    {/* Show typing cursor while streaming the last bot message */}
                     {renderMessageContent(msg.content)}
+                    {loading && i === messages.length - 1 && msg.role === 'bot' && msg.content === '' && (
+                      <span className="inline-flex gap-1 ml-1">
+                        <span className="w-1.5 h-1.5 bg-primary-container rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <span className="w-1.5 h-1.5 bg-primary-container rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <span className="w-1.5 h-1.5 bg-primary-container rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}
-              {loading && (
-                <div className="flex justify-start">
-                  <div className="bg-white/5 border border-white/10 p-4 rounded-2xl rounded-tl-none flex gap-1">
-                    <span className="w-1.5 h-1.5 bg-primary-container rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                    <span className="w-1.5 h-1.5 bg-primary-container rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                    <span className="w-1.5 h-1.5 bg-primary-container rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
-                  </div>
-                </div>
-              )}
+              <div ref={scrollRef} />
             </div>
 
             {/* Input */}

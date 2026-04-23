@@ -102,12 +102,21 @@ app.post('/chat', async (c) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
-    if (!upstream.ok) return c.json({ reply: 'serviço temporariamente indisponível.' }, 502);
-    // Canal streams plain text — collect all chunks then return JSON
-    const reply = await upstream.text();
-    return c.json({ reply });
+    if (!upstream.ok) {
+      const msg = 'serviço temporariamente indisponível.';
+      return new Response(msg, { status: 502, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+    }
+    // Pipe the text stream from the canal directly to the client
+    return new Response(upstream.body, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-cache',
+        'X-Accel-Buffering': 'no',
+      },
+    });
   } catch {
-    return c.json({ reply: 'não foi possível conectar ao assistente. tente novamente em instantes.' }, 500);
+    const msg = 'não foi possível conectar ao assistente. tente novamente em instantes.';
+    return new Response(msg, { status: 500, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   }
 });
 
