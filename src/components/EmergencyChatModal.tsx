@@ -2,6 +2,17 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ShieldAlert, Send, X, AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { CANAL_BASE } from '../config/api';
+
+type MessageRole = 'system' | 'bot' | 'user';
+type DisplayMessage = { role: MessageRole; content: string };
+
+const EMERGENCY_SYSTEM_CONTEXT = `Você é o assistente de resposta a incidentes da ness. (n.cirt).
+O usuário está relatando um incidente de segurança crítico ativo.
+Responda de forma direta, técnica e orientada à contenção imediata.
+Colete informações sobre: tipo do incidente, sistemas afetados, horário de detecção, ações já tomadas.
+Oriente sobre preservação de evidências e próximos passos táticos.
+Informe que um especialista da ness. será alocado via contato direto em até 15 minutos.`;
 
 interface EmergencyChatModalProps {
   isOpen: boolean;
@@ -10,11 +21,12 @@ interface EmergencyChatModalProps {
 
 export default function EmergencyChatModal({ isOpen, onClose }: EmergencyChatModalProps) {
   const { t } = useTranslation();
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<DisplayMessage[]>([
     { role: 'system', content: 'ATENÇÃO: Você iniciou o protocolo de acionamento do n.cirt. Este canal tem SLA de atendimento de 15 minutos.' },
-    { role: 'bot', content: 'Qual o porte o incidente de segurança atual? (Ex: Ransomware, Vazamento de Dados, Indisponibilidade)' }
+    { role: 'bot', content: 'Qual o tipo de incidente de segurança? (Ex: Ransomware, Vazamento de Dados, Indisponibilidade crítica)' }
   ]);
   const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -23,17 +35,48 @@ export default function EmergencyChatModal({ isOpen, onClose }: EmergencyChatMod
     }
   }, [messages]);
 
-  const handleSend = (e: React.FormEvent) => {
+  const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
-    
-    setMessages(prev => [...prev, { role: 'user', content: input }]);
+    if (!input.trim() || loading) return;
+
+    const userMsg = input;
     setInput('');
-    
-    // Fake typing effect for the emergency dispatcher placeholder
-    setTimeout(() => {
-      setMessages(prev => [...prev, { role: 'bot', content: 'Sinal recebido pela central n.cirt. Um coordenador tático da Ness está sendo alocado para a sua sessão emergencial.\n\nPor favor, não reinicie os servidores infectados até o início do contato remoto para preservação de evidências forenses.' }]);
-    }, 1500);
+
+    // Build API history: skip display-only system notice, map bot→assistant
+    const apiHistory = messages
+      .filter(m => m.role !== 'system')
+      .map(m => ({
+        role: m.role === 'bot' ? 'assistant' as const : 'user' as const,
+        content: m.content,
+      }));
+
+    setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
+    setLoading(true);
+
+    try {
+      const response = await fetch(`${CANAL_BASE}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [
+            { role: 'system', content: EMERGENCY_SYSTEM_CONTEXT },
+            ...apiHistory,
+            { role: 'user', content: userMsg },
+          ],
+        }),
+      });
+      if (!response.ok) throw new Error('api error');
+      const data = await response.json();
+      const reply = data.reply || 'Sinal recebido. Um especialista da ness. será alocado em instantes.';
+      setMessages(prev => [...prev, { role: 'bot', content: reply }]);
+    } catch {
+      setMessages(prev => [...prev, {
+        role: 'bot',
+        content: 'Conexão com a central n.cirt temporariamente indisponível. Ligue imediatamente para o número de emergência da ness.',
+      }]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -88,16 +131,16 @@ export default function EmergencyChatModal({ isOpen, onClose }: EmergencyChatMod
             {/* Chat Area */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6 relative bg-linear-to-b from-[#0a0a0a] to-[#0f0505]">
               {messages.map((msg, idx) => (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  key={idx} 
+                  key={idx}
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div className={`
                     max-w-[90%] sm:max-w-[80%] rounded-2xl px-5 py-3.5 text-sm font-light leading-relaxed whitespace-pre-wrap
-                    ${msg.role === 'user' 
-                      ? 'bg-red-600/90 text-white rounded-tr-sm border border-red-500/50 shadow-lg shadow-red-900/20' 
+                    ${msg.role === 'user'
+                      ? 'bg-red-600/90 text-white rounded-tr-sm border border-red-500/50 shadow-lg shadow-red-900/20'
                       : msg.role === 'system'
                         ? 'bg-transparent border border-red-500/20 text-red-400/80 w-full text-center font-mono text-[11px] uppercase tracking-wider p-4 rounded-xl'
                         : 'bg-white/5 border border-white/10 text-on-surface-variant rounded-tl-sm backdrop-blur-md'
@@ -107,23 +150,33 @@ export default function EmergencyChatModal({ isOpen, onClose }: EmergencyChatMod
                   </div>
                 </motion.div>
               ))}
+              {loading && (
+                <div className="flex justify-start">
+                  <div className="bg-white/5 border border-red-500/20 p-4 rounded-2xl rounded-tl-none flex gap-1">
+                    <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  </div>
+                </div>
+              )}
               <div ref={chatEndRef} />
             </div>
 
             {/* Input Area */}
             <div className="p-5 bg-surface-container-lowest border-t border-white/5">
               <form onSubmit={handleSend} className="relative flex items-center">
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  aria-label="Input field"
-                  placeholder="Descreva os primeiros sintomas do pain point atual..." 
-                  className="w-full bg-[#111] border border-white/10 rounded-full py-4 pl-6 pr-14 text-white text-sm focus:outline-none focus:border-red-500/60 transition-colors placeholder:text-white/20 font-light"
+                  disabled={loading}
+                  aria-label="Descreva o incidente de segurança"
+                  placeholder="Descreva o incidente em andamento..."
+                  className="w-full bg-[#111] border border-white/10 rounded-full py-4 pl-6 pr-14 text-white text-sm focus:outline-none focus:border-red-500/60 transition-colors placeholder:text-white/20 font-light disabled:opacity-50"
                 />
-                <button 
+                <button
                   type="submit"
-                  disabled={!input.trim()}
+                  disabled={!input.trim() || loading}
                   className="absolute right-2 w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white disabled:opacity-20 disabled:bg-white/10 hover:bg-red-500 transition-colors shadow-lg shadow-red-900/40"
                 >
                   <Send size={16} className="-translate-x-px translate-y-px" />

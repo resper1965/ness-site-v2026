@@ -97,14 +97,15 @@ app.post('/chat', async (c) => {
   const canal = c.env.CANAL_WORKER_URL;
   try {
     const body = await c.req.json();
-    const response = await fetch(`${canal}/api/chat`, {
+    const upstream = await fetch(`${canal}/api/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
-    if (!response.ok) return c.json({ reply: 'serviço temporariamente indisponível.' }, 502);
-    const data = await response.json();
-    return c.json(data);
+    if (!upstream.ok) return c.json({ reply: 'serviço temporariamente indisponível.' }, 502);
+    // Canal streams plain text — collect all chunks then return JSON
+    const reply = await upstream.text();
+    return c.json({ reply });
   } catch {
     return c.json({ reply: 'não foi possível conectar ao assistente. tente novamente em instantes.' }, 500);
   }

@@ -12,10 +12,13 @@ Send,
 
 
 
+type DisplayMessage = { role: 'bot' | 'user'; content: string };
+type ApiMessage = { role: 'user' | 'assistant'; content: string };
+
 const ChatbotWidget = () => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<{role: 'bot' | 'user', content: string}[]>([
+  const [messages, setMessages] = useState<DisplayMessage[]>([
     { role: 'bot', content: t('chatbot.welcome') }
   ]);
   const [input, setInput] = useState("");
@@ -27,18 +30,27 @@ const ChatbotWidget = () => {
 
     const userMsg = input;
     setInput("");
+
+    // Build API history from display messages (skip welcome, map bot→assistant)
+    const apiHistory: ApiMessage[] = messages
+      .slice(1)
+      .map(m => ({ role: m.role === 'bot' ? 'assistant' : 'user', content: m.content }));
+
     setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
     setLoading(true);
 
     try {
       const response = await fetch(`${CANAL_BASE}/api/chat`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMsg })
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [...apiHistory, { role: 'user', content: userMsg }],
+        }),
       });
+      if (!response.ok) throw new Error('api error');
       const data = await response.json();
-      setMessages(prev => [...prev, { role: 'bot', content: data.reply }]);
-    } catch (error) {
+      setMessages(prev => [...prev, { role: 'bot', content: data.reply || t('chatbot.error') }]);
+    } catch {
       setMessages(prev => [...prev, { role: 'bot', content: t('chatbot.error') }]);
     } finally {
       setLoading(false);

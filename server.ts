@@ -78,7 +78,7 @@ async function startServer() {
       }
     });
 
-    // API Route for Chatbot (Gabi.OS)
+    // API Route for Chatbot (Gabi.OS) — proxies to canal RAG endpoint
     app.post("/api/chat", async (req, res) => {
       try {
         const response = await fetch("https://canal.ness.workers.dev/api/chat", {
@@ -87,39 +87,11 @@ async function startServer() {
           body: JSON.stringify(req.body)
         });
         if (!response.ok) throw new Error("Canal unreachable");
-        const data = await response.json();
-        res.json(data);
-      } catch (error) {
-        console.error("Error connecting to Gabi.OS canal, fallback to generative UI mock:", (error as Error).message);
-        
-        const userMessage = (req.body?.message || "").toLowerCase();
-        
-        let replyContent = "Mock Local: A Gabi.OS está funcionando e pronta para ajudar com soluções digitais robustas.";
-        
-        if (userMessage.includes("vaga") || userMessage.includes("trabalho") || userMessage.includes("job") || userMessage.includes("carreira")) {
-          // Generative UI mock for Jobs
-          replyContent = JSON.stringify({
-            type: "job-list",
-            message: "Encontrei as seguintes oportunidades na Ness:",
-            data: [
-              { id: 1, title: "Desenvolvedor(a) Frontend Sênior", location: "Remoto / São Paulo", type: "tempo integral" },
-              { id: 2, title: "Consultor(a) SAP", location: "Híbrido / SP", type: "tempo integral" },
-              { id: 3, title: "Engenheiro(a) de Cibersegurança", location: "Remoto", type: "tempo integral" }
-            ]
-          });
-        } else if (userMessage.includes("portfolio") || userMessage.includes("case") || userMessage.includes("projeto")) {
-          // Generative UI mock for Portfolio
-          replyContent = JSON.stringify({
-            type: "portfolio-list",
-            message: "Aqui estão alguns dos nossos cases de sucesso recentes:",
-            data: [
-              { id: 1, title: "Transformação Digital Bancária", sector: "Finanças", metric: "+40% eficiência" },
-              { id: 2, title: "Migração Cloud Enterprise", sector: "Saúde", metric: "Zero Downtime" }
-            ]
-          });
-        }
-
-        res.json({ reply: replyContent, isMock: true });
+        // Canal streams plain text — collect all chunks
+        const reply = await response.text();
+        res.json({ reply });
+      } catch {
+        res.status(502).json({ reply: "serviço temporariamente indisponível. tente novamente em instantes." });
       }
     });
 
