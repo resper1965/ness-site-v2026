@@ -38,8 +38,7 @@ const Careers = () => {
         if (!response.ok) throw new Error("API error");
         const data = await response.json();
         setJobs(data);
-      } catch (error) {
-        console.error('Canal API unavailable:', error);
+      } catch {
         setJobs([]);
       } finally {
         setLoading(false);

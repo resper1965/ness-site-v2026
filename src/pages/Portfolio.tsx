@@ -33,8 +33,7 @@ const Portfolio = () => {
         if (!response.ok) throw new Error("API error");
         const data = await response.json();
         setCases(data);
-      } catch (error) {
-        console.error('Canal API unavailable:', error);
+      } catch {
         setCases([]);
       } finally {
         setLoading(false);

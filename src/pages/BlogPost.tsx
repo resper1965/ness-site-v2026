@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, Calendar, Tag, FileText } from "lucide-react";
-import DOMPurify from 'dompurify';
+import ReactMarkdown from 'react-markdown';
 import { usePageTitle } from '../hooks/usePageTitle';
 
 import { CANAL_BASE } from '../config/api';
@@ -109,28 +109,13 @@ const BlogPost = () => {
             if (!rawBody) return (
               <div className="flex flex-col items-center py-16 text-center">
                 <FileText size={40} className="text-on-surface-variant/20 mb-4" />
-                <p className="text-on-surface-variant/40 text-sm">{t('blog.comingSoon')}</p>
+                <p className="text-on-surface-variant/40 text-sm">{t('blog.comingSoon', 'conteúdo em breve.')}</p>
               </div>
             );
-            // Convert markdown headings/lists to basic HTML if raw is markdown
-            const html = rawBody
-              .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-              .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-              .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-              .replace(/\*(.+?)\*/g, '<em>$1</em>')
-              .replace(/^- (.+)$/gm, '<li>$1</li>')
-              .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
-              .replace(/\n\n/g, '</p><p>')
-              .replace(/^(?!<[hup])/gm, '')
-            ;
             return (
-              <div
-                className="text-on-surface-variant text-sm leading-relaxed space-y-4 prose prose-invert prose-sm max-w-none"
-                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html, {
-                  ALLOWED_TAGS: ['p','br','strong','em','b','i','ul','ol','li','h2','h3','h4','blockquote','code','pre','a','img'],
-                  ALLOWED_ATTR: ['href','src','alt','class','target','rel'],
-                }) }}
-              />
+              <div className="text-on-surface-variant text-sm leading-relaxed prose prose-invert prose-sm max-w-none">
+                <ReactMarkdown>{rawBody}</ReactMarkdown>
+              </div>
             );
           })()}
         </motion.div>

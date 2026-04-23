@@ -32,8 +32,7 @@ const Blog = () => {
         if (!response.ok) throw new Error("API error");
         const data = await response.json();
         setArticles(data);
-      } catch (error) {
-        console.error('Canal API unavailable:', error);
+      } catch {
         setArticles([]);
       } finally {
         setLoading(false);
