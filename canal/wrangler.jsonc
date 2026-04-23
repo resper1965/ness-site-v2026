@@ -7,7 +7,8 @@
 		"nodejs_compat"
 	],
 	"routes": [
-		{ "pattern": "canal.ness.com.br", "custom_domain": true }
+		{ "pattern": "canal.ness.com.br", "custom_domain": true },
+		{ "pattern": "www.canal.ness.com.br", "custom_domain": true }
 	],
 	"assets": {
 		"directory": "./admin/dist",
