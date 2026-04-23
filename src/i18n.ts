@@ -17,11 +17,11 @@ const resources = {
         "celebration": {
           "label": "{{years}} Anos",
           "title": "Celebrando {{years}} Anos",
-          "message": "Há {{years}} anos construindo o futuro da engenharia e segurança digital com precisão."
+          "message": "Há {{years}} anos construindo o futuro da tecnologia e segurança digital com precisão."
         }
       },
       "hero": {
-        "tag": "engenharia digital de precisão",
+        "tag": "tecnologia digital de precisão",
         "title": "invisíveis quando tudo funciona. <highlight>presentes</highlight> quando mais importa",
         "subtitle": "elevamos a resiliência digital da sua empresa através de operações precisas e arquiteturas de segurança invisíveis.",
         "explore": "explorar soluções",
