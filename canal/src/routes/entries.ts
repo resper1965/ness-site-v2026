@@ -9,6 +9,7 @@ import { Hono } from 'hono'
 import { z } from 'zod'
 import { collections, getCollection, getRequiredFields } from '../collections'
 import { createAuth } from '../auth'
+import { upsertVector, deleteVector } from '../vectorize-sync'
 
 type Env = {
   Bindings: {
@@ -323,6 +324,11 @@ entries.post('/collections/:slug/entries', async (c) => {
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   ).bind(id, tenantId || null, colRow.id, JSON.stringify(data), slug, locale, status, publishedAt, now, now).run()
 
+  // Auto-vectorize (fire-and-forget)
+  if (status === 'published') {
+    upsertVector(c.env, id, data as Record<string, unknown>, col.slug)
+  }
+
   return c.json({ id, slug, locale, status }, 201)
 })
 
@@ -385,6 +391,13 @@ entries.put('/collections/:slug/entries/:id', async (c) => {
      WHERE id = ? AND ${tSql}`
   ).bind(JSON.stringify(mergedData), slug, locale, status, publishedAt, now, entryId, ...(tenantId ? [tenantId] : [])).run()
 
+  // Auto-vectorize (fire-and-forget)
+  if (status === 'published') {
+    upsertVector(c.env, entryId, mergedData as Record<string, unknown>, col.slug)
+  } else {
+    deleteVector(c.env, entryId) // unpublished = remove from RAG
+  }
+
   return c.json({ id: entryId, slug, locale, status, updated: true })
 })
 
@@ -403,6 +416,9 @@ entries.delete('/collections/:slug/entries/:id', async (c) => {
   const { success } = await c.env.DB.prepare(
     `DELETE FROM entries WHERE id = ? AND ${tSql}`
   ).bind(...(tenantId ? [entryId, tenantId] : [entryId])).run()
+
+  // Remove from vector index
+  deleteVector(c.env, entryId)
 
   return c.json({ success, deleted: entryId })
 })

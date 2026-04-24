@@ -1,49 +1,43 @@
 /**
- * seed-vectors.ts — Ingestão dos dados de solutionsData no Cloudflare Vectorize
+ * seed-vectors.ts — Enqueue ALL published entries for async vectorization
  *
- * Uso: npx wrangler dev --test-scheduled  (depois curl POST)
- *   OU: via rota administrativa /api/admin/seed-vectors
- *
- * Lê as soluções da ness., chunka textos, gera embeddings via Workers AI
- * (@cf/baai/bge-base-en-v1.5) e insere no índice canal-vectors.
+ * Instead of processing embeddings synchronously (which times out),
+ * this reads entry IDs and enqueues them to canal-tasks-queue.
+ * The queue consumer processes each entry individually.
  */
 
 export async function seedVectors(env: any) {
-  const results: string[] = []
-
   const dbRes = await env.DB.prepare(`
-    SELECT e.id, e.data as payload, e.slug 
-    FROM entries e 
-    JOIN collections c ON e.collection_id = c.id 
-    WHERE c.slug IN ('solutions', 'insights', 'cases')
+    SELECT e.id, e.data as payload, c.slug as collection_slug
+    FROM entries e
+    JOIN collections c ON e.collection_id = c.id
+    WHERE e.status = 'published'
+    ORDER BY e.updated_at DESC
   `).all()
+
   const rows = dbRes.results as any[]
 
   if (!rows || rows.length === 0) {
-     return ["⚠️ Nenhum dado encontrado no banco para indexar."]
+    return ['⚠️ Nenhum dado publicado encontrado para indexar.']
   }
 
-  for (const row of rows) {
-    const payload = JSON.parse(row.payload || '{}')
-    const text = `${payload.title || row.slug}\n${payload.desc || payload.content || ''}`
-    
-    // Gerar embedding via Workers AI
-    const embedding = await env.AI.run('@cf/baai/bge-base-en-v1.5', {
-      text: [text]
-    }) as any
-
-    const vector = {
-      id: `db-${row.id}`,
-      values: embedding.data[0],
-      metadata: {
-        title: payload.title || row.slug,
-        content: text.slice(0, 1000) // metadata cap
-      }
-    }
-
-    await env.VECTORIZE.upsert([vector])
-    results.push(`✅ db-${row.id} (${payload.title || row.slug})`)
+  // Enqueue each entry for async processing (batches of 25)
+  const batchSize = 25
+  for (let i = 0; i < rows.length; i += batchSize) {
+    const batch = rows.slice(i, i + batchSize)
+    await env.QUEUE.sendBatch(
+      batch.map((row: any) => ({
+        body: {
+          type: 'vectorize-entry' as const,
+          payload: {
+            entryId: row.id,
+            data: JSON.parse(row.payload || '{}'),
+            collectionSlug: row.collection_slug,
+          },
+        },
+      }))
+    )
   }
 
-  return results
+  return [`📊 Enqueued ${rows.length} entries for vectorization (async via queue)`]
 }
