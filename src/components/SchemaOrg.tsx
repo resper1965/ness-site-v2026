@@ -37,7 +37,22 @@ function getOrganizationSchema() {
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'commercial',
+      telephone: '+55-11-2504-7650',
+      email: 'contato@ness.com.br',
       availableLanguage: ['Portuguese', 'English', 'Spanish'],
+    },
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Rua George Ohm, 230 - Torre A, Cj 82',
+      addressLocality: 'São Paulo',
+      addressRegion: 'SP',
+      postalCode: '04576-020',
+      addressCountry: 'BR',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: -23.6086,
+      longitude: -46.6936,
     },
     numberOfEmployees: {
       '@type': 'QuantitativeValue',
