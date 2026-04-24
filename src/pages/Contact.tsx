@@ -1,10 +1,11 @@
 import BlueDot from '../components/BlueDot';
-import React, {  } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
 import { CANAL_BASE } from '../config/api';
+import { BRAND } from '../config/brand';
 import { 
 Mail,
   Phone,
@@ -18,8 +19,25 @@ import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/bra
 
 
 
+/** Maps referrer slugs to display labels and subject values */
+const REF_MAP: Record<string, { label: string; subject: string }> = {
+  devsecops: { label: 'n.devsecops', subject: 'n.secops' },
+  secops: { label: 'n.secops', subject: 'n.secops' },
+  infraops: { label: 'n.infraops', subject: 'n.infraops' },
+  autoops: { label: 'n.autoops', subject: 'n.autoops' },
+  aiops: { label: 'n.aiops', subject: 'n.aiops' },
+  devarch: { label: 'n.devarch', subject: 'n.secops' },
+  trustness: { label: 'trustness. GRC', subject: 'n.secops' },
+  forense: { label: 'forense.io', subject: 'n.secops' },
+};
+
 const Contact = () => {
   const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
+  const ref = searchParams.get('ref') || '';
+  const refInfo = REF_MAP[ref] || (BRAND !== 'ness' ? REF_MAP[BRAND] : null);
+  const [selectedSubject, setSelectedSubject] = useState(refInfo?.subject || '');
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -113,6 +131,15 @@ const Contact = () => {
 
           {/* Right Side: Form */}
           <div className="bg-surface-container-low/30 border border-white/5 p-8 md:p-12 rounded-[3rem] nebula-shadow">
+            {/* Interest Context Badge */}
+            {refInfo && (
+              <div className="mb-6 flex items-center gap-3 px-4 py-3 rounded-2xl bg-primary-container/10 border border-primary-container/20">
+                <div className="w-2 h-2 rounded-full bg-primary-container animate-pulse" />
+                <span className="text-[11px] uppercase tracking-widest text-primary-container font-bold">
+                  {t('contact.form.interest', { product: refInfo.label, defaultValue: `Interesse em: ${refInfo.label}` })}
+                </span>
+              </div>
+            )}
             <form 
               className="space-y-6"
               onSubmit={async (e) => {
@@ -124,7 +151,9 @@ const Contact = () => {
                   company: formData.get("company"),
                   email: formData.get("email"),
                   subject: formData.get("subject"),
-                  message: formData.get("message")
+                  message: formData.get("message"),
+                  referrer: ref || BRAND,
+                  referrerLabel: refInfo?.label || BRAND,
                 };
                 try {
                   const response = await fetch(`${CANAL_BASE}/api/submit-form`, {
@@ -177,12 +206,21 @@ const Contact = () => {
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.subject')}</label>
-                <select name="subject" required className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all appearance-none">
+                <select 
+                  name="subject" 
+                  required 
+                  value={selectedSubject}
+                  onChange={(e) => setSelectedSubject(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all appearance-none"
+                >
                   <option value="" className="bg-surface">{t('contact.form.subject_select')}</option>
-                  <option value="n.secops" className="bg-surface">n.secops</option>
-                  <option value="n.autoops" className="bg-surface">n.autoops</option>
-                  <option value="n.infraops" className="bg-surface">n.infraops</option>
-                  <option value="outros" className="bg-surface">{t('nav.services')}</option>
+                  <option value="n.secops" className="bg-surface">n.secops — Segurança Cibernética</option>
+                  <option value="n.autoops" className="bg-surface">n.autoops — Automação de Infraestrutura</option>
+                  <option value="n.infraops" className="bg-surface">n.infraops — Operações de Infraestrutura</option>
+                  <option value="n.aiops" className="bg-surface">n.aiops — Inteligência Artificial</option>
+                  <option value="trustness" className="bg-surface">trustness. — GRC & Compliance</option>
+                  <option value="forense" className="bg-surface">forense.io — Perícia Digital</option>
+                  <option value="outros" className="bg-surface">{t('contact.form.other', 'Outros')}</option>
                 </select>
               </div>
               <div className="space-y-2">

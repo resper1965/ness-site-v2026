@@ -80,7 +80,7 @@ const SolutionPage = () => {
                   if (slug === 'cirt') {
                     setIsEmergencyChatOpen(true);
                   } else {
-                    navigate('/contato');
+                    navigate(`/contato?ref=${slug}`);
                   }
                 }}
                 className="bg-primary-container text-on-primary px-8 py-3 rounded-full font-display font-semibold text-sm hover:brightness-110 transition-all">
@@ -276,7 +276,7 @@ const SolutionPage = () => {
                 if (slug === 'cirt') {
                   setIsEmergencyChatOpen(true);
                 } else {
-                  navigate('/contato');
+                  navigate(`/contato?ref=${slug}`);
                 }
               }}
               className="bg-white text-surface px-10 py-5 rounded-full font-display font-semibold uppercase tracking-widest text-sm hover:bg-primary-container hover:text-on-primary hover:scale-105 transition-all shadow-lg shadow-primary-container/20 whitespace-nowrap">

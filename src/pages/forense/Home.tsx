@@ -47,7 +47,7 @@ export default function ForenseHome() {
             </p>
             <div className="flex flex-wrap items-center gap-8 pt-4">
               <Link
-                to="/contato"
+                to="/contato?ref=forense"
                 className="bg-primary-container text-on-primary px-10 py-4 rounded-full font-display font-semibold text-sm shadow-xl shadow-primary-container/20 hover:scale-105 transition-transform"
               >
                 {t("forense.hero.cta1")}
