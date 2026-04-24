@@ -31,6 +31,7 @@ const REF_MAP: Record<string, { label: string; subject: string }> = {
   trustness: { label: 'trustness. GRC', subject: 'trustness' },
   forense: { label: 'forense.io', subject: 'n.secops' },
   'assessment-lgpd': { label: 'Assessment LGPD', subject: 'trustness' },
+  'assessment-cyber': { label: 'Assessment Cyber', subject: 'n.secops' },
 };
 
 const Contact = () => {

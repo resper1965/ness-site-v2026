@@ -181,16 +181,17 @@ legacy.post('/newsletter', async (c) => {
 const ALLOWED_FORM_TYPES = ['contact', 'careers', 'whistleblower', 'newsletter'] as const
 
 const formSchema = z.object({
-  type: z.enum(ALLOWED_FORM_TYPES),
+  type: z.enum(ALLOWED_FORM_TYPES).optional().default('contact'),
   name: z.string().max(200).optional(),
   email: z.string().email().max(254).optional(),
   message: z.string().max(5000).optional(),
   phone: z.string().max(30).optional(),
   company: z.string().max(200).optional(),
   subject: z.string().max(300).optional(),
-  // extra fields stored but bounded
-  extra: z.record(z.string(), z.string().max(1000)).optional(),
-})
+  source: z.string().max(200).optional(),
+  referrer: z.string().max(200).optional(),
+  referrerLabel: z.string().max(200).optional(),
+}).passthrough()
 
 legacy.post('/submit-form', async (c) => {
   try {

@@ -97,6 +97,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ness.com.br/assessment/cyber</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://trustness.com.br/sobre</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
