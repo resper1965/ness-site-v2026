@@ -118,6 +118,25 @@ export default function TrustnessHome() {
               </div>
             ))}
           </div>
+
+          {/* DPO as a Service — Featured Banner */}
+          <div className="mt-8 p-8 md:p-12 rounded-3xl bg-primary-container/5 border border-primary-container/20 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="flex-1">
+              <span className="text-[10px] text-primary-container font-bold uppercase tracking-widest block mb-3">serviço principal</span>
+              <h3 className="text-2xl md:text-3xl font-display text-white mb-3 tracking-tight lowercase">
+                dpo as a service<BlueDot />
+              </h3>
+              <p className="text-on-surface-variant font-light leading-relaxed max-w-xl">
+                A trustness. assume o papel do Encarregado (DPO) da sua organização com tecnologia proprietária Aegis. Adequação, manutenção e auditoria contínua — sem ferramentas extras.
+              </p>
+            </div>
+            <Link
+              to="/dpo-as-a-service"
+              className="bg-primary-container text-on-primary px-8 py-4 rounded-full font-display font-bold text-sm uppercase tracking-widest hover:brightness-110 transition-all whitespace-nowrap shrink-0"
+            >
+              saiba mais
+            </Link>
+          </div>
         </div>
       </section>
 

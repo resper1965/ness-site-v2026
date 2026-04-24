@@ -12,6 +12,7 @@ import { BRAND } from './config/brand';
 
 const Home = lazy(() => import('./pages/Home'));
 const TrustnessHome = lazy(() => import('./pages/trustness/Home'));
+const DpoService = lazy(() => import('./pages/trustness/DpoService'));
 const ForenseHome = lazy(() => import('./pages/forense/Home'));
 const About = lazy(() => import('./pages/About'));
 const Solutions = lazy(() => import('./pages/Solutions'));
@@ -61,6 +62,7 @@ export default function App() {
 
             {/* Sub-brand pages — accessible from any domain */}
             <Route path="/trustness" element={<TrustnessHome />} />
+            <Route path="/dpo-as-a-service" element={<DpoService />} />
             <Route path="/forense"   element={<ForenseHome />} />
 
             {/* Universal shared routes */}

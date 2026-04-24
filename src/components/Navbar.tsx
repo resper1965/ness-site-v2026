@@ -28,9 +28,11 @@ const Navbar = () => {
 
   // Only solutions differ per brand — all other pages are shared
   const nessOnlyKeys = ['solutions'];
+  const trustnessOnlyKeys = ['dpo'];
 
   const allMenuItems = [
     { key: "solutions", label: t("nav.solutions"), to: "/solucoes" },
+    { key: "dpo", label: "DPO as a Service", to: "/dpo-as-a-service" },
     { key: "sobre", label: t("nav.about"), to: "/sobre" },
     { key: "portfolio", label: t("nav.portfolio"), to: "/portfolio" },
     { key: "blog", label: t("nav.blog"), to: "/blog" },
@@ -38,9 +40,12 @@ const Navbar = () => {
     { key: "contato", label: t("nav.contact"), to: "/contato" }
   ];
 
-  const menuItems = BRAND === 'ness'
-    ? allMenuItems
-    : allMenuItems.filter(item => !nessOnlyKeys.includes(item.key));
+  const menuItems = allMenuItems.filter(item => {
+    if (BRAND === 'ness') return !trustnessOnlyKeys.includes(item.key);
+    if (BRAND === 'trustness') return !nessOnlyKeys.includes(item.key);
+    // forense: hide both ness-only and trustness-only
+    return !nessOnlyKeys.includes(item.key) && !trustnessOnlyKeys.includes(item.key);
+  });
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);

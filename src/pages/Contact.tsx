@@ -27,7 +27,8 @@ const REF_MAP: Record<string, { label: string; subject: string }> = {
   autoops: { label: 'n.autoops', subject: 'n.autoops' },
   aiops: { label: 'n.aiops', subject: 'n.aiops' },
   devarch: { label: 'n.devarch', subject: 'n.secops' },
-  trustness: { label: 'trustness. GRC', subject: 'n.secops' },
+  dpo: { label: 'DPO as a Service', subject: 'trustness' },
+  trustness: { label: 'trustness. GRC', subject: 'trustness' },
   forense: { label: 'forense.io', subject: 'n.secops' },
 };
 
