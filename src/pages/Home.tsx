@@ -7,6 +7,7 @@ import CTA from '../components/CTA';
 import Hero from '../components/Hero';
 import Presence from '../components/Presence';
 import Metrics from '../components/Metrics';
+import ClientLogos from '../components/ClientLogos';
 
 const Home = () => {
   return (
@@ -18,6 +19,7 @@ const Home = () => {
       <Services />
       <Verticals />
       <Insights />
+      <ClientLogos />
       <CTA />
     </>
   );
