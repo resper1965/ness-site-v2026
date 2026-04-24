@@ -26,6 +26,7 @@ const PortfolioCase = lazy(() => import('./pages/PortfolioCase'));
 const Careers = lazy(() => import('./pages/Careers'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Compliance = lazy(() => import('./pages/Compliance'));
+const Assessment = lazy(() => import('./pages/Assessment'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 function PageLoader() {
@@ -92,6 +93,7 @@ export default function App() {
             <Route path="/contact"         element={<Contact />} />
             <Route path="/about"           element={<About />} />
             <Route path="/compliance/:type" element={<Compliance />} />
+            <Route path="/assessment/:type" element={<Assessment />} />
             <Route path="*"               element={<NotFound />} />
           </Routes>
         </Suspense>

@@ -5,6 +5,7 @@ import { ArrowRight, Fingerprint, Lock, FileCheck, ShieldCheck, Target, Graduati
 import BlueDot from "../../components/BlueDot";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import { useTranslation } from "react-i18next";
+import LeadMagnet from "../../components/LeadMagnet";
 
 export default function TrustnessHome() {
   const { t } = useTranslation();
@@ -167,6 +168,44 @@ export default function TrustnessHome() {
                 <p className="text-sm text-on-surface-variant font-light leading-relaxed">{feature.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Lead Magnet — Checklist LGPD */}
+      <section className="py-20 px-8 bg-surface-container-lowest border-t border-white/5">
+        <div className="max-w-5xl mx-auto space-y-8">
+          <LeadMagnet
+            slug="lgpd-checklist"
+            title="checklist lgpd — 30 itens essenciais de conformidade"
+            description="Avalie rapidamente a conformidade da sua organização com os requisitos da LGPD. Checklist prático com os 30 pontos mais críticos."
+            items={[
+              "Nomeação e comunicação do DPO à ANPD",
+              "ROPA documentado e atualizado",
+              "Política de privacidade publicada",
+              "Gestão de consentimento de titulares",
+              "Contratos DPA com fornecedores",
+            ]}
+          />
+
+          {/* Assessment CTA */}
+          <div className="p-8 md:p-10 rounded-3xl bg-surface-container border border-white/10 flex flex-col md:flex-row items-center gap-8">
+            <div className="flex-1 space-y-3">
+              <span className="text-[10px] text-primary-container font-bold uppercase tracking-widest block">assessment interativo</span>
+              <h3 className="text-xl md:text-2xl font-display text-white tracking-tight lowercase">
+                descubra sua maturidade lgpd em 3 minutos<BlueDot />
+              </h3>
+              <p className="text-sm text-on-surface-variant font-light leading-relaxed max-w-lg">
+                Quiz gratuito com 10 perguntas que avalia governança, processos, tecnologia e pessoas. Receba seu score e recomendações personalizadas.
+              </p>
+            </div>
+            <Link
+              to="/assessment/lgpd"
+              className="bg-white text-surface px-8 py-4 rounded-full font-display font-bold text-sm uppercase tracking-widest hover:bg-primary-container hover:text-on-primary transition-all whitespace-nowrap shrink-0 flex items-center gap-2"
+            >
+              iniciar assessment
+              <ArrowRight size={16} />
+            </Link>
           </div>
         </div>
       </section>

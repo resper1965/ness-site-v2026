@@ -30,6 +30,7 @@ const REF_MAP: Record<string, { label: string; subject: string }> = {
   dpo: { label: 'DPO as a Service', subject: 'trustness' },
   trustness: { label: 'trustness. GRC', subject: 'trustness' },
   forense: { label: 'forense.io', subject: 'n.secops' },
+  'assessment-lgpd': { label: 'Assessment LGPD', subject: 'trustness' },
 };
 
 const Contact = () => {

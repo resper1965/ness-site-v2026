@@ -5,6 +5,7 @@ import EmergencyChatModal from '../components/EmergencyChatModal';
 import SolutionHeroBackground from '../components/solutions/SolutionHeroBackground';
 import SolutionExecutiveDashboard from '../components/solutions/SolutionExecutiveDashboard';
 import SolutionServicesGrid from '../components/solutions/SolutionServicesGrid';
+import LeadMagnet from '../components/LeadMagnet';
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Link, useParams, useNavigate } from "react-router-dom";
@@ -261,6 +262,24 @@ const SolutionPage = () => {
               ))}
             </div>
           </section>
+        )}
+
+        {/* Lead Magnet — DevSecOps */}
+        {(slug === 'secops' || slug === 'devsecops' || slug === 'devarch') && (
+          <div className="mb-24">
+            <LeadMagnet
+              slug="devsecops-checklist"
+              title="checklist devsecops — pipeline seguro em 15 passos"
+              description="Guia prático para implementar segurança em cada etapa do seu pipeline CI/CD. Da análise de código ao deploy em produção."
+              items={[
+                "SAST/DAST automatizados no pipeline",
+                "Gestão de secrets com vault",
+                "Container scanning & SBOM",
+                "WAF e proteção de runtime",
+                "Monitoramento com SIEM/SOAR",
+              ]}
+            />
+          </div>
         )}
 
         {/* Modular CTA Banner */}
