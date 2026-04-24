@@ -1,4 +1,5 @@
 import BlueDot from '../components/BlueDot';
+import Breadcrumbs from '../components/Breadcrumbs';
 import ChatPreview from '../components/ChatPreview';
 import EmergencyChatModal from '../components/EmergencyChatModal';
 import SolutionHeroBackground from '../components/solutions/SolutionHeroBackground';
@@ -48,10 +49,10 @@ const SolutionPage = () => {
       <SolutionHeroBackground bgImage={solution.bgImage} slug={slug!} />
 
       <div className="relative z-20 max-w-7xl mx-auto">
-        <Link to="/" className="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary mb-12 transition-colors group">
-          <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-          {t('common.back')}
-        </Link>
+        <Breadcrumbs items={[
+          { label: t('nav.solutions'), to: '/solucoes' },
+          { label: t(`solutions.${slug}.title`) }
+        ]} />
 
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
           <motion.div 

@@ -30,8 +30,23 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 
 function PageLoader() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-8 h-8 rounded-full border-2 border-primary-container border-t-transparent animate-spin" />
+    <div className="min-h-screen bg-surface-container-lowest pt-24 px-8">
+      <div className="max-w-5xl mx-auto space-y-8 animate-pulse">
+        {/* Tag skeleton */}
+        <div className="w-48 h-6 rounded-full bg-white/5" />
+        {/* Title skeleton */}
+        <div className="space-y-3">
+          <div className="w-3/4 h-12 rounded-2xl bg-white/5" />
+          <div className="w-1/2 h-12 rounded-2xl bg-white/5" />
+        </div>
+        {/* Subtitle skeleton */}
+        <div className="w-2/3 h-6 rounded-xl bg-white/5" />
+        {/* CTA skeleton */}
+        <div className="flex gap-4 pt-4">
+          <div className="w-40 h-12 rounded-full bg-white/5" />
+          <div className="w-32 h-12 rounded-full bg-white/5" />
+        </div>
+      </div>
     </div>
   );
 }
