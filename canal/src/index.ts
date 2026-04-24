@@ -371,6 +371,7 @@ const chatSchema = z.object({
     role: z.enum(['user', 'assistant', 'system']),
     content: z.string().max(4000),
   })).min(1).max(20),
+  locale: z.string().max(10).optional(),
 })
 
 // ── Chat RAG (público) ──────────────────────────────────────────
@@ -385,8 +386,9 @@ app.post('/api/chat', async (c) => {
   if (!chatParsed.success) {
     return c.json({ error: 'Invalid request' }, 400)
   }
-  const { messages } = chatParsed.data
+  const { messages, locale } = chatParsed.data
   const lastMessage = messages[messages.length - 1]?.content || ''
+  const lang = locale === 'en' ? 'English' : locale === 'es' ? 'Spanish' : 'Portuguese'
 
   // 1. Embedding da pergunta
   const queryEmbedding = await c.env.AI.run('@cf/baai/bge-base-en-v1.5', {
@@ -421,6 +423,8 @@ app.post('/api/chat', async (c) => {
   // 4. System prompt
   const systemPrompt = `Você é a Gabi, cicerone digital e concierge da ness., uma empresa de tecnologia fundada em 1991.
 Seu objetivo é atuar como uma BDR/SDR focada em qualificar o usuário e capturar seu meio de contato de forma natural.
+
+IMPORTANTE: O usuário está com o idioma configurado como ${lang}. Responda SEMPRE em ${lang}.
 
 DIRETRIZ DE INCIDENTES (N.CIRT TRIAGE):
 Se o usuário reportar que está sofrendo um ATAQUE, RANSOMWARE, VAZAMENTO ou INCIDENTE CRÍTICO neste exato momento:

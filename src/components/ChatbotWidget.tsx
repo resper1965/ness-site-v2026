@@ -13,11 +13,11 @@ type DisplayMessage = { role: 'bot' | 'user'; content: string };
 type ApiMessage = { role: 'user' | 'assistant'; content: string };
 
 const ChatbotWidget = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<DisplayMessage[]>([
-    { role: 'bot', content: "Olá! Eu sou a Gabi, cicerone digital da ness.\nUse os atalhos abaixo para abrir um chamado rápido, ou digite sua dúvida caso queira bater papo." }
+    { role: 'bot', content: t('chatbot.welcome', "Olá! Eu sou a Gabi, cicerone digital da ness.\nUse os atalhos abaixo para abrir um chamado rápido, ou digite sua dúvida caso queira bater papo.") }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -51,6 +51,7 @@ const ChatbotWidget = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           messages: [...apiHistory, { role: 'user', content: userMsg }],
+          locale: i18n.language,
         }),
       });
 
@@ -183,19 +184,19 @@ const ChatbotWidget = () => {
                 type="button"
                 onClick={() => { setIsOpen(false); navigate('/contato'); }}
                 className="whitespace-nowrap px-4 py-2 bg-primary-container/10 border border-primary-container/30 text-primary-container text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-primary-container hover:text-on-primary transition-all snap-start shadow-xl shadow-primary-container/5">
-                Falar com Especialista
+                {t('chatbot.quick_specialist', 'Falar com Especialista')}
               </button>
               <button 
                 type="button"
                 onClick={() => { setIsOpen(false); navigate('/solucoes/cirt'); }}
                 className="whitespace-nowrap px-4 py-2 bg-red-500/10 border border-red-500/30 text-red-400 text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-red-500 hover:text-white transition-all snap-start shadow-xl shadow-red-500/5">
-                Incidente (n.cirt)
+                {t('chatbot.quick_incident', 'Incidente (n.cirt)')}
               </button>
               <button 
                 type="button"
                 onClick={() => { setIsOpen(false); navigate('/compliance/etica'); }}
                 className="whitespace-nowrap px-4 py-2 bg-primary-container/10 border border-primary-container/30 text-primary-container text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-primary-container hover:text-on-primary transition-all snap-start shadow-xl shadow-primary-container/5">
-                Ouvidoria DPO
+                {t('chatbot.quick_dpo', 'Ouvidoria DPO')}
               </button>
             </div>
 

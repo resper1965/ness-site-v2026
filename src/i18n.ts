@@ -294,6 +294,9 @@ const resources = {
         "status": "ia generativa ativa",
         "error": "desculpe, tive um problema na conexão com o backoffice. tente novamente em instantes.",
         "placeholder": "digite sua mensagem...",
+        "quick_specialist": "Falar com Especialista",
+        "quick_incident": "Incidente (n.cirt)",
+        "quick_dpo": "Ouvidoria DPO",
         "preview": {
           "msg1_user": "Gabi, preciso de um resumo dos contratos que vencem este mês.",
           "msg1_bot": "Com certeza. Identifiquei 12 contratos com vencimento em abril. Os 3 principais são: Cliente Alpha (dia 15), Tech Solutions (dia 22) e Global Corp (dia 28). Deseja que eu prepare os termos de renovação?",
@@ -990,6 +993,9 @@ const resources = {
         "status": "active generative ai",
         "error": "sorry, I had a problem connecting to the backoffice. please try again in a few moments.",
         "placeholder": "type your message...",
+        "quick_specialist": "Talk to a Specialist",
+        "quick_incident": "Incident (n.cirt)",
+        "quick_dpo": "DPO Ombudsman",
         "preview": {
           "msg1_user": "Gabi, I need a summary of the contracts expiring this month.",
           "msg1_bot": "Certainly. I identified 12 contracts expiring in April. The top 3 are: Alpha Client (15th), Tech Solutions (22nd), and Global Corp (28th). Would you like me to prepare the renewal terms?",
@@ -1686,6 +1692,9 @@ const resources = {
         "status": "ia generativa activa",
         "error": "lo siento, tuve un problema al conectarme con el backoffice. por favor, inténtelo de nuevo en unos momentos.",
         "placeholder": "escriba su mensaje...",
+        "quick_specialist": "Hablar con Especialista",
+        "quick_incident": "Incidente (n.cirt)",
+        "quick_dpo": "Defensoría DPO",
         "preview": {
           "msg1_user": "Gabi, necesito un resumen de los contratos que vencen este mes.",
           "msg1_bot": "Por supuesto. He identificado 12 contratos que vencen en abril. Los 3 principales son: Cliente Alpha (día 15), Tech Solutions (día 22) y Global Corp (día 28). ¿Desea que prepare los términos de renovación?",
