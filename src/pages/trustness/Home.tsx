@@ -16,6 +16,28 @@ export default function TrustnessHome() {
   
   return (
     <main>
+      {/* Back to ness. */}
+      <div style={{ position: 'fixed', top: 16, left: 20, zIndex: 100 }}>
+        <a
+          href="https://ness.com.br"
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            padding: '6px 14px', borderRadius: 99,
+            background: 'rgba(11,19,38,0.8)', backdropFilter: 'blur(8px)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            color: 'rgba(255,255,255,0.55)', fontSize: 12, fontWeight: 500,
+            textDecoration: 'none', transition: 'color 0.15s',
+            fontFamily: 'Inter, system-ui, sans-serif',
+          }}
+          onMouseEnter={e => (e.currentTarget.style.color = '#7bd0ff')}
+          onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+          ness.
+        </a>
+      </div>
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-surface-container-lowest">
         <div className="absolute inset-0 z-0">

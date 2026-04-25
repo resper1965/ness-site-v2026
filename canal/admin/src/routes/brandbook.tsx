@@ -31,13 +31,11 @@ export default function BrandbookHub() {
   return (
     <div>
       <div className="collection-toolbar" style={{ marginBottom: 20, display: "flex", alignItems: "center" }}>
-        <h2>Brandbook {activeOrg ? `— ${activeOrg.name}` : "— Acesso Global (Bekaa)"}</h2>
-        {activeOrg && <span className="badge badge-new" style={{ fontSize: 10, marginLeft: 8 }}>{activeOrg.slug}</span>}
-        <div style={{ marginLeft: "auto" }}>
-          <Link to="/crud/brandbook" className="btn btn-primary btn-sm">
-            Gerenciar Cadastros (CRUD)
-          </Link>
-        </div>
+        {activeOrg && <span className="badge badge-new" style={{ fontSize: 10 }}>{activeOrg.slug}</span>}
+        <span style={{ flex: 1 }} />
+        <Link to="/crud/brandbook" className="btn btn-ghost btn-sm">
+          Gerenciar Cadastros
+        </Link>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>

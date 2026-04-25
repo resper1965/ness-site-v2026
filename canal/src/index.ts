@@ -25,7 +25,7 @@ import { aiWriter } from './routes/ai-writer'
 import { handleMcpRequest } from './mcp'
 import { MODEL_HEAVY } from './ai/models'
 
-type Bindings = {
+export type Bindings = {
   DB: D1Database
   AI: Ai
   VECTORIZE: VectorizeIndex
@@ -35,6 +35,7 @@ type Bindings = {
   ADMIN_SETUP_KEY: string
   RESEND_API_KEY: string
   SLACK_WEBHOOK_URL?: string
+  AGENT_DO: DurableObjectNamespace
 }
 
 type Variables = {
@@ -306,6 +307,38 @@ app.get('/api/admin/chats', requireSession, async (c) => {
   return c.json(results)
 })
 
+app.get('/api/admin/leads', requireSession, async (c) => {
+  const session = c.get('session')
+  if (session?.user?.role !== 'admin') return c.json({ error: 'Forbidden' }, 403)
+  const status = c.req.query('status')
+  const query = status
+    ? 'SELECT * FROM leads WHERE status = ? ORDER BY created_at DESC LIMIT 100'
+    : 'SELECT * FROM leads ORDER BY created_at DESC LIMIT 100'
+  const { results } = status
+    ? await c.env.DB.prepare(query).bind(status).all()
+    : await c.env.DB.prepare(query).all()
+  return c.json(results)
+})
+
+app.patch('/api/admin/leads/:id', requireSession, async (c) => {
+  const session = c.get('session')
+  if (session?.user?.role !== 'admin') return c.json({ error: 'Forbidden' }, 403)
+  const id = c.req.param('id')
+  const { status } = await c.req.json() as { status: string }
+  await c.env.DB.prepare(
+    'UPDATE leads SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?'
+  ).bind(status, id).run()
+  return c.json({ success: true })
+})
+
+app.delete('/api/admin/leads/:id', requireSession, async (c) => {
+  const session = c.get('session')
+  if (session?.user?.role !== 'admin') return c.json({ error: 'Forbidden' }, 403)
+  const id = c.req.param('id')
+  await c.env.DB.prepare('DELETE FROM leads WHERE id = ?').bind(id).run()
+  return c.json({ success: true })
+})
+
 // ── Seed Vectors (admin) ────────────────────────────────────────
 app.post('/api/admin/seed-vectors', requireAdminOrKey, async (c) => {
   try {
@@ -374,7 +407,7 @@ const chatSchema = z.object({
   locale: z.string().max(10).optional(),
 })
 
-// ── Chat RAG (público) ──────────────────────────────────────────
+// ── Chat RAG (público) via AGENT_DO ─────────────────────────────
 app.post('/api/chat', async (c) => {
   const clientIp = c.req.header('cf-connecting-ip') || c.req.header('x-forwarded-for') || 'unknown'
   if (isChatRateLimited(clientIp)) {
@@ -386,9 +419,9 @@ app.post('/api/chat', async (c) => {
   if (!chatParsed.success) {
     return c.json({ error: 'Invalid request' }, 400)
   }
-  const { messages, locale } = chatParsed.data
-  const lastMessage = messages[messages.length - 1]?.content || ''
-  const lang = locale === 'en' ? 'English' : locale === 'es' ? 'Spanish' : 'Portuguese'
+
+  const { messages, locale } = chatParsed.data;
+  const lastMessage = messages[messages.length - 1]?.content || '';
 
   // 1. Embedding da pergunta
   const queryEmbedding = await c.env.AI.run('@cf/baai/bge-base-en-v1.5', {
@@ -401,7 +434,6 @@ app.post('/api/chat', async (c) => {
     returnMetadata: 'all'
   })
 
-  // 3. Montar contexto RAG
   const context = vectorResults.matches
     .map((m: any) => m.metadata?.content || '')
     .join('\n\n---\n\n')
@@ -420,47 +452,32 @@ app.post('/api/chat', async (c) => {
       return `${p.title || ''}\n${p.content || p.desc || ''}`
     }).join('\n\n---\n\n')
   }
-  // 4. System prompt
-  const systemPrompt = `Você é a Gabi, cicerone digital e concierge da ness., uma empresa de tecnologia fundada em 1991.
-Seu objetivo é atuar como uma BDR/SDR focada em qualificar o usuário e capturar seu meio de contato de forma natural.
 
-IMPORTANTE: O usuário está com o idioma configurado como ${lang}. Responda SEMPRE em ${lang}.
-
-DIRETRIZ DE INCIDENTES (N.CIRT TRIAGE):
-Se o usuário reportar que está sofrendo um ATAQUE, RANSOMWARE, VAZAMENTO ou INCIDENTE CRÍTICO neste exato momento:
-1. Mude seu tom para extrema seriedade e urgência (Modo SOC).
-2. Peça que ele utilize o botão vermelho "Reportar Incidente" na tela para acionamento imediato do SLA-0, e pergunte a extensão do impacto (quais sistemas pararam).
-
-Seja concisa, profissional e extremamente educada.
-Se perguntarem algo fora de segurança cibernética ou da ness., diga educadamente que só pode ajudar com nossos serviços corporativos.
-
---- CONTEXTO ---
-${ragContext}
---- FIM DO CONTEXTO ---`
-
-  // 5. Stream response
-  const workersai = createWorkersAI({ binding: c.env.AI })
-
-  const result = streamText({
-    model: workersai(MODEL_HEAVY),
-    system: systemPrompt,
-    messages: messages.map((m: any) => ({ role: m.role, content: m.content })),
-  })
-
-  // 6. Log chat (fire-and-forget)
   const sessionId = c.req.header('x-session-id') || crypto.randomUUID()
-  c.executionCtx.waitUntil(
-    c.env.DB.prepare(
-      `INSERT INTO chats (session_id, messages) VALUES (?, ?)
-       ON CONFLICT(session_id) DO UPDATE SET messages = ?, updated_at = CURRENT_TIMESTAMP`
-    ).bind(sessionId, JSON.stringify(messages), JSON.stringify(messages)).run().catch(() => {})
-  )
+  
+  // Forward to GabiAgent (Durable Object)
+  const id = c.env.AGENT_DO.idFromName("gabi_agent_" + sessionId);
+  const stub = c.env.AGENT_DO.get(id);
 
-  return result.toTextStreamResponse()
+  const agentReq = new Request(c.req.url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      messages,
+      locale,
+      ragContext,
+      clientIp
+    })
+  });
+
+  return stub.fetch(agentReq);
 })
+
 
 import { queueHandler } from './queue'
 import { cronHandler } from './cron'
+
+export { GabiAgent } from './agent'
 
 export default {
   fetch: app.fetch,

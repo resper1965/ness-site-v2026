@@ -63,5 +63,19 @@
 		"crons": [
 			"0 0 * * SUN"
 		]
-	}
+	},
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "AGENT_DO",
+				"class_name": "GabiAgent"
+			}
+		]
+	},
+	"migrations": [
+		{
+			"tag": "v1",
+			"new_classes": ["GabiAgent"]
+		}
+	]
 }

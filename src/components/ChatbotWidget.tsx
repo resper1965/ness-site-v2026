@@ -137,11 +137,11 @@ const ChatbotWidget = () => {
             {/* Header */}
             <div className="p-6 bg-primary-container/10 border-b border-white/5 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center">
-                  <Bot className="text-on-primary" size={20} />
+                <div className="w-10 h-10 rounded-xl overflow-hidden border-2 border-primary-container/40">
+                  <img src="/gabi-avatar.png" alt="Gabi" className="w-full h-full object-cover" />
                 </div>
                 <div>
-                  <h4 className="text-white font-display font-bold text-sm lowercase-all">Gabi.OS<BlueDot /></h4>
+                  <h4 className="text-white font-display font-bold text-sm lowercase-all">Gabi<BlueDot /></h4>
                   <p className="text-[10px] text-primary-container uppercase tracking-widest font-bold">{t('chatbot.status')}</p>
                 </div>
               </div>
@@ -225,12 +225,15 @@ const ChatbotWidget = () => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? t('a11y.close') : 'Gabi.OS'}
+        aria-label={isOpen ? t('a11y.close') : 'Gabi'}
         aria-expanded={isOpen}
-        className="w-16 h-16 bg-primary-container text-on-primary rounded-2xl flex items-center justify-center shadow-2xl shadow-primary-container/40 relative group"
+        className="w-16 h-16 rounded-2xl overflow-hidden shadow-2xl shadow-primary-container/40 relative group border-2 border-primary-container/60"
       >
-        <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 border-2 border-surface rounded-full"></div>
-        <MessageSquare className="group-hover:rotate-12 transition-transform" size={28} />
+        <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 border-2 border-surface rounded-full z-10"></div>
+        {isOpen
+          ? <div className="w-full h-full bg-primary-container flex items-center justify-center"><X className="text-on-primary" size={24} /></div>
+          : <img src="/gabi-avatar.png" alt="Gabi" className="w-full h-full object-cover" />
+        }
       </motion.button>
     </div>
   );

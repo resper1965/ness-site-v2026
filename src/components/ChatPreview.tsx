@@ -26,7 +26,7 @@ const ChatPreview = () => {
             <Brain size={20} className="text-primary-container" />
           </div>
           <div>
-            <div className="text-white font-bold text-sm">Gabi.OS</div>
+            <div className="text-white font-bold text-sm">Gabi</div>
             <div className="text-[10px] text-green-500 uppercase tracking-widest font-bold flex items-center gap-1">
               <div className="w-1 h-1 rounded-full bg-green-500 animate-pulse"></div>
               online

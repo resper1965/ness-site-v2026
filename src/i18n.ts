@@ -290,8 +290,8 @@ const resources = {
         "support": "atendimento especializado imediato."
       },
       "chatbot": {
-        "welcome": "olá! eu sou a Gabi.OS, a inteligência da ness. como posso ajudar sua operação hoje?",
-        "status": "ia generativa ativa",
+        "welcome": "olá! eu sou a Gabi, a inteligência da ness. como posso ajudar sua operação hoje?",
+        "status": "ia da ness.",
         "error": "desculpe, tive um problema na conexão com o backoffice. tente novamente em instantes.",
         "placeholder": "digite sua mensagem...",
         "quick_specialist": "Falar com Especialista",
@@ -989,8 +989,8 @@ const resources = {
         "support": "immediate specialized support."
       },
       "chatbot": {
-        "welcome": "hello! I am Gabi.OS, ness. intelligence. how can I help your operation today?",
-        "status": "active generative ai",
+        "welcome": "hello! I am Gabi, ness. intelligence. how can I help your operation today?",
+        "status": "ia da ness.",
         "error": "sorry, I had a problem connecting to the backoffice. please try again in a few moments.",
         "placeholder": "type your message...",
         "quick_specialist": "Talk to a Specialist",
@@ -1688,8 +1688,8 @@ const resources = {
         "support": "soporte especializado inmediato."
       },
       "chatbot": {
-        "welcome": "¡hola! soy Gabi.OS, la inteligencia de ness. ¿cómo puedo ayudar a su operation hoy?",
-        "status": "ia generativa activa",
+        "welcome": "¡hola! soy Gabi, la inteligencia de ness. ¿cómo puedo ayudar a su operation hoy?",
+        "status": "ia da ness.",
         "error": "lo siento, tuve un problema al conectarme con el backoffice. por favor, inténtelo de nuevo en unos momentos.",
         "placeholder": "escriba su mensaje...",
         "quick_specialist": "Hablar con Especialista",

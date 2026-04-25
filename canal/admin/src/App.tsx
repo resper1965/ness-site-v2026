@@ -13,6 +13,7 @@ const SaasSettingsPage = React.lazy(() => import("./routes/saas"));
 const AccountSettingsPage = React.lazy(() => import("./routes/account"));
 const UsersPage = React.lazy(() => import("./routes/users"));
 const OrganizationsPage = React.lazy(() => import("./routes/organizations"));
+const LeadsPage = React.lazy(() => import("./routes/leads").then(m => ({ default: m.LeadsPage })));
 
 function CollectionRoute({ slug }: { slug: string }) {
   return <CollectionPage slug={slug} />;
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
       { path: "media", element: <MediaPage /> },
       { path: "forms", element: <FormsPage /> },
       { path: "chats", element: <ChatsPage /> },
+      { path: "leads", element: <LeadsPage /> },
       { path: "saas", element: <SaasSettingsPage /> },
       { path: "account", element: <AccountSettingsPage /> },
       { path: "users", element: <UsersPage /> },
