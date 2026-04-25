@@ -382,9 +382,9 @@ body {
 
 /* ── Table ────────────────────────────────────── */
 .table-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; }
-th, td { padding: 10px 16px; text-align: left; }
-th {
+.table-wrap table { width: 100%; border-collapse: collapse; }
+.table-wrap th, .table-wrap td { padding: 10px 16px; text-align: left; }
+.table-wrap th {
   font-size: 10px;
   font-weight: 700;
   color: var(--text-muted);
@@ -394,14 +394,14 @@ th {
   white-space: nowrap;
   opacity: 0.6;
 }
-td {
+.table-wrap td {
   border-bottom: 1px solid var(--border);
   color: var(--text);
   font-size: 13px;
   line-height: 1.5;
 }
-tr:last-child td { border-bottom: none; }
-tr:not(:last-child):hover td {
+.table-wrap tr:last-child td { border-bottom: none; }
+.table-wrap tr:not(:last-child):hover td {
   background: rgba(123,208,255,0.04);
   transition: background 0.1s;
 }

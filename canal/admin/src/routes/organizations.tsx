@@ -94,10 +94,6 @@ export default function OrganizationsPage() {
 
   return (
     <div className="collection-page">
-      <header className="page-header">
-        <h1>Gestão de SaaS (Acesso Global)</h1>
-      </header>
-
       {errorMsg && <div className="error-msg" style={{ marginBottom: 16 }}>{errorMsg}</div>}
 
       <div className="card">
