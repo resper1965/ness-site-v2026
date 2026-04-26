@@ -3,9 +3,13 @@
  * 
  * Endpoints protegidos para gerenciamento administrativo.
  * Todos requerem session ativa com role === 'admin'.
+ * Migrated to Drizzle ORM.
  */
 
 import { Hono, Context } from 'hono'
+import { drizzle } from 'drizzle-orm/d1'
+import { eq, sql, like, desc, and } from 'drizzle-orm'
+import * as schema from '../db/schema'
 import type { Bindings } from '../index'
 
 type Variables = {
@@ -15,10 +19,13 @@ type Variables = {
 
 type AdminEnv = { Bindings: Bindings; Variables: Variables }
 
-// Shared admin guard
 function assertAdmin(c: Context<AdminEnv>): boolean {
   const session = c.get('session')
   return session?.user?.role === 'admin'
+}
+
+function getDb(c: Context<AdminEnv>) {
+  return drizzle(c.env.DB, { schema })
 }
 
 const admin = new Hono<AdminEnv>()
@@ -26,11 +33,11 @@ const admin = new Hono<AdminEnv>()
 // ── Organizations CRUD ──────────────────────────────────────────
 admin.get('/organizations', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
-  const { results } = await c.env.DB.prepare(`
-    SELECT o.*, 
-      (SELECT COUNT(*) FROM "member" m WHERE m.organizationId = o.id) as memberCount 
-    FROM "organization" o ORDER BY o.createdAt DESC
-  `).all()
+  const db = getDb(c)
+  const results = await db.select({
+    ...schema.organization,
+    memberCount: sql<number>`(SELECT COUNT(*) FROM "member" m WHERE m.organizationId = ${schema.organization.id})`,
+  }).from(schema.organization).orderBy(desc(schema.organization.createdAt))
   return c.json(results)
 })
 
@@ -38,85 +45,97 @@ admin.patch('/organizations/:id', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
   const id = c.req.param('id')
   const body = await c.req.json()
-  const { success } = await c.env.DB.prepare(
-    'UPDATE "organization" SET metadata = ? WHERE id = ?'
-  ).bind(JSON.stringify(body.metadata || {}), id).run()
-  return c.json({ success })
+  const db = getDb(c)
+  await db.update(schema.organization)
+    .set({ metadata: JSON.stringify(body.metadata || {}) })
+    .where(eq(schema.organization.id, id))
+  return c.json({ success: true })
 })
 
 admin.delete('/organizations/:id', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
   const id = c.req.param('id')
-  await c.env.DB.batch([
-    c.env.DB.prepare('DELETE FROM "member" WHERE organizationId = ?').bind(id),
-    c.env.DB.prepare('DELETE FROM "invitation" WHERE organizationId = ?').bind(id),
-    c.env.DB.prepare('DELETE FROM "organization" WHERE id = ?').bind(id)
-  ])
+  const db = getDb(c)
+  await db.delete(schema.member).where(eq(schema.member.organizationId, id))
+  await db.delete(schema.invitation).where(eq(schema.invitation.organizationId, id))
+  await db.delete(schema.organization).where(eq(schema.organization.id, id))
   return c.json({ success: true })
 })
 
 // ── API Keys ────────────────────────────────────────────────────
 admin.get('/api-keys/:orgId', async (c) => {
   const orgId = c.req.param('orgId')
-  const { results } = await c.env.DB.prepare(
-    'SELECT id, name, createdAt, prefix FROM apikey WHERE metadata LIKE ? ORDER BY createdAt DESC'
-  ).bind(`%"orgId":"${orgId}"%`).all()
+  const db = getDb(c)
+  const results = await db.select({
+    id: schema.apikey.id,
+    name: schema.apikey.name,
+    createdAt: schema.apikey.createdAt,
+    prefix: schema.apikey.prefix,
+  }).from(schema.apikey)
+    .where(like(schema.apikey.metadata, `%"orgId":"${orgId}"%`))
+    .orderBy(desc(schema.apikey.createdAt))
   return c.json(results)
 })
 
 admin.delete('/api-keys/:id', async (c) => {
   const id = c.req.param('id')
-  const { success } = await c.env.DB.prepare('DELETE FROM apikey WHERE id = ?').bind(id).run()
-  return c.json({ success })
+  const db = getDb(c)
+  await db.delete(schema.apikey).where(eq(schema.apikey.id, id))
+  return c.json({ success: true })
 })
 
 // ── Forms, Chats, Leads ─────────────────────────────────────────
 admin.get('/forms', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
-  const { results } = await c.env.DB.prepare('SELECT * FROM forms ORDER BY created_at DESC LIMIT 50').all()
+  const db = getDb(c)
+  const results = await db.select().from(schema.forms)
+    .orderBy(desc(schema.forms.created_at)).limit(50)
   return c.json(results)
 })
 
 admin.get('/chats', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
-  const { results } = await c.env.DB.prepare('SELECT * FROM chats ORDER BY updated_at DESC LIMIT 50').all()
+  const db = getDb(c)
+  const results = await db.select().from(schema.chats)
+    .orderBy(desc(schema.chats.updated_at)).limit(50)
   return c.json(results)
 })
 
 admin.get('/leads', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
   const status = c.req.query('status')
-  const query = status
-    ? 'SELECT * FROM leads WHERE status = ? ORDER BY created_at DESC LIMIT 100'
-    : 'SELECT * FROM leads ORDER BY created_at DESC LIMIT 100'
-  const { results } = status
-    ? await c.env.DB.prepare(query).bind(status).all()
-    : await c.env.DB.prepare(query).all()
+  const db = getDb(c)
+  const q = db.select().from(schema.leads).orderBy(desc(schema.leads.created_at)).limit(100)
+  const results = status
+    ? await q.where(eq(schema.leads.status, status))
+    : await q
   return c.json(results)
 })
 
 admin.patch('/leads/:id', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
-  const id = c.req.param('id')
+  const id = parseInt(c.req.param('id'), 10)
   const { status } = await c.req.json() as { status: string }
-  await c.env.DB.prepare(
-    'UPDATE leads SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?'
-  ).bind(status, id).run()
+  const db = getDb(c)
+  await db.update(schema.leads)
+    .set({ status, updated_at: new Date().toISOString() })
+    .where(eq(schema.leads.id, id))
   return c.json({ success: true })
 })
 
 admin.delete('/leads/:id', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
-  const id = c.req.param('id')
-  await c.env.DB.prepare('DELETE FROM leads WHERE id = ?').bind(id).run()
+  const id = parseInt(c.req.param('id'), 10)
+  const db = getDb(c)
+  await db.delete(schema.leads).where(eq(schema.leads.id, id))
   return c.json({ success: true })
 })
 
 // ── Dashboard Stats & Activity ──────────────────────────────────
 admin.get('/stats', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
-  
-  const [leads, forms, chats, published, newLeads, newForms, posts, cases, jobs, users] = await Promise.all([
+
+  const [leadsCount, formsCount, chatsCount, published, newLeads, newForms, posts, cases, jobs, users] = await Promise.all([
     c.env.DB.prepare('SELECT COUNT(*) as c FROM leads').first<{c:number}>(),
     c.env.DB.prepare('SELECT COUNT(*) as c FROM forms').first<{c:number}>(),
     c.env.DB.prepare('SELECT COUNT(*) as c FROM chats').first<{c:number}>(),
@@ -128,19 +147,19 @@ admin.get('/stats', async (c) => {
     c.env.DB.prepare("SELECT COUNT(*) as c FROM entries e JOIN collections col ON e.collection_id = col.id WHERE col.slug = 'jobs'").first<{c:number}>(),
     c.env.DB.prepare('SELECT COUNT(*) as c FROM user').first<{c:number}>(),
   ])
-  
+
   const { results: weeklyLeads } = await c.env.DB.prepare(
     `SELECT DATE(created_at) as day, COUNT(*) as count 
      FROM leads WHERE created_at >= DATE('now', '-7 days') 
      GROUP BY DATE(created_at) ORDER BY day ASC`
   ).all()
-  
+
   return c.json({
-    totalLeads: leads?.c || 0,
+    totalLeads: leadsCount?.c || 0,
     newLeads: newLeads?.c || 0,
-    totalForms: forms?.c || 0,
+    totalForms: formsCount?.c || 0,
     newForms: newForms?.c || 0,
-    totalChats: chats?.c || 0,
+    totalChats: chatsCount?.c || 0,
     publishedEntries: published?.c || 0,
     totalPosts: posts?.c || 0,
     totalCases: cases?.c || 0,
@@ -152,6 +171,7 @@ admin.get('/stats', async (c) => {
 
 admin.get('/activity', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
+  // Complex UNION ALL — keep as raw SQL (semantic-preserving exception)
   const { results } = await c.env.DB.prepare(`
     SELECT 'lead' as type, name as title, source, status, created_at FROM leads
     UNION ALL
@@ -166,40 +186,48 @@ admin.get('/activity', async (c) => {
 // ── Newsletter Management ───────────────────────────────────────
 admin.get('/newsletter-subscribers', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
-  const { results } = await c.env.DB.prepare('SELECT * FROM newsletter ORDER BY created_at DESC').all()
-  return c.json(results || [])
+  const db = getDb(c)
+  const results = await db.select().from(schema.newsletter)
+    .orderBy(desc(schema.newsletter.created_at))
+  return c.json(results)
 })
 
 admin.post('/newsletter-subscribers', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
   const { email } = await c.req.json() as { email: string }
   if (!email || !email.includes('@')) return c.json({ error: 'Invalid email' }, 400)
-  
-  const existing = await c.env.DB.prepare('SELECT id FROM newsletter WHERE email = ?').bind(email).first()
-  if (existing) return c.json({ success: true, id: existing.id })
-  
+
+  const db = getDb(c)
+  const existing = await db.select({ id: schema.newsletter.id })
+    .from(schema.newsletter)
+    .where(eq(schema.newsletter.email, email))
+    .limit(1)
+  if (existing.length) return c.json({ success: true, id: existing[0].id })
+
   const result = await c.env.DB.prepare('INSERT INTO newsletter (email) VALUES (?)').bind(email).run()
   return c.json({ success: true, id: result.meta?.last_row_id })
 })
 
 admin.delete('/newsletter-subscribers/:id', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
-  const id = c.req.param('id')
-  await c.env.DB.prepare('DELETE FROM newsletter WHERE id = ?').bind(id).run()
+  const id = parseInt(c.req.param('id'), 10)
+  const db = getDb(c)
+  await db.delete(schema.newsletter).where(eq(schema.newsletter.id, id))
   return c.json({ success: true })
 })
 
 admin.post('/newsletters/send', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
-  
+
   const { subject, preheader, body } = await c.req.json() as { subject: string; preheader: string; body: string }
   if (!subject || !body) return c.json({ error: 'Subject and body required' }, 400)
-  
-  const { results: subs } = await c.env.DB.prepare('SELECT email FROM newsletter').all()
-  if (!subs || subs.length === 0) return c.json({ error: 'No subscribers' }, 400)
-  
-  const emails = (subs as { email: string }[]).map((s) => s.email).filter(Boolean)
-  
+
+  const db = getDb(c)
+  const subs = await db.select({ email: schema.newsletter.email }).from(schema.newsletter)
+  if (!subs.length) return c.json({ error: 'No subscribers' }, 400)
+
+  const emails = subs.map(s => s.email).filter(Boolean)
+
   const html = `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#fff;">
       <div style="background:#0A0A0A;padding:32px 40px;">
@@ -215,32 +243,22 @@ admin.post('/newsletters/send', async (c) => {
       </div>
     </div>
   `
-  
+
   if (!c.env.RESEND_API_KEY) return c.json({ error: 'Resend API key not configured' }, 500)
-  
+
   let sentCount = 0
   for (let i = 0; i < emails.length; i += 50) {
     const batch = emails.slice(i, i + 50)
     try {
       await fetch('https://api.resend.com/emails', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${c.env.RESEND_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: 'ness. <newsletter@canal.ness.com.br>',
-          to: batch,
-          subject,
-          html,
-        }),
+        headers: { 'Authorization': `Bearer ${c.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ from: 'ness. <newsletter@canal.ness.com.br>', to: batch, subject, html }),
       })
       sentCount += batch.length
-    } catch (err) {
-      console.error('[newsletter] batch send error:', err)
-    }
+    } catch (err) { console.error('[newsletter] batch send error:', err) }
   }
-  
+
   return c.json({ success: true, sent: sentCount })
 })
 
@@ -261,21 +279,24 @@ admin.put('/ai-settings', async (c) => {
 
 admin.get('/ai-stats', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
-  const [chats, leads, recent] = await Promise.all([
-    c.env.DB.prepare('SELECT COUNT(*) as c FROM chats').first<{c:number}>(),
-    c.env.DB.prepare("SELECT COUNT(*) as c FROM leads WHERE source='chatbot'").first<{c:number}>(),
-    c.env.DB.prepare("SELECT COUNT(*) as c FROM chats WHERE updated_at >= DATE('now', '-7 days')").first<{c:number}>(),
+  const db = getDb(c)
+  const [totalChats, totalLeads, recentChats] = await Promise.all([
+    db.select({ c: sql<number>`COUNT(*)` }).from(schema.chats),
+    db.select({ c: sql<number>`COUNT(*)` }).from(schema.leads).where(eq(schema.leads.source, 'chatbot')),
+    db.select({ c: sql<number>`COUNT(*)` }).from(schema.chats)
+      .where(sql`${schema.chats.updated_at} >= DATE('now', '-7 days')`),
   ])
   return c.json({
-    totalChats: chats?.c || 0,
-    totalLeads: leads?.c || 0,
-    recentChats: recent?.c || 0,
+    totalChats: totalChats[0]?.c || 0,
+    totalLeads: totalLeads[0]?.c || 0,
+    recentChats: recentChats[0]?.c || 0,
   })
 })
 
 // ── Communications (unified inbox) ─────────────────────────────
 admin.get('/communications', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
+  // Complex UNION ALL — keep as raw SQL
   const { results } = await c.env.DB.prepare(`
     SELECT 'form' as type, id, payload as data, source as title, source, status, created_at FROM forms
     UNION ALL
@@ -290,20 +311,21 @@ admin.post('/communications/forward', async (c) => {
   const session = c.get('session')
   const { messageId, messageType, to } = await c.req.json() as { messageId: number; messageType: string; to: string }
   if (!to || !to.includes('@')) return c.json({ error: 'Invalid email' }, 400)
-  
+
+  const db = getDb(c)
   let content = ''
   let subject = ''
   if (messageType === 'form') {
-    const row = await c.env.DB.prepare('SELECT * FROM forms WHERE id = ?').bind(messageId).first()
-    if (row) { content = JSON.stringify(row, null, 2); subject = `[Canal] Formulário #${messageId}` }
+    const rows = await db.select().from(schema.forms).where(eq(schema.forms.id, messageId)).limit(1)
+    if (rows[0]) { content = JSON.stringify(rows[0], null, 2); subject = `[Canal] Formulário #${messageId}` }
   } else if (messageType === 'lead') {
-    const row = await c.env.DB.prepare('SELECT * FROM leads WHERE id = ?').bind(messageId).first<{ name: string }>()
-    if (row) { content = JSON.stringify(row, null, 2); subject = `[Canal] Lead: ${row.name}` }
+    const rows = await db.select().from(schema.leads).where(eq(schema.leads.id, messageId)).limit(1)
+    if (rows[0]) { content = JSON.stringify(rows[0], null, 2); subject = `[Canal] Lead: ${rows[0].name}` }
   }
-  
+
   if (!content) return c.json({ error: 'Message not found' }, 404)
   if (!c.env.RESEND_API_KEY) return c.json({ error: 'Resend not configured' }, 500)
-  
+
   await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${c.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
@@ -318,7 +340,7 @@ admin.post('/communications/forward', async (c) => {
       </div>`,
     }),
   })
-  
+
   return c.json({ success: true })
 })
 
