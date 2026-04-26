@@ -7,7 +7,7 @@ export default function UsersPage() {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const SUPER_ADMIN_EMAILS = ["resper@bekaa.eu", "admin@ness.com.br"];
+  const SUPER_ADMIN_EMAILS = ["resper@bekaa.eu", "admin@ness.com.br", "resper@ness.com.br"];
   const isSuperAdmin = session?.user?.role === 'admin' || SUPER_ADMIN_EMAILS.includes(session?.user?.email || "");
 
   useEffect(() => {

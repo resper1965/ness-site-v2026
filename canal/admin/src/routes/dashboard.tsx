@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { Outlet, NavLink, useNavigate, useLocation } from "react-router";
-import { useSession, signOut, authClient, organization } from "../lib/auth-client";
+import { useSession, signOut, authClient } from "../lib/auth-client";
+import { OrgSwitcher } from "../components/dashboard/OrgSwitcher";
+import { UserDropdown } from "../components/dashboard/UserDropdown";
 
 const NAV = [
   {
@@ -9,6 +11,15 @@ const NAV = [
       {
         to: "/",
         end: true,
+        label: "Dashboard",
+        icon: (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
+        ),
+      },
+      {
+        to: "/insights",
         label: "Insights",
         icon: (
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -74,11 +85,29 @@ const NAV = [
           </svg>
         ),
       },
+      {
+        to: "/decks",
+        label: "Apresentações",
+        icon: (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+          </svg>
+        ),
+      },
     ],
   },
   {
     section: "Gestão",
     items: [
+      {
+        to: "/newsletters",
+        label: "Newsletters",
+        icon: (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+          </svg>
+        ),
+      },
       {
         to: "/forms",
         label: "Formulários",
@@ -107,18 +136,21 @@ const NAV = [
           </svg>
         ),
       },
-    ],
-  },
-  {
-    section: "Conta",
-    items: [
       {
-        to: "/account",
-        label: "Minha Conta",
+        to: "/communications",
+        label: "Central de Msgs",
         icon: (
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
+            <path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4Z"/>
+          </svg>
+        ),
+      },
+      {
+        to: "/ai-settings",
+        label: "Gabi IA",
+        icon: (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/><path d="M6 10v1a6 6 0 0 0 12 0v-1"/><path d="M12 18v4"/><path d="M8 22h8"/>
           </svg>
         ),
       },
@@ -169,148 +201,29 @@ const NAV = [
 ];
 
 const PAGE_META: Record<string, { title: string; sub: string }> = {
-  "/":        { title: "Insights",       sub: "Artigos e publicações do blog" },
+  "/":        { title: "Dashboard",       sub: "Visão geral da plataforma" },
+  "/insights": { title: "Insights",       sub: "Artigos e publicações do blog" },
   "/cases":   { title: "Cases",          sub: "Portfólio de projetos e cases" },
   "/jobs":    { title: "Vagas",          sub: "Oportunidades publicadas" },
   "/media":       { title: "Media",          sub: "Galeria de imagens e arquivos" },
   "/brandbook":   { title: "Brandbook",      sub: "Assets de marca do grupo" },
   "/signatures":  { title: "Assinaturas",    sub: "Assinaturas de email corporativas" },
+  "/decks":       { title: "Apresentações",  sub: "Gerador de decks PDF corporativos" },
   "/forms":   { title: "Formulários",    sub: "Submissões recebidas" },
+  "/newsletters": { title: "Newsletters",   sub: "Compor e disparar e-mails em massa" },
   "/chats":   { title: "Chatlogs AI",    sub: "Auditoria de interações com IA" },
   "/leads":   { title: "Leads Gabi",     sub: "Contatos qualificados pela IA" },
+  "/communications": { title: "Central de Mensagens", sub: "Inbox unificado de forms, leads e chats" },
+  "/ai-settings": { title: "Gabi IA",      sub: "Configuração da assistente virtual" },
   "/account": { title: "Minha Conta",   sub: "Perfil, senha e vinculações" },
   "/saas":    { title: "Sua Empresa",     sub: "Gestão do workspace e membros" },
   "/users":   { title: "Gestão Global de Usuários", sub: "Administração de acessos (Super Admin)" },
   "/organizations": { title: "Gestão Global de Empresas", sub: "Visão central de workspaces (Super Admin)" },
 };
 
-const SUPER_ADMIN_EMAILS = ["resper@bekaa.eu", "admin@ness.com.br"];
+const SUPER_ADMIN_EMAILS = ["resper@bekaa.eu", "admin@ness.com.br", "resper@ness.com.br"];
 
-/* ── Org Switcher Component ────────────────────────── */
-function OrgSwitcher({ userEmail, isSuperAdmin }: { userEmail: string; isSuperAdmin: boolean }) {
-  const { data: activeOrg } = authClient.useActiveOrganization();
-  const { data: orgs } = authClient.useListOrganizations();
-  const [open, setOpen] = useState(false);
-  const [creating, setCreating] = useState(false);
-  const [newName, setNewName] = useState("");
-  const [loading, setLoading] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
 
-  // Auto-activate bekaa for super admins who don't have an active org
-  useEffect(() => {
-    if (isSuperAdmin && !activeOrg && orgs?.length) {
-      const bekaaOrg = orgs.find((o: any) => o.slug === 'bekaa');
-      if (bekaaOrg) {
-        organization.setActive({ organizationId: bekaaOrg.id });
-      }
-    }
-  }, [isSuperAdmin, activeOrg, orgs]);
-
-  // Close on outside click
-  useEffect(() => {
-    function handler(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-        setCreating(false);
-      }
-    }
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
-
-  const handleSwitch = async (orgId: string) => {
-    await organization.setActive({ organizationId: orgId });
-    setOpen(false);
-  };
-
-  const handleCreate = async () => {
-    if (!newName.trim()) return;
-    setLoading(true);
-    try {
-      const slug = newName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-      const { data } = await organization.create({ name: newName, slug });
-      if (data) await organization.setActive({ organizationId: data.id });
-      setNewName("");
-      setCreating(false);
-      setOpen(false);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const orgName = activeOrg?.name || "Workspace";
-  const orgSlug = activeOrg?.slug || userEmail.split("@")[1]?.split(".")[0];
-
-  // Todos podem ver o menu e criar organizações
-
-  // Super admin: full dropdown switcher
-  return (
-    <div className="org-switcher" ref={ref}>
-      <button
-        className={`org-switcher-btn${open ? " open" : ""}`}
-        onClick={() => setOpen(!open)}
-      >
-        <div>
-          <div style={{ lineHeight: 1.2 }}>{orgName}</div>
-          {orgSlug && <div className="org-switcher-slug">{orgSlug}</div>}
-        </div>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-      </button>
-
-      {open && (
-        <div className="org-dropdown">
-          {orgs?.map((o: any) => (
-            <button
-              key={o.id}
-              className={`org-dropdown-item${activeOrg?.id === o.id ? " active" : ""}`}
-              onClick={() => handleSwitch(o.id)}
-            >
-              <span>{o.name}</span>
-              {activeOrg?.id === o.id && (
-                <svg className="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-              )}
-            </button>
-          ))}
-          <div className="org-dropdown-divider" />
-
-          {isSuperAdmin && (
-            creating ? (
-              <div className="org-create-inline">
-                <input
-                  autoFocus
-                  placeholder="Nome da organização"
-                  value={newName}
-                  aria-label="Nome da organização"
-                  onChange={(e) => setNewName(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleCreate()}
-                />
-                <div className="org-create-actions">
-                  <button className="btn btn-sm btn-ghost" onClick={() => { setCreating(false); setNewName(""); }}>
-                    Cancelar
-                  </button>
-                  <button className="btn btn-sm btn-primary" onClick={handleCreate} disabled={loading || !newName.trim()}>
-                    {loading ? "..." : "Criar"}
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <button className="org-dropdown-create" onClick={() => setCreating(true)}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-                </svg>
-                Nova Organização
-              </button>
-            )
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
 
 /* ── Dashboard Layout ────────────────────────── */
 function useCollapsedGroups() {
@@ -418,18 +331,7 @@ export default function DashboardLayout() {
           })}
         </nav>
 
-        <div className="sidebar-footer">
-          <div className="user-info">
-            <div className="user-name">{session.user.name || "Admin"}</div>
-            <div className="user-email truncate">{session.user.email}</div>
-          </div>
-          <button className="nav-link" onClick={handleSignOut}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
-            </svg>
-            Sair
-          </button>
-        </div>
+        <UserDropdown user={session.user} onSignOut={handleSignOut} />
       </aside>
 
       {/* Main area */}

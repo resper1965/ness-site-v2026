@@ -148,7 +148,7 @@ export default function SignaturesHub() {
               <div key={key}>
                 <label style={LABEL}>{label}</label>
                 <input type={type} className="sig-input" style={FIELD}
-                  value={(form as any)[key]}
+                  value={form[key as keyof typeof form] as string}
                   aria-label={label} placeholder={placeholder}
                   onChange={e => setForm({ ...form, [key]: e.target.value })} />
               </div>
@@ -216,7 +216,7 @@ export default function SignaturesHub() {
                       <tr>
 
                         {/* LEFT BLOCK */}
-                        <td width={285} valign="middle" style={{ padding:"22px 28px 22px 0" }}>
+                        <td width={285} valign="middle" style={{ padding:"22px 28px 22px 28px" }}>
                           <table cellPadding={0} cellSpacing={0} border={0} style={{ width:"100%" }}>
                             <tbody>
                               {/* Logo */}
@@ -315,8 +315,10 @@ export default function SignaturesHub() {
                       {form.disclaimer && (
                         <tr>
                           <td colSpan={3} style={{ paddingTop:14 }}>
-                            <div style={{ fontSize:10, lineHeight:"1.45", color:"#999999", borderTop:"1px solid #eeeeee", paddingTop:10 }}>
+                            <div style={{ fontSize:10, lineHeight:"1.45", color:"#999999", borderTop:"1px solid #eeeeee", paddingTop:10, textAlign:"center" }}>
                               Esta mensagem e seus anexos podem conter informações confidenciais. Caso tenha recebido este e-mail por engano, por favor informe o remetente e exclua a mensagem.
+                              <br />
+                              This message and its attachments may contain confidential information. If you received this email in error, please notify the sender and delete the message.
                             </div>
                           </td>
                         </tr>

@@ -60,18 +60,14 @@ export function LeadsPage() {
   }
 
   return (
-    <div className="p-8 max-w-6xl mx-auto">
-      <div className="flex items-center justify-end mb-8">
-        <div className="flex gap-2">
+    <div>
+      <div className="collection-toolbar" style={{ marginBottom: 20, display: "flex", justifyContent: "flex-end" }}>
+        <div style={{ display: 'flex', gap: 8 }}>
           {["", "new", "contacted", "qualified", "lost"].map(s => (
             <button
               key={s}
               onClick={() => setFilter(s)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                filter === s
-                  ? "bg-white text-black"
-                  : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
-              }`}
+              className={filter === s ? "btn btn-primary btn-sm" : "btn btn-secondary btn-sm"}
             >
               {s === "" ? "Todos" : s.charAt(0).toUpperCase() + s.slice(1)}
             </button>
@@ -80,46 +76,58 @@ export function LeadsPage() {
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center h-40 text-zinc-500">Carregando...</div>
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '40px 0' }}>
+          <div className="loader-inline" />
+        </div>
       ) : leads.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-40 text-zinc-500 gap-2">
-          <span className="text-3xl">🎯</span>
+        <div className="empty-state">
           <p>Nenhum lead capturado ainda.</p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-zinc-800">
-          <table className="w-full text-sm">
+        <div className="card table-wrap" style={{ padding: 0, overflow: 'hidden' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr className="border-b border-zinc-800 text-zinc-500 text-xs uppercase tracking-wider">
-                <th className="text-left px-4 py-3">Nome</th>
-                <th className="text-left px-4 py-3">Contato</th>
-                <th className="text-left px-4 py-3">Intenção</th>
-                <th className="text-left px-4 py-3">Urgência</th>
-                <th className="text-left px-4 py-3">Status</th>
-                <th className="text-left px-4 py-3">Capturado em</th>
-                <th className="text-left px-4 py-3"></th>
+              <tr>
+                <th>Nome</th>
+                <th>Contato</th>
+                <th>Intenção</th>
+                <th>Urgência</th>
+                <th>Status</th>
+                <th>Capturado em</th>
+                <th></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-800/50">
+            <tbody>
               {leads.map(lead => (
-                <tr key={lead.id} className="hover:bg-zinc-800/30 transition-colors">
-                  <td className="px-4 py-3 font-medium text-white">{lead.name}</td>
-                  <td className="px-4 py-3 text-zinc-300">
-                    <a href={`mailto:${lead.contact}`} className="hover:text-white transition-colors">
+                <tr key={lead.id}>
+                  <td style={{ fontWeight: 500 }}>{lead.name}</td>
+                  <td>
+                    <a href={`mailto:${lead.contact}`} style={{ color: 'var(--accent)', textDecoration: 'none' }}>
                       {lead.contact}
                     </a>
                   </td>
-                  <td className="px-4 py-3 text-zinc-400 max-w-[200px] truncate">{lead.intent}</td>
-                  <td className="px-4 py-3">
-                    <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${URGENCY_COLOR[lead.urgency] || ""}`}>
+                  <td style={{ maxWidth: 200, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: 'var(--text-muted)' }}>
+                    {lead.intent}
+                  </td>
+                  <td>
+                    <span className={`badge badge-role-${lead.urgency === 'alta' ? 'editor' : 'member'}`}>
                       {lead.urgency}
                     </span>
                   </td>
-                  <td className="px-4 py-3">
+                  <td>
                     <select
                       value={lead.status}
                       onChange={e => updateStatus(lead.id, e.target.value)}
-                      className={`text-xs px-2 py-1 rounded-lg border-none outline-none cursor-pointer ${STATUS_COLOR[lead.status] || "bg-zinc-700 text-zinc-300"}`}
+                      style={{ 
+                        padding: '4px 8px', 
+                        borderRadius: '6px', 
+                        border: '1px solid var(--border)', 
+                        background: 'var(--surface-2)', 
+                        color: 'var(--text)',
+                        fontSize: '12px',
+                        outline: 'none',
+                        cursor: 'pointer'
+                      }}
                     >
                       <option value="new">New</option>
                       <option value="contacted">Contacted</option>
@@ -127,17 +135,18 @@ export function LeadsPage() {
                       <option value="lost">Lost</option>
                     </select>
                   </td>
-                  <td className="px-4 py-3 text-zinc-500 text-xs">
+                  <td style={{ color: 'var(--text-muted)' }}>
                     {new Date(lead.created_at).toLocaleDateString("pt-BR", {
                       day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit"
                     })}
                   </td>
-                  <td className="px-4 py-3">
+                  <td>
                     <button
                       onClick={() => deleteLead(lead.id)}
-                      className="text-zinc-600 hover:text-red-400 transition-colors text-xs"
+                      className="btn btn-ghost btn-sm"
+                      style={{ padding: '4px 8px', color: 'var(--danger)', opacity: 0.8 }}
                     >
-                      ✕
+                      Excluir
                     </button>
                   </td>
                 </tr>

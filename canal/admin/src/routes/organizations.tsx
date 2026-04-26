@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { authClient } from "../lib/auth-client";
 
+interface Organization {
+  id: string;
+  name: string;
+  slug: string;
+  metadata: string | Record<string, unknown>;
+  createdAt: string;
+  memberCount: number;
+}
+
 export default function OrganizationsPage() {
   const { data: session } = authClient.useSession();
-  const [organizations, setOrgs] = useState<any[]>([]);
+  const [organizations, setOrgs] = useState<Organization[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const SUPER_ADMIN_EMAILS = ["resper@bekaa.eu", "admin@ness.com.br"];
+  const SUPER_ADMIN_EMAILS = ["resper@bekaa.eu", "admin@ness.com.br", "resper@ness.com.br"];
   const isSuperAdmin = session?.user?.role === 'admin' || SUPER_ADMIN_EMAILS.includes(session?.user?.email || "");
 
   useEffect(() => {
@@ -36,7 +45,7 @@ export default function OrganizationsPage() {
       if (req.error) {
         setErrorMsg((req.error as { message?: string }).message ?? "Erro ao carregar organizações.");
       } else {
-        setOrgs((req.data as any) || []);
+        setOrgs((req.data as Organization[]) || []);
       }
     } catch (err: any) {
       setErrorMsg(err.message || "Erro de conexão ao buscar organizações");
@@ -45,7 +54,7 @@ export default function OrganizationsPage() {
     }
   };
 
-  const handleUpdatePlan = async (org: any, plan: string) => {
+  const handleUpdatePlan = async (org: Organization, plan: string) => {
     if (!confirm(`Mudar o plano da organização ${org.name} para ${plan.toUpperCase()}?`)) return;
     const metadata = { ...(typeof org.metadata === 'string' ? JSON.parse(org.metadata || "{}") : org.metadata), plan };
     try {
@@ -54,7 +63,7 @@ export default function OrganizationsPage() {
         baseURL: window.location.origin,
         body: { metadata }
       });
-      if ((req.data as any)?.success) {
+      if ((req.data as { success?: boolean })?.success) {
         fetchOrganizations();
       } else {
         alert("Erro ao atualizar plano.");
@@ -73,7 +82,7 @@ export default function OrganizationsPage() {
         method: "DELETE",
         baseURL: window.location.origin
       });
-      if ((req.data as any)?.success) {
+      if ((req.data as { success?: boolean })?.success) {
         fetchOrganizations();
       } else {
         alert("Erro ao excluir.");

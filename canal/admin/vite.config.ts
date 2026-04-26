@@ -7,6 +7,14 @@ export default defineConfig({
   build: {
     outDir: "dist",
     emptyOutDir: true,
+    chunkSizeWarningLimit: 1600,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-pdf': ['@react-pdf/renderer'],
+        },
+      },
+    },
   },
   server: {
     proxy: {

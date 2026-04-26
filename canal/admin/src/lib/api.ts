@@ -41,23 +41,23 @@ export interface FieldDef {
 /** Busca todas as collections registradas. (Apenas resumo) */
 export async function fetchCollections(): Promise<CollectionDef[]> {
   const res = await fetch(`${BASE}/collections`, { credentials: 'include' });
-  const data = await res.json() as unknown;
-  const list = Array.isArray(data) ? data : (data as any)?.data ?? [];
-  return list.map((c: any) => ({
+  const data = await res.json() as Record<string, unknown> | unknown[];
+  const list = Array.isArray(data) ? data : (data as { data?: unknown[] })?.data ?? [];
+  return (list as Record<string, unknown>[]).map((c) => ({
     ...c,
-    fields: typeof c.fields === 'string' ? JSON.parse(c.fields) : c.fields ?? [],
-  }));
+    fields: typeof c.fields === 'string' ? JSON.parse(c.fields as string) : c.fields ?? [],
+  })) as CollectionDef[];
 }
 
 /** Busca schema detalhado de uma collection (Com campos) */
 export async function fetchCollection(slug: string): Promise<CollectionDef | null> {
   const res = await fetch(`${BASE}/collections/${slug}`, { credentials: 'include' });
   if (!res.ok) return null;
-  const c = await res.json() as any;
+  const c = await res.json() as Record<string, unknown>;
   return {
     ...c,
-    fields: typeof c.fields === 'string' ? JSON.parse(c.fields) : c.fields ?? [],
-  };
+    fields: typeof c.fields === 'string' ? JSON.parse(c.fields as string) : c.fields ?? [],
+  } as CollectionDef;
 }
 
 /** Busca entries de uma collection */
