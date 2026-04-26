@@ -19,6 +19,8 @@ const DecksPage = React.lazy(() => import("./routes/decks"));
 const NewslettersPage = React.lazy(() => import("./routes/newsletters"));
 const AISettingsPage = React.lazy(() => import("./routes/ai-settings"));
 const CommunicationsPage = React.lazy(() => import("./routes/communications"));
+const CompliancePage = React.lazy(() => import("./routes/compliance"));
+const ChatbotPage = React.lazy(() => import("./routes/chatbot"));
 
 function GlobalErrorBoundary() {
   const error = useRouteError() as Error;
@@ -77,6 +79,8 @@ const router = createBrowserRouter([
       { path: "account", element: <AccountSettingsPage /> },
       { path: "users", element: <UsersPage /> },
       { path: "organizations", element: <OrganizationsPage /> },
+      { path: "compliance", element: <CompliancePage /> },
+      { path: "chatbot", element: <ChatbotPage /> },
       { path: "crud/:slug", element: <DynamicCrudRoute /> },
     ],
   },

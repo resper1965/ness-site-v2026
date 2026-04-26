@@ -166,6 +166,29 @@ export const NAV: NavGroup[] = [
           </svg>
         ),
       },
+      {
+        to: "/chatbot",
+        label: "Chatbot & RAG",
+        icon: (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 8V4H8"/><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="6" y="14" width="12" height="8" rx="2"/><path d="M12 10v4"/>
+          </svg>
+        ),
+      },
+    ],
+  },
+  {
+    section: "Compliance",
+    items: [
+      {
+        to: "/compliance",
+        label: "LGPD & Denúncias",
+        icon: (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        ),
+      },
     ],
   },
   {
@@ -231,6 +254,8 @@ export const PAGE_META: Record<string, { title: string; sub: string }> = {
   "/saas":    { title: "Sua Empresa",     sub: "Gestão do workspace e membros" },
   "/users":   { title: "Gestão Global de Usuários", sub: "Administração de acessos (Super Admin)" },
   "/organizations": { title: "Gestão Global de Empresas", sub: "Visão central de workspaces (Super Admin)" },
+  "/compliance":  { title: "Compliance & LGPD", sub: "DSAR, Canal de Denúncia e Políticas" },
+  "/chatbot":     { title: "Chatbot & RAG",     sub: "Configuração, analytics e base de conhecimento" },
 };
 
 export const SUPER_ADMIN_EMAILS = ["resper@bekaa.eu", "admin@ness.com.br", "resper@ness.com.br"];
