@@ -4,13 +4,15 @@
  * Mantém retrocompatibilidade com as rotas que o site público consome:
  *   GET /api/insights, /api/cases, /api/jobs, etc.
  *
- * Ainda lêem das tabelas legadas (insights, jobs, cases).
- * Quando a migração completa para entries estiver pronta, essas rotas
- * passarão a ler da tabela entries.
+ * json_extract queries kept as raw SQL (SQLite-specific).
+ * Newsletter + forms migrated to Drizzle.
  */
 
 import { Hono } from 'hono'
 import { z } from 'zod'
+import { drizzle } from 'drizzle-orm/d1'
+import { eq } from 'drizzle-orm'
+import { newsletter, forms } from '../db/schema'
 
 type Env = {
   Bindings: {
@@ -21,6 +23,7 @@ type Env = {
 const legacy = new Hono<Env>()
 
 // ── Insights (blog) ─────────────────────────────────────────────
+// json_extract() queries — kept as raw SQL
 legacy.get('/insights', async (c) => {
   const lang = c.req.query('lang') || 'pt'
   try {
@@ -151,7 +154,7 @@ legacy.get('/jobs', async (c) => {
   }
 })
 
-// ── Newsletter ──────────────────────────────────────────────────
+// ── Newsletter (Drizzle) ────────────────────────────────────────
 const newsletterSchema = z.object({
   email: z.string().email().max(254),
 })
@@ -162,14 +165,15 @@ legacy.post('/newsletter', async (c) => {
     const parsed = newsletterSchema.safeParse(body)
     if (!parsed.success) return c.json({ error: 'Invalid email' }, 400)
     const { email } = parsed.data
-    const existing = await c.env.DB.prepare(
-      'SELECT id FROM newsletter WHERE email = ? LIMIT 1'
-    ).bind(email).first()
+
+    const db = drizzle(c.env.DB)
+    const existing = await db.select({ id: newsletter.id })
+      .from(newsletter).where(eq(newsletter.email, email)).limit(1)
+
     // Always return success — prevents email enumeration (A07)
-    if (existing) return c.json({ success: true })
-    await c.env.DB.prepare(
-      "INSERT INTO newsletter (email) VALUES (?)"
-    ).bind(email).run()
+    if (existing.length) return c.json({ success: true })
+
+    await db.insert(newsletter).values({ email })
     return c.json({ success: true })
   } catch (err) {
     console.error('[security] newsletter error:', err instanceof Error ? err.message : String(err))
@@ -177,7 +181,7 @@ legacy.post('/newsletter', async (c) => {
   }
 })
 
-// ── Form submission ─────────────────────────────────────────────
+// ── Form submission (Drizzle) ───────────────────────────────────
 const ALLOWED_FORM_TYPES = ['contact', 'careers', 'whistleblower', 'newsletter'] as const
 
 const formSchema = z.object({
@@ -201,13 +205,15 @@ legacy.post('/submit-form', async (c) => {
       return c.json({ error: 'Invalid form payload', details: parsed.error.issues }, 400)
     }
     const { type, ...rest } = parsed.data
-    const { success } = await c.env.DB.prepare(
-      "INSERT INTO forms (payload, source, status) VALUES (?, ?, 'new')"
-    ).bind(JSON.stringify(rest), type).run()
-    if (success) {
-      return c.json({ success: true, message: 'Formulário registrado.' })
-    }
-    throw new Error('DB insert failed')
+
+    const db = drizzle(c.env.DB)
+    await db.insert(forms).values({
+      payload: JSON.stringify(rest),
+      source: type,
+      status: 'new',
+    })
+
+    return c.json({ success: true, message: 'Formulário registrado.' })
   } catch (err) {
     console.error('[security] form submission error:', err instanceof Error ? err.message : String(err))
     return c.json({ error: 'Failed to submit form' }, 500)
