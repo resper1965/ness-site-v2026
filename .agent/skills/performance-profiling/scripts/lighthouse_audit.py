@@ -21,7 +21,7 @@ def run_lighthouse(url: str) -> dict:
         
         result = subprocess.run(
             [
-                "lighthouse",
+                "npx", "--yes", "lighthouse",
                 url,
                 "--output=json",
                 f"--output-path={output_path}",
