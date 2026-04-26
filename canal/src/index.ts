@@ -251,13 +251,39 @@ app.post('/api/setup/admin', async (c) => {
   }
 })
 
-// ── Mount: Admin Routes (modular) ────────────────────────────────
+// ── Mount: Public Compliance & Content (no auth) ─────────────────
+import contentRoutes from './routes/content'
+import complianceRoutes from './routes/compliance'
+import { drizzle } from 'drizzle-orm/d1'
+import { eq as eqOp } from 'drizzle-orm'
+import { chatbot_config } from './db/schema'
+
+// Public chatbot config (cached 60s)
+app.get('/api/chatbot-config', async (c) => {
+  const db = drizzle(c.env.DB)
+  const tenantId = c.req.query('tenant') || 'ness'
+  const [config] = await db.select({
+    bot_name: chatbot_config.bot_name,
+    avatar_url: chatbot_config.avatar_url,
+    welcome_message: chatbot_config.welcome_message,
+    theme_color: chatbot_config.theme_color,
+    enabled: chatbot_config.enabled,
+  }).from(chatbot_config).where(eqOp(chatbot_config.tenant_id, tenantId)).limit(1)
+  c.header('Cache-Control', 'public, max-age=60')
+  return c.json(config || { bot_name: 'Gabi.OS', welcome_message: 'Olá! Como posso ajudar?', theme_color: '#00E5A0', enabled: 1 })
+})
+
+// Public compliance endpoints: DSAR, whistleblower, policies, consent
+app.route('/api', complianceRoutes)
+
+// ── Mount: Admin Routes (modular, auth-protected) ────────────────
 import { admin } from './routes/admin'
 import { webhooksApi } from './routes/webhooks-api'
 
 app.use('/api/admin/*', requireSession)
 app.route('/api/admin', admin)
 app.route('/api/admin/webhooks', webhooksApi)
+app.route('/api/admin', contentRoutes)
 
 // ── Integração Edge Image Delivery (Mapeada via Explorer) ────────
 app.get('/media/:filename', async (c) => {

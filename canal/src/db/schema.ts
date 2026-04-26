@@ -157,3 +157,107 @@ export const apikey = sqliteTable('apikey', {
   metadata: text('metadata'),
   createdAt: text('createdAt'),
 });
+
+// ── Fase 3: Chatbot Configuration ───────────────────────────────
+
+export const chatbot_config = sqliteTable('chatbot_config', {
+  id: text('id').primaryKey(),
+  tenant_id: text('tenant_id').notNull(),
+  bot_name: text('bot_name').default('Gabi.OS'),
+  avatar_url: text('avatar_url'),
+  welcome_message: text('welcome_message'),
+  system_prompt: text('system_prompt'),
+  theme_color: text('theme_color').default('#00E5A0'),
+  enabled: integer('enabled').default(1),
+  max_turns: integer('max_turns').default(20),
+  created_at: text('created_at'),
+  updated_at: text('updated_at'),
+});
+
+// ── Fase 3: Chat Sessions & Messages ────────────────────────────
+
+export const chat_sessions = sqliteTable('chat_sessions', {
+  id: text('id').primaryKey(),
+  tenant_id: text('tenant_id'),
+  visitor_id: text('visitor_id'),
+  locale: text('locale').default('pt'),
+  turn_count: integer('turn_count').default(0),
+  csat_score: integer('csat_score'),
+  status: text('status').default('active'),
+  created_at: text('created_at'),
+  ended_at: text('ended_at'),
+});
+
+export const chat_messages = sqliteTable('chat_messages', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  session_id: text('session_id').notNull().references(() => chat_sessions.id, { onDelete: 'cascade' }),
+  role: text('role').notNull(),
+  content: text('content').notNull(),
+  tokens_used: integer('tokens_used'),
+  created_at: text('created_at'),
+});
+
+// ── Fase 4: DSAR (Data Subject Access Requests) ─────────────────
+
+export const dsar_requests = sqliteTable('dsar_requests', {
+  id: text('id').primaryKey(),
+  tenant_id: text('tenant_id'),
+  requester_name: text('requester_name').notNull(),
+  requester_email: text('requester_email').notNull(),
+  requester_document: text('requester_document'),
+  request_type: text('request_type').notNull(),
+  description: text('description'),
+  status: text('status').default('received'),
+  response_file_key: text('response_file_key'),
+  assigned_to: text('assigned_to'),
+  sla_deadline: text('sla_deadline'),
+  resolved_at: text('resolved_at'),
+  created_at: text('created_at'),
+  updated_at: text('updated_at'),
+});
+
+// ── Fase 4: Whistleblower / Canal de Denúncia ───────────────────
+
+export const whistleblower_cases = sqliteTable('whistleblower_cases', {
+  id: text('id').primaryKey(),
+  tenant_id: text('tenant_id'),
+  case_code: text('case_code').notNull().unique(),
+  encrypted_payload: text('encrypted_payload').notNull(),
+  category: text('category'),
+  status: text('status').default('new'),
+  officer_notes: text('officer_notes'),
+  sla_deadline: text('sla_deadline'),
+  created_at: text('created_at'),
+  updated_at: text('updated_at'),
+});
+
+// ── Fase 4: Policies & Terms ────────────────────────────────────
+
+export const policies = sqliteTable('policies', {
+  id: text('id').primaryKey(),
+  tenant_id: text('tenant_id'),
+  type: text('type').notNull(),
+  locale: text('locale').notNull().default('pt'),
+  title: text('title').notNull(),
+  body_md: text('body_md').notNull(),
+  version: integer('version').notNull().default(1),
+  status: text('status').default('draft'),
+  effective_date: text('effective_date'),
+  created_by: text('created_by'),
+  created_at: text('created_at'),
+  updated_at: text('updated_at'),
+});
+
+// ── Fase 4: Consent Logs ────────────────────────────────────────
+
+export const consent_logs = sqliteTable('consent_logs', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  tenant_id: text('tenant_id'),
+  user_identifier: text('user_identifier'),
+  policy_id: text('policy_id').references(() => policies.id),
+  policy_version: integer('policy_version'),
+  action: text('action').notNull(),
+  ip_address: text('ip_address'),
+  user_agent: text('user_agent'),
+  created_at: text('created_at'),
+});
