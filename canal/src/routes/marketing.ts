@@ -6,6 +6,7 @@
  */
 
 import { Hono } from 'hono'
+import type { EntryRow } from '../types'
 
 type Env = {
   Bindings: {
@@ -77,7 +78,7 @@ marketing.get('/marketing/signature/:slug', async (c) => {
 
   if (!entry) return c.json({ error: 'Signature not found' }, 404)
 
-  const data = safeParseJSON((entry as any).data)
+  const data = safeParseJSON((entry as unknown as EntryRow).data)
   const brand = BRAND_CONFIG[data.brand as string] ?? BRAND_CONFIG.ness
 
   if (format === 'json') {
@@ -108,7 +109,7 @@ marketing.get('/marketing/signature/:slug/preview', async (c) => {
 
   if (!entry) return c.json({ error: 'Signature not found' }, 404)
 
-  const data = safeParseJSON((entry as any).data)
+  const data = safeParseJSON((entry as unknown as EntryRow).data)
   const brand = BRAND_CONFIG[data.brand as string] ?? BRAND_CONFIG.ness
   const signatureHtml = generateSignatureHTML(data, brand)
 
@@ -166,7 +167,7 @@ marketing.get('/marketing/signatures', async (c) => {
     'SELECT * FROM entries WHERE collection_id = ? ORDER BY created_at DESC'
   ).bind(colRow.id).all()
 
-  const items = (results as any[]).map(row => ({
+  const items = (results as unknown as EntryRow[]).map(row => ({
     id: row.id,
     slug: row.slug,
     status: row.status,

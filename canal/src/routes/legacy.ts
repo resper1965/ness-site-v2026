@@ -140,7 +140,7 @@ legacy.get('/jobs', async (c) => {
        WHERE col.slug = 'jobs' AND e.locale = ? AND e.status = 'published'
        ORDER BY e.created_at ASC`
     ).bind(lang).all()
-    const items = (results as any[]).map(j => ({
+    const items = (results as unknown as Record<string, unknown>[]).map(j => ({
       ...j,
       requirements: (() => { try { return typeof j.requirements === 'string' ? JSON.parse(j.requirements) : j.requirements } catch { return [] } })()
     }))

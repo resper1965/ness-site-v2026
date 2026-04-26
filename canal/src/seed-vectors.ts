@@ -1,12 +1,15 @@
-/**
- * seed-vectors.ts — Enqueue ALL published entries for async vectorization
- *
- * Instead of processing embeddings synchronously (which times out),
- * this reads entry IDs and enqueues them to canal-tasks-queue.
- * The queue consumer processes each entry individually.
- */
+interface SeedEnv {
+  DB: D1Database;
+  QUEUE: Queue;
+}
 
-export async function seedVectors(env: any) {
+interface VectorRow {
+  id: string;
+  payload: string;
+  collection_slug: string;
+}
+
+export async function seedVectors(env: SeedEnv) {
   const dbRes = await env.DB.prepare(`
     SELECT e.id, e.data as payload, c.slug as collection_slug
     FROM entries e
@@ -15,7 +18,7 @@ export async function seedVectors(env: any) {
     ORDER BY e.updated_at DESC
   `).all()
 
-  const rows = dbRes.results as any[]
+  const rows = dbRes.results as unknown as VectorRow[]
 
   if (!rows || rows.length === 0) {
     return ['⚠️ Nenhum dado publicado encontrado para indexar.']
@@ -26,7 +29,7 @@ export async function seedVectors(env: any) {
   for (let i = 0; i < rows.length; i += batchSize) {
     const batch = rows.slice(i, i + batchSize)
     await env.QUEUE.sendBatch(
-      batch.map((row: any) => ({
+      batch.map((row) => ({
         body: {
           type: 'vectorize-entry' as const,
           payload: {

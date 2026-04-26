@@ -10,17 +10,43 @@ export class GabiAgent extends DurableObject<Bindings> {
       return new Response("Method not allowed", { status: 405 });
     }
 
-    const { messages, locale, ragContext, clientIp } = await request.json() as any;
+    const { messages, locale, ragContext, clientIp } = await request.json() as {
+      messages: { role: 'user' | 'assistant' | 'system'; content: string }[];
+      locale?: string;
+      ragContext?: string;
+      clientIp?: string;
+    };
 
     const lang = locale === 'en' ? 'English' : locale === 'es' ? 'Spanish' : 'Portuguese';
 
-    // Salvar no estado da D.O. para histórico (opcional/future)
+    // Read AI config from KV (set via admin panel)
+    let aiConfig: { enabled?: boolean; tone?: string; customPrompt?: string } = {};
+    try {
+      const raw = await this.env.CANAL_KV.get('ai-config');
+      if (raw) aiConfig = JSON.parse(raw);
+    } catch { /* fallback to defaults */ }
+
+    // If chatbot is disabled via admin panel, return 503
+    if (aiConfig.enabled === false) {
+      return new Response(JSON.stringify({ error: 'Chatbot desativado' }), { status: 503, headers: { 'Content-Type': 'application/json' } });
+    }
+
+    // Salvar no estado da D.O. para histórico
     await this.ctx.storage.put("latest_interaction", Date.now());
 
-    const systemPrompt = `Você é a Gabi, Secretária Executiva e concierge de alto nível da ness.
+    // Tone modifiers
+    const TONE_MOD: Record<string, string> = {
+      executivo: 'Elegante, discreta, de extrema confiança e DIRETA. Levemente sarcástica e bem-humorada.',
+      formal: 'Formal, institucional e polida. Tom corporativo sem informalidade.',
+      tecnico: 'Precisa, técnica e detalhada. Foco em dados e termos exatos.',
+      casual: 'Acessível, leve e descontraída. Linguagem simples e amigável.',
+    };
+    const toneDesc = TONE_MOD[aiConfig.tone || 'executivo'] || TONE_MOD.executivo;
+
+    const defaultPrompt = `Você é a Gabi, Secretária Executiva e concierge de alto nível da ness.
 
 [SUA PERSONALIDADE]
-Elegante, discreta, de extrema confiança e DIRETA. Levemente sarcástica e bem-humorada — como uma executiva sênior que já viu de tudo. Fale menos, não mais.
+${toneDesc}
 Responda sempre em no máximo 2-3 frases curtas. Sem bullet points, sem listas, sem dissertações.
 
 [SEU CONHECIMENTO]
@@ -57,6 +83,11 @@ Fora do escopo (esportes, política, receitas): encerre com elegância e ironia 
 ${ragContext}
 --- FIM ---`;
 
+    // Use custom prompt if set via admin panel, otherwise use default
+    const systemPrompt = aiConfig.customPrompt?.trim()
+      ? aiConfig.customPrompt.replace('${lang}', lang).replace('${ragContext}', ragContext || '')
+      : defaultPrompt;
+
     const workersai = createWorkersAI({ binding: this.env.AI });
 
     const result = streamText({
@@ -67,8 +98,19 @@ ${ragContext}
 
     const backgroundTask = async () => {
       try {
+        // ALWAYS persist chat session for admin visibility
+        const sessionId = request.headers.get("x-session-id") || `gabi-${Date.now()}`;
+        const messagesJson = JSON.stringify(messages.map((m: any) => ({
+          role: m.role,
+          content: String(m.content),
+        })));
+        await this.env.DB.prepare(
+          "INSERT INTO chats (session_id, messages) VALUES (?, ?) ON CONFLICT(session_id) DO UPDATE SET messages=excluded.messages, updated_at=CURRENT_TIMESTAMP"
+        ).bind(sessionId, messagesJson).run();
+        console.log("[BG CHAT SAVED]", sessionId);
+
+        // Lead extraction — only when user provides contact info
         const lastMsg = messages[messages.length - 1]?.content || "";
-        // Naive filter to save AI inference costs for simple pleasantries
         const hasPhone = /(\(?\d{2}\)?\s?\d{4,5}[-\s]?\d{4})/.test(lastMsg);
         if (lastMsg.includes("@") || hasPhone || lastMsg.toLowerCase().includes("contato")) {
           const extractionPrompt = `Analise a seguinte conversa recente. O usuário forneceu seus dados de contato (email, telefone)? 
@@ -88,20 +130,9 @@ NÃO retorne texto adicional nem decorações markdown. Se não houver dados cla
             const data = JSON.parse(text);
             if (data.name && data.contact) {
               await this.env.DB.prepare(
-                "INSERT INTO leads (name, contact, intent, urgency) VALUES (?, ?, ?, ?)"
+                "INSERT INTO leads (name, contact, source, intent, urgency, tenant_id) VALUES (?, ?, 'chatbot', ?, ?, 'org-global-01')"
               ).bind(data.name, data.contact, data.intent || "Contato", data.urgency || "media").run();
               console.log("[BG LEAD CAPTURED]", data);
-
-              // Persiste o chatlog na tabela chats (schema real: session_id, messages)
-              const sessionId = request.headers.get("x-session-id") || `gabi-${Date.now()}`;
-              const messagesJson = JSON.stringify(messages.map((m: any) => ({
-                role: m.role,
-                content: String(m.content),
-              })));
-              await this.env.DB.prepare(
-                "INSERT INTO chats (session_id, messages) VALUES (?, ?) ON CONFLICT(session_id) DO UPDATE SET messages=excluded.messages, updated_at=CURRENT_TIMESTAMP"
-              ).bind(sessionId, messagesJson).run();
-              console.log("[BG CHAT SAVED]");
 
               // Notifica o time comercial via Resend
               if (this.env.RESEND_API_KEY) {

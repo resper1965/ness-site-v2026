@@ -7,8 +7,14 @@
 		"nodejs_compat"
 	],
 	"routes": [
-		{ "pattern": "canal.ness.com.br", "custom_domain": true },
-		{ "pattern": "www.canal.ness.com.br", "custom_domain": true }
+		{
+			"pattern": "canal.ness.com.br",
+			"custom_domain": true
+		},
+		{
+			"pattern": "www.canal.ness.com.br",
+			"custom_domain": true
+		}
 	],
 	"assets": {
 		"directory": "./admin/dist",
@@ -75,7 +81,15 @@
 	"migrations": [
 		{
 			"tag": "v1",
-			"new_classes": ["GabiAgent"]
+			"new_classes": [
+				"GabiAgent"
+			]
+		}
+	],
+	"kv_namespaces": [
+		{
+			"binding": "CANAL_KV",
+			"id": "b28950f237884a4aa47d103723dd09bf"
 		}
 	]
 }

@@ -6,6 +6,7 @@
  */
 
 import { Hono } from 'hono'
+import type { MediaRow } from '../types'
 
 type Env = {
   Bindings: {
@@ -86,7 +87,7 @@ media.get('/media', async (c) => {
   const countResult = await c.env.DB.prepare(countQuery).bind(...countParams).first<{ total: number }>()
 
   return c.json({
-    data: (results as any[]).map(row => ({
+    data: (results as unknown as MediaRow[]).map(row => ({
       id: row.id,
       filename: row.filename,
       mimeType: row.mime_type,
@@ -127,7 +128,7 @@ media.get('/media/:id', async (c) => {
   const row = await c.env.DB.prepare('SELECT * FROM media WHERE id = ? LIMIT 1').bind(id).first()
   if (!row) return c.json({ error: 'Not found' }, 404)
 
-  const r = row as any
+  const r = row as unknown as MediaRow
   return c.json({
     id: r.id,
     filename: r.filename,

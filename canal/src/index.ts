@@ -30,12 +30,14 @@ export type Bindings = {
   AI: Ai
   VECTORIZE: VectorizeIndex
   MEDIA: R2Bucket
+  CANAL_KV: KVNamespace
   BETTER_AUTH_SECRET: string
   BETTER_AUTH_URL: string
   ADMIN_SETUP_KEY: string
   RESEND_API_KEY: string
   SLACK_WEBHOOK_URL?: string
   AGENT_DO: DurableObjectNamespace
+  QUEUE: Queue
 }
 
 type Variables = {
@@ -191,7 +193,7 @@ app.route('/api/ai', aiRoutes)
 // ── MCP Server (Agents Integration) ──────────────────────────────
 app.all('/api/mcp/*', requireAdminOrKey, async (c) => {
   let tenantId = c.get('tenantId') as string | undefined;
-  const agentSession = c.get('agentSession') as any;
+  const agentSession = c.get('agentSession') as { agent?: { organizationId?: string } } | undefined;
   if (agentSession) {
     tenantId = c.req.header('x-tenant-id') || agentSession.agent?.organizationId || tenantId;
   }
@@ -228,118 +230,51 @@ app.post('/api/setup/admin', async (c) => {
   }
 })
 
-// ── Admin CRUD v3 (gerenciado via collections/entries) ───────────────────
+// ── Mount: Admin Routes (modular) ────────────────────────────────
+import { admin } from './routes/admin'
+import { webhooksApi } from './routes/webhooks-api'
 
-app.get('/api/admin/organizations', requireSession, async (c) => {
-  const session = c.get('session')
-  if (session?.user?.role !== 'admin') return c.json({ error: 'Forbidden' }, 403)
+app.use('/api/admin/*', requireSession)
+app.route('/api/admin', admin)
+app.route('/api/admin/webhooks', webhooksApi)
 
-  const query = `
-    SELECT 
-      o.*, 
-      (SELECT COUNT(*) FROM "member" m WHERE m.organizationId = o.id) as memberCount 
-    FROM "organization" o 
-    ORDER BY o.createdAt DESC
-  `
-  const { results } = await c.env.DB.prepare(query).all()
-  return c.json(results)
-})
-
-app.patch('/api/admin/organizations/:id', requireSession, async (c) => {
-  const session = c.get('session')
-  if (session?.user?.role !== 'admin') return c.json({ error: 'Forbidden' }, 403)
+// ── Integração Edge Image Delivery (Mapeada via Explorer) ────────
+app.get('/media/:filename', async (c) => {
+  const filename = c.req.param('filename')
+  // No Cloudflare nativo, pegamos Imagens do Bucket (via env.R2_MEDIA) ou um Storage URL Proxy.
+  // Vamos encapsular em um CF Fetch para redimensionamento em borda (WebP native).
   
-  const id = c.req.param('id')
-  const body = await c.req.json()
+  // Exemplo de URL base original do arquivo no R2 publico:
+  const imageUrl = new URL(`https://media.seucdn.com/${filename}`)
   
-  // Atualiza metadados ou plan
-  const { success } = await c.env.DB.prepare(
-    'UPDATE "organization" SET metadata = ? WHERE id = ?'
-  ).bind(JSON.stringify(body.metadata || {}), id).run()
-  return c.json({ success })
+  // Parâmetros do Resize via querystring (ex: w=800&q=80)
+  const width = c.req.query('w') || '1200'
+  const quality = c.req.query('q') || '85'
+
+  // Refatoramos para simular o Binding Oficial
+  const imageRequest = new Request(imageUrl, {
+    headers: c.req.raw.headers,
+    // Note: cf.image bindings requerem Workers/Pages atrelados a Zonas Pro/Business ou opt-in Images
+    // @ts-ignore
+    cf: {
+      image: {
+        width: parseInt(width),
+        format: 'auto', // AVIF/WebP automatically
+        quality: parseInt(quality),
+      }
+    }
+  } as any)
+
+  // Se `c.env.ASSETS` for usado ou R2 Fetch nativo
+  try {
+    const res = await fetch(imageRequest)
+    const newHeaders = new Headers(res.headers)
+    newHeaders.set('Cache-Control', 'public, max-age=31536000, immutable')
+    return new Response(res.body, { status: res.status, headers: newHeaders })
+  } catch(e) {
+    return c.json({ error: 'Falha no processamento de Imagem Edge' }, 500)
+  }
 })
-
-app.delete('/api/admin/organizations/:id', requireSession, async (c) => {
-  const session = c.get('session')
-  if (session?.user?.role !== 'admin') return c.json({ error: 'Forbidden' }, 403)
-  const id = c.req.param('id')
-  
-  await c.env.DB.batch([
-    c.env.DB.prepare('DELETE FROM "member" WHERE organizationId = ?').bind(id),
-    c.env.DB.prepare('DELETE FROM "invitation" WHERE organizationId = ?').bind(id),
-    c.env.DB.prepare('DELETE FROM "organization" WHERE id = ?').bind(id)
-  ])
-  
-  return c.json({ success: true })
-})
-
-app.get('/api/admin/api-keys/:orgId', requireSession, async (c) => {
-  const orgId = c.req.param('orgId')
-  const { results } = await c.env.DB.prepare(
-    'SELECT id, name, createdAt, prefix FROM apikey WHERE metadata LIKE ? ORDER BY createdAt DESC'
-  ).bind(`%"orgId":"${orgId}"%`).all()
-  return c.json(results)
-})
-
-app.delete('/api/admin/api-keys/:id', requireSession, async (c) => {
-  const id = c.req.param('id')
-  const { success } = await c.env.DB.prepare('DELETE FROM apikey WHERE id = ?').bind(id).run()
-  return c.json({ success })
-})
-
-
-// P0: forms e chats contêm dados sensíveis de leads — role=admin obrigatório
-app.get('/api/admin/forms', requireSession, async (c) => {
-  const session = c.get('session')
-  if (session?.user?.role !== 'admin') return c.json({ error: 'Forbidden' }, 403)
-  const { results } = await c.env.DB.prepare(
-    'SELECT * FROM forms ORDER BY created_at DESC LIMIT 50'
-  ).all()
-  return c.json(results)
-})
-
-app.get('/api/admin/chats', requireSession, async (c) => {
-  const session = c.get('session')
-  if (session?.user?.role !== 'admin') return c.json({ error: 'Forbidden' }, 403)
-  const { results } = await c.env.DB.prepare(
-    'SELECT * FROM chats ORDER BY updated_at DESC LIMIT 50'
-  ).all()
-  return c.json(results)
-})
-
-app.get('/api/admin/leads', requireSession, async (c) => {
-  const session = c.get('session')
-  if (session?.user?.role !== 'admin') return c.json({ error: 'Forbidden' }, 403)
-  const status = c.req.query('status')
-  const query = status
-    ? 'SELECT * FROM leads WHERE status = ? ORDER BY created_at DESC LIMIT 100'
-    : 'SELECT * FROM leads ORDER BY created_at DESC LIMIT 100'
-  const { results } = status
-    ? await c.env.DB.prepare(query).bind(status).all()
-    : await c.env.DB.prepare(query).all()
-  return c.json(results)
-})
-
-app.patch('/api/admin/leads/:id', requireSession, async (c) => {
-  const session = c.get('session')
-  if (session?.user?.role !== 'admin') return c.json({ error: 'Forbidden' }, 403)
-  const id = c.req.param('id')
-  const { status } = await c.req.json() as { status: string }
-  await c.env.DB.prepare(
-    'UPDATE leads SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?'
-  ).bind(status, id).run()
-  return c.json({ success: true })
-})
-
-app.delete('/api/admin/leads/:id', requireSession, async (c) => {
-  const session = c.get('session')
-  if (session?.user?.role !== 'admin') return c.json({ error: 'Forbidden' }, 403)
-  const id = c.req.param('id')
-  await c.env.DB.prepare('DELETE FROM leads WHERE id = ?').bind(id).run()
-  return c.json({ success: true })
-})
-
-// ── Seed Vectors (admin) ────────────────────────────────────────
 app.post('/api/admin/seed-vectors', requireAdminOrKey, async (c) => {
   try {
     const results = await seedVectors(c.env)
@@ -426,7 +361,7 @@ app.post('/api/chat', async (c) => {
   // 1. Embedding da pergunta
   const queryEmbedding = await c.env.AI.run('@cf/baai/bge-base-en-v1.5', {
     text: [lastMessage]
-  }) as any
+  }) as { data: number[][] }
 
   // 2. Buscar contexto no Vectorize
   const vectorResults = await c.env.VECTORIZE.query(queryEmbedding.data[0], {
@@ -435,7 +370,7 @@ app.post('/api/chat', async (c) => {
   })
 
   const context = vectorResults.matches
-    .map((m: any) => m.metadata?.content || '')
+    .map((m) => (m.metadata as Record<string, string> | undefined)?.content || '')
     .join('\n\n---\n\n')
 
   let ragContext = context.trim()
@@ -447,8 +382,8 @@ app.post('/api/chat', async (c) => {
       LIMIT 10
     `).all()
     
-    ragContext = fallback.results.map((r: any) => {
-      const p = JSON.parse(r.payload || '{}')
+    ragContext = fallback.results.map((r) => {
+      const p = JSON.parse((r as { payload?: string }).payload || '{}')
       return `${p.title || ''}\n${p.content || p.desc || ''}`
     }).join('\n\n---\n\n')
   }

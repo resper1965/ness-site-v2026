@@ -250,6 +250,40 @@ export const collections: CollectionDef[] = [
       { name: 'cover', type: 'image', label: 'Imagem de Capa' },
     ]
   },
+  // ── Modulos Específicos ──────────────────────────────────────────
+  {
+    slug: 'pages',
+    label: 'Página',
+    labelPlural: 'Páginas',
+    icon: 'Layout',
+    hasLocale: true,
+    hasSlug: true,
+    hasStatus: true,
+    governance: 'protected',
+    fields: [
+      { name: 'title', type: 'text', required: true, label: 'Título' },
+      { name: 'desc', type: 'textarea', label: 'Descrição/Meta' },
+      { name: 'body', type: 'richtext', label: 'Conteúdo' },
+      { name: 'template', type: 'select', label: 'Template', options: ['default', 'landing', 'contact', 'about'] }
+    ]
+  },
+  {
+    slug: 'authors',
+    label: 'Autor',
+    labelPlural: 'Autores',
+    icon: 'User',
+    hasLocale: false,
+    hasSlug: true,
+    hasStatus: true,
+    governance: 'protected',
+    fields: [
+      { name: 'name', type: 'text', required: true, label: 'Nome' },
+      { name: 'role', type: 'text', label: 'Cargo' },
+      { name: 'bio', type: 'textarea', label: 'Bio Curtinha' },
+      { name: 'avatar', type: 'image', label: 'Avatar' },
+      { name: 'social_link', type: 'text', label: 'Link (LinkedIn)' }
+    ]
+  },
 ]
 
 /** Busca uma collection por slug */

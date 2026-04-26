@@ -10,6 +10,7 @@ import { z } from 'zod'
 import { collections, getCollection, getRequiredFields } from '../collections'
 import { createAuth } from '../auth'
 import { upsertVector, deleteVector } from '../vectorize-sync'
+import type { EntryRow } from '../types'
 
 type Env = {
   Bindings: {
@@ -134,7 +135,7 @@ entries.get('/collections/:slug/entries', async (c) => {
 
 
   // Parse JSON data de cada entry
-  const items = (results as any[]).map(row => ({
+  const items = (results as unknown as EntryRow[]).map(row => ({
     id: row.id,
     slug: row.slug,
     locale: row.locale,
@@ -158,8 +159,8 @@ entries.get('/collections/:slug/entries', async (c) => {
 
   if (isCacheable) {
     const response = c.json(resData)
-    // Cache on Edge for 5 minutes (300 seconds)
-    response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=300')
+    // Cache on Edge for 1 minute (60 seconds)
+    response.headers.set('Cache-Control', 'public, max-age=60, s-maxage=60')
     c.executionCtx.waitUntil(caches.default.put(cacheKey, response.clone()))
     return response
   }
@@ -209,7 +210,7 @@ entries.get('/collections/:slug/entries/:id', async (c) => {
 
   if (!row) return c.json({ error: 'Entry not found' }, 404)
 
-  const entry = row as any
+  const entry = row as unknown as EntryRow
   const resData = {
     id: entry.id,
     slug: entry.slug,
@@ -223,8 +224,8 @@ entries.get('/collections/:slug/entries/:id', async (c) => {
 
   if (isCacheable) {
     const response = c.json(resData)
-    // Cache on Edge for 5 minutes (300 seconds)
-    response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=300')
+    // Cache on Edge for 1 minute (60 seconds)
+    response.headers.set('Cache-Control', 'public, max-age=60, s-maxage=60')
     c.executionCtx.waitUntil(caches.default.put(cacheKey, response.clone()))
     return response
   }
@@ -327,6 +328,20 @@ entries.post('/collections/:slug/entries', async (c) => {
   // Auto-vectorize (fire-and-forget)
   if (status === 'published') {
     upsertVector(c.env, id, data as Record<string, unknown>, col.slug)
+    
+    // Dispara webhook via fila (Background Job)
+    try {
+      // @ts-ignore
+      if (c.env.QUEUE) {
+        // @ts-ignore
+        c.env.QUEUE.send({
+          type: 'webhook-dispatch',
+          payload: { event: 'entry.published', collectionSlug: col.slug, entryId: id, tenantId, payloadData: data }
+        })
+      }
+    } catch (e) {
+      console.error('[Webhooks] Erro ao enfileirar job', e)
+    }
   }
 
   return c.json({ id, slug, locale, status }, 201)
@@ -374,17 +389,18 @@ entries.put('/collections/:slug/entries/:id', async (c) => {
 
   if (!existing) return c.json({ error: 'Entry not found' }, 404)
 
-  const status = (body.status as string) || (existing as any).status
-  const slug = col.hasSlug ? ((body.slug as string) || (existing as any).slug) : null
-  const locale = (body.locale as string) || (existing as any).locale
+  const ex = existing as unknown as EntryRow
+  const status = (body.status as string) || ex.status
+  const slug = col.hasSlug ? ((body.slug as string) || ex.slug) : null
+  const locale = (body.locale as string) || ex.locale
 
   // Merge data existing + new
-  const existingData = safeParseJSON((existing as any).data)
+  const existingData = safeParseJSON(ex.data)
   const { locale: _l, status: _s, slug: _sl, ...newData } = body
   const mergedData = { ...existingData, ...newData }
 
   const now = new Date().toISOString()
-  const publishedAt = status === 'published' ? ((existing as any).published_at || now) : null
+  const publishedAt = status === 'published' ? (ex.published_at || now) : null
 
   await c.env.DB.prepare(
     `UPDATE entries SET data = ?, slug = ?, locale = ?, status = ?, published_at = ?, updated_at = ?

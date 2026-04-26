@@ -3,6 +3,15 @@ import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/
 import { z } from 'zod'
 import { enforceGovernance, ASSISTED_TOPICS, AUTONOMOUS_TOPICS } from './governance'
 import { collections, getCollection } from './collections'
+import { drizzle } from 'drizzle-orm/d1'
+import { eq, and, isNull } from 'drizzle-orm'
+import * as dbSchema from './db/schema'
+
+declare global {
+  var __MCP_DB: D1Database | undefined;
+  var __MCP_TENANT: string | undefined;
+  var __MCP_ENV: any | undefined;
+}
 
 const server = new McpServer({
   name: "canal-cms",
@@ -51,27 +60,30 @@ server.tool(
     limit: z.number().optional().describe("Limite de resultados (max 50, default 50)")
   },
   async (args) => {
-    const db = (globalThis as any).__MCP_DB
+    const db = globalThis.__MCP_DB
     if (!db) return { content: [{ type: "text", text: "BD não conectado" }] }
 
     try {
-      const tenantId = (globalThis as any).__MCP_TENANT
-      let query = `SELECT * FROM entries WHERE collection_id = (SELECT id FROM collections WHERE slug = ?)`
-      const params: any[] = [args.slug]
+      const tenantId = globalThis.__MCP_TENANT
+      const drizzleDb = drizzle(db, { schema: dbSchema })
       
-      if (tenantId) {
-        query += ` AND tenant_id = ?`
-        params.push(tenantId)
-      } else {
-        query += ` AND tenant_id IS NULL`
+      const coll = await drizzleDb.query.collections.findFirst({
+        where: eq(dbSchema.collections.slug, args.slug)
+      })
+      
+      if (!coll) {
+        return { content: [{ type: "text", text: `Collection não encontrada: ${args.slug}` }] }
       }
-      
-      query += ` ORDER BY updated_at DESC LIMIT ?`
-      params.push(args.limit || 50)
 
-      const results = await db.prepare(query).bind(...params).all()
+      const results = await drizzleDb.query.entries.findMany({
+        where: and(
+          eq(dbSchema.entries.collection_id, coll.id),
+          tenantId ? eq(dbSchema.entries.tenant_id, tenantId) : isNull(dbSchema.entries.tenant_id)
+        ),
+        limit: args.limit || 50
+      })
 
-      const parsed = results.results.map((r: any) => ({
+      const parsed = results.map((r) => ({
         ...r,
         data: typeof r.data === 'string' ? JSON.parse(r.data) : r.data
       }))
@@ -96,13 +108,13 @@ server.tool(
     data: z.string().describe("Objeto JSON em formato string com os dados de conteúdo"),
   },
   async (args) => {
-    const db = (globalThis as any).__MCP_DB
+    const db = globalThis.__MCP_DB
     if (!db) return { content: [{ type: "text", text: "BD não conectado" }] }
 
     try {
       // Aplicar governança
       const contentText = extractTextFromData(args.data)
-      const env = (globalThis as any).__MCP_ENV
+      const env = globalThis.__MCP_ENV
       const governance = await enforceGovernance(args.slug, contentText, env)
 
       if (governance.decision === 'blocked') {
@@ -111,27 +123,33 @@ server.tool(
         }
       }
 
-      const tenantId = (globalThis as any).__MCP_TENANT
+      const tenantId = globalThis.__MCP_TENANT
+      const drizzleDb = drizzle(db, { schema: dbSchema })
       const id = crypto.randomUUID()
       const now = new Date().toISOString()
       const publishedAt = governance.status === 'published' ? now : null
 
-      await db.prepare(
-        `INSERT INTO entries (id, tenant_id, collection_id, data, status, created_by, governance_decision, classification_reason, published_at, created_at, updated_at)
-         VALUES (?, ?, (SELECT id FROM collections WHERE slug = ?), ?, ?, ?, ?, ?, ?, ?, ?)`
-      ).bind(
+      const coll = await drizzleDb.query.collections.findFirst({
+        where: eq(dbSchema.collections.slug, args.slug)
+      })
+
+      if (!coll) {
+        return { content: [{ type: "text", text: `Collection não encontrada: ${args.slug}` }] }
+      }
+
+      await drizzleDb.insert(dbSchema.entries).values({
         id,
-        tenantId || null,
-        args.slug,
-        args.data,
-        governance.status,
-        'agent:mcp',
-        governance.decision,
-        governance.reason,
-        publishedAt,
-        now,
-        now
-      ).run()
+        tenant_id: tenantId || null,
+        collection_id: coll.id,
+        data: args.data,
+        status: governance.status,
+        created_by: 'agent:mcp',
+        governance_decision: governance.decision,
+        classification_reason: governance.reason,
+        published_at: publishedAt,
+        created_at: now,
+        updated_at: now
+      })
 
       const statusEmoji = governance.status === 'published' ? '✅' : '⏳'
       return {
@@ -154,52 +172,59 @@ server.tool(
     data: z.string().describe("Novo objeto JSON em formato string com os dados"),
   },
   async (args) => {
-    const db = (globalThis as any).__MCP_DB
+    const db = globalThis.__MCP_DB
     if (!db) return { content: [{ type: "text", text: "BD não conectado" }] }
 
     try {
-      const tenantId = (globalThis as any).__MCP_TENANT
+      const tenantId = globalThis.__MCP_TENANT
+      const drizzleDb = drizzle(db, { schema: dbSchema })
 
       // Buscar entry existente para saber a collection
-      let findQuery = `SELECT e.*, c.slug as col_slug FROM entries e JOIN collections c ON e.collection_id = c.id WHERE e.id = ?`
-      const findParams: any[] = [args.id]
-      
-      if (tenantId) {
-        findQuery += ` AND e.tenant_id = ?`
-        findParams.push(tenantId)
-      } else {
-        findQuery += ` AND e.tenant_id IS NULL`
-      }
+      const existing = await drizzleDb
+        .select({ id: dbSchema.entries.id, col_slug: dbSchema.collections.slug })
+        .from(dbSchema.entries)
+        .innerJoin(dbSchema.collections, eq(dbSchema.entries.collection_id, dbSchema.collections.id))
+        .where(
+          and(
+            eq(dbSchema.entries.id, args.id),
+            tenantId ? eq(dbSchema.entries.tenant_id, tenantId) : isNull(dbSchema.entries.tenant_id)
+          )
+        )
+        .limit(1)
 
-      const existing = await db.prepare(findQuery).bind(...findParams).first()
-      if (!existing) {
+      if (!existing.length) {
         return { content: [{ type: "text", text: `Entry não encontrada: ${args.id}` }] }
       }
 
+      const existingRecord = existing[0]
+
       // Verificar governança da collection
-      const col = getCollection(existing.col_slug)
+      const col = getCollection(existingRecord.col_slug)
       if (col?.governance === 'protected') {
         return {
-          content: [{ type: "text", text: `🚫 BLOQUEADO: Collection "${existing.col_slug}" é protegida. Apenas humanos podem editar.` }]
+          content: [{ type: "text", text: `🚫 BLOQUEADO: Collection "${existingRecord.col_slug}" é protegida. Apenas humanos podem editar.` }]
         }
       }
 
       // Reclassificar conteúdo
       const contentText = extractTextFromData(args.data)
-      const env = (globalThis as any).__MCP_ENV
-      const governance = await enforceGovernance(existing.col_slug, contentText, env)
+      const env = globalThis.__MCP_ENV
+      const governance = await enforceGovernance(existingRecord.col_slug, contentText, env)
 
-      let updateQuery = `UPDATE entries SET data = ?, status = ?, governance_decision = ?, classification_reason = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`
-      const updateParams: any[] = [args.data, governance.status, governance.decision, governance.reason, args.id]
-      
-      if (tenantId) {
-        updateQuery += ` AND tenant_id = ?`
-        updateParams.push(tenantId)
-      } else {
-        updateQuery += ` AND tenant_id IS NULL`
-      }
-
-      await db.prepare(updateQuery).bind(...updateParams).run()
+      await drizzleDb.update(dbSchema.entries)
+        .set({
+          data: args.data,
+          status: governance.status,
+          governance_decision: governance.decision,
+          classification_reason: governance.reason,
+          updated_at: new Date().toISOString()
+        })
+        .where(
+          and(
+            eq(dbSchema.entries.id, args.id),
+            tenantId ? eq(dbSchema.entries.tenant_id, tenantId) : isNull(dbSchema.entries.tenant_id)
+          )
+        )
 
       const statusEmoji = governance.status === 'published' ? '✅' : '⏳'
       return {
@@ -221,46 +246,46 @@ server.tool(
     id: z.string().describe("ID da entry a ser deletada"),
   },
   async (args) => {
-    const db = (globalThis as any).__MCP_DB
+    const db = globalThis.__MCP_DB
     if (!db) return { content: [{ type: "text", text: "BD não conectado" }] }
 
     try {
-      const tenantId = (globalThis as any).__MCP_TENANT
+      const tenantId = globalThis.__MCP_TENANT
+      const drizzleDb = drizzle(db, { schema: dbSchema })
 
       // Verificar se a collection é protected
-      let findQuery = `SELECT e.id, c.slug as col_slug FROM entries e JOIN collections c ON e.collection_id = c.id WHERE e.id = ?`
-      const findParams: any[] = [args.id]
-      
-      if (tenantId) {
-        findQuery += ` AND e.tenant_id = ?`
-        findParams.push(tenantId)
-      } else {
-        findQuery += ` AND e.tenant_id IS NULL`
-      }
+      const existing = await drizzleDb
+        .select({ id: dbSchema.entries.id, col_slug: dbSchema.collections.slug })
+        .from(dbSchema.entries)
+        .innerJoin(dbSchema.collections, eq(dbSchema.entries.collection_id, dbSchema.collections.id))
+        .where(
+          and(
+            eq(dbSchema.entries.id, args.id),
+            tenantId ? eq(dbSchema.entries.tenant_id, tenantId) : isNull(dbSchema.entries.tenant_id)
+          )
+        )
+        .limit(1)
 
-      const existing = await db.prepare(findQuery).bind(...findParams).first()
-      if (!existing) {
+      if (!existing.length) {
         return { content: [{ type: "text", text: `Entry não encontrada: ${args.id}` }] }
       }
 
-      const col = getCollection(existing.col_slug)
+      const existingRecord = existing[0]
+
+      const col = getCollection(existingRecord.col_slug)
       if (col?.governance === 'protected') {
         return {
-          content: [{ type: "text", text: `🚫 BLOQUEADO: Collection "${existing.col_slug}" é protegida. Apenas humanos podem deletar.` }]
+          content: [{ type: "text", text: `🚫 BLOQUEADO: Collection "${existingRecord.col_slug}" é protegida. Apenas humanos podem deletar.` }]
         }
       }
 
-      let query = `DELETE FROM entries WHERE id = ?`
-      const params: any[] = [args.id]
-      
-      if (tenantId) {
-        query += ` AND tenant_id = ?`
-        params.push(tenantId)
-      } else {
-        query += ` AND tenant_id IS NULL`
-      }
-
-      await db.prepare(query).bind(...params).run()
+      await drizzleDb.delete(dbSchema.entries)
+        .where(
+          and(
+            eq(dbSchema.entries.id, args.id),
+            tenantId ? eq(dbSchema.entries.tenant_id, tenantId) : isNull(dbSchema.entries.tenant_id)
+          )
+        )
 
       return {
         content: [{ type: "text", text: `✅ Deletado com sucesso. ID: ${args.id}` }]
@@ -307,9 +332,9 @@ const transport = new WebStandardStreamableHTTPServerTransport({
 
 server.connect(transport).catch(console.error)
 
-export async function handleMcpRequest(req: Request, db: any, tenantId?: string, env?: any) {
-  (globalThis as any).__MCP_DB = db;
-  (globalThis as any).__MCP_TENANT = tenantId;
-  (globalThis as any).__MCP_ENV = env;
+export async function handleMcpRequest(req: Request, db: D1Database, tenantId?: string, env?: any) {
+  globalThis.__MCP_DB = db;
+  globalThis.__MCP_TENANT = tenantId;
+  globalThis.__MCP_ENV = env;
   return transport.handleRequest(req)
 }
