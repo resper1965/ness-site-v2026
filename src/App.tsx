@@ -28,6 +28,7 @@ const Contact = lazy(() => import('./pages/Contact'));
 const Compliance = lazy(() => import('./pages/Compliance'));
 const Assessment = lazy(() => import('./pages/Assessment'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const Brandbook = lazy(() => import('./pages/Brandbook'));
 
 function PageLoader() {
   return (
@@ -82,6 +83,7 @@ export default function App() {
             <Route path="/forense"   element={<ForenseHome />} />
 
             {/* Universal shared routes */}
+            <Route path="/brandbook"       element={<Brandbook />} />
             <Route path="/sobre"           element={<About />} />
             <Route path="/portfolio"       element={<Portfolio />} />
             <Route path="/portfólio"       element={<Portfolio />} />
