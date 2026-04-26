@@ -78,7 +78,7 @@ async function startServer() {
       }
     });
 
-    // API Route for Chatbot (Gabi.OS) — proxies to canal RAG endpoint
+    // API Route for Chatbot (Gabi.OS) — proxies to canal RAG endpoint (streaming)
     app.post("/api/chat", async (req, res) => {
       try {
         const response = await fetch("https://canal.ness.com.br/api/chat", {
@@ -87,9 +87,28 @@ async function startServer() {
           body: JSON.stringify(req.body)
         });
         if (!response.ok) throw new Error("Canal unreachable");
-        // Canal streams plain text — collect all chunks
-        const reply = await response.text();
-        res.json({ reply });
+
+        // Pipe the stream directly — Canal returns streaming text
+        const contentType = response.headers.get("content-type");
+        if (contentType) res.setHeader("Content-Type", contentType);
+        res.setHeader("Cache-Control", "no-cache");
+        res.setHeader("Transfer-Encoding", "chunked");
+
+        if (response.body) {
+          const reader = response.body.getReader();
+          const push = async () => {
+            const { done, value } = await reader.read();
+            if (done) { res.end(); return; }
+            res.write(value);
+            await push();
+          };
+          await push();
+        } else {
+          // Fallback: no streaming available
+          const text = await response.text();
+          res.setHeader("Content-Type", "text/plain");
+          res.end(text);
+        }
       } catch {
         res.status(502).json({ reply: "serviço temporariamente indisponível. tente novamente em instantes." });
       }
