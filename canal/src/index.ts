@@ -49,7 +49,28 @@ type Variables = {
 const app = new Hono<{ Bindings: Bindings, Variables: Variables }>()
 
 // ── CORS & Security ───────────────────────────────────────────────
-app.use('/*', secureHeaders())
+app.use('/*', secureHeaders({
+  contentSecurityPolicy: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'", "'unsafe-inline'", "https://static.cloudflareinsights.com"],
+    styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+    fontSrc: ["'self'", "https://fonts.gstatic.com"],
+    imgSrc: ["'self'", "data:", "blob:", "https://*.ness.com.br", "https://*.r2.dev"],
+    connectSrc: ["'self'", "https://api.resend.com", "https://canal.ness.com.br"],
+    frameSrc: ["'none'"],
+    objectSrc: ["'none'"],
+    baseUri: ["'self'"],
+    formAction: ["'self'"],
+  },
+  permissionsPolicy: {
+    camera: [],
+    microphone: [],
+    geolocation: [],
+    payment: [],
+    usb: [],
+    fullscreen: ["self"],
+  },
+}))
 app.use('/*', cors({
   origin: [
     'http://localhost:3000',
