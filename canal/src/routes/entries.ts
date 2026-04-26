@@ -22,6 +22,7 @@ type Env = {
     BETTER_AUTH_URL: string
     ADMIN_SETUP_KEY: string
     RESEND_API_KEY: string
+    QUEUE?: Queue
   }
 }
 
@@ -331,9 +332,7 @@ entries.post('/collections/:slug/entries', async (c) => {
     
     // Dispara webhook via fila (Background Job)
     try {
-      // @ts-ignore
       if (c.env.QUEUE) {
-        // @ts-ignore
         c.env.QUEUE.send({
           type: 'webhook-dispatch',
           payload: { event: 'entry.published', collectionSlug: col.slug, entryId: id, tenantId, payloadData: data }
