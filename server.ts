@@ -114,6 +114,22 @@ async function startServer() {
       }
     });
 
+    // Newsletter proxy
+    app.post("/api/newsletter", async (req, res) => {
+      try {
+        const response = await fetch("https://canal.ness.com.br/api/newsletter", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(req.body)
+        });
+        const data = await response.json();
+        res.json(data);
+      } catch (error) {
+        console.error("Error subscribing to newsletter:", error);
+        res.status(500).json({ error: "Failed to subscribe" });
+      }
+    });
+
     app.use(vite.middlewares);
     
     app.listen(PORT, "0.0.0.0", () => {
@@ -178,10 +194,40 @@ async function startServer() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
         });
+        if (!response.ok) throw new Error("Canal unreachable");
+
+        // Stream the response directly — no buffering
+        const contentType = response.headers.get("content-type") || "text/plain";
+        if (response.body) {
+          return new Response(response.body as ReadableStream, {
+            headers: {
+              "Content-Type": contentType,
+              "Cache-Control": "no-cache",
+              "Transfer-Encoding": "chunked",
+            },
+          });
+        }
+        // Fallback: no stream available
+        const text = await response.text();
+        return c.text(text);
+      } catch (error) {
+        return c.json({ reply: "desculpe, tive um problema na conexão com o backoffice. tente novamente em instantes." }, 502);
+      }
+    });
+
+    // Newsletter proxy
+    app.post("/api/newsletter", async (c) => {
+      try {
+        const body = await c.req.json();
+        const response = await fetch("https://canal.ness.com.br/api/newsletter", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
         const data = await response.json();
         return c.json(data);
       } catch (error) {
-        return c.json({ reply: "desculpe, tive um problema na conexão com o backoffice. tente novamente em instantes." }, 500);
+        return c.json({ error: "Failed to subscribe" }, 500);
       }
     });
 
