@@ -51,7 +51,7 @@ Este roadmap consolida **todos os processos** do ecossistema ness. em 6 fases (�
 ```
 ┌───────────────────────────────────────────────────┐
 │  FASE 1 ████████████████████████ 100% INFRA  ✅   │
-│  FASE 2 ████████████████████░░░░  85% TECH DEBT   │
+│  FASE 2 ████████████████████████ 100% TECH DEBT ✅ │
 │  FASE 3 ██░░░░░░░░░░░░░░░░░░░░░░  10% CONTEÚDO   │
 │  FASE 4 ████░░░░░░░░░░░░░░░░░░░░  15% COMPLIANCE  │
 │  FASE 5 ░░░░░░░░░░░░░░░░░░░░░░░░   0% IA/AUTO     │
@@ -206,8 +206,8 @@ Este roadmap consolida **todos os processos** do ecossistema ness. em 6 fases (�
 
 | Task | Descrição | Status |
 |------|-----------|--------|
-| T2.5.1 | Substituir `response.text()` + `res.json({reply})` por `response.body.pipe(res)` | `[ ]` |
-| T2.5.2 | Testar streaming word-by-word no widget | `[ ]` |
+| T2.5.1 | Substituir `response.text()` + `res.json({reply})` por `response.body.pipe(res)` | `[x]` ReadableStream passthrough |
+| T2.5.2 | Testar streaming word-by-word no widget | `[x]` dev + prod modes |
 
 ## Métricas da Fase 2
 
