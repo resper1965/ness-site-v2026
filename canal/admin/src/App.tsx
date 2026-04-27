@@ -21,6 +21,7 @@ const AISettingsPage = React.lazy(() => import("./routes/ai-settings"));
 const CommunicationsPage = React.lazy(() => import("./routes/communications"));
 const CompliancePage = React.lazy(() => import("./routes/compliance"));
 const ChatbotPage = React.lazy(() => import("./routes/chatbot"));
+const AutomationPage = React.lazy(() => import("./routes/automation"));
 
 function GlobalErrorBoundary() {
   const error = useRouteError() as Error;
@@ -81,6 +82,7 @@ const router = createBrowserRouter([
       { path: "organizations", element: <OrganizationsPage /> },
       { path: "compliance", element: <CompliancePage /> },
       { path: "chatbot", element: <ChatbotPage /> },
+      { path: "automation", element: <AutomationPage /> },
       { path: "crud/:slug", element: <DynamicCrudRoute /> },
     ],
   },

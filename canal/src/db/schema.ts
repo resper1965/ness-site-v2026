@@ -65,7 +65,10 @@ export const chats = sqliteTable('chats', {
 
 export const newsletter = sqliteTable('newsletter', {
   id: integer('id').primaryKey({ autoIncrement: true }),
+  tenant_id: text('tenant_id'),
   email: text('email').notNull().unique(),
+  token: text('token'),
+  confirmed_at: text('confirmed_at'),
   created_at: text('created_at').default('CURRENT_TIMESTAMP')
 });
 
@@ -259,5 +262,72 @@ export const consent_logs = sqliteTable('consent_logs', {
   action: text('action').notNull(),
   ip_address: text('ip_address'),
   user_agent: text('user_agent'),
+  created_at: text('created_at'),
+});
+
+// ── Fase 5: IA & Automação ───────────────────────────────────────
+
+export const applicants = sqliteTable('applicants', {
+  id: text('id').primaryKey(),
+  tenant_id: text('tenant_id'),
+  job_id: text('job_id'),
+  name: text('name').notNull(),
+  email: text('email').notNull(),
+  linkedin_url: text('linkedin_url'),
+  resume_r2_key: text('resume_r2_key'),
+  ai_score: integer('ai_score'),
+  ai_summary: text('ai_summary'),
+  status: text('status').default('new'),
+  created_at: text('created_at'),
+});
+
+export const social_posts = sqliteTable('social_posts', {
+  id: text('id').primaryKey(),
+  tenant_id: text('tenant_id'),
+  platform: text('platform').notNull(),
+  content: text('content').notNull(),
+  image_url: text('image_url'),
+  scheduled_at: text('scheduled_at'),
+  published_at: text('published_at'),
+  status: text('status').default('draft'),
+  ai_generated: integer('ai_generated').default(0),
+  created_at: text('created_at'),
+  updated_at: text('updated_at'),
+});
+
+export const newsletter_campaigns = sqliteTable('newsletter_campaigns', {
+  id: text('id').primaryKey(),
+  tenant_id: text('tenant_id'),
+  subject: text('subject').notNull(),
+  body_html: text('body_html').notNull(),
+  status: text('status').default('draft'),
+  scheduled_at: text('scheduled_at'),
+  sent_at: text('sent_at'),
+  open_rate: integer('open_rate').default(0),
+  click_rate: integer('click_rate').default(0),
+  created_at: text('created_at'),
+  updated_at: text('updated_at'),
+});
+
+export const comunicados = sqliteTable('comunicados', {
+  id: text('id').primaryKey(),
+  tenant_id: text('tenant_id'),
+  title: text('title').notNull(),
+  body: text('body').notNull(),
+  audience: text('audience').default('all'),
+  status: text('status').default('draft'),
+  scheduled_at: text('scheduled_at'),
+  sent_at: text('sent_at'),
+  created_at: text('created_at'),
+  updated_at: text('updated_at'),
+});
+
+export const brand_assets = sqliteTable('brand_assets', {
+  id: text('id').primaryKey(),
+  tenant_id: text('tenant_id'),
+  name: text('name').notNull(),
+  type: text('type').notNull(), // logo, font, color_palette
+  r2_key: text('r2_key'),
+  value: text('value'), // hex codes for colors
   created_at: text('created_at'),
 });

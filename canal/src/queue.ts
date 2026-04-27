@@ -6,7 +6,7 @@ import { webhooks_targets, entries } from './db/schema'
 import { eq } from 'drizzle-orm'
 
 export interface QueueMessage {
-  type: 'generate-draft' | 'audit-content' | 'translate' | 'vectorize-entry' | 'webhook-dispatch'
+  type: 'generate-draft' | 'audit-content' | 'translate' | 'vectorize-entry' | 'webhook-dispatch' | 'SCORE_CV' | 'SEND_NEWSLETTER'
   payload: any
 }
 
@@ -68,6 +68,28 @@ export async function queueHandler(batch: MessageBatch<QueueMessage>, env: EnvWi
             }
           } catch (e) {
             console.error('[Queue] Translate falhou:', e)
+          }
+          break;
+        }
+        case 'SCORE_CV': {
+          const { applicantId, fileKey } = message.body.payload;
+          console.log(`[Queue] Scoring CV for applicant ${applicantId}`);
+          
+          try {
+            const aiResponse = await env.AI.run('@cf/meta/llama-3-8b-instruct', {
+              messages: [
+                { role: 'system', content: 'You are a technical recruiter AI. Analyze this candidate application and return a strict JSON with "score" (0-100) and "summary" (short reason).' },
+                { role: 'user', content: 'Attached resume: ' + fileKey }
+              ]
+            } as any);
+            
+            const jsonText = String(aiResponse.response).replace(/```json/g, '').replace(/```/g, '').trim();
+            const result = JSON.parse(jsonText);
+            
+            await env.DB.prepare('UPDATE applicants SET ai_score = ?, ai_summary = ? WHERE id = ?').bind(result.score || 50, result.summary || 'Summary not provided', applicantId).run();
+            console.log(`[Queue] Scored ${applicantId}: ${result.score}`);
+          } catch(e) {
+            console.error('[Queue] Scoring CV failed:', e);
           }
           break;
         }

@@ -178,6 +178,20 @@ export const NAV: NavGroup[] = [
     ],
   },
   {
+    section: "Growth & IA (Fase 5)",
+    items: [
+      {
+        to: "/automation",
+        label: "IA Automações",
+        icon: (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        ),
+      },
+    ],
+  },
+  {
     section: "Compliance",
     items: [
       {
@@ -256,6 +270,7 @@ export const PAGE_META: Record<string, { title: string; sub: string }> = {
   "/organizations": { title: "Gestão Global de Empresas", sub: "Visão central de workspaces (Super Admin)" },
   "/compliance":  { title: "Compliance & LGPD", sub: "DSAR, Canal de Denúncia e Políticas" },
   "/chatbot":     { title: "Chatbot & RAG",     sub: "Configuração, analytics e base de conhecimento" },
+  "/automation":  { title: "Automações & IA",   sub: "Fase 5: Social, Newsletters, Triagem de CVs" },
 };
 
 export const SUPER_ADMIN_EMAILS = ["resper@bekaa.eu", "admin@ness.com.br", "resper@ness.com.br"];

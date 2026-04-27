@@ -276,6 +276,10 @@ app.get('/api/chatbot-config', async (c) => {
 // Public compliance endpoints: DSAR, whistleblower, policies, consent
 app.route('/api', complianceRoutes)
 
+// Public and Protected Automation endpoints: Newsletter, Apply, Assets
+import automationRoutes from './routes/automation'
+app.route('/api/automation', automationRoutes)
+
 // ── Mount: Admin Routes (modular, auth-protected) ────────────────
 import { admin } from './routes/admin'
 import { webhooksApi } from './routes/webhooks-api'
