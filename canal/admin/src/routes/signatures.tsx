@@ -11,16 +11,15 @@ const DEPARTMENTS = [
 
 function Toast({ message, type }: { message: string; type: "success" | "error" }) {
   return (
-    <div style={{
-      position: "fixed", bottom: 24, right: 24, zIndex: 9999,
-      background: type === "success" ? "rgba(16,185,129,0.96)" : "rgba(244,63,94,0.96)",
-      backdropFilter: "blur(8px)", color: "#fff",
-      padding: "10px 18px", borderRadius: 10, fontSize: 13, fontWeight: 500,
-      boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
-      animation: "toast-in 0.22s cubic-bezier(0.34,1.56,0.64,1)",
-      display: "flex", alignItems: "center", gap: 8,
-    }}>
-      {type === "success" ? "✓" : "✕"} {message}
+    <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-2xl animate-in slide-in-from-bottom-5 fade-in duration-300 font-medium text-sm text-white ${
+      type === "success" ? "bg-emerald-500 border border-emerald-400" : "bg-red-500 border border-red-400"
+    }`}>
+      {type === "success" ? (
+         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      ) : (
+         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      )}
+      {message}
     </div>
   );
 }
@@ -56,118 +55,142 @@ export default function SignaturesHub() {
     if (!el) return;
     navigator.clipboard.writeText(el.innerHTML).then(() => {
       setCopied(true);
-      setToast({ message: "HTML copiado — cole no Gmail.", type: "success" });
+      setToast({ message: "HTML Snippet copiado com sucesso.", type: "success" });
       setTimeout(() => setCopied(false), 2000);
     });
   };
 
-  const FIELD: React.CSSProperties = {
-    width: "100%", padding: "9px 13px", borderRadius: 9,
-    border: "1px solid var(--border)", backgroundColor: "var(--surface-2, #0f172a)",
-    color: "var(--text)", fontSize: 13.5, boxSizing: "border-box",
-    outline: "none", transition: "border-color 0.15s",
-  };
-  const LABEL: React.CSSProperties = {
-    fontSize: 10.5, fontWeight: 700, color: "var(--text-muted)",
-    marginBottom: 5, display: "block", textTransform: "uppercase", letterSpacing: "0.08em",
-  };
-
   return (
-    <>
+    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
       {toast && <Toast message={toast.message} type={toast.type} />}
-      <style>{`
-        @keyframes toast-in {
-          from { opacity: 0; transform: translateY(8px) scale(0.96); }
-          to   { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        .sig-input:focus { border-color: var(--accent) !important; box-shadow: 0 0 0 3px rgba(123,208,255,0.1); }
-      `}</style>
 
-      {/* Toolbar */}
-      <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", marginBottom: 28, paddingBottom: 20, borderBottom: "1px solid var(--border)" }}>
-        <div style={{ display: "flex", gap: 10 }}>
-          <Link to="/crud/signatures" style={{ padding: "9px 16px", borderRadius: 9, fontWeight: 500, fontSize: 13, border: "1px solid var(--border)", color: "var(--text-muted)", textDecoration: "none", background: "transparent" }}>Histórico</Link>
-          <button onClick={handleSave} disabled={saving} style={{ padding: "9px 16px", borderRadius: 9, fontWeight: 600, fontSize: 13, border: "none", cursor: "pointer", background: "var(--surface-3, #222a3d)", color: "var(--text-muted)", opacity: saving ? 0.6 : 1 }}>
-            {saving ? "Salvando…" : "Salvar"}
-          </button>
-        </div>
-      </div>
-
-      {/* Grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "minmax(280px,380px) 1fr", gap: 24, alignItems: "start" }}>
-        {/* Form */}
-        <div style={{ padding: 20, borderRadius: 16, border: "1px solid var(--border)", background: "var(--surface, #0b1326)" }}>
-          <p style={{ margin: "0 0 16px", fontSize: 10.5, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--text-muted)", paddingBottom: 12, borderBottom: "1px solid var(--border)" }}>
-            Dados do Colaborador
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
+        <div>
+           <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
+             <svg className="text-muted-foreground" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M10 12l2 2 4-4"/></svg>
+             Branding <span className="text-muted-foreground font-light">::</span> Assinaturas
+          </h2>
+          <p className="text-sm font-medium text-muted-foreground tracking-wide mt-1 uppercase">
+             Gerador de Assinaturas Corporativas (HTML)
           </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 11 }}>
-            {([
-              ["Nome Completo", "name", "Ex: Ana Souza", "text"],
-              ["Cargo", "role", "Ex: CPO", "text"],
-              ["E-mail", "email", "nome@ness.com.br", "email"],
-              ["Telefone", "phone", "+55 11 99999-9999", "text"],
-              ["LinkedIn URL", "linkedin", "https://linkedin.com/…", "text"],
-            ] as [string, string, string, string][]).map(([label, key, placeholder, type]) => (
-              <div key={key}>
-                <label style={LABEL}>{label}</label>
-                <input type={type} className="sig-input" style={FIELD}
-                  value={form[key as keyof typeof form] as string}
-                  aria-label={label} placeholder={placeholder}
-                  onChange={e => setForm({ ...form, [key]: e.target.value })} />
-              </div>
-            ))}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-              <div>
-                <label style={LABEL}>Marca</label>
-                <select className="sig-input" style={FIELD} value={form.brand}
-                  onChange={e => setForm({ ...form, brand: e.target.value })}>
-                  {BRANDS.map(b => <option key={b} value={b}>{BRAND_CONFIG[b]?.name}</option>)}
-                </select>
-              </div>
-              <div>
-                <label style={LABEL}>Departamento</label>
-                <select className="sig-input" style={FIELD} value={form.department}
-                  onChange={e => setForm({ ...form, department: e.target.value })}>
-                  {DEPARTMENTS.map(d => <option key={d} value={d}>{d}</option>)}
-                </select>
-              </div>
-            </div>
-            <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", paddingTop: 4 }}>
-              <input type="checkbox" checked={form.disclaimer}
-                onChange={e => setForm({ ...form, disclaimer: e.target.checked })}
-                style={{ width: 16, height: 16, accentColor: "var(--accent)" }} />
-              <span style={{ ...LABEL, margin: 0 }}>Incluir aviso de confidencialidade</span>
-            </label>
-          </div>
         </div>
-
-        {/* Preview */}
-        <div style={{ position: "sticky", top: 24, display: "flex", flexDirection: "column", gap: 12 }}>
-          <div style={{ borderRadius: 16, border: "1px solid var(--border)", background: "var(--surface)", overflow: "hidden" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 18px", borderBottom: "1px solid var(--border)", background: "rgba(255,255,255,0.02)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--text-muted)" }}>Pré-visualização</span>
-                <span style={{ fontSize: 10, padding: "2px 8px", borderRadius: 99, background: "rgba(123,208,255,0.10)", color: "var(--accent)", fontWeight: 600 }}>LIVE</span>
-              </div>
-              <button onClick={copyHTML} style={{ padding: "7px 18px", borderRadius: 8, border: "none", cursor: "pointer", background: copied ? "rgba(16,185,129,0.9)" : "var(--accent)", color: copied ? "#fff" : "#081420", fontSize: 12.5, fontWeight: 700, transition: "background 0.15s" }}>
-                {copied ? "✓ Copiado" : "Copiar HTML"}
-              </button>
-            </div>
-            <div style={{ padding: "32px 28px", background: "#f4f5f7", overflowX: "auto" }}>
-              <div style={{ display: "inline-block", background: "#fff", borderRadius: 8, boxShadow: "0 2px 16px rgba(0,0,0,0.07)" }}>
-                <SignaturePreview form={form} />
-              </div>
-            </div>
-          </div>
-
-          <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 16px", borderRadius: 10, background: "rgba(0,173,232,0.06)", border: "1px solid rgba(0,173,232,0.14)" }}>
-            <span style={{ fontSize: 15 }}>💡</span>
-            <span style={{ fontSize: 12, color: "var(--text-muted)", lineHeight: 1.5 }}>
-              Clique em <strong style={{ color: "var(--accent)" }}>Copiar HTML</strong>, abra Gmail → Configurações → Assinatura → cole com <kbd style={{ fontSize: 11, background: "var(--surface-3)", padding: "1px 6px", borderRadius: 5, border: "1px solid var(--border)" }}>Ctrl+V</kbd>.
-            </span>
-          </div>
+        <div className="flex items-center gap-3">
+           <Link to="/crud/signatures" className="inline-flex h-10 items-center justify-center rounded-md border border-input shadow-sm bg-background px-4 font-semibold uppercase text-xs tracking-wider hover:bg-accent hover:text-accent-foreground transition-colors">
+              Histórico
+           </Link>
+           <button 
+             onClick={handleSave} 
+             disabled={saving} 
+             className="inline-flex h-10 items-center justify-center rounded-md bg-foreground text-background px-6 font-bold uppercase text-xs tracking-wider shadow hover:bg-foreground/90 transition-all disabled:opacity-50 border-0"
+           >
+             {saving ? "Registrando..." : "Registrar"}
+           </button>
         </div>
       </div>
-    </>
+
+      <div className="grid grid-cols-1 xl:grid-cols-[1fr_1.5fr] gap-6 items-start">
+        {/* Form Node */}
+        <div className="rounded-xl border bg-card shadow-sm overflow-hidden flex flex-col">
+          <div className="bg-muted/30 p-5 border-b border-border/40">
+             <h3 className="font-semibold leading-none tracking-tight">Parametrização Visual</h3>
+          </div>
+          <div className="p-6 space-y-5">
+             <div className="grid gap-5">
+               {([
+                 ["Nome Completo", "name", "Ex: Ana Souza", "text"],
+                 ["Cargo", "role", "Ex: CPO", "text"],
+                 ["E-mail corporativo", "email", "nome@ness.com.br", "email"],
+                 ["Celular / Ramal", "phone", "+55 11 99999-9999", "text"],
+                 ["URI do LinkedIn", "linkedin", "https://linkedin.com/…", "text"],
+               ] as [string, string, string, string][]).map(([label, key, placeholder, type]) => (
+                 <div key={key} className="space-y-2.5">
+                   <label className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground">{label}</label>
+                   <input 
+                     type={type} 
+                     className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm text-foreground shadow-inner transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary"
+                     value={form[key as keyof typeof form] as string}
+                     placeholder={placeholder}
+                     onChange={e => setForm({ ...form, [key]: e.target.value })} 
+                   />
+                 </div>
+               ))}
+               <div className="grid grid-cols-2 gap-4">
+                 <div className="space-y-2.5">
+                   <label className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground">Entidade / Marca</label>
+                   <select 
+                     className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-3 py-2 text-[11px] font-bold tracking-wider uppercase text-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                     value={form.brand}
+                     onChange={e => setForm({ ...form, brand: e.target.value })}
+                   >
+                     {BRANDS.map(b => <option key={b} value={b}>{BRAND_CONFIG[b]?.name}</option>)}
+                   </select>
+                 </div>
+                 <div className="space-y-2.5">
+                   <label className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground">Vínculo O.G.</label>
+                   <select 
+                     className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-3 py-2 text-[11px] font-bold tracking-wider uppercase text-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                     value={form.department}
+                     onChange={e => setForm({ ...form, department: e.target.value })}
+                   >
+                     {DEPARTMENTS.map(d => <option key={d} value={d}>{d}</option>)}
+                   </select>
+                 </div>
+               </div>
+               
+               <div className="mt-2 pt-4 border-t border-border/40">
+                 <label className="flex items-center gap-3 cursor-pointer">
+                   <div className="relative flex items-center">
+                     <input 
+                       type="checkbox" 
+                       checked={form.disclaimer}
+                       onChange={e => setForm({ ...form, disclaimer: e.target.checked })}
+                       className="w-4 h-4 rounded border-input bg-background focus:ring-primary text-primary shadow-sm" 
+                     />
+                   </div>
+                   <span className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground">Afixar Disclaimer LGPD no rodapé</span>
+                 </label>
+               </div>
+             </div>
+          </div>
+        </div>
+
+        {/* Preview Engine Node */}
+        <div className="flex flex-col gap-6 sticky top-6">
+           <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
+             <div className="bg-muted/30 p-5 border-b border-border/40 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                   <h3 className="font-semibold leading-none tracking-tight">Render Engine</h3>
+                   <span className="inline-flex px-1.5 py-0.5 rounded text-[8px] font-black uppercase text-white bg-accent animate-pulse tracking-wide ml-2">LIVE IO</span>
+                </div>
+                <button 
+                  onClick={copyHTML} 
+                  className={`inline-flex h-8 px-4 items-center justify-center rounded border ${copied ? "bg-emerald-500 border-emerald-600 text-white" : "bg-background border-border text-foreground hover:bg-accent hover:text-accent-foreground"} text-[10px] font-bold uppercase tracking-wider transition-colors shadow-sm`}
+                >
+                  {copied ? "Cód. Fonte na Área de Transf." : "Clonar HTML"}
+                </button>
+             </div>
+             
+             {/* Virtual Container representing email body background */}
+             <div className="p-8 md:p-12 bg-slate-100 flex items-center justify-center min-h-[300px] overflow-auto">
+                <div className="inline-block bg-white p-6 rounded border shadow-sm" style={{ boxShadow: '0 2px 20px rgba(0,0,0,0.05)' }}>
+                  <SignaturePreview form={form} />
+                </div>
+             </div>
+           </div>
+
+           <div className="flex items-center gap-4 p-4 rounded-xl bg-accent/5 border border-accent/20">
+              <div className="h-10 w-10 shrink-0 rounded-full bg-accent/10 flex items-center justify-center text-accent">
+                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
+              <div>
+                 <p className="text-sm font-semibold text-foreground">Como acoplar o elemento no Workspace:</p>
+                 <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                   Opere o extrator acima via botão <strong>"Clonar HTML"</strong>. Navegue até seu G-Suite local (Web) &gt; Console Settings &gt; Signature e execute a colagem (<kbd className="bg-muted px-1.5 py-0.5 rounded border border-border/50 shadow-sm font-mono text-[10px]">CMD+V</kbd> ou <kbd className="bg-muted px-1.5 py-0.5 rounded border border-border/50 shadow-sm font-mono text-[10px]">CTRL+V</kbd>).
+                 </p>
+              </div>
+           </div>
+        </div>
+      </div>
+    </div>
   );
 }
