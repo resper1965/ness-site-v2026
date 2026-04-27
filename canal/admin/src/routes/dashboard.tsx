@@ -48,38 +48,47 @@ export default function DashboardLayout() {
     if (!isPending && !session) navigate("/login");
   }, [session, isPending, navigate]);
 
-  if (isPending) return <div className="loader" />;
+  if (isPending) return <div className="min-h-screen flex items-center justify-center bg-background"><div className="loader-inline" /></div>;
   if (!session) return null;
 
   const isSuperAdmin = session.user.role === 'admin' || SUPER_ADMIN_EMAILS.includes(session.user.email);
   const myMembership = activeOrg?.members?.find((m: any) => m.userId === session?.user?.id || m.user?.email === session?.user?.email);
   const myRole = myMembership?.role || "member";
 
-  const meta = PAGE_META[location.pathname] ?? { title: "Canal Admin", sub: "" };
+  const meta = PAGE_META[location.pathname] ?? { title: "Infraestrutura Canal", sub: "Control Plane" };
 
   async function handleSignOut() {
     await signOut({ fetchOptions: { onSuccess: () => navigate("/login") } });
   }
 
   return (
-    <div className="layout">
+    <div className="flex h-screen w-full bg-background font-sans overflow-hidden text-foreground selection:bg-primary/20 selection:text-primary">
       {/* Sidebar */}
-      <aside className={`sidebar${isMinimized ? ' minimized' : ''}`}>
-        <div className="sidebar-header">
-          <span className="sidebar-logo">
-            canal<span>.</span>
+      <aside className={`shrink-0 flex flex-col border-r border-border/50 bg-[#060b13]/80 backdrop-blur-xl transition-[width] duration-300 z-40 ease-[cubic-bezier(0.2,0.8,0.2,1)] will-change-[width] ${
+         isMinimized ? 'w-[74px]' : 'w-64 max-w-[280px]'
+      }`}>
+        <div className="flex items-center h-[72px] px-5 border-b border-white/5 shrink-0 justify-between">
+          <span className={`font-black tracking-tighter text-lg leading-none transition-all flex items-center text-white truncate ${isMinimized ? 'opacity-0 w-0' : 'opacity-100'}`}>
+            canal<span className="text-primary">.</span>
           </span>
-          {!isMinimized && <span className="sidebar-version">v2</span>}
-          <button className="sidebar-toggle-btn" onClick={toggleSidebar}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: isMinimized ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </button>
+          <div className="flex items-center gap-3">
+             {!isMinimized && <span className="text-[9px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow-sm shrink-0">v2 IO</span>}
+             <button 
+                className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/10 text-white/60 hover:text-white transition-colors shrink-0 outline-none" 
+                onClick={toggleSidebar}
+             >
+               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ transform: isMinimized ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
+                 <polyline points="15 18 9 12 15 6"></polyline>
+               </svg>
+             </button>
+          </div>
         </div>
 
-        <OrgSwitcher userEmail={session.user.email} isSuperAdmin={isSuperAdmin} />
+        <div className={`p-4 border-b border-white/5 shrink-0 ${isMinimized ? 'px-3' : 'px-4'}`}>
+           <OrgSwitcher userEmail={session.user.email} isSuperAdmin={isSuperAdmin} />
+        </div>
 
-        <nav className="sidebar-nav">
+        <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-4 custom-scrollbar">
           {NAV.map((group) => {
             if (group.adminOnly && !isSuperAdmin) return null;
             if (group.ownerOnly && !isSuperAdmin && myRole !== "owner") return null;
@@ -95,42 +104,53 @@ export default function DashboardLayout() {
             const isCollapsed = expanded !== group.section;
 
             return (
-              <div key={group.section}>
+              <div key={group.section} className="space-y-1">
                 <button
-                  className="nav-section-btn"
+                  className={`w-full flex items-center justify-between text-[#828a9f] hover:text-white transition-colors px-3 py-2 outline-none group rounded-md outline-none ${isMinimized ? 'justify-center' : ''}`}
                   onClick={() => toggle(group.section)}
                   aria-expanded={!isCollapsed}
                   title={isMinimized ? group.section : undefined}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
-                    {(group as any).icon || (
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.55 }}>
+                  <div className="flex items-center gap-3 w-full">
+                    <span className="shrink-0">{group.icon || (
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-55">
                         <rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect>
                       </svg>
+                    )}</span>
+                    {!isMinimized && (
+                       <span className="text-[10px] font-bold uppercase tracking-widest text-left line-clamp-1">{group.section}</span>
                     )}
-                    <span className="nav-label">{group.section}</span>
                   </div>
-                  <svg
-                    width="14" height="14" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" strokeWidth="2.5"
-                    strokeLinecap="round" strokeLinejoin="round"
-                    style={{ transition: 'transform 0.2s', transform: isCollapsed ? 'rotate(-90deg)' : 'rotate(0deg)', opacity: 0.4 }}
-                  >
-                    <polyline points="6 9 12 15 18 9"/>
-                  </svg>
+                  {!isMinimized && (
+                    <svg
+                      width="14" height="14" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                      className="opacity-40 transition-transform duration-200"
+                      style={{ transform: isCollapsed ? 'rotate(-90deg)' : 'rotate(0deg)' }}
+                    >
+                      <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                  )}
                 </button>
-                <div className={`nav-group-items${isCollapsed ? ' collapsed' : ''}`}>
-                  <div>
+                
+                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[800px] opacity-100'}`}>
+                  <div className={`flex flex-col gap-1 py-1 ${isMinimized ? 'items-center' : 'pl-3'}`}>
                     {visibleItems.map((item) => (
                       <NavLink
                         key={item.to}
                         to={item.to}
                         end={item.end}
-                        className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
+                        className={({ isActive }) => `
+                           flex items-center gap-3 px-3 py-2 rounded-lg transition-all text-sm font-semibold outline-none group/link
+                           ${isActive 
+                              ? 'bg-primary/20 text-primary shadow-[inset_2px_0_0_0_currentColor]' 
+                              : 'text-[#828a9f] hover:bg-white/5 hover:text-white'}
+                           ${isMinimized ? 'justify-center w-10 h-10 p-0 shadow-none' : 'w-full'}
+                        `}
                         title={isMinimized ? item.label : undefined}
                       >
-                        {item.icon}
-                        <span className="nav-label">{item.label}</span>
+                        <span className="shrink-0">{item.icon}</span>
+                        {!isMinimized && <span className="truncate">{item.label}</span>}
                       </NavLink>
                     ))}
                   </div>
@@ -140,20 +160,30 @@ export default function DashboardLayout() {
           })}
         </nav>
 
-        <UserDropdown user={session.user} onSignOut={handleSignOut} />
+        <div className="shrink-0 border-t border-white/5 p-4 bg-[#060b13]">
+           <UserDropdown user={session.user} onSignOut={handleSignOut} />
+        </div>
       </aside>
 
-      {/* Main area */}
-      <div className="main-area">
-        <header className="topbar">
-          <div>
-            <div className="topbar-title">{meta.title}</div>
-            {meta.sub && <div className="topbar-sub">{meta.sub}</div>}
+      {/* Main Container */}
+      <div className="flex flex-col flex-1 min-w-0 bg-background/50 relative">
+        {/* Glow Effects Container equivalent to typical dark theme background glow */}
+        <div className="absolute top-0 right-0 -z-10 w-[800px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none opacity-50" />
+        <div className="absolute bottom-0 left-0 -z-10 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[150px] pointer-events-none opacity-50" />
+
+        {/* Global Nav Bar */}
+        <header className="flex items-center justify-between h-[72px] px-8 border-b border-border/50 shrink-0 bg-background/60 backdrop-blur-md sticky top-0 z-30">
+          <div className="flex flex-col gap-0.5">
+            <h1 className="text-[17px] font-black tracking-tight text-foreground lead-none">{meta.title}</h1>
+            {meta.sub && <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground line-clamp-1">{meta.sub}</p>}
           </div>
-          <div className="topbar-actions" />
+          <div className="flex items-center gap-4">
+             {/* Slot for future global actions */}
+          </div>
         </header>
 
-        <main className="page-content">
+        {/* Dynamic Content Outlet */}
+        <main className="flex-1 overflow-x-hidden overflow-y-auto">
           <Outlet />
         </main>
       </div>
