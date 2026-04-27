@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 
-export default function NcirtDashboard() {
+export default function EmergencyDashboard() {
   const [activeTab, setActiveTab] = useState('active');
 
   return (
     <div className="flex-1 space-y-6 p-8 pt-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
-          <h2 className="text-3xl font-black tracking-tighter uppercase font-mono bg-clip-text text-transparent bg-gradient-to-r from-red-600 to-orange-500 dark:from-red-500 dark:to-orange-400">
-            n.cirt :: War Room
+          <h2 className="text-3xl font-black tracking-tighter uppercase font-mono bg-clip-text text-transparent bg-linear-to-r from-red-600 to-orange-500 dark:from-red-500 dark:to-orange-400">
+            Tratativa de Crises (Incidentes P1)
           </h2>
           <p className="text-sm font-medium text-muted-foreground tracking-wide mt-1">
-            NÚCLEO CENTRAL DE INCIDENTES E RESPOSTA TÁTICA
+            FLUXO DE CHAMADOS DE EMERGÊNCIA DOS CLIENTES DA NESS
           </p>
         </div>
         <button className="group relative inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-semibold h-10 px-5 py-2 bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 transition-all focus:outline-none focus:ring-2 focus:ring-destructive focus:ring-offset-2 dark:focus:ring-offset-background">
@@ -25,7 +25,7 @@ export default function NcirtDashboard() {
       {/* KPI Cards */}
       <div className="grid gap-4 md:grid-cols-3">
         <div className="rounded-xl border border-red-500/20 bg-card text-card-foreground shadow-sm relative overflow-hidden group">
-          <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-linear-to-br from-red-500/5 to-transparent pointer-events-none" />
           <div className="p-5 flex flex-row items-center justify-between space-y-0 relative">
             <h3 className="tracking-tight text-sm font-semibold uppercase text-muted-foreground">Incidentes Abertos</h3>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-red-500/70">
@@ -51,7 +51,7 @@ export default function NcirtDashboard() {
         </div>
 
         <div className="rounded-xl border border-green-500/20 bg-card text-card-foreground shadow-sm relative overflow-hidden group">
-          <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-linear-to-br from-green-500/5 to-transparent pointer-events-none" />
           <div className="p-5 flex flex-row items-center justify-between space-y-0 relative">
             <h3 className="tracking-tight text-sm font-semibold uppercase text-muted-foreground">Taxa de Erro 24h</h3>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500/70">
@@ -134,7 +134,7 @@ export default function NcirtDashboard() {
                 <div className="p-6">
                   <div className="bg-neutral-900 border border-neutral-800 p-5 rounded-lg shadow-inner overflow-x-auto">
                     <code className="text-xs font-mono leading-loose text-blue-300">
-                      <span className="text-pink-400">SELECT</span> blob1 <span className="text-pink-400">AS</span> tenant_id, blob2 <span className="text-pink-400">AS</span> path, <span className="text-purple-400">SUM</span>(double1) <span className="text-pink-400">AS</span> latency <br/>
+                      <span className="text-pink-400">SELECT</span> blob1 <span className="text-pink-400">AS</span> tenant_id, blob2 <span className="text-pink-400">AS</span> path, <span className="text-cyan-400">SUM</span>(double1) <span className="text-pink-400">AS</span> latency <br/>
                       <span className="text-pink-400">FROM</span> canal_metrics <br/>
                       <span className="text-pink-400">GROUP BY</span> blob1, blob2
                     </code>

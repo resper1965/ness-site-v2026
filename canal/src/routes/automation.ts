@@ -8,6 +8,8 @@ import {
 } from '../db/schema';
 import { nanoid } from 'nanoid';
 import { Bindings } from '../index';
+import { generateText } from 'ai';
+import { createWorkersAI } from 'workers-ai-provider';
 
 export const automationRoute = new Hono<{ Bindings: Bindings }>();
 
@@ -149,6 +151,15 @@ automationRoute.post('/social', zValidator('json', z.object({
     status: body.scheduled_at ? 'scheduled' : 'draft',
     created_at: new Date().toISOString()
   });
+
+  if (c.env.QUEUE && body.scheduled_at) {
+    try {
+      await c.env.QUEUE.send({ type: 'SOCIAL_POST_DISPATCH', payload: { postId: id, platform: body.platform } });
+    } catch (e) {
+      console.error('Failed to enqueue social post:', e);
+    }
+  }
+
   return c.json({ success: true, id });
 });
 
@@ -156,6 +167,35 @@ automationRoute.get('/comunicados', async (c) => {
   const db = drizzle(c.env.DB);
   const q = await db.select().from(comunicados).all();
   return c.json({ data: q });
+});
+
+automationRoute.post('/social-draft', zValidator('json', z.object({
+  platform: z.string(),
+  brief: z.string()
+})), async (c) => {
+  const { platform, brief } = c.req.valid('json');
+
+  const systemPrompt = `Você é um Social Media Manager B2B Sênior. Sua especialidade é destilar artigos executivos em posts engajadores.
+Plataforma alvo: ${platform.toUpperCase()}
+Instruções:
+- Se for LinkedIn: Mantenha um tom profissional, orientativo, divida em parágrafos com respiros. Termine com uma CTA leve.
+- Se for Instagram ou X: Seja hiper direto, adicione emojis visuais contextuais (🟢 🚀 📊).
+Não responda recados, vá direto para o texto do post.`;
+
+  try {
+    const workersai = createWorkersAI({ binding: c.env.AI });
+    const result = await generateText({
+      model: workersai('@cf/meta/llama-3.1-8b-instruct'),
+      system: systemPrompt,
+      messages: [
+        { role: 'user', content: `Base: ${brief.trim()}` }
+      ]
+    });
+    return c.json({ success: true, text: result.text });
+  } catch (err) {
+    console.error('Social draft generation error:', err);
+    return c.json({ error: 'Falha na geração com IA' }, 500);
+  }
 });
 
 export default automationRoute;

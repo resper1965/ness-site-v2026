@@ -17,10 +17,41 @@ export interface NavGroup {
   ownerOnly?: boolean;
 }
 
+export const ADMIN_NAV: NavGroup[] = [
+  {
+    section: "Sistema Total",
+    icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 10h-1.26a8 8 0 1 0-9.48 0H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zM12 10v4M10 14h4"/></svg>,
+    adminOnly: true,
+    items: [
+
+      {
+        to: "/organizations",
+        label: "Gestão Global de Empresas",
+        icon: (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
+          </svg>
+        ),
+      },
+      {
+        to: "/users",
+        label: "Usuários da Plataforma",
+        icon: (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        ),
+      },
+    ],
+  },
+];
+
 export const NAV: NavGroup[] = [
   {
-    section: "Conteúdo",
-    icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2h11A2.5 2.5 0 0 1 20 4.5v15a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 19.5z"/></svg>,
+    section: "Visão Geral",
+    icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>,
     items: [
       {
         to: "/",
@@ -32,6 +63,12 @@ export const NAV: NavGroup[] = [
           </svg>
         ),
       },
+    ],
+  },
+  {
+    section: "Conteúdo",
+    icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2h11A2.5 2.5 0 0 1 20 4.5v15a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 19.5z"/></svg>,
+    items: [
       {
         to: "/insights",
         label: "Insights",
@@ -67,7 +104,7 @@ export const NAV: NavGroup[] = [
     items: [
       {
         to: "/media",
-        label: "Media",
+        label: "Assets & RAG Base",
         icon: (
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
@@ -126,36 +163,8 @@ export const NAV: NavGroup[] = [
         ),
       },
       {
-        to: "/forms",
-        label: "Formulários",
-        icon: (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
-          </svg>
-        ),
-      },
-      {
-        to: "/chats",
-        label: "Chatlogs AI",
-        icon: (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-          </svg>
-        ),
-      },
-      {
-        to: "/leads",
-        label: "Leads Gabi",
-        icon: (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-          </svg>
-        ),
-      },
-      {
         to: "/communications",
-        label: "Central de Msgs",
+        label: "Inbox Unificado",
         icon: (
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4Z"/>
@@ -172,11 +181,11 @@ export const NAV: NavGroup[] = [
         ),
       },
       {
-        to: "/chatbot",
-        label: "Chatbot & RAG",
+        to: "/emergency",
+        label: "Fluxo de Emergência",
         icon: (
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 8V4H8"/><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="6" y="14" width="12" height="8" rx="2"/><path d="M12 10v4"/>
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
           </svg>
         ),
       },
@@ -229,42 +238,6 @@ export const NAV: NavGroup[] = [
       },
     ],
   },
-  {
-    section: "Sistema Total",
-    icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 10h-1.26a8 8 0 1 0-9.48 0H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zM12 10v4M10 14h4"/></svg>,
-    adminOnly: true,
-    items: [
-      {
-        to: "/n-cirt",
-        label: "N.CIRT War Room",
-        icon: (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-        ),
-      },
-      {
-        to: "/organizations",
-        label: "Gestão Global de Empresas",
-        icon: (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-            <line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
-          </svg>
-        ),
-      },
-      {
-        to: "/users",
-        label: "Usuários da Plataforma",
-        icon: (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-          </svg>
-        ),
-      },
-    ],
-  },
 ];
 
 export const PAGE_META: Record<string, { title: string; sub: string }> = {
@@ -272,14 +245,10 @@ export const PAGE_META: Record<string, { title: string; sub: string }> = {
   "/insights": { title: "Insights",       sub: "Artigos e publicações do blog" },
   "/cases":   { title: "Cases",          sub: "Portfólio de projetos e cases" },
   "/jobs":    { title: "Vagas",          sub: "Oportunidades publicadas" },
-  "/media":       { title: "Media",          sub: "Galeria de imagens e arquivos" },
+  "/media":       { title: "Assets & RAG",   sub: "Repositório Pessoal e Base de IA" },
   "/brandbook":   { title: "Brandbook",      sub: "Assets de marca do grupo" },
   "/signatures":  { title: "Assinaturas",    sub: "Assinaturas de email corporativas" },
   "/decks":       { title: "Apresentações",  sub: "Gerador de decks PDF corporativos" },
-  "/forms":   { title: "Formulários",    sub: "Submissões recebidas" },
-  "/newsletters": { title: "Newsletters",   sub: "Compor e disparar e-mails em massa" },
-  "/chats":   { title: "Chatlogs AI",    sub: "Auditoria de interações com IA" },
-  "/leads":   { title: "Leads Gabi",     sub: "Contatos qualificados pela IA" },
   "/communications": { title: "Central de Mensagens", sub: "Inbox unificado de forms, leads e chats" },
   "/ai-settings": { title: "Gabi IA",      sub: "Configuração da assistente virtual" },
   "/account": { title: "Minha Conta",   sub: "Perfil, senha e vinculações" },
@@ -287,9 +256,8 @@ export const PAGE_META: Record<string, { title: string; sub: string }> = {
   "/users":   { title: "Gestão Global de Usuários", sub: "Administração de acessos (Super Admin)" },
   "/organizations": { title: "Gestão Global de Empresas", sub: "Visão central de workspaces (Super Admin)" },
   "/compliance":  { title: "Compliance & LGPD", sub: "DSAR, Canal de Denúncia e Políticas" },
-  "/chatbot":     { title: "Chatbot & RAG",     sub: "Configuração, analytics e base de conhecimento" },
   "/automation":  { title: "Automações & IA",   sub: "Fase 5: Social, Newsletters, Triagem de CVs" },
-  "/n-cirt":      { title: "N.CIRT War Room",   sub: "Fase 6: Núcleo Tático de Incidentes" },
+  "/emergency":   { title: "Fluxo de Emergência", sub: "Tratativa de Chamados Críticos do Cliente" },
 };
 
 export const SUPER_ADMIN_EMAILS = ["resper@bekaa.eu", "admin@ness.com.br", "resper@ness.com.br"];

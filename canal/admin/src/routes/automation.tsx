@@ -3,6 +3,55 @@ import React, { useState } from 'react';
 export default function AutomationDashboard() {
   const [activeTab, setActiveTab] = useState('social');
 
+  // GenAI Social Draft State
+  const [socialBrief, setSocialBrief] = useState('');
+  const [socialPlatform, setSocialPlatform] = useState('linkedin');
+  const [socialDraft, setSocialDraft] = useState('');
+  const [isDrafting, setIsDrafting] = useState(false);
+
+  const handleGenerateSocial = async () => {
+    if (!socialBrief) return;
+    setIsDrafting(true);
+    setSocialDraft('Conectando ao núcleo Generativo...');
+    try {
+      const res = await fetch('/api/automation/social-draft', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ platform: socialPlatform, brief: socialBrief })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSocialDraft(data.text);
+      } else {
+        setSocialDraft('Falha: ' + (data.error || 'Erro desconhecido.'));
+      }
+    } catch (e) {
+      setSocialDraft('Erro de conexão ao gerar post.');
+    } finally {
+      setIsDrafting(false);
+    }
+  };
+
+  const handlePublish = async (isScheduled: boolean) => {
+    if (!socialDraft) return;
+    try {
+      await fetch('/api/automation/social', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          platform: socialPlatform,
+          content: socialDraft,
+          scheduled_at: isScheduled ? new Date(Date.now() + 86400000).toISOString() : undefined // schedule for tomorrow if true
+        })
+      });
+      alert(isScheduled ? 'Inserido na Fila de Tasks de amanhã!' : 'Publicado com sucesso!');
+      setSocialDraft('');
+      setSocialBrief('');
+    } catch (e) {
+      alert('Erro ao confirmar publicação.');
+    }
+  };
+
   return (
     <div className="flex-1 space-y-6 p-8 pt-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
@@ -49,7 +98,7 @@ export default function AutomationDashboard() {
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
                     Criar Postagem Automatizada
                   </h3>
-                  <p className="text-sm text-muted-foreground mt-2">Utilize o roteador do LLM Llama-3 para gerar copys para suas redes e engatilhar o agendamento de forma robusta.</p>
+                  <p className="text-sm text-muted-foreground mt-2">Utilize o roteador Generativo para abstrair copys para suas redes e engatilhar o agendamento de forma robusta.</p>
                 </div>
                 
                 <div className="p-6">
@@ -57,36 +106,54 @@ export default function AutomationDashboard() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-3">
                         <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Plataforma de Destino</label>
-                        <select className="flex h-11 w-full items-center justify-between rounded-lg border border-input bg-background/50 px-3 py-2 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent disabled:cursor-not-allowed disabled:opacity-50">
+                        <select 
+                          value={socialPlatform}
+                          onChange={e => setSocialPlatform(e.target.value)}
+                          className="flex h-11 w-full items-center justify-between rounded-lg border border-input bg-background/50 px-3 py-2 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent disabled:cursor-not-allowed disabled:opacity-50">
                           <option value="linkedin">LinkedIn (B2B Authority)</option>
                           <option value="instagram">Instagram (Visual First)</option>
                         </select>
                       </div>
                       <div className="space-y-3">
                         <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Instrução Base (Brainstorming)</label>
-                        <input className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent" placeholder="Descreva brevemente o conceito ou a news..." />
+                        <input 
+                          value={socialBrief}
+                          onChange={e => setSocialBrief(e.target.value)}
+                          className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent" placeholder="Descreva brevemente o conceito ou a news..." />
                       </div>
                     </div>
                     
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
                         <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Rascunho Inteligente (Preview Raw)</label>
-                        <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-xs font-semibold h-7 px-3 bg-accent text-primary-foreground shadow hover:bg-accent/90 transition-all">
-                          <svg className="mr-1.5" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
-                          Processar Prompt Llama-3
+                        <button 
+                          onClick={handleGenerateSocial}
+                          disabled={isDrafting || !socialBrief}
+                          className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-xs font-semibold h-7 px-3 bg-accent text-primary-foreground shadow hover:bg-accent/90 transition-all disabled:opacity-50">
+                          {isDrafting ? <div className="loader-inline w-3 h-3 mr-1.5" /> : <svg className="mr-1.5" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>}
+                          Processar Prompt Generativo
                         </button>
                       </div>
                       <div className="relative group/textarea">
-                        <textarea className="flex min-h-[220px] w-full rounded-lg border border-input bg-background/50 px-4 py-4 text-sm font-mono shadow-inner transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" placeholder="O output generativo final, pronto para proofreading, será transposto aqui." />
+                        <textarea 
+                          value={socialDraft}
+                          onChange={(e) => setSocialDraft(e.target.value)}
+                          className="flex min-h-[220px] w-full rounded-lg border border-input bg-background/50 px-4 py-4 text-sm font-mono shadow-inner transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" placeholder="O output generativo final, pronto para proofreading, será transposto aqui." />
                       </div>
                     </div>
                     
                     <div className="flex gap-3 justify-end pt-2 border-t border-border/40">
-                      <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-semibold h-10 px-5 border border-input shadow-sm bg-background hover:bg-accent hover:text-accent-foreground transition-all">
+                      <button 
+                        onClick={() => handlePublish(true)}
+                        disabled={!socialDraft || isDrafting}
+                        className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-semibold h-10 px-5 border border-input shadow-sm bg-background hover:bg-accent hover:text-accent-foreground transition-all disabled:opacity-50">
                         <svg className="mr-2 opacity-70" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/><path d="M12 2v20"/><polyline points="18 15 21 12 18 9"/></svg>
                         Agendar Fila (Queue)
                       </button>
-                      <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-semibold h-10 px-6 bg-primary text-primary-foreground shadow hover:bg-primary/90 transition-all">
+                      <button 
+                        onClick={() => handlePublish(false)}
+                        disabled={!socialDraft || isDrafting}
+                        className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-semibold h-10 px-6 bg-primary text-primary-foreground shadow hover:bg-primary/90 transition-all disabled:opacity-50">
                         Publicar Live Agora
                       </button>
                     </div>

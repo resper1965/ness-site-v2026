@@ -19,6 +19,7 @@ function formatSize(bytes: number): string {
 
 export default function MediaPage() {
   const [items, setItems] = useState<MediaItem[]>([]);
+  const [activeTab, setActiveTab] = useState<'public' | 'knowledge'>('public');
   const [meta, setMeta] = useState<EntryMeta | null>(null);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -67,6 +68,7 @@ export default function MediaPage() {
   }
 
   const isImage = (type: string) => type?.startsWith("image/");
+  const filteredItems = items.filter(item => activeTab === 'public' ? isImage(item.content_type) : (!isImage(item.content_type) || item.content_type === "application/pdf"));
 
   return (
     <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
@@ -80,6 +82,23 @@ export default function MediaPage() {
             Armazenamento R2 S3 Backend-Agnostic
           </p>
         </div>
+      </div>
+
+      <div className="flex gap-2 mb-6">
+        <button 
+          onClick={() => setActiveTab('public')} 
+          className={`px-5 py-2 text-sm font-semibold rounded-lg transition-all flex items-center gap-2 ${activeTab === 'public' ? 'bg-primary text-primary-foreground shadow-md' : 'bg-card border border-border/50 text-muted-foreground hover:bg-muted/80'}`}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          Mídia Pública
+        </button>
+        <button 
+          onClick={() => setActiveTab('knowledge')} 
+          className={`px-5 py-2 text-sm font-semibold rounded-lg transition-all flex items-center gap-2 ${activeTab === 'knowledge' ? 'bg-primary text-primary-foreground shadow-md' : 'bg-card border border-border/50 text-muted-foreground hover:bg-muted/80'}`}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Base de Conhecimento (RAG)
+        </button>
       </div>
 
       <div
@@ -117,7 +136,7 @@ export default function MediaPage() {
 
       <div className="rounded-xl border bg-card text-card-foreground shadow-sm mt-6 overflow-hidden">
         <div className="bg-muted/30 p-5 border-b border-border/40 flex items-center justify-between">
-          <h3 className="font-semibold leading-none tracking-tight">Index de Recursos Estáticos</h3>
+          <h3 className="font-semibold leading-none tracking-tight">Index de Recursos ({activeTab === 'public' ? 'Estáticos Globais' : 'Vetores de IA'})</h3>
         </div>
 
         {loading ? (
@@ -132,7 +151,7 @@ export default function MediaPage() {
         ) : (
           <div className="p-6">
              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                {items.map((item) => (
+                {filteredItems.map((item) => (
                   <div key={item.id} className="group relative rounded-xl border border-border/50 bg-background hover:bg-muted/50 overflow-hidden shadow-sm transition-all hover:shadow-md outline-none">
                      <div className="aspect-square bg-slate-100 dark:bg-slate-900 overflow-hidden relative flex items-center justify-center border-b border-border/50">
                         {isImage(item.content_type) ? (
@@ -143,6 +162,13 @@ export default function MediaPage() {
                            </div>
                         )}
                         
+                        {activeTab === 'knowledge' && (
+                           <div className="absolute top-2 left-2 bg-emerald-500/90 backdrop-blur-sm text-white px-2 py-0.5 rounded text-[9px] uppercase font-bold tracking-widest flex items-center gap-1 shadow-sm">
+                             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                             Vetorizado
+                           </div>
+                        )}
+
                         {/* Overlay Actions */}
                         <div className="absolute inset-0 bg-background/80 backdrop-blur-[2px] flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
                            <button 

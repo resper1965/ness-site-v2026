@@ -6,7 +6,7 @@ import { webhooks_targets, entries } from './db/schema'
 import { eq } from 'drizzle-orm'
 
 export interface QueueMessage {
-  type: 'generate-draft' | 'audit-content' | 'translate' | 'vectorize-entry' | 'webhook-dispatch' | 'SCORE_CV' | 'SEND_NEWSLETTER'
+  type: 'generate-draft' | 'audit-content' | 'translate' | 'vectorize-entry' | 'webhook-dispatch' | 'SCORE_CV' | 'SEND_NEWSLETTER' | 'SOCIAL_POST_DISPATCH'
   payload: any
 }
 
@@ -90,6 +90,19 @@ export async function queueHandler(batch: MessageBatch<QueueMessage>, env: EnvWi
             console.log(`[Queue] Scored ${applicantId}: ${result.score}`);
           } catch(e) {
             console.error('[Queue] Scoring CV failed:', e);
+          }
+          break;
+        }
+        case 'SOCIAL_POST_DISPATCH': {
+          const { postId, platform } = message.body.payload;
+          console.log(`[Queue] Dispatching social post ${postId} to platform ${platform}`);
+          // Simulate actual publishing delay and logic
+          try {
+            await new Promise(r => setTimeout(r, 1000));
+            await env.DB.prepare('UPDATE social_posts SET status = ? WHERE id = ?').bind('published', postId).run();
+            console.log(`[Queue] Successfully published post ${postId} to ${platform}`);
+          } catch(e) {
+            console.error('[Queue] Dispatching post failed:', e);
           }
           break;
         }

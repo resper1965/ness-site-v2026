@@ -109,7 +109,7 @@ export default function CompliancePage() {
               {t === 'dsar' && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>}
               {t === 'whistleblower' && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>}
               {t === 'policies' && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>}
-              {t === 'dsar' ? 'DSAR Requests' : t === 'whistleblower' ? 'Denúncias' : 'Políticas'}
+              {t === 'dsar' ? 'Solicitações DSAR' : t === 'whistleblower' ? 'Denúncias' : 'Políticas'}
             </button>
           ))}
         </div>
@@ -121,6 +121,10 @@ export default function CompliancePage() {
         <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
           <div className="bg-muted/30 p-5 border-b border-border/40 flex items-center justify-between">
             <h3 className="font-semibold leading-none tracking-tight">Solicitações de Titulares de Dados (LGPD/DSAR)</h3>
+            <button className="inline-flex items-center justify-center gap-2 rounded text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/5 px-2 py-1 border border-primary/20 hover:bg-primary/10 transition-colors">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              Conectar OneTrust / Externo
+            </button>
           </div>
           {dsars.length === 0 ? (
             <div className="p-16 flex flex-col items-center justify-center text-center bg-background/40">
@@ -196,6 +200,10 @@ export default function CompliancePage() {
         <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
           <div className="bg-muted/30 p-5 border-b border-border/40 flex items-center justify-between">
             <h3 className="font-semibold leading-none tracking-tight">Canal de Denúncias Anônimo (Whistleblower)</h3>
+            <button className="inline-flex items-center justify-center gap-2 rounded text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/5 px-2 py-1 border border-primary/20 hover:bg-primary/10 transition-colors">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              Conectar Sistema Terceiro
+            </button>
           </div>
           {cases.length === 0 ? (
             <div className="p-16 flex flex-col items-center justify-center text-center bg-background/40">

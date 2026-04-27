@@ -32,6 +32,12 @@ export default function CommunicationsPage() {
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<Message | null>(null);
   const [forwarding, setForwarding] = useState(false);
+  const [notification, setNotification] = useState<{message: string, type: "success" | "error"} | null>(null);
+
+  const showNotification = (message: string, type: "success" | "error" = "success") => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 3000);
+  };
 
   useEffect(() => {
     fetch("/api/admin/communications", { credentials: "include" })
@@ -52,12 +58,46 @@ export default function CommunicationsPage() {
         body: JSON.stringify({ messageId: msg.id, messageType: msg.type, to: email }),
       });
       const result = await res.json() as { success?: boolean; error?: string };
-      if (result.success) alert("Mensagem encaminhada com sucesso!");
-      else alert(`Erro: ${result.error}`);
+      if (result.success) showNotification("Mensagem encaminhada com sucesso!");
+      else showNotification(`Erro: ${result.error}`, "error");
     } catch {
-      alert("Erro de rede.");
+      showNotification("Erro de rede.", "error");
     } finally {
       setForwarding(false);
+    }
+  };
+
+  const handleDelete = async (msg: Message) => {
+    if (!confirm("Remover permanentemente este item?")) return;
+    
+    // As rotas originais usam o plural (forms, leads). Em communications, a type vem singular (form, lead, chat).
+    const endpoint = `/api/admin/${msg.type}s/${msg.id}`; 
+    try {
+      await fetch(endpoint, { method: "DELETE", credentials: "include" });
+      setMessages((prev) => prev.filter((m) => m.id !== msg.id || m.type !== msg.type));
+      setSelected(null);
+      showNotification("Item excluído permanentemente.");
+    } catch {
+      showNotification("Erro de rede ao deletar.", "error");
+    }
+  };
+
+  const handleUpdateStatus = async (msg: Message, newStatus: string) => {
+    const endpoint = `/api/admin/${msg.type}s/${msg.id}`; 
+    try {
+      await fetch(endpoint, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ status: newStatus }),
+      });
+      setMessages((prev) => prev.map((m) => (m.id === msg.id && m.type === msg.type) ? { ...m, status: newStatus } : m));
+      if (selected?.id === msg.id && selected?.type === msg.type) {
+         setSelected({ ...selected, status: newStatus });
+      }
+      showNotification("Status atualizado!");
+    } catch {
+      showNotification("Erro de rede ao atualizar status.", "error");
     }
   };
 
@@ -245,20 +285,68 @@ export default function CommunicationsPage() {
                 </div>
 
                 <div className="p-4 border-t border-border/40 bg-muted/10 shrink-0 flex gap-3 justify-end items-center">
+                  
+                  {selected.type === "lead" && (
+                     <select
+                       value={selected.status}
+                       onChange={e => handleUpdateStatus(selected, e.target.value)}
+                       className="h-9 mr-auto items-center justify-between rounded-md border border-input bg-background px-3 py-1 text-xs shadow-sm transition-colors focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer font-semibold uppercase tracking-wider text-muted-foreground hover:bg-accent"
+                     >
+                       <option value="new">New</option>
+                       <option value="contacted">Contacted</option>
+                       <option value="qualified">Qualified</option>
+                       <option value="lost">Lost</option>
+                     </select>
+                  )}
+
+                  {selected.type === "form" && selected.status === "new" && (
+                    <button 
+                      className="mr-auto inline-flex h-9 items-center justify-center rounded-md border border-input shadow-sm bg-background px-4 py-2 text-xs font-semibold uppercase tracking-wider hover:bg-accent"
+                      onClick={() => handleUpdateStatus(selected, "read")} 
+                    >
+                      Marcar como Lido
+                    </button>
+                  )}
+
                   <button 
-                    className="inline-flex h-9 items-center justify-center rounded-md border border-input shadow-sm bg-background px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-colors hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
-                    onClick={() => handleForward(selected)} 
-                    disabled={forwarding}
+                    className="inline-flex h-9 items-center justify-center rounded-md border border-input shadow-sm bg-background px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-colors hover:bg-red-500 hover:text-white disabled:opacity-50 text-red-500"
+                    onClick={() => handleDelete(selected)} 
                   >
-                    <svg className="mr-2" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4Z"/></svg>
-                    {forwarding ? "Executando..." : "Encaminhar Flow"}
+                    Excluir
                   </button>
+
+                  {selected.type !== "chat" && (
+                    <button 
+                      className="inline-flex h-9 items-center justify-center rounded-md border border-input shadow-sm bg-primary text-primary-foreground px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-colors hover:bg-primary/90 disabled:opacity-50"
+                      onClick={() => handleForward(selected)} 
+                      disabled={forwarding}
+                    >
+                      <svg className="mr-2" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4Z"/></svg>
+                      {forwarding ? "Executando..." : "Encaminhar"}
+                    </button>
+                  )}
                 </div>
               </div>
             );
           })()}
         </div>
       </div>
+
+      {/* Floating Notification */}
+      {notification && (
+        <div className={`fixed bottom-6 right-6 px-4 py-3 rounded-lg shadow-lg border animate-in slide-in-from-bottom flex items-center gap-3 z-50 transition-all ${
+          notification.type === "success" 
+            ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400" 
+            : "bg-red-500/10 border-red-500/20 text-red-600 dark:text-red-400"
+        }`}>
+          {notification.type === "success" ? (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+          ) : (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          )}
+          <span className="font-semibold text-sm leading-none">{notification.message}</span>
+        </div>
+      )}
     </div>
   );
 }

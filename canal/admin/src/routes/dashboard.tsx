@@ -3,7 +3,7 @@ import { Outlet, NavLink, useNavigate, useLocation } from "react-router";
 import { useSession, signOut, authClient } from "../lib/auth-client";
 import { OrgSwitcher } from "../components/dashboard/OrgSwitcher";
 import { UserDropdown } from "../components/dashboard/UserDropdown";
-import { NAV, PAGE_META, SUPER_ADMIN_EMAILS } from "../components/dashboard/nav-config";
+import { NAV, ADMIN_NAV, PAGE_META, SUPER_ADMIN_EMAILS } from "../components/dashboard/nav-config";
 
 function useCollapsedGroups() {
   const key = 'canal_nav_expanded';
@@ -55,6 +55,9 @@ export default function DashboardLayout() {
   const myMembership = activeOrg?.members?.find((m: any) => m.userId === session?.user?.id || m.user?.email === session?.user?.email);
   const myRole = myMembership?.role || "member";
 
+  const sysAdminRoutes = ['/organizations', '/users'];
+  const isSysAdminMode = sysAdminRoutes.some(r => location.pathname.startsWith(r));
+
   const meta = PAGE_META[location.pathname] ?? { title: "Infraestrutura Canal", sub: "Control Plane" };
 
   async function handleSignOut() {
@@ -64,12 +67,13 @@ export default function DashboardLayout() {
   return (
     <div className="flex h-screen w-full bg-background font-sans overflow-hidden text-foreground selection:bg-primary/20 selection:text-primary">
       {/* Sidebar */}
-      <aside className={`shrink-0 flex flex-col border-r border-border/50 bg-[#060b13]/80 backdrop-blur-xl transition-[width] duration-300 z-40 ease-[cubic-bezier(0.2,0.8,0.2,1)] will-change-[width] ${
+      <aside className={`shrink-0 flex flex-col border-r border-white/5 transition-[width] duration-300 z-40 ease-[cubic-bezier(0.2,0.8,0.2,1)] will-change-[width] ${
          isMinimized ? 'w-[74px]' : 'w-64 max-w-[280px]'
-      }`}>
+      } ${isSysAdminMode ? 'bg-[#150a0a]/90 backdrop-blur-xl' : 'bg-[#060b13]/80 backdrop-blur-xl'}`}>
         <div className="flex items-center h-[72px] px-5 border-b border-white/5 shrink-0 justify-between">
           <span className={`font-black tracking-tighter text-lg leading-none transition-all flex items-center text-white truncate ${isMinimized ? 'opacity-0 w-0' : 'opacity-100'}`}>
-            canal<span className="text-primary">.</span>
+            canal<span className={isSysAdminMode ? "text-red-500" : "text-primary"}>.</span>
+            {isSysAdminMode && <span className="ml-2 text-[10px] bg-red-500/20 text-red-500 px-1.5 py-0.5 rounded uppercase tracking-widest font-bold">Sys</span>}
           </span>
           <div className="flex items-center gap-3">
              {!isMinimized && <span className="text-[9px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow-sm shrink-0">v2 IO</span>}
@@ -89,7 +93,7 @@ export default function DashboardLayout() {
         </div>
 
         <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-4 custom-scrollbar">
-          {NAV.map((group) => {
+          {(isSysAdminMode ? ADMIN_NAV : NAV).map((group) => {
             if (group.adminOnly && !isSuperAdmin) return null;
             if (group.ownerOnly && !isSuperAdmin && myRole !== "owner") return null;
 
@@ -160,8 +164,8 @@ export default function DashboardLayout() {
           })}
         </nav>
 
-        <div className="shrink-0 border-t border-white/5 p-4 bg-[#060b13]">
-           <UserDropdown user={session.user} onSignOut={handleSignOut} />
+        <div className={`shrink-0 border-t border-white/5 p-4 ${isSysAdminMode ? 'bg-[#150a0a]' : 'bg-[#060b13]'}`}>
+           <UserDropdown user={session.user} isSuperAdmin={isSuperAdmin} onSignOut={handleSignOut} />
         </div>
       </aside>
 

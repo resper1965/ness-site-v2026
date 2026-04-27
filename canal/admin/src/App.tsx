@@ -5,25 +5,21 @@ const LoginPage = React.lazy(() => import("./routes/login"));
 const DashboardLayout = React.lazy(() => import("./routes/dashboard"));
 const CollectionPage = React.lazy(() => import("./routes/collection"));
 const MediaPage = React.lazy(() => import("./routes/media"));
-const FormsPage = React.lazy(() => import("./routes/forms"));
-const ChatsPage = React.lazy(() => import("./routes/chats"));
 const BrandbookPage = React.lazy(() => import("./routes/brandbook"));
 const SignaturesPage = React.lazy(() => import("./routes/signatures"));
 const SaasSettingsPage = React.lazy(() => import("./routes/saas"));
 const AccountSettingsPage = React.lazy(() => import("./routes/account"));
 const UsersPage = React.lazy(() => import("./routes/users"));
 const OrganizationsPage = React.lazy(() => import("./routes/organizations"));
-const LeadsPage = React.lazy(() => import("./routes/leads").then(m => ({ default: m.LeadsPage })));
 const DashboardHome = React.lazy(() => import("./routes/dashboard-home"));
 const DecksPage = React.lazy(() => import("./routes/decks"));
 const NewslettersPage = React.lazy(() => import("./routes/newsletters"));
 const AISettingsPage = React.lazy(() => import("./routes/ai-settings"));
 const CommunicationsPage = React.lazy(() => import("./routes/communications"));
 const CompliancePage = React.lazy(() => import("./routes/compliance"));
-const ChatbotPage = React.lazy(() => import("./routes/chatbot"));
 const AutomationPage = React.lazy(() => import("./routes/automation"));
-const NcirtPage = React.lazy(() => import("./routes/n-cirt"));
-
+const EmergencyPage = React.lazy(() => import("./routes/emergency"));
+const SaasBillingPage = React.lazy(() => import("./routes/saas-billing"));
 function GlobalErrorBoundary() {
   const error = useRouteError() as Error;
   
@@ -74,17 +70,14 @@ const router = createBrowserRouter([
       { path: "ai-settings", element: <AISettingsPage /> },
       { path: "communications", element: <CommunicationsPage /> },
       { path: "media", element: <MediaPage /> },
-      { path: "forms", element: <FormsPage /> },
-      { path: "chats", element: <ChatsPage /> },
-      { path: "leads", element: <LeadsPage /> },
       { path: "saas", element: <SaasSettingsPage /> },
       { path: "account", element: <AccountSettingsPage /> },
       { path: "users", element: <UsersPage /> },
       { path: "organizations", element: <OrganizationsPage /> },
       { path: "compliance", element: <CompliancePage /> },
-      { path: "chatbot", element: <ChatbotPage /> },
       { path: "automation", element: <AutomationPage /> },
-      { path: "n-cirt", element: <NcirtPage /> },
+      { path: "emergency", element: <EmergencyPage /> },
+      { path: "saas-billing", element: <SaasBillingPage /> },
       { path: "crud/:slug", element: <DynamicCrudRoute /> },
     ],
   },

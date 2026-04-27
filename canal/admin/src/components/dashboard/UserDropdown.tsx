@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 
-export function UserDropdown({ user, onSignOut }: { user: any, onSignOut: () => void }) {
+export function UserDropdown({ user, isSuperAdmin, onSignOut }: { user: any, isSuperAdmin?: boolean, onSignOut: () => void }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -95,6 +95,23 @@ export function UserDropdown({ user, onSignOut }: { user: any, onSignOut: () => 
               Notifications
             </button>
           </div>
+          {isSuperAdmin && (
+            <>
+              <div style={{ height: 1, background: 'var(--border)', width: '100%' }} />
+              <div style={{ padding: '8px 0', display: 'flex', flexDirection: 'column', background: 'rgba(239, 68, 68, 0.05)' }}>
+                <button 
+                  className="nav-link" 
+                  onClick={() => { setOpen(false); navigate('/organizations'); }}
+                  style={{ padding: '10px 16px', width: '100%', justifyContent: 'flex-start', fontSize: 13, fontWeight: 600, color: '#ef4444' }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 8, opacity: 0.9 }}>
+                    <path d="M18 10h-1.26a8 8 0 1 0-9.48 0H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zM12 10v4M10 14h4"/>
+                  </svg>
+                  Painel Admin Console
+                </button>
+              </div>
+            </>
+          )}
 
           <div style={{ height: 1, background: 'var(--border)', width: '100%' }} />
 
