@@ -6,18 +6,19 @@ import { UserDropdown } from "../components/dashboard/UserDropdown";
 import { NAV, PAGE_META, SUPER_ADMIN_EMAILS } from "../components/dashboard/nav-config";
 
 function useCollapsedGroups() {
-  const key = 'canal_nav_collapsed';
-  const [collapsed, setCollapsed] = useState<Record<string, boolean>>(() => {
-    try { return JSON.parse(localStorage.getItem(key) || '{}'); } catch { return {}; }
+  const key = 'canal_nav_expanded';
+  const [expanded, setExpanded] = useState<string | null>(() => {
+    try { return localStorage.getItem(key) || null; } catch { return null; }
   });
   const toggle = (section: string) => {
-    setCollapsed(prev => {
-      const next = { ...prev, [section]: !prev[section] };
-      localStorage.setItem(key, JSON.stringify(next));
+    setExpanded(prev => {
+      const next = prev === section ? null : section;
+      if (next) localStorage.setItem(key, next);
+      else localStorage.removeItem(key);
       return next;
     });
   };
-  return { collapsed, toggle };
+  return { expanded, toggle };
 }
 
 function useSidebarCollapse() {
@@ -40,7 +41,7 @@ export default function DashboardLayout() {
   const { data: activeOrg } = authClient.useActiveOrganization();
   const navigate = useNavigate();
   const location = useLocation();
-  const { collapsed, toggle } = useCollapsedGroups();
+  const { expanded, toggle } = useCollapsedGroups();
   const { isMinimized, toggleSidebar } = useSidebarCollapse();
 
   useEffect(() => {
@@ -91,7 +92,7 @@ export default function DashboardLayout() {
 
             if (visibleItems.length === 0) return null;
 
-            const isCollapsed = !!collapsed[group.section];
+            const isCollapsed = expanded !== group.section;
 
             return (
               <div key={group.section}>

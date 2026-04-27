@@ -11,6 +11,7 @@ export interface NavItem {
 
 export interface NavGroup {
   section: string;
+  icon?: ReactNode;
   items: NavItem[];
   adminOnly?: boolean;
   ownerOnly?: boolean;
@@ -19,6 +20,7 @@ export interface NavGroup {
 export const NAV: NavGroup[] = [
   {
     section: "Conteúdo",
+    icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2h11A2.5 2.5 0 0 1 20 4.5v15a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 19.5z"/></svg>,
     items: [
       {
         to: "/",
@@ -61,6 +63,7 @@ export const NAV: NavGroup[] = [
   },
   {
     section: "Assets",
+    icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>,
     items: [
       {
         to: "/media",
@@ -77,6 +80,7 @@ export const NAV: NavGroup[] = [
   },
   {
     section: "Marketing",
+    icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20 M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
     items: [
       {
         to: "/brandbook",
@@ -110,6 +114,7 @@ export const NAV: NavGroup[] = [
   },
   {
     section: "Gestão",
+    icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
     items: [
       {
         to: "/newsletters",
@@ -179,6 +184,7 @@ export const NAV: NavGroup[] = [
   },
   {
     section: "Growth & IA (Fase 5)",
+    icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>,
     items: [
       {
         to: "/automation",
@@ -193,6 +199,7 @@ export const NAV: NavGroup[] = [
   },
   {
     section: "Compliance",
+    icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>,
     items: [
       {
         to: "/compliance",
@@ -207,6 +214,7 @@ export const NAV: NavGroup[] = [
   },
   {
     section: "Administração",
+    icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>,
     ownerOnly: true,
     items: [
       {
@@ -223,6 +231,7 @@ export const NAV: NavGroup[] = [
   },
   {
     section: "Sistema Total",
+    icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 10h-1.26a8 8 0 1 0-9.48 0H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zM12 10v4M10 14h4"/></svg>,
     adminOnly: true,
     items: [
       {
