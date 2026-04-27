@@ -1,4 +1,123 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+function GithubKanbanTab() {
+  const [issues, setIssues] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchIssues = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/automation/github/issues');
+      if (!res.ok) throw new Error('Falha ao conectar.');
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setIssues(data);
+      setError(null);
+    } catch (e: any) {
+      setError(e.message || 'Erro de API');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchIssues();
+  }, []);
+
+  const todo = issues.filter(i => i.status === 'todo');
+  const inProgress = issues.filter(i => i.status === 'in-progress');
+  const done = issues.filter(i => i.status === 'done');
+
+  return (
+    <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+      <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
+        <div className="bg-muted/30 p-6 border-b border-border/40 flex justify-between items-center">
+          <div>
+            <h3 className="font-semibold leading-none tracking-tight">GitHub Projects Kanban</h3>
+            <p className="text-sm text-muted-foreground mt-2">Visão consolidada das Issues e tracking de desenvolvimento integrado ao Github.</p>
+          </div>
+          <button onClick={fetchIssues} disabled={loading} className="text-xs px-3 py-1 bg-primary text-primary-foreground rounded-md shadow hover:bg-primary/90 transition-all font-semibold disabled:opacity-50 hover:scale-95">
+            {loading ? 'Sincronizando...' : 'Atualizar Board'}
+          </button>
+        </div>
+        <div className="p-6">
+          {error && <div className="text-sm text-red-500 mb-4 bg-red-500/10 p-3 rounded-md border border-red-500/20">{error}</div>}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Todo Column */}
+            <div className="bg-muted/20 rounded-lg border border-border/50 flex flex-col h-full min-h-[400px]">
+              <div className="px-4 py-3 border-b border-border/50 font-bold text-sm flex justify-between items-center bg-muted/40">
+                <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-slate-400"></div> TO DO</span>
+                <span className="text-xs bg-background px-2 py-0.5 rounded-full border border-border/50">{loading ? '-' : todo.length}</span>
+              </div>
+              <div className="p-3 space-y-3 flex-1 overflow-y-auto">
+                {loading ? <div className="p-4 text-center text-xs text-muted-foreground animate-pulse">Carregando...</div> : todo.map((issue) => (
+                  <a href={issue.url} target="_blank" rel="noreferrer" key={issue.id} className="block bg-background rounded-md border border-border/60 p-3 shadow-sm hover:border-accent/40 transition-all active:scale-[0.98] outline-none cursor-pointer group">
+                    <p className="text-[10px] font-bold text-blue-400 dark:text-blue-500 mb-1">ness-site2026</p>
+                    <h4 className="text-[13px] font-semibold leading-tight group-hover:text-accent transition-colors">{issue.title}</h4>
+                    {issue.labels && issue.labels.length > 0 && (
+                      <div className="flex gap-1 flex-wrap mt-2">
+                        {issue.labels.map((l: string) => <span key={l} className="text-[9px] bg-accent/10 text-accent px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">{l}</span>)}
+                      </div>
+                    )}
+                    <div className="flex gap-2 mt-3 items-center justify-between">
+                      <span className="text-[10px] text-muted-foreground font-mono">#{issue.id}</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* In Progress Column */}
+            <div className="bg-muted/20 rounded-lg border border-border/50 flex flex-col h-full min-h-[400px]">
+              <div className="px-4 py-3 border-b border-border/50 font-bold text-sm flex justify-between items-center bg-muted/40">
+                <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-yellow-500"></div> IN PROGRESS</span>
+                <span className="text-xs bg-background px-2 py-0.5 rounded-full border border-border/50">{loading ? '-' : inProgress.length}</span>
+              </div>
+              <div className="p-3 space-y-3 flex-1 overflow-y-auto">
+                {loading ? <div className="p-4 text-center text-xs text-muted-foreground animate-pulse">Carregando...</div> : inProgress.map((issue) => (
+                  <a href={issue.url} target="_blank" rel="noreferrer" key={issue.id} className="block bg-background rounded-md border-accent border-[1.5px] shadow-sm hover:border-accent hover:shadow-accent/20 hover:shadow-md transition-all active:scale-[0.98] outline-none cursor-pointer group relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-8 h-8 bg-accent/10 rounded-bl-full border-b border-l border-accent/20"></div>
+                    <div className="p-3">
+                      <p className="text-[10px] font-bold text-amber-500 mb-1">ness-site2026</p>
+                      <h4 className="text-[13px] font-semibold leading-tight text-foreground">{issue.title}</h4>
+                      {issue.labels && issue.labels.length > 0 && (
+                        <div className="flex gap-1 flex-wrap mt-2">
+                          {issue.labels.map((l: string) => <span key={l} className="text-[9px] bg-accent/10 text-accent px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">{l}</span>)}
+                        </div>
+                      )}
+                      <div className="flex gap-2 mt-3 items-center justify-between">
+                        <span className="text-[10px] text-muted-foreground font-mono">#{issue.id}</span>
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Done Column */}
+            <div className="bg-muted/20 rounded-lg border border-border/50 flex flex-col h-full min-h-[400px]">
+              <div className="px-4 py-3 border-b border-border/50 font-bold text-sm flex justify-between items-center bg-muted/40">
+                <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500"></div> DONE</span>
+                <span className="text-xs bg-background px-2 py-0.5 rounded-full border border-border/50">{loading ? '-' : done.length}</span>
+              </div>
+              <div className="p-3 space-y-3 flex-1 overflow-y-auto opacity-70">
+                {loading ? <div className="p-4 text-center text-xs text-muted-foreground animate-pulse">Carregando...</div> : done.slice(0, 15).map((issue) => (
+                   <a href={issue.url} target="_blank" rel="noreferrer" key={issue.id} className="block bg-background/50 rounded-md border border-border/40 p-3 hover:bg-background transition-colors outline-none cursor-pointer">
+                    <h4 className="text-[12px] font-medium line-through text-muted-foreground transition-colors hover:text-foreground">{issue.title}</h4>
+                    <p className="text-[10px] text-muted-foreground mt-2 font-mono">#{issue.id}</p>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
 
 export default function AutomationDashboard() {
   const [activeTab, setActiveTab] = useState('social');
@@ -188,89 +307,7 @@ export default function AutomationDashboard() {
           )}
 
           {activeTab === 'github' && (
-            <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-              <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-                <div className="bg-muted/30 p-6 border-b border-border/40 flex justify-between items-center">
-                  <div>
-                    <h3 className="font-semibold leading-none tracking-tight">GitHub Projects Kanban</h3>
-                    <p className="text-sm text-muted-foreground mt-2">Visão consolidada das Issues e tracking de desenvolvimento integrado ao Github.</p>
-                  </div>
-                  <button onClick={() => {}} className="text-xs px-3 py-1 bg-primary text-primary-foreground rounded-md shadow hover:bg-primary/90 transition-all font-semibold">
-                    Atualizar Board
-                  </button>
-                </div>
-                <div className="p-6">
-                  {/* Kanban Placeholder - This will fetch in useEffect visually (Skeleton while loading) */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Todo Column */}
-                    <div className="bg-muted/20 rounded-lg border border-border/50 flex flex-col h-full min-h-[400px]">
-                      <div className="px-4 py-3 border-b border-border/50 font-bold text-sm flex justify-between items-center bg-muted/40">
-                        <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-slate-400"></div> TO DO</span>
-                        <span className="text-xs bg-background px-2 py-0.5 rounded-full border border-border/50">2</span>
-                      </div>
-                      <div className="p-3 space-y-3 flex-1 overflow-y-auto">
-                        <div className="bg-background rounded-md border border-border/60 p-3 shadow-sm hover:border-accent/40 transition-colors cursor-pointer group">
-                          <p className="text-[10px] font-bold text-blue-400 mb-1">ness-site2026</p>
-                          <h4 className="text-sm font-semibold leading-tight group-hover:text-accent transition-colors">Implementar Integração GraphQL Projects V2</h4>
-                          <div className="flex gap-2 mt-3 items-center justify-between">
-                            <span className="text-[10px] bg-muted px-2 py-0.5 rounded-full border border-border">#102</span>
-                            <div className="flex -space-x-2">
-                              <img src="https://github.com/resper1965.png" alt="user" className="w-5 h-5 rounded-full border-2 border-background" />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="bg-background rounded-md border border-border/60 p-3 shadow-sm hover:border-accent/40 transition-colors cursor-pointer group">
-                          <p className="text-[10px] font-bold text-blue-400 mb-1">ness-website26</p>
-                          <h4 className="text-sm font-semibold leading-tight group-hover:text-accent transition-colors">Configurar Telemetria no RopaOrchestrator</h4>
-                          <div className="flex gap-2 mt-3 items-center justify-between">
-                            <span className="text-[10px] bg-muted px-2 py-0.5 rounded-full border border-border">#88</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* In Progress Column */}
-                    <div className="bg-muted/20 rounded-lg border border-border/50 flex flex-col h-full min-h-[400px]">
-                      <div className="px-4 py-3 border-b border-border/50 font-bold text-sm flex justify-between items-center bg-muted/40">
-                        <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-yellow-500"></div> IN PROGRESS</span>
-                        <span className="text-xs bg-background px-2 py-0.5 rounded-full border border-border/50">1</span>
-                      </div>
-                      <div className="p-3 space-y-3 flex-1 overflow-y-auto">
-                        <div className="bg-background rounded-md border-accent border-[1.5px] p-3 shadow-sm cursor-pointer group relative overflow-hidden">
-                          <div className="absolute top-0 right-0 w-8 h-8 bg-accent/10 rounded-bl-full border-b border-l border-accent/20"></div>
-                          <p className="text-[10px] font-bold text-amber-400 mb-1">ness-site2026</p>
-                          <h4 className="text-sm font-semibold leading-tight text-foreground">Migrar Portfolio para API Pública Dinâmica</h4>
-                          <div className="flex gap-2 mt-3 items-center justify-between">
-                            <span className="flex gap-1">
-                              <span className="text-[10px] bg-accent/10 text-accent font-medium px-2 py-0.5 rounded-sm border border-accent/20">feature</span>
-                            </span>
-                            <span className="text-[10px] text-muted-foreground font-mono">#108</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Done Column */}
-                    <div className="bg-muted/20 rounded-lg border border-border/50 flex flex-col h-full min-h-[400px]">
-                      <div className="px-4 py-3 border-b border-border/50 font-bold text-sm flex justify-between items-center bg-muted/40">
-                        <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500"></div> DONE</span>
-                        <span className="text-xs bg-background px-2 py-0.5 rounded-full border border-border/50">14</span>
-                      </div>
-                      <div className="p-3 space-y-3 flex-1 overflow-y-auto opacity-70">
-                         <div className="bg-background/50 rounded-md border border-border/40 p-3">
-                          <h4 className="text-sm font-medium line-through text-muted-foreground">Setup TailwindCSS v4 Config Oficial</h4>
-                          <p className="text-[10px] text-muted-foreground mt-2">Fechado nesta sprint</p>
-                        </div>
-                        <div className="bg-background/50 rounded-md border border-border/40 p-3">
-                          <h4 className="text-sm font-medium line-through text-muted-foreground">Corrigir handshake WebSocket Aegis API</h4>
-                          <p className="text-[10px] text-muted-foreground mt-2">Fechado nesta sprint</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <GithubKanbanTab />
           )}
           
           {activeTab === 'brandbook' && (

@@ -67,10 +67,10 @@ export default function DashboardLayout() {
   return (
     <div className="flex h-screen w-full bg-background font-sans overflow-hidden text-foreground selection:bg-primary/20 selection:text-primary">
       {/* Sidebar (Apple HIG Glassmorphism Híbrida) */}
-      <aside className={`shrink-0 flex flex-col border-r border-black/5 dark:border-white/6 transition-[width] duration-300 z-40 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] will-change-[width] ${
+      <aside className={`shrink-0 flex flex-col border-r border-black/5 dark:border-white/10 transition-[width] duration-300 z-40 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] will-change-[width] ${
          isMinimized ? 'w-[74px]' : 'w-64 max-w-[280px]'
-      } ${isSysAdminMode ? 'bg-danger/5 dark:bg-danger/10 backdrop-blur-3xl' : 'bg-white/50 dark:bg-black/40 backdrop-blur-3xl'}`}>
-        <div className="flex items-center h-[52px] px-5 border-b border-black/5 dark:border-white/6 shrink-0 justify-between">
+      } ${isSysAdminMode ? 'bg-red-500/5 dark:bg-red-500/10 backdrop-blur-3xl' : 'bg-white/50 dark:bg-black/40 backdrop-blur-3xl'}`}>
+        <div className="flex items-center h-[52px] px-5 border-b border-black/5 dark:border-white/10 shrink-0 justify-between">
           <span className={`font-black tracking-tighter text-lg leading-none transition-all flex items-center text-neutral-900 dark:text-white truncate ${isMinimized ? 'opacity-0 w-0' : 'opacity-100'}`}>
             canal<span className={isSysAdminMode ? "text-red-500" : "text-primary"}>.</span>
             {isSysAdminMode && <span className="ml-2 text-[10px] bg-red-500/20 text-red-500 px-1.5 py-0.5 rounded uppercase tracking-widest font-bold">Sys</span>}
@@ -88,7 +88,7 @@ export default function DashboardLayout() {
           </div>
         </div>
 
-        <div className={`p-4 border-b border-black/5 dark:border-white/6 shrink-0 ${isMinimized ? 'px-3' : 'px-4'}`}>
+        <div className={`p-4 border-b border-black/5 dark:border-white/10 shrink-0 ${isMinimized ? 'px-3' : 'px-4'}`}>
            <OrgSwitcher userEmail={session.user.email} isSuperAdmin={isSuperAdmin} />
         </div>
 
@@ -147,7 +147,7 @@ export default function DashboardLayout() {
                         className={({ isActive }) => `
                            flex items-center gap-3 px-3 py-1.5 rounded-lg transition-all duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] text-[13px] font-medium outline-none active:scale-[0.98] group/link
                            ${isActive 
-                              ? 'bg-white/10 dark:bg-black/20 text-neutral-900 dark:text-white shadow-sm border border-black/5 dark:border-white/5' 
+                              ? 'bg-white/10 dark:bg-black/20 text-neutral-900 dark:text-white shadow-sm border border-black/5 dark:border-white/10' 
                               : 'text-neutral-500 dark:text-neutral-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-white border border-transparent'}
                            ${isMinimized ? 'justify-center w-10 h-10 p-0 shadow-none' : 'w-full'}
                         `}
@@ -164,7 +164,7 @@ export default function DashboardLayout() {
           })}
         </nav>
 
-        <div className={`shrink-0 border-t border-black/5 dark:border-white/6 p-4 ${isSysAdminMode ? 'bg-danger/5' : 'bg-transparent'}`}>
+        <div className={`shrink-0 border-t border-black/5 dark:border-white/10 p-4 ${isSysAdminMode ? 'bg-red-500/5' : 'bg-transparent'}`}>
            <UserDropdown user={session.user} isSuperAdmin={isSuperAdmin} onSignOut={handleSignOut} />
         </div>
       </aside>
@@ -176,7 +176,7 @@ export default function DashboardLayout() {
         <div className="absolute bottom-0 left-0 -z-10 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none opacity-30 mix-blend-multiply dark:mix-blend-screen" />
 
         {/* Global Nav Bar (Frosted Glass Topbar HIG) */}
-        <header className="flex items-center justify-between h-[52px] px-8 border-b border-black/5 dark:border-white/4 shrink-0 bg-white/60 dark:bg-black/40 backdrop-blur-[20px] sticky top-0 z-30 shadow-[0_1px_0_rgba(255,255,255,0.4)_inset] dark:shadow-[0_1px_0_rgba(255,255,255,0.02)_inset]">
+        <header className="flex items-center justify-between h-[52px] px-8 border-b border-black/5 dark:border-white/5 shrink-0 bg-white/60 dark:bg-black/40 backdrop-blur-[20px] sticky top-0 z-30 shadow-[0_1px_0_rgba(255,255,255,0.4)_inset] dark:shadow-[0_1px_0_rgba(255,255,255,0.02)_inset]">
           <div className="flex flex-col justify-center">
             <h1 className="text-[14px] font-semibold tracking-tight text-neutral-900 dark:text-white/90 leading-tight">{meta.title}</h1>
             {meta.sub && <p className="text-[10px] font-medium uppercase tracking-wider text-neutral-500 dark:text-white/40 leading-tight">{meta.sub}</p>}
