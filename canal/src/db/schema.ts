@@ -331,3 +331,18 @@ export const brand_assets = sqliteTable('brand_assets', {
   value: text('value'), // hex codes for colors
   created_at: text('created_at'),
 });
+
+// ── Fase 6: Growth & Incidentes ──────────────────────────────────────
+
+export const incidents = sqliteTable('incidents', {
+  id: text('id').primaryKey(),
+  tenant_id: text('tenant_id'),
+  title: text('title').notNull(),
+  severity: text('severity').default('low'),
+  status: text('status').default('open'),
+  timeline_events: text('timeline_events').default('[]'),
+  resolution_summary: text('resolution_summary'),
+  sla_deadline: text('sla_deadline'),
+  created_at: text('created_at'),
+  updated_at: text('updated_at'),
+});

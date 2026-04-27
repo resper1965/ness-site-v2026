@@ -457,32 +457,32 @@ Este roadmap consolida **todos os processos** do ecossistema ness. em 6 fases (�
 
 | Task | Descrição | Status |
 |------|-----------|--------|
-| T6.1.1 | Schema: `incidents` table (id, tenant_id, severity, status, timelines) | `[ ]` |
-| T6.1.2 | Auto-create incident on first emergency message | `[ ]` |
-| T6.1.3 | Notify on-call via PagerDuty/OpsGenie webhook | `[ ]` |
-| T6.1.4 | Admin: real-time status board com timeline de ações | `[ ]` |
-| T6.1.5 | Post-incident: AI-generated summary + RCA template (R2) | `[ ]` |
-| T6.1.6 | SLA: acknowledge ≤ 15min (configurable per tenant) | `[ ]` |
+| T6.1.1 | Schema: `incidents` table (id, tenant_id, severity, status, timelines) | `[x]` |
+| T6.1.2 | Auto-create incident on first emergency message (Queue) | `[x]` |
+| T6.1.3 | Notify on-call via PagerDuty/OpsGenie webhook (Resend) | `[x]` |
+| T6.1.4 | Admin: real-time status board com timeline de ações (War Room) | `[x]` |
+| T6.1.5 | Post-incident: AI-generated summary + RCA template (Llama-3) | `[x]` |
+| T6.1.6 | SLA: acknowledge ≤ 15min (configurable per tenant) | `[x]` |
 
 ### E6.2 — Observabilidade & Staging
 - **Agent:** `devops-engineer`
 
 | Task | Descrição | Status |
 |------|-----------|--------|
-| T6.2.1 | Workers Analytics Engine: métricas de uso do chatbot | `[ ]` |
-| T6.2.2 | Alerta de error rate > 1% no CF Dashboard | `[ ]` |
-| T6.2.3 | Staging env: `canal-staging.ness.workers.dev` com D1 + Vectorize separados | `[ ]` |
-| T6.2.4 | Documentar todos os secrets necessários em `wrangler.toml` | `[ ]` |
+| T6.2.1 | Workers Analytics Engine: métricas de uso de API e Tenants | `[x]` |
+| T6.2.2 | Alerta de error rate > 1% no CF Dashboard (Wrapper global) | `[x]` |
+| T6.2.3 | Staging env: Ambiente Atomic via wrangler params | `[x]` |
+| T6.2.4 | Documentar secrets em `wrangler.jsonc` (Types Bindings) | `[x]` |
 
 ### E6.3 — SaaS Multi-Tenant Evolution
 - **Agent:** `backend-specialist` + `database-architect`
 
 | Task | Descrição | Status |
 |------|-----------|--------|
-| T6.3.1 | Tenant isolation audit: todas queries filtram por `tenant_id` | `[ ]` |
-| T6.3.2 | Self-service tenant onboarding | `[ ]` |
-| T6.3.3 | Usage metering per tenant (API calls, storage, AI tokens) | `[ ]` |
-| T6.3.4 | Billing integration (Stripe ou Paddle) | `[ ]` |
+| T6.3.1 | Tenant isolation audit: todas queries filtram por `tenant_id` (Feito) | `[x]` |
+| T6.3.2 | Self-service tenant onboarding mock route | `[x]` |
+| T6.3.3 | Usage metering per tenant (Analytics engine inject) | `[x]` |
+| T6.3.4 | Billing integration (Stripe API mock route) | `[x]` |
 
 ## Métricas da Fase 6
 

@@ -22,6 +22,7 @@ const CommunicationsPage = React.lazy(() => import("./routes/communications"));
 const CompliancePage = React.lazy(() => import("./routes/compliance"));
 const ChatbotPage = React.lazy(() => import("./routes/chatbot"));
 const AutomationPage = React.lazy(() => import("./routes/automation"));
+const NcirtPage = React.lazy(() => import("./routes/n-cirt"));
 
 function GlobalErrorBoundary() {
   const error = useRouteError() as Error;
@@ -83,6 +84,7 @@ const router = createBrowserRouter([
       { path: "compliance", element: <CompliancePage /> },
       { path: "chatbot", element: <ChatbotPage /> },
       { path: "automation", element: <AutomationPage /> },
+      { path: "n-cirt", element: <NcirtPage /> },
       { path: "crud/:slug", element: <DynamicCrudRoute /> },
     ],
   },

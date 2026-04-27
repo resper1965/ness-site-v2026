@@ -226,6 +226,15 @@ export const NAV: NavGroup[] = [
     adminOnly: true,
     items: [
       {
+        to: "/n-cirt",
+        label: "N.CIRT War Room",
+        icon: (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        ),
+      },
+      {
         to: "/organizations",
         label: "Gestão Global de Empresas",
         icon: (
@@ -271,6 +280,7 @@ export const PAGE_META: Record<string, { title: string; sub: string }> = {
   "/compliance":  { title: "Compliance & LGPD", sub: "DSAR, Canal de Denúncia e Políticas" },
   "/chatbot":     { title: "Chatbot & RAG",     sub: "Configuração, analytics e base de conhecimento" },
   "/automation":  { title: "Automações & IA",   sub: "Fase 5: Social, Newsletters, Triagem de CVs" },
+  "/n-cirt":      { title: "N.CIRT War Room",   sub: "Fase 6: Núcleo Tático de Incidentes" },
 };
 
 export const SUPER_ADMIN_EMAILS = ["resper@bekaa.eu", "admin@ness.com.br", "resper@ness.com.br"];

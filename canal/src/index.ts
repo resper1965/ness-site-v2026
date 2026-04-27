@@ -38,6 +38,7 @@ export type Bindings = {
   SLACK_WEBHOOK_URL?: string
   AGENT_DO: DurableObjectNamespace
   QUEUE: Queue
+  ANALYTICS: any
 }
 
 type Variables = {
@@ -47,6 +48,25 @@ type Variables = {
 }
 
 const app = new Hono<{ Bindings: Bindings, Variables: Variables }>()
+
+// ── Observability & Telemetry (Fase 6) ────────────────────────────
+app.use('*', async (c, next) => {
+  const start = Date.now()
+  await next()
+  
+  if (c.env.ANALYTICS) {
+    const elapsed = Date.now() - start
+    const path = c.req.path
+    const tenantId = c.get('tenantId') || 'unknown'
+    const status = c.res.status
+
+    c.env.ANALYTICS.writeDataPoint({
+      blobs: [tenantId, path, c.req.method],
+      doubles: [elapsed, status],
+      indexes: [tenantId]
+    })
+  }
+})
 
 // ── CORS & Security ───────────────────────────────────────────────
 app.use('/*', secureHeaders({
@@ -279,6 +299,10 @@ app.route('/api', complianceRoutes)
 // Public and Protected Automation endpoints: Newsletter, Apply, Assets
 import automationRoutes from './routes/automation'
 app.route('/api/automation', automationRoutes)
+
+// SaaS Provisioning and Billing endpoints
+import { saasRoutes } from './routes/saas-onboarding'
+app.route('/api/saas', saasRoutes)
 
 // ── Mount: Admin Routes (modular, auth-protected) ────────────────
 import { admin } from './routes/admin'

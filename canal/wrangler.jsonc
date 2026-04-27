@@ -91,5 +91,11 @@
 			"binding": "CANAL_KV",
 			"id": "b28950f237884a4aa47d103723dd09bf"
 		}
+	],
+	"analytics_engine_datasets": [
+		{
+			"binding": "ANALYTICS",
+			"dataset": "canal_metrics"
+		}
 	]
 }
