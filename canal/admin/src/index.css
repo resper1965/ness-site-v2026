@@ -8,41 +8,70 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  /* Light Premium palette (Vercel / Apple HIG style) */
-  --bg:          #f8fafc; /* lowest container */
-  --surface:     #ffffff; /* default surface */
-  --surface-2:   #f1f5f9; /* container low */
-  --surface-3:   #e2e8f0; /* container high */
-  --border:      rgba(0,0,0,0.08);
-  --border-hover:rgba(0,0,0,0.15);
+  /* ========================================================= */
+  /* Apple HIG Híbrido (Light Mode Padrão)                     */
+  /* ========================================================= */
+  --bg:          #F5F5F7;      /* macOS window background translúcido default */
+  --surface:     #FFFFFF;      /* Superfícies padrão Apple Light */
+  --surface-2:   #F2F2F7;      /* Contêiner elevado (System Gray 6) */
+  --surface-3:   #E5E5EA;      /* Interativos e separadores (System Gray 5) */
+  --border:      rgba(0,0,0,0.06); 
+  --border-hover:rgba(0,0,0,0.12);
 
-  /* Text */
-  --text:        #0f172a; /* on-surface */
-  --text-muted:  #64748b; /* on-surface-variant */
-  --text-dim:    #475569;
+  /* Typography Light */
+  --text:        #000000;
+  --text-muted:  #8E8E93; /* System Gray */
+  --text-dim:    #3A3A3C; 
 
-  /* Accent — Ness Primary */
+  /* Accent — Ness Primary adaptado pro Light Mode */
   --accent:      #00ade8;
-  --accent-soft: rgba(0,173,232,0.10);
-  --accent-glow: rgba(0,173,232,0.22);
+  --accent-soft: rgba(0,173,232,0.12);
+  --accent-glow: rgba(0,173,232,0.20);
 
-  /* Secondary */
-  --orange:      #f97316;
-  --danger:      #ef4444;
-  --success:     #10b981;
-  --warning:     #f59e0b;
+  /* Elementos de alerta e status (Semáforo macOS) */
+  --orange:      #FF9500;
+  --danger:      #FF3B30;
+  --success:     #34C759;
+  --warning:     #FFCC00;
 
-  --radius:    12px;
-  --radius-sm: 8px;
-  --font:      'Inter', system-ui, sans-serif;
-  --mono:      'Fira Code', monospace;
-  --display:   'Manrope', sans-serif;
+  /* Geometria HIG */
+  --radius:      12px;
+  --radius-sm:   8px;
+  --radius-lg:   18px;
+  
+  --font:        'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono:        'SF Mono', 'Fira Code', ui-monospace, Menlo, Monaco, monospace;
+  --display:     -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
 
-  /* Sidebar */
-  --sidebar-w: 240px;
-  /* Topbar */
-  --topbar-h:  56px;
+  /* Dimensões */
+  --sidebar-w:   240px;
+  --topbar-h:    52px;
 }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* ========================================================= */
+    /* Apple HIG Híbrido (Dark Mode Nativo)                      */
+    /* ========================================================= */
+    --bg:          #000000;      /* Sistema nativo profundo */
+    --surface:     #1C1C1E;      /* Superfícies padrão Apple Dark */
+    --surface-2:   #2C2C2E;      /* Contêiner elevado */
+    --surface-3:   #3A3A3C;      /* Componentes interativos */
+    --border:      rgba(255,255,255,0.08); 
+    --border-hover:rgba(255,255,255,0.15);
+
+    /* Typography Dark */
+    --text:        #FFFFFF;
+    --text-muted:  #8E8E93; 
+    --text-dim:    #AEAEB2;
+
+    /* Accent — Ness Dark Glows */
+    --accent:      #00ade8;
+    --accent-soft: rgba(0,173,232,0.20);
+    --accent-glow: rgba(0,173,232,0.30);
+  }
+}
+
 
 html, body, #root { height: 100%; }
 
@@ -50,18 +79,23 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font);
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 13.5px; /* Dense scaling */
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
 }
 
-/* ── Scrollbar ─────────────────────────────────── */
-::-webkit-scrollbar { width: 5px; height: 5px; }
+/* ── Mapple Scrollbar ─────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; height: 8px; background: transparent; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 99px; }
+::-webkit-scrollbar-thumb { 
+  background: rgba(255,255,255,0.15); 
+  border-radius: 99px;
+  border: 2px solid var(--bg); /* 'Padding' hack para Mac Scrollbars */
+}
+::-webkit-scrollbar-corner { background: transparent; }
 
 /* ── Loader ─────────────────────────────────────── */
 .loader {
@@ -80,18 +114,20 @@ body {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 
-/* ── Cards ────────────────────────────────────── */
+/* ── Cards (Apple HIG) ────────────────────────────────────── */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 24px;
+  box-shadow: 0 4px 24px -1px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04);
   transition: border-color 0.2s cubic-bezier(0.25,0.46,0.45,0.94),
-              box-shadow 0.2s cubic-bezier(0.25,0.46,0.45,0.94);
+              box-shadow 0.2s cubic-bezier(0.25,0.46,0.45,0.94),
+              transform 0.2s cubic-bezier(0.25,0.46,0.45,0.94);
 }
 .card:hover {
   border-color: var(--border-hover);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  box-shadow: 0 8px 32px -2px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
 .card-header {
@@ -166,54 +202,56 @@ body {
 .field textarea { resize: vertical; min-height: 96px; }
 .field select option { background: var(--surface-2); }
 
-/* ── Buttons ──────────────────────────────────── */
+/* ── Buttons (Apple Style / Swift UI) ──────────────────────────────────── */
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 9px 18px;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
   border-radius: var(--radius-sm);
-  font-weight: 600;
+  font-weight: 500;
   font-size: 13px;
   cursor: pointer;
-  border: none;
+  border: 1px solid transparent;
   font-family: var(--font);
-  transition: all 0.18s cubic-bezier(0.25,0.46,0.45,0.94);
+  transition: all 0.15s cubic-bezier(0.25,0.46,0.45,0.94);
   white-space: nowrap;
   user-select: none;
+  backdrop-filter: blur(8px);
 }
-.btn svg { flex-shrink: 0; }
-.btn:disabled { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
-.btn:active:not(:disabled) { transform: scale(0.97); }
+.btn svg { flex-shrink: 0; width: 14px; height: 14px; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; filter: grayscale(1); }
+.btn:active:not(:disabled) { transform: scale(0.96); opacity: 0.8; }
 
 .btn-primary {
   background: var(--accent);
-  color: #081420;
-  font-weight: 700;
+  color: var(--bg); /* O BG é sempre oposto ao texto primário no HIG */
+  font-weight: 600;
   letter-spacing: -0.1px;
-  box-shadow: 0 1px 0 rgba(255,255,255,0.15) inset, 0 4px 12px rgba(0,173,232,0.2);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.2) inset, 0 4px 12px var(--accent-soft);
 }
 .btn-primary:not(:disabled):hover {
-  box-shadow: 0 1px 0 rgba(255,255,255,0.15) inset, 0 6px 20px rgba(0,173,232,0.35);
-  filter: brightness(1.1);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.3) inset, 0 6px 20px var(--accent-glow);
+  filter: brightness(1.15); /* Alternativa superior ao uso de #33beff chapado */
 }
 .btn-ghost {
-  background: var(--surface-2);
-  color: var(--text-dim);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
   border: 1px solid var(--border);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
 }
 .btn-ghost:not(:disabled):hover {
-  background: var(--surface-3);
-  color: var(--text);
+  background: rgba(255,255,255,0.08); /* Efeito Hover translúcido HIG */
   border-color: var(--border-hover);
 }
 .btn-danger {
-  background: transparent;
+  background: rgba(255,59,48,0.1);
   color: var(--danger);
-  border: 1px solid rgba(244,63,94,0.25);
+  border: 1px solid rgba(255,59,48,0.2);
 }
-.btn-danger:not(:disabled):hover { background: rgba(244,63,94,0.08); border-color: rgba(244,63,94,0.4); }
-.btn-sm { padding: 5px 12px; font-size: 12px; border-radius: 6px; }
+.btn-danger:not(:disabled):hover { background: rgba(255,59,48,0.2); border-color: rgba(255,59,48,0.4); }
+.btn-sm { padding: 4px 10px; font-size: 11.5px; border-radius: 6px; }
 
 /* ── Table ────────────────────────────────────── */
 .table-wrap { overflow-x: auto; }
@@ -241,15 +279,18 @@ body {
   transition: background 0.1s;
 }
 
-/* ── Badges ───────────────────────────────────── */
+/* ── Badges (Mac OS Tags) ───────────────────────────────────── */
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 3px 9px;
+  padding: 2px 8px;
   border-radius: 99px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(255,255,255,0.08);
 }
 .badge-new     { background: var(--accent-soft); color: var(--accent); }
 .badge-read    { background: rgba(52,211,153,0.1); color: var(--success); }
