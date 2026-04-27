@@ -194,6 +194,8 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 0;
+  min-width: 0;
   overflow: hidden;
 }
 
@@ -235,8 +237,23 @@
 /* ── Page content ─────────────────────────────── */
 .page-content {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 28px;
+}
+.page-content::-webkit-scrollbar {
+  width: 8px;
+}
+.page-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.page-content::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+.page-content::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
 
 /* ── Org Switcher ─────────────────────────────── */
