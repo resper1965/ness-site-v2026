@@ -1,84 +1,121 @@
 @import "tailwindcss";
-@source "../src";
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
 @import './styles/auth.css';
 @import './styles/saas.css';
 @import './styles/collection.css';
 @import './styles/dashboard.css';
 
+@theme {
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 :root {
   /* ========================================================= */
   /* Apple HIG Híbrido (Light Mode Padrão)                     */
   /* ========================================================= */
-  --bg:          #F5F5F7;      /* macOS window background translúcido default */
-  --surface:     #FFFFFF;      /* Superfícies padrão Apple Light */
-  --surface-2:   #F2F2F7;      /* Contêiner elevado (System Gray 6) */
-  --surface-3:   #E5E5EA;      /* Interativos e separadores (System Gray 5) */
-  --border:      rgba(0,0,0,0.06); 
-  --border-hover:rgba(0,0,0,0.12);
+  --background: 0 0% 96.1%;     /* #F5F5F7 System Gray 6 equivalent */
+  --foreground: 0 0% 0%;        /* #000000 */
 
-  /* Typography Light */
-  --text:        #000000;
-  --text-muted:  #8E8E93; /* System Gray */
-  --text-dim:    #3A3A3C; 
+  --card: 0 0% 100%;            /* #FFFFFF */
+  --card-foreground: 0 0% 0%;   /* #000000 */
 
-  /* Accent — Ness Primary adaptado pro Light Mode */
-  --accent:      #00ade8;
-  --accent-soft: rgba(0,173,232,0.12);
-  --accent-glow: rgba(0,173,232,0.20);
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 0%;
 
-  /* Elementos de alerta e status (Semáforo macOS) */
-  --orange:      #FF9500;
-  --danger:      #FF3B30;
-  --success:     #34C759;
-  --warning:     #FFCC00;
+  --primary: 195 100% 45.5%;    /* #00ade8 (Ness Primary) */
+  --primary-foreground: 0 0% 100%;
 
-  /* Geometria HIG */
-  --radius:      12px;
-  --radius-sm:   8px;
-  --radius-lg:   18px;
+  --secondary: 240 4.8% 95.9%;  /* System Gray */
+  --secondary-foreground: 240 5.9% 10%;
+
+  --muted: 240 4.8% 95.9%;      /* Muted background (#F2F2F7 ish) */
+  --muted-foreground: 240 3.8% 46.1%; /* System Gray for text */
+
+  --accent: 195 100% 45.5%;     /* Secondary interactive */
+  --accent-foreground: 0 0% 0%;
+
+  --destructive: 0 84.2% 60.2%; /* #FF3B30 */
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 0 0% 0% / 0.08;     /* HIG Subtle Borders */
+  --input: 0 0% 0% / 0.08;
+  --ring: 195 100% 45.5%;
+
+  --radius: 0.75rem;            /* 12px HIG Geometry */
   
-  --font:        'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --mono:        'SF Mono', 'Fira Code', ui-monospace, Menlo, Monaco, monospace;
-  --display:     -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-
-  /* Dimensões */
-  --sidebar-w:   240px;
-  --topbar-h:    52px;
+  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', ui-monospace, Menlo, Monaco, monospace;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* ========================================================= */
-    /* Apple HIG Híbrido (Dark Mode Nativo)                      */
-    /* ========================================================= */
-    --bg:          #000000;      /* Sistema nativo profundo */
-    --surface:     #1C1C1E;      /* Superfícies padrão Apple Dark */
-    --surface-2:   #2C2C2E;      /* Contêiner elevado */
-    --surface-3:   #3A3A3C;      /* Componentes interativos */
-    --border:      rgba(255,255,255,0.08); 
-    --border-hover:rgba(255,255,255,0.15);
+    --background: 0 0% 0%;        /* #000000 - True macOS Dark */
+    --foreground: 0 0% 100%;      /* #FFFFFF */
 
-    /* Typography Dark */
-    --text:        #FFFFFF;
-    --text-muted:  #8E8E93; 
-    --text-dim:    #AEAEB2;
+    --card: 240 3.7% 11%;         /* #1C1C1E Elevated Surface */
+    --card-foreground: 0 0% 100%;
 
-    /* Accent — Ness Dark Glows */
-    --accent:      #00ade8;
-    --accent-soft: rgba(0,173,232,0.20);
-    --accent-glow: rgba(0,173,232,0.30);
+    --popover: 240 3.7% 11%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 195 100% 45.5%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 3.7% 18%;    /* #2C2C2E Deeper component */
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 18%;        
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 195 100% 45.5%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84.2% 60.2%; /* #FF3B30 */
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 100% / 0.12;   /* White frost border */
+    --input: 0 0% 100% / 0.12;
+    --ring: 195 100% 45.5%;
   }
 }
-
 
 html, body, #root { height: 100%; }
 
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font);
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-inter);
   font-size: 13.5px; /* Dense scaling */
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -91,9 +128,9 @@ body {
 ::-webkit-scrollbar { width: 8px; height: 8px; background: transparent; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { 
-  background: rgba(255,255,255,0.15); 
+  background: hsl(var(--muted-foreground) / 0.3); 
   border-radius: 99px;
-  border: 2px solid var(--bg); /* 'Padding' hack para Mac Scrollbars */
+  border: 2px solid hsl(var(--background));
 }
 ::-webkit-scrollbar-corner { background: transparent; }
 
@@ -101,33 +138,34 @@ body {
 .loader {
   position: fixed; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  background: var(--bg);
+  background: hsl(var(--background));
 }
 .loader::after {
   content: '';
   width: 30px; height: 30px;
-  border: 2px solid var(--border);
-  border-top-color: var(--accent);
+  border: 2px solid hsl(var(--border));
+  border-top-color: hsl(var(--primary));
   border-radius: 50%;
   animation: spin 0.65s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 
+
 /* ── Cards (Apple HIG) ────────────────────────────────────── */
 .card {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border) / 0.1);
   border-radius: var(--radius);
   padding: 24px;
-  box-shadow: 0 4px 24px -1px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04);
+  box-shadow: 0 4px 24px -1px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.04);
   transition: border-color 0.2s cubic-bezier(0.25,0.46,0.45,0.94),
               box-shadow 0.2s cubic-bezier(0.25,0.46,0.45,0.94),
               transform 0.2s cubic-bezier(0.25,0.46,0.45,0.94);
 }
 .card:hover {
-  border-color: var(--border-hover);
-  box-shadow: 0 8px 32px -2px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+  border-color: hsl(var(--border) / 0.2);
+  box-shadow: 0 8px 32px -2px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
 .card-header {
@@ -136,7 +174,7 @@ body {
   justify-content: space-between;
   margin-bottom: 20px;
 }
-.card-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.card-title { font-size: 14px; font-weight: 600; color: hsl(var(--foreground)); }
 
 /* Stats grid */
 .stats-grid {
@@ -146,8 +184,8 @@ body {
   margin-bottom: 28px;
 }
 .stat-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
   border-radius: var(--radius);
   padding: 20px 22px;
   transition: border-color 0.2s, box-shadow 0.2s cubic-bezier(0.25,0.46,0.45,0.94);
@@ -159,15 +197,15 @@ body {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(123,208,255,0.15), transparent);
+  background: linear-gradient(90deg, transparent, hsl(var(--primary)/0.15), transparent);
 }
 .stat-card:hover {
-  border-color: var(--border-hover);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+  border-color: hsl(var(--border)/0.2);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.05); /* Apple subtle pop */
 }
-.stat-label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; opacity: 0.7; }
-.stat-value { font-size: 28px; font-weight: 700; color: var(--text); letter-spacing: -0.8px; font-family: var(--mono); line-height: 1; }
-.stat-hint { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+.stat-label { font-size: 10px; font-weight: 700; color: hsl(var(--muted-foreground)); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; opacity: 0.7; }
+.stat-value { font-size: 28px; font-weight: 700; color: hsl(var(--foreground)); letter-spacing: -0.8px; font-family: var(--font-mono); line-height: 1; }
+.stat-hint { font-size: 11px; color: hsl(var(--muted-foreground)); margin-top: 6px; }
 
 /* ── Forms ────────────────────────────────────── */
 .form { display: flex; flex-direction: column; gap: 16px; }
@@ -175,18 +213,18 @@ body {
 .field label {
   font-size: 11.5px;
   font-weight: 600;
-  color: var(--text-muted);
+  color: hsl(var(--muted-foreground));
   text-transform: uppercase;
   letter-spacing: 0.6px;
 }
 .field input,
 .field textarea,
 .field select {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
+  background: hsl(var(--secondary));
+  border: 1px solid hsl(var(--border) / 1);
   border-radius: var(--radius-sm);
   padding: 10px 14px;
-  color: var(--text);
+  color: hsl(var(--foreground));
   font-family: var(--font);
   font-size: 14px;
   outline: none;
@@ -200,7 +238,7 @@ body {
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
 .field textarea { resize: vertical; min-height: 96px; }
-.field select option { background: var(--surface-2); }
+.field select option { background: hsl(var(--secondary)); }
 
 /* ── Buttons (Apple Style / Swift UI) ──────────────────────────────────── */
 .btn {
@@ -214,7 +252,7 @@ body {
   font-size: 13px;
   cursor: pointer;
   border: 1px solid transparent;
-  font-family: var(--font);
+  font-family: var(--font-inter);
   transition: all 0.15s cubic-bezier(0.25,0.46,0.45,0.94);
   white-space: nowrap;
   user-select: none;
@@ -225,32 +263,32 @@ body {
 .btn:active:not(:disabled) { transform: scale(0.96); opacity: 0.8; }
 
 .btn-primary {
-  background: var(--accent);
-  color: var(--bg); /* O BG é sempre oposto ao texto primário no HIG */
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
   font-weight: 600;
   letter-spacing: -0.1px;
-  box-shadow: 0 1px 0 rgba(255,255,255,0.2) inset, 0 4px 12px var(--accent-soft);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.2) inset, 0 4px 12px hsl(var(--primary)/0.2);
 }
 .btn-primary:not(:disabled):hover {
-  box-shadow: 0 1px 0 rgba(255,255,255,0.3) inset, 0 6px 20px var(--accent-glow);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.3) inset, 0 6px 20px hsl(var(--primary)/0.3);
   filter: brightness(1.15); /* Alternativa superior ao uso de #33beff chapado */
 }
 .btn-ghost {
   background: rgba(255,255,255,0.04);
-  color: var(--text);
-  border: 1px solid var(--border);
+  color: hsl(var(--foreground));
+  border: 1px solid hsl(var(--border) / 0.8);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
 }
 .btn-ghost:not(:disabled):hover {
-  background: rgba(255,255,255,0.08); /* Efeito Hover translúcido HIG */
-  border-color: var(--border-hover);
+  background: hsl(var(--muted)); /* Efeito Hover translucido HIG */
+  border-color: hsl(var(--border) / 1);
 }
 .btn-danger {
-  background: rgba(255,59,48,0.1);
-  color: var(--danger);
-  border: 1px solid rgba(255,59,48,0.2);
+  background: hsl(var(--destructive)/0.1);
+  color: hsl(var(--destructive));
+  border: 1px solid hsl(var(--destructive)/0.2);
 }
-.btn-danger:not(:disabled):hover { background: rgba(255,59,48,0.2); border-color: rgba(255,59,48,0.4); }
+.btn-danger:not(:disabled):hover { background: hsl(var(--destructive)/0.15); border-color: hsl(var(--destructive)/0.4); }
 .btn-sm { padding: 4px 10px; font-size: 11.5px; border-radius: 6px; }
 
 /* ── Table ────────────────────────────────────── */
@@ -260,16 +298,16 @@ body {
 .table-wrap th {
   font-size: 10px;
   font-weight: 700;
-  color: var(--text-muted);
+  color: hsl(var(--muted-foreground));
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid hsl(var(--border));
   white-space: nowrap;
   opacity: 0.6;
 }
 .table-wrap td {
-  border-bottom: 1px solid var(--border);
-  color: var(--text);
+  border-bottom: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
   font-size: 13px;
   line-height: 1.5;
 }
@@ -304,10 +342,10 @@ body {
   justify-content: center;
   gap: 12px;
   padding: 56px 24px;
-  color: var(--text-muted);
+  color: hsl(var(--muted-foreground));
   text-align: center;
 }
-.empty-state svg { color: var(--surface-3); }
+.empty-state svg { color: hsl(var(--muted)); }
 .empty-state p { font-size: 13px; }
 
 /* ── Modal / overlay ──────────────────────────── */
@@ -323,7 +361,7 @@ body {
   animation: fadeIn 0.15s ease;
 }
 .modal {
-  background: var(--surface);
+  background: hsl(var(--card));
   border: 1px solid rgba(0,0,0,0.08);
   border-radius: 18px;
   padding: 28px;
@@ -370,14 +408,14 @@ body {
 /* ── Hint text ───────────────────────────────── */
 .hint {
   font-size: 12px;
-  color: var(--text-muted);
+  color: hsl(var(--muted-foreground));
 }
 
 /* ── Dashboard section ───────────────────────── */
 .dashboard-section h2 {
   font-size: 15px;
   font-weight: 600;
-  color: var(--text);
+  color: hsl(var(--foreground));
   letter-spacing: -0.2px;
 }
 
