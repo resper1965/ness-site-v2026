@@ -1,0 +1,43 @@
+name: Playwright Cloudflare Tests
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  # Acionamento manual via interface do Github
+  workflow_dispatch:
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    # 1. Configurar Node
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+        
+    # 2. Instalar dependências gerais (Playwright e módulos)
+    - name: Install dependencies
+      run: npm ci || npm install --no-audit --no-fund
+      
+    # 3. Instalar os navegadores do Playwright
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+      
+    # 4. Rodar os testes focado no ambiente da Cloudflare (não sobe servidor local)
+    - name: Run Playwright tests
+      run: npx playwright test
+      env:
+        # Passaremos as chaves seguras caso nosso bypass simulado de admin exija
+        ADMIN_JWT_SECRET: ${{ secrets.ADMIN_JWT_SECRET }}
+        
+    # 5. Salvar relatórios em caso de falha UI (Traces, Vídeos)
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30

@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Button } from '../components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 
 export default function NcirtDashboard() {
   const [activeTab, setActiveTab] = useState('active');
@@ -13,83 +10,89 @@ export default function NcirtDashboard() {
           <h2 className="text-3xl font-bold tracking-tight text-red-600 dark:text-red-500">n.cirt : War Room</h2>
           <p className="text-muted-foreground">Núcleo Central de Incidentes e Resposta Tática.</p>
         </div>
-        <Button variant="destructive">Declarar Crise Manual (P1)</Button>
+        <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium h-9 px-4 py-2 bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90">Declarar Crise Manual (P1)</button>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Incidentes Abertos</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <div className="rounded-xl border bg-card text-card-foreground shadow">
+          <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
+            <h3 className="tracking-tight text-sm font-medium">Incidentes Abertos</h3>
+          </div>
+          <div className="p-6 pt-0">
             <div className="text-2xl font-bold">0</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">SLA de Resposta (MTTA)</CardTitle>
-          </CardHeader>
-          <CardContent>
+          </div>
+        </div>
+        <div className="rounded-xl border bg-card text-card-foreground shadow">
+          <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
+            <h3 className="tracking-tight text-sm font-medium">SLA de Resposta (MTTA)</h3>
+          </div>
+          <div className="p-6 pt-0">
             <div className="text-2xl font-bold">-- min</div>
             <p className="text-xs text-muted-foreground">Meta: &le; 15min</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Taxa de Erro 24h</CardTitle>
-          </CardHeader>
-          <CardContent>
+          </div>
+        </div>
+        <div className="rounded-xl border bg-card text-card-foreground shadow">
+          <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
+            <h3 className="tracking-tight text-sm font-medium">Taxa de Erro 24h</h3>
+          </div>
+          <div className="p-6 pt-0">
             <div className="text-2xl font-bold text-green-500">0.00%</div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="active">Em Andamento</TabsTrigger>
-          <TabsTrigger value="history">Histórico & RCA</TabsTrigger>
-          <TabsTrigger value="analytics">Workers Analytics</TabsTrigger>
-        </TabsList>
+      <div className="space-y-4">
+        <div className="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
+          <button onClick={() => setActiveTab('active')} className={`inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium transition-all ${activeTab === 'active' ? 'bg-background text-foreground shadow' : ''}`}>Em Andamento</button>
+          <button onClick={() => setActiveTab('history')} className={`inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium transition-all ${activeTab === 'history' ? 'bg-background text-foreground shadow' : ''}`}>Histórico & RCA</button>
+          <button onClick={() => setActiveTab('analytics')} className={`inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium transition-all ${activeTab === 'analytics' ? 'bg-background text-foreground shadow' : ''}`}>Workers Analytics</button>
+        </div>
 
-        <TabsContent value="active" className="space-y-4">
-          <Card>
-            <CardContent className="h-64 flex flex-col items-center justify-center text-muted-foreground p-6">
-              <span className="text-4xl mb-4">🛡️</span>
-              <p>Nenhum incidente ativo no momento. Todos os sistemas operacionais.</p>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="history" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Histórico de Crises (RCA)</CardTitle>
-              <CardDescription>Baixe relatórios gerados por inteligência artificial (Llama-3) após resoluções.</CardDescription>
-            </CardHeader>
-            <CardContent>
-               <p className="text-sm text-muted-foreground">Sem registro de quedas ou vazamentos.</p>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="analytics" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Telemetria de API (Tenant Isolation)</CardTitle>
-              <CardDescription>Consulta do dataset canal_metrics coletado na borda.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="bg-muted p-4 rounded text-xs font-mono">
-                SELECT blob1 AS tenant_id, blob2 AS path, SUM(double1) AS latency <br/>
-                FROM canal_metrics <br/>
-                GROUP BY blob1, blob2 <br/>
+        {activeTab === 'active' && (
+          <div className="space-y-4">
+            <div className="rounded-xl border bg-card text-card-foreground shadow">
+              <div className="p-6 h-64 flex flex-col items-center justify-center text-muted-foreground">
+                <span className="text-4xl mb-4">🛡️</span>
+                <p>Nenhum incidente ativo no momento. Todos os sistemas operacionais.</p>
               </div>
-              <Button variant="outline" className="mt-4">Executar Consulta</Button>
-            </CardContent>
-          </Card>
-        </TabsContent>
+            </div>
+          </div>
+        )}
 
-      </Tabs>
+        {activeTab === 'history' && (
+          <div className="space-y-4">
+            <div className="rounded-xl border bg-card text-card-foreground shadow">
+              <div className="p-6 flex flex-col space-y-1.5">
+                <h3 className="font-semibold leading-none tracking-tight">Histórico de Crises (RCA)</h3>
+                <p className="text-sm text-muted-foreground">Baixe relatórios gerados por inteligência artificial (Llama-3) após resoluções.</p>
+              </div>
+              <div className="p-6 pt-0">
+                 <p className="text-sm text-muted-foreground">Sem registro de quedas ou vazamentos.</p>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {activeTab === 'analytics' && (
+          <div className="space-y-4">
+            <div className="rounded-xl border bg-card text-card-foreground shadow">
+              <div className="p-6 flex flex-col space-y-1.5">
+                <h3 className="font-semibold leading-none tracking-tight">Telemetria de API (Tenant Isolation)</h3>
+                <p className="text-sm text-muted-foreground">Consulta do dataset canal_metrics coletado na borda.</p>
+              </div>
+              <div className="p-6 pt-0">
+                <div className="bg-muted p-4 rounded text-xs font-mono">
+                  SELECT blob1 AS tenant_id, blob2 AS path, SUM(double1) AS latency <br/>
+                  FROM canal_metrics <br/>
+                  GROUP BY blob1, blob2 <br/>
+                </div>
+                <button className="mt-4 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium h-9 px-4 py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground">Executar Consulta</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+      </div>
     </div>
   );
 }

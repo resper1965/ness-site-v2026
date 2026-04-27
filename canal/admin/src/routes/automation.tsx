@@ -1,11 +1,4 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { Textarea } from '../components/ui/textarea';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
-import { Label } from '../components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 
 export default function AutomationDashboard() {
   const [activeTab, setActiveTab] = useState('social');
@@ -16,96 +9,85 @@ export default function AutomationDashboard() {
         <h2 className="text-3xl font-bold tracking-tight">Growth & Automação (Fase 5)</h2>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="social">Social Posts (IA)</TabsTrigger>
-          <TabsTrigger value="newsletter">Newsletters</TabsTrigger>
-          <TabsTrigger value="jobs">Triagem de Vagas</TabsTrigger>
-          <TabsTrigger value="brandbook">Brandbook & Assinaturas</TabsTrigger>
-        </TabsList>
+      <div className="space-y-4">
+        <div className="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
+          <button onClick={() => setActiveTab('social')} className={`inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium transition-all ${activeTab === 'social' ? 'bg-background text-foreground shadow' : ''}`}>Social Posts (IA)</button>
+          <button onClick={() => setActiveTab('newsletter')} className={`inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium transition-all ${activeTab === 'newsletter' ? 'bg-background text-foreground shadow' : ''}`}>Newsletters</button>
+          <button onClick={() => setActiveTab('jobs')} className={`inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium transition-all ${activeTab === 'jobs' ? 'bg-background text-foreground shadow' : ''}`}>Triagem de Vagas</button>
+          <button onClick={() => setActiveTab('brandbook')} className={`inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium transition-all ${activeTab === 'brandbook' ? 'bg-background text-foreground shadow' : ''}`}>Brandbook & Assinaturas</button>
+        </div>
 
-        <TabsContent value="social" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Criar Postagem Automatizada</CardTitle>
-              <CardDescription>
-                Utilize o roteador do LLM Llama-3 para gerar copys para suas redes e engatilhar o agendamento.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form className="space-y-4">
+        {activeTab === 'social' && (
+          <div className="space-y-4">
+            <div className="rounded-xl border bg-card text-card-foreground shadow p-6">
+              <h3 className="font-semibold leading-none tracking-tight mb-2">Criar Postagem Automatizada</h3>
+              <p className="text-sm text-muted-foreground mb-6">Utilize o roteador do LLM Llama-3 para gerar copys para suas redes e engatilhar o agendamento.</p>
+              
+              <form className="space-y-4" onSubmit={e => e.preventDefault()}>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>Plataforma</Label>
-                    <Select defaultValue="linkedin">
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione a plataforma" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="linkedin">LinkedIn</SelectItem>
-                        <SelectItem value="instagram">Instagram</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Plataforma</label>
+                    <select className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                      <option value="linkedin">LinkedIn</option>
+                      <option value="instagram">Instagram</option>
+                    </select>
                   </div>
                   <div className="space-y-2">
-                    <Label>Instrução Base (O que divulgar?)</Label>
-                    <Input placeholder="Resuma em poucas palavras o mote..." />
+                    <label className="text-sm font-medium leading-none">Instrução Base (O que divulgar?)</label>
+                    <input className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="Resuma em poucas palavras o mote..." />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label>Rascunho Inteligente Gerado</Label>
-                  <Textarea placeholder="O post gerado pela inteligência aparecerá aqui..." className="min-h-[150px]" />
+                  <label className="text-sm font-medium leading-none">Rascunho Inteligente Gerado</label>
+                  <textarea className="flex min-h-[150px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" placeholder="O post gerado pela inteligência aparecerá aqui..." />
                 </div>
-                <Button>Gerar com IA</Button>
+                <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-primary text-primary-foreground shadow hover:bg-primary/90">Gerar com IA</button>
                 <div className="flex gap-2 justify-end mt-4">
-                  <Button variant="outline">Agendar</Button>
-                  <Button>Publicar Agora</Button>
+                  <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground">Agendar</button>
+                  <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-primary text-primary-foreground shadow hover:bg-primary/90">Publicar Agora</button>
                 </div>
               </form>
-            </CardContent>
-          </Card>
-        </TabsContent>
+            </div>
+          </div>
+        )}
 
-        <TabsContent value="newsletter" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Campanhas de Email</CardTitle>
-              <CardDescription>Monte newsletters e dispare por double opt-in para a rede de contatos.</CardDescription>
-            </CardHeader>
-            <CardContent className="h-64 flex items-center justify-center border-dashed border-2 rounded">
-              <div className="text-center text-muted-foreground">
-                <p>Nenhuma campanha criada.</p>
-                <Button className="mt-4" variant="outline">Nova Campanha</Button>
+        {activeTab === 'newsletter' && (
+          <div className="space-y-4">
+            <div className="rounded-xl border bg-card text-card-foreground shadow p-6">
+              <h3 className="font-semibold leading-none tracking-tight mb-2">Campanhas de Email</h3>
+              <p className="text-sm text-muted-foreground mb-6">Monte newsletters e dispare por double opt-in para a rede de contatos.</p>
+              
+              <div className="h-64 flex items-center justify-center border-dashed border-2 rounded">
+                <div className="text-center text-muted-foreground">
+                  <p>Nenhuma campanha criada.</p>
+                  <button className="mt-4 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground">Nova Campanha</button>
+                </div>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+            </div>
+          </div>
+        )}
         
-        <TabsContent value="jobs" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Triagem de Candidatos</CardTitle>
-              <CardDescription>Visão dos currículos submetidos, classificados automaticamente pela precisão com a vaga.</CardDescription>
-            </CardHeader>
-            <CardContent>
+        {activeTab === 'jobs' && (
+          <div className="space-y-4">
+            <div className="rounded-xl border bg-card text-card-foreground shadow p-6">
+              <h3 className="font-semibold leading-none tracking-tight mb-2">Triagem de Candidatos</h3>
+              <p className="text-sm text-muted-foreground mb-6">Visão dos currículos submetidos, classificados automaticamente pela precisão com a vaga.</p>
               <p className="text-sm text-muted-foreground p-4 bg-muted rounded">Nenhum candidato aguardando triagem.</p>
-            </CardContent>
-          </Card>
-        </TabsContent>
+            </div>
+          </div>
+        )}
         
-        <TabsContent value="brandbook" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Gerador de Assinaturas</CardTitle>
-              <CardDescription>Gere assinaturas de email HTML com a marca do Tenant.</CardDescription>
-            </CardHeader>
-            <CardContent>
-               <Button variant="outline">Baixar Assinatura HTML</Button>
-            </CardContent>
-          </Card>
-        </TabsContent>
+        {activeTab === 'brandbook' && (
+          <div className="space-y-4">
+            <div className="rounded-xl border bg-card text-card-foreground shadow p-6">
+              <h3 className="font-semibold leading-none tracking-tight mb-2">Gerador de Assinaturas</h3>
+              <p className="text-sm text-muted-foreground mb-6">Gere assinaturas de email HTML com a marca do Tenant.</p>
+              <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground">Baixar Assinatura HTML</button>
+            </div>
+          </div>
+        )}
 
-      </Tabs>
+      </div>
     </div>
   );
 }
