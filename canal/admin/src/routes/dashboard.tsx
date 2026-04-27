@@ -99,10 +99,18 @@ export default function DashboardLayout() {
                   className="nav-section-btn"
                   onClick={() => toggle(group.section)}
                   aria-expanded={!isCollapsed}
+                  title={isMinimized ? group.section : undefined}
                 >
-                  <span>{group.section}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
+                    {(group as any).icon || (
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.55 }}>
+                        <rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                      </svg>
+                    )}
+                    <span className="nav-label">{group.section}</span>
+                  </div>
                   <svg
-                    width="10" height="10" viewBox="0 0 24 24" fill="none"
+                    width="14" height="14" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" strokeWidth="2.5"
                     strokeLinecap="round" strokeLinejoin="round"
                     style={{ transition: 'transform 0.2s', transform: isCollapsed ? 'rotate(-90deg)' : 'rotate(0deg)', opacity: 0.4 }}
