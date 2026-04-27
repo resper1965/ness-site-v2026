@@ -191,6 +191,7 @@ Não responda recados, vá direto para o texto do post.`;
         { role: 'user', content: `Base: ${brief.trim()}` }
       ]
     });
+    
     return c.json({ success: true, text: result.text });
   } catch (err) {
     console.error('Social draft generation error:', err);
@@ -198,4 +199,73 @@ Não responda recados, vá direto para o texto do post.`;
   }
 });
 
+// 6. GitHub Integration (Portfolio & Kanban)
+automationRoute.get('/github/repos', async (c) => {
+  // Fetch resper1965 public repos
+  try {
+    const res = await fetch('https://api.github.com/users/resper1965/repos?per_page=100&sort=updated', {
+      headers: {
+        'User-Agent': 'CloudflareWorker-CanalCMS',
+        'Accept': 'application/vnd.github.v3+json',
+      }
+    });
+    if (!res.ok) throw new Error('Failed to fetch github repos');
+    let repos = await res.json() as any[];
+    
+    // Filter out forks and map to Bento grid properties
+    const portfolioCases = repos
+      .filter((repo: any) => !repo.fork && repo.name !== 'resper1965') // Hide profile readme and forks
+      .map((repo: any) => ({
+        slug: repo.name,
+        project: repo.name,
+        client: 'Open Source',
+        category: repo.language ? repo.language.toLowerCase() : 'Dev',
+        result: repo.license?.spdx_id || 'MIT',
+        desc: repo.description?.substring(0, 150) || 'Repositório de desenvolvimento.',
+        stats: JSON.stringify({ stars: repo.stargazers_count, forks: repo.forks_count }),
+        image: '', // Can be filled via github open-graph later or left blank
+        url: repo.html_url
+      }))
+      .slice(0, 9); // Only take most recent 9
+      
+    c.header('Cache-Control', 'public, max-age=3600');
+    return c.json(portfolioCases);
+  } catch (err: any) {
+    console.error('Github Fetch Error:', err);
+    return c.json({ error: 'Failed' }, 500);
+  }
+});
+
+automationRoute.get('/github/issues', async (c) => {
+  // Can be authorized or use a PAT if we want private issues
+  const repo = c.req.query('repo') || 'resper1965/ness-website26';
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}/issues?state=all&per_page=50`, {
+      headers: {
+        'User-Agent': 'CloudflareWorker-CanalCMS',
+        'Accept': 'application/vnd.github.v3+json',
+      }
+    });
+    if (!res.ok) throw new Error('Failed to fetch github issues');
+    const issues = await res.json() as any[];
+    
+    const mapped = issues
+      .filter((i: any) => !i.pull_request)
+      .map((issue: any) => ({
+        id: issue.number,
+        title: issue.title,
+        status: issue.state === 'closed' ? 'done' : (issue.assignees?.length > 0 ? 'in-progress' : 'todo'),
+        body: issue.body?.substring(0, 100),
+        url: issue.html_url,
+        labels: issue.labels.map((l: any) => l.name)
+      }));
+      
+    return c.json(mapped);
+  } catch (err: any) {
+    console.error('Github Issues Fetch Error:', err);
+    return c.json({ error: 'Failed' }, 500);
+  }
+});
+
 export default automationRoute;
+

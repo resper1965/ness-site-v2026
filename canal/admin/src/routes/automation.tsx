@@ -72,6 +72,7 @@ export default function AutomationDashboard() {
             { id: 'social', label: 'Social Posts (IA)', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> },
             { id: 'newsletter', label: 'Newsletters', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> },
             { id: 'jobs', label: 'Triagem de Vagas', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg> },
+            { id: 'github', label: 'GitHub Kanban', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg> },
             { id: 'brandbook', label: 'Assinaturas', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg> }
           ].map(tab => (
             <button
@@ -185,17 +186,87 @@ export default function AutomationDashboard() {
               </div>
             </div>
           )}
-          
-          {activeTab === 'jobs' && (
+
+          {activeTab === 'github' && (
             <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
               <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-                <div className="bg-muted/30 p-6 border-b border-border/40">
-                  <h3 className="font-semibold leading-none tracking-tight">Pipeline de Triagem HR</h3>
-                  <p className="text-sm text-muted-foreground mt-2">Visão isolada dos currículos submetidos, classificados autonomamente pelo motor vetorial de adequação.</p>
+                <div className="bg-muted/30 p-6 border-b border-border/40 flex justify-between items-center">
+                  <div>
+                    <h3 className="font-semibold leading-none tracking-tight">GitHub Projects Kanban</h3>
+                    <p className="text-sm text-muted-foreground mt-2">Visão consolidada das Issues e tracking de desenvolvimento integrado ao Github.</p>
+                  </div>
+                  <button onClick={() => {}} className="text-xs px-3 py-1 bg-primary text-primary-foreground rounded-md shadow hover:bg-primary/90 transition-all font-semibold">
+                    Atualizar Board
+                  </button>
                 </div>
                 <div className="p-6">
-                  <div className="rounded-lg border border-dashed border-border/60 bg-muted/20 p-8 text-center text-sm text-muted-foreground">
-                    Telemetry: 0 eventos na fila morta. Nenhum candidato pendente classificação neste namespace temporal.
+                  {/* Kanban Placeholder - This will fetch in useEffect visually (Skeleton while loading) */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* Todo Column */}
+                    <div className="bg-muted/20 rounded-lg border border-border/50 flex flex-col h-full min-h-[400px]">
+                      <div className="px-4 py-3 border-b border-border/50 font-bold text-sm flex justify-between items-center bg-muted/40">
+                        <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-slate-400"></div> TO DO</span>
+                        <span className="text-xs bg-background px-2 py-0.5 rounded-full border border-border/50">2</span>
+                      </div>
+                      <div className="p-3 space-y-3 flex-1 overflow-y-auto">
+                        <div className="bg-background rounded-md border border-border/60 p-3 shadow-sm hover:border-accent/40 transition-colors cursor-pointer group">
+                          <p className="text-[10px] font-bold text-blue-400 mb-1">ness-site2026</p>
+                          <h4 className="text-sm font-semibold leading-tight group-hover:text-accent transition-colors">Implementar Integração GraphQL Projects V2</h4>
+                          <div className="flex gap-2 mt-3 items-center justify-between">
+                            <span className="text-[10px] bg-muted px-2 py-0.5 rounded-full border border-border">#102</span>
+                            <div className="flex -space-x-2">
+                              <img src="https://github.com/resper1965.png" alt="user" className="w-5 h-5 rounded-full border-2 border-background" />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="bg-background rounded-md border border-border/60 p-3 shadow-sm hover:border-accent/40 transition-colors cursor-pointer group">
+                          <p className="text-[10px] font-bold text-blue-400 mb-1">ness-website26</p>
+                          <h4 className="text-sm font-semibold leading-tight group-hover:text-accent transition-colors">Configurar Telemetria no RopaOrchestrator</h4>
+                          <div className="flex gap-2 mt-3 items-center justify-between">
+                            <span className="text-[10px] bg-muted px-2 py-0.5 rounded-full border border-border">#88</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* In Progress Column */}
+                    <div className="bg-muted/20 rounded-lg border border-border/50 flex flex-col h-full min-h-[400px]">
+                      <div className="px-4 py-3 border-b border-border/50 font-bold text-sm flex justify-between items-center bg-muted/40">
+                        <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-yellow-500"></div> IN PROGRESS</span>
+                        <span className="text-xs bg-background px-2 py-0.5 rounded-full border border-border/50">1</span>
+                      </div>
+                      <div className="p-3 space-y-3 flex-1 overflow-y-auto">
+                        <div className="bg-background rounded-md border-accent border-[1.5px] p-3 shadow-sm cursor-pointer group relative overflow-hidden">
+                          <div className="absolute top-0 right-0 w-8 h-8 bg-accent/10 rounded-bl-full border-b border-l border-accent/20"></div>
+                          <p className="text-[10px] font-bold text-amber-400 mb-1">ness-site2026</p>
+                          <h4 className="text-sm font-semibold leading-tight text-foreground">Migrar Portfolio para API Pública Dinâmica</h4>
+                          <div className="flex gap-2 mt-3 items-center justify-between">
+                            <span className="flex gap-1">
+                              <span className="text-[10px] bg-accent/10 text-accent font-medium px-2 py-0.5 rounded-sm border border-accent/20">feature</span>
+                            </span>
+                            <span className="text-[10px] text-muted-foreground font-mono">#108</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Done Column */}
+                    <div className="bg-muted/20 rounded-lg border border-border/50 flex flex-col h-full min-h-[400px]">
+                      <div className="px-4 py-3 border-b border-border/50 font-bold text-sm flex justify-between items-center bg-muted/40">
+                        <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500"></div> DONE</span>
+                        <span className="text-xs bg-background px-2 py-0.5 rounded-full border border-border/50">14</span>
+                      </div>
+                      <div className="p-3 space-y-3 flex-1 overflow-y-auto opacity-70">
+                         <div className="bg-background/50 rounded-md border border-border/40 p-3">
+                          <h4 className="text-sm font-medium line-through text-muted-foreground">Setup TailwindCSS v4 Config Oficial</h4>
+                          <p className="text-[10px] text-muted-foreground mt-2">Fechado nesta sprint</p>
+                        </div>
+                        <div className="bg-background/50 rounded-md border border-border/40 p-3">
+                          <h4 className="text-sm font-medium line-through text-muted-foreground">Corrigir handshake WebSocket Aegis API</h4>
+                          <p className="text-[10px] text-muted-foreground mt-2">Fechado nesta sprint</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
