@@ -72,7 +72,7 @@ app.use('*', async (c, next) => {
 app.use('/*', secureHeaders({
   contentSecurityPolicy: {
     defaultSrc: ["'self'"],
-    scriptSrc: ["'self'", "'unsafe-inline'", "https://static.cloudflareinsights.com"],
+    scriptSrc: ["'self'", "'unsafe-inline'", "https://static.cloudflareinsights.com", "https://unpkg.com", "https://cdn.tailwindcss.com"],
     styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
     fontSrc: ["'self'", "https://fonts.gstatic.com"],
     imgSrc: ["'self'", "data:", "blob:", "https://*.ness.com.br", "https://*.r2.dev"],
