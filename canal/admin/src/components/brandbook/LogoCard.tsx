@@ -69,21 +69,17 @@ function generatePNG(title: string, mode: 'light' | 'dark') {
 }
 
 function LogoPreview({ parts, mode }: { parts: string[]; mode: 'light' | 'dark'; previewUrl?: string }) {
-  const bg = mode === 'light' ? '#ffffff' : '#060e20';
-  const border = mode === 'light' ? '#e2e8f0' : '#1e293b';
-  const textColor = mode === 'light' ? '#0f172a' : '#ffffff';
-  const labelColor = mode === 'light' ? '#94a3b8' : '#475569';
-
+  const isLight = mode === 'light';
   return (
-    <div style={{ height: 75, backgroundColor: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8, border: `1px solid ${border}`, position: 'relative' }}>
-      <div style={{ position: 'absolute', top: 4, left: 6, fontSize: 9, fontWeight: 700, color: labelColor, textTransform: 'uppercase' }}>
-        {mode === 'light' ? 'Light' : 'Dark'}
+    <div className={`h-20 flex items-center justify-center rounded-lg border relative overflow-hidden ${isLight ? 'bg-white border-slate-200' : 'bg-[#060e20] border-slate-800'}`}>
+      <div className={`absolute top-1.5 left-2 text-[9px] font-bold uppercase tracking-wider ${isLight ? 'text-slate-400' : 'text-slate-600'}`}>
+        {isLight ? 'Light' : 'Dark'}
       </div>
-      <span style={{ fontWeight: 500, fontFamily: 'Montserrat, sans-serif', fontSize: 22, letterSpacing: '-0.03em', color: textColor }}>
+      <span className="font-medium font-sans text-xl sm:text-2xl tracking-tighter" style={{ fontFamily: 'Montserrat, sans-serif', color: isLight ? '#0f172a' : '#ffffff' }}>
         {parts.map((part: string, i: number, arr: string[]) => (
           <span key={i}>
             {part}
-            {i < arr.length - 1 && <span style={{ color: '#00ade8' }}>.</span>}
+            {i < arr.length - 1 && <span className="text-cyan-500">.</span>}
           </span>
         ))}
       </span>
@@ -107,17 +103,17 @@ export function LogoCard({ logo }: LogoCardProps) {
   };
 
   return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: 8, padding: '1rem', textAlign: 'center', background: 'var(--surface-2)', position: 'relative' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    <div className="flex flex-col rounded-xl border border-border/60 bg-background p-4 shadow-sm relative group overflow-hidden">
+      <div className="flex flex-col gap-3">
         {logo.preview_url ? (
           <>
-            <div style={{ height: 75, backgroundColor: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8, border: '1px solid #e2e8f0', position: 'relative' }}>
-              <div style={{ position: 'absolute', top: 4, left: 6, fontSize: 9, fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase' }}>Light</div>
-              <img src={logo.preview_url} alt={logo.title} style={{ maxWidth: '80%', maxHeight: 40, objectFit: 'contain' }} />
+            <div className="h-20 bg-white flex items-center justify-center rounded-lg border border-slate-200 relative overflow-hidden">
+              <div className="absolute top-1.5 left-2 text-[9px] font-bold uppercase tracking-wider text-slate-400">Light</div>
+              <img src={logo.preview_url} alt={logo.title} className="max-w-[80%] max-h-10 object-contain" />
             </div>
-            <div style={{ height: 75, backgroundColor: '#060e20', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8, border: '1px solid #1e293b', position: 'relative' }}>
-              <div style={{ position: 'absolute', top: 4, left: 6, fontSize: 9, fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>Dark</div>
-              <img src={logo.preview_url} alt={logo.title} style={{ maxWidth: '80%', maxHeight: 40, objectFit: 'contain' }} />
+            <div className="h-20 bg-[#060e20] flex items-center justify-center rounded-lg border border-slate-800 relative overflow-hidden">
+              <div className="absolute top-1.5 left-2 text-[9px] font-bold uppercase tracking-wider text-slate-600">Dark</div>
+              <img src={logo.preview_url} alt={logo.title} className="max-w-[80%] max-h-10 object-contain" />
             </div>
           </>
         ) : (
@@ -128,35 +124,35 @@ export function LogoCard({ logo }: LogoCardProps) {
         )}
       </div>
 
-      <div style={{ fontWeight: 600, marginTop: 16, fontSize: 13 }}>{logo.title}</div>
+      <div className="font-bold text-base tracking-tight text-foreground mt-5">{logo.title}</div>
+      <div className="text-xs font-semibold uppercase text-muted-foreground mt-0.5">{logo.brand}</div>
 
       {isSynthetic ? (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '12px' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
-            <button onClick={() => handleDownloadPNG('light')} style={{ background: 'var(--accent)', color: '#fff', border: 'none', cursor: 'pointer', padding: '4px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', boxShadow: '0 2px 4px rgba(0, 173, 232, 0.2)' }} title="Baixar PNG Fundo Claro">
-              PNG (Light)
+        <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-border/40">
+          <div className="flex justify-center gap-2">
+            <button onClick={() => handleDownloadPNG('light')} className="flex-1 inline-flex items-center justify-center rounded text-[10px] sm:text-xs font-bold h-7 sm:h-8 bg-black text-white hover:bg-black/80 transition-colors shadow-sm" title="Baixar PNG Claro">
+              PNG CLARO
             </button>
-            <button onClick={() => handleDownloadSVG('light')} style={{ background: 'transparent', color: 'var(--text-muted)', border: '1px solid var(--border)', cursor: 'pointer', padding: '4px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600 }} title="Baixar SVG Fundo Claro">
-              SVG (Light)
+            <button onClick={() => handleDownloadSVG('light')} className="flex-1 inline-flex items-center justify-center rounded text-[10px] sm:text-xs font-bold h-7 sm:h-8 border border-slate-300 text-slate-700 hover:bg-slate-50 transition-colors" title="Baixar SVG Claro">
+              SVG CLARO
             </button>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
-            <button onClick={() => handleDownloadPNG('dark')} style={{ background: '#0b1326', color: '#fff', border: 'none', cursor: 'pointer', padding: '4px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600 }} title="Baixar PNG Fundo Escuro">
-              PNG (Dark)
+          <div className="flex justify-center gap-2">
+            <button onClick={() => handleDownloadPNG('dark')} className="flex-1 inline-flex items-center justify-center rounded text-[10px] sm:text-xs font-bold h-7 sm:h-8 bg-slate-800 text-white hover:bg-slate-900 transition-colors shadow-sm" title="Baixar PNG Escuro">
+              PNG ESCURO
             </button>
-            <button onClick={() => handleDownloadSVG('dark')} style={{ background: 'transparent', color: 'var(--text-muted)', border: '1px solid var(--border)', cursor: 'pointer', padding: '4px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600 }} title="Baixar SVG Fundo Escuro">
-              SVG (Dark)
+            <button onClick={() => handleDownloadSVG('dark')} className="flex-1 inline-flex items-center justify-center rounded text-[10px] sm:text-xs font-bold h-7 sm:h-8 border border-slate-700 text-slate-300 hover:bg-slate-800 transition-colors" title="Baixar SVG Escuro">
+              SVG ESCURO
             </button>
           </div>
         </div>
       ) : (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '12px' }}>
-          <button onClick={() => navigator.clipboard.writeText(logo.title)} style={{ background: 'transparent', border: '1px solid var(--border)', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px 8px', borderRadius: 4, fontSize: 11 }} title="Copiar texto do logo">
-            Copiar Nome
+        <div className="flex justify-center mt-4 pt-4 border-t border-border/40">
+          <button onClick={() => navigator.clipboard.writeText(logo.title)} className="w-full inline-flex items-center justify-center rounded-md text-xs font-semibold h-8 border border-input shadow-sm bg-background hover:bg-accent hover:text-accent-foreground transition-all" title="Copiar nome">
+            Copiar Referência
           </button>
         </div>
       )}
-      <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8 }}>{logo.brand}</div>
     </div>
   );
 }

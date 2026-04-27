@@ -62,129 +62,133 @@ export default function AISettingsPage() {
   };
 
   if (loading) {
-    return <div style={{ display: "flex", justifyContent: "center", padding: 64 }}><div className="loader-inline" /></div>;
+    return <div className="flex justify-center p-16"><div className="loader-inline" /></div>;
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-      {/* Stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
-        <div className="card" style={{ padding: "20px 24px" }}>
-          <span style={{ fontSize: 12, color: "var(--text-muted)", fontWeight: 500 }}>Total de Conversas</span>
-          <div style={{ fontSize: 28, fontWeight: 700, color: "var(--text)", fontFamily: "var(--mono)", marginTop: 4 }}>{stats.totalChats}</div>
+    <div className="flex-1 space-y-6 p-8 pt-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
+        <div>
+          <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
+            Gabi.AI <span className="text-muted-foreground font-light">::</span> Concierge Neural
+          </h2>
+          <p className="text-sm font-medium text-muted-foreground tracking-wide mt-1 uppercase">
+            Métricas cognitivas e parametrização de interface de conversação
+          </p>
         </div>
-        <div className="card" style={{ padding: "20px 24px" }}>
-          <span style={{ fontSize: 12, color: "var(--text-muted)", fontWeight: 500 }}>Leads Convertidos</span>
-          <div style={{ fontSize: 28, fontWeight: 700, color: "var(--text)", fontFamily: "var(--mono)", marginTop: 4 }}>{stats.totalLeads}</div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Stats */}
+        <div className="rounded-xl border bg-card text-card-foreground shadow-sm flex flex-col p-6">
+          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 flex items-center justify-between">
+            Total de Conversas
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </span>
+          <div className="text-4xl font-black font-mono text-foreground tracking-tighter">{stats.totalChats}</div>
         </div>
-        <div className="card" style={{ padding: "20px 24px" }}>
-          <span style={{ fontSize: 12, color: "var(--text-muted)", fontWeight: 500 }}>Conversas (7 dias)</span>
-          <div style={{ fontSize: 28, fontWeight: 700, color: "var(--text)", fontFamily: "var(--mono)", marginTop: 4 }}>{stats.recentChats}</div>
+
+        <div className="rounded-xl border bg-card text-card-foreground shadow-sm flex flex-col p-6">
+          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 flex items-center justify-between">
+            Leads Convertidos
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>
+          </span>
+          <div className="text-4xl font-black font-mono text-foreground tracking-tighter">{stats.totalLeads}</div>
+        </div>
+
+        <div className="rounded-xl border bg-card text-card-foreground shadow-sm flex flex-col p-6">
+          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 flex items-center justify-between">
+            Conversas (7 dias)
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </span>
+          <div className="text-4xl font-black font-mono text-foreground tracking-tighter">{stats.recentChats}</div>
         </div>
       </div>
 
       {/* Config */}
-      <div className="card" style={{ padding: 24 }}>
-        <div className="card-header" style={{ padding: 0, marginBottom: 20, border: "none" }}>
-          <span className="card-title">Configuração da Gabi</span>
+      <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden mt-6">
+        <div className="bg-muted/30 p-5 border-b border-border/40">
+          <h3 className="font-semibold leading-none tracking-tight flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Parâmetros Analíticos do LLM
+          </h3>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+        <div className="p-6 space-y-8">
           {/* Toggle */}
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div className="flex items-center gap-4 border border-border/50 bg-background/50 p-4 rounded-lg">
             <button
               onClick={() => setConfig({ ...config, enabled: !config.enabled })}
-              style={{
-                width: 44,
-                height: 24,
-                borderRadius: 12,
-                border: "none",
-                cursor: "pointer",
-                background: config.enabled ? "var(--accent)" : "var(--border)",
-                position: "relative",
-                transition: "background 0.2s",
-              }}
+              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+                config.enabled ? "bg-primary" : "bg-muted"
+              }`}
             >
-              <div
-                style={{
-                  width: 18,
-                  height: 18,
-                  borderRadius: "50%",
-                  background: "#fff",
-                  position: "absolute",
-                  top: 3,
-                  left: config.enabled ? 23 : 3,
-                  transition: "left 0.2s",
-                  boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
-                }}
-              />
+              <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow ring-0 transition duration-200 ease-in-out ${
+                config.enabled ? "translate-x-5" : "translate-x-0"
+              }`} />
             </button>
-            <span style={{ fontSize: 14, fontWeight: 500, color: "var(--text)" }}>
-              Chatbot {config.enabled ? "Ativo" : "Desativado"}
-            </span>
-            <span style={{ fontSize: 12, color: "var(--text-muted)" }}>
-              {config.enabled ? "A Gabi está respondendo visitantes no site." : "A Gabi não aparecerá para visitantes."}
-            </span>
-          </div>
-
-          {/* Tone */}
-          <div>
-            <label style={{ fontSize: 12, fontWeight: 600, color: "var(--text-muted)", display: "block", marginBottom: 6 }}>Tom de Voz</label>
-            <select
-              value={config.tone}
-              onChange={(e) => setConfig({ ...config, tone: e.target.value })}
-              className="role-select"
-              style={{ width: "100%", maxWidth: 400 }}
-            >
-              {TONES.map((t) => (
-                <option key={t.value} value={t.value}>{t.label}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Custom Prompt */}
-          <div>
-            <label style={{ fontSize: 12, fontWeight: 600, color: "var(--text-muted)", display: "block", marginBottom: 6 }}>
-              Prompt Customizado (deixe vazio para usar o padrão)
-            </label>
-            <textarea
-              value={config.customPrompt}
-              onChange={(e) => setConfig({ ...config, customPrompt: e.target.value })}
-              rows={8}
-              placeholder={DEFAULT_PROMPT}
-              style={{
-                width: "100%",
-                padding: "12px",
-                border: "1px solid var(--border)",
-                borderRadius: 6,
-                background: "var(--surface-2)",
-                color: "var(--text)",
-                fontSize: 13,
-                lineHeight: 1.7,
-                resize: "vertical",
-                fontFamily: "var(--mono)",
-              }}
-            />
-            <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 6 }}>
-              Variáveis disponíveis: <code style={{ background: "var(--surface-2)", padding: "1px 4px", borderRadius: 3 }}>{"${lang}"}</code>, <code style={{ background: "var(--surface-2)", padding: "1px 4px", borderRadius: 3 }}>{"${ragContext}"}</code>
+            <div className="flex flex-col">
+              <span className="text-sm font-bold text-foreground tracking-tight">
+                Chatbot Periférico {config.enabled ? "Ativo" : "Desativado"}
+              </span>
+              <span className="text-xs text-muted-foreground mt-0.5">
+                {config.enabled ? "A Gabi está visível e interceptando visitantes no main site." : "A Gabi está bloqueada por firewall preventivo e não aparecerá nos domínios públicos."}
+              </span>
             </div>
           </div>
 
-          {/* Save */}
-          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-            <button
-              className="btn"
-              style={{ background: "var(--accent)", color: "#fff" }}
-              onClick={handleSave}
-              disabled={saving}
-            >
-              {saving ? "Salvando..." : "Salvar Configurações"}
-            </button>
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+            <div className="space-y-3">
+              <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Perspectiva e Tom de Voz</label>
+              <select
+                value={config.tone}
+                onChange={(e) => setConfig({ ...config, tone: e.target.value })}
+                className="flex h-11 w-full items-center justify-between rounded-lg border border-input bg-background/50 px-4 py-2 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              >
+                {TONES.map((t) => (
+                  <option key={t.value} value={t.value}>{t.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex justify-between items-end">
+                <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">
+                  Prompt Mestre Customizado
+                </label>
+                <div className="text-[10px] uppercase font-bold text-muted-foreground/70 tracking-wider">
+                  Variáveis: <code className="bg-muted px-1.5 py-0.5 rounded text-foreground">{"${lang}"}</code> <code className="bg-muted px-1.5 py-0.5 rounded text-foreground">{"${ragContext}"}</code>
+                </div>
+              </div>
+              <textarea
+                value={config.customPrompt}
+                onChange={(e) => setConfig({ ...config, customPrompt: e.target.value })}
+                rows={10}
+                placeholder={DEFAULT_PROMPT}
+                className="flex w-full rounded-lg border border-input bg-background/50 px-4 py-4 text-sm font-mono shadow-inner transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary resize-vertical"
+              />
+            </div>
+          </div>
+
+          {/* Action Footer */}
+          <div className="flex flex-col sm:flex-row gap-4 items-center justify-end pt-4 border-t border-border/40">
             {saved && (
-              <span style={{ fontSize: 13, color: "var(--accent)", fontWeight: 500 }}>
-                ✓ Configurações salvas
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-500 flex items-center gap-1 animate-in fade-in zoom-in-95">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
+                Commited na D1
               </span>
             )}
+            <button
+              onClick={handleSave}
+              disabled={saving}
+              className="inline-flex w-full sm:w-auto items-center justify-center whitespace-nowrap rounded-md text-sm font-semibold h-10 px-8 bg-primary text-primary-foreground shadow hover:bg-primary/90 transition-all disabled:opacity-50 disabled:pointer-events-none"
+            >
+              {saving ? (
+                <><svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Persistindo...</>
+              ) : (
+                "Atualizar Prompt de Defesa"
+              )}
+            </button>
           </div>
         </div>
       </div>
