@@ -15,6 +15,13 @@
   flex-direction: column;
   height: 100%;
   overflow-y: auto;
+  transition: width 0.25s cubic-bezier(0.25,0.46,0.45,0.94), min-width 0.25s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+
+.sidebar.minimized {
+  width: 72px;
+  min-width: 72px;
+  overflow-x: hidden;
 }
 
 .sidebar-header {
@@ -24,6 +31,53 @@
   align-items: center;
   padding: 0 20px;
   border-bottom: 1px solid var(--border);
+  justify-content: space-between;
+}
+
+.sidebar-toggle-btn {
+  background: none; border: none; color: var(--text-muted); cursor: pointer;
+  padding: 4px; border-radius: 4px; display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s, color 0.15s; margin-left: auto;
+}
+.sidebar-toggle-btn:hover { background: var(--surface-2); color: var(--text); }
+
+.sidebar.minimized .sidebar-logo,
+.sidebar.minimized .sidebar-version,
+.sidebar.minimized .org-switcher-slug,
+.sidebar.minimized .org-switcher-btn > div,
+.sidebar.minimized .org-switcher-btn > svg,
+.sidebar.minimized .nav-section-btn span,
+.sidebar.minimized .nav-section-btn svg,
+.sidebar.minimized .nav-label,
+.sidebar.minimized .user-details,
+.sidebar.minimized .user-caret {
+  display: none !important;
+}
+
+.sidebar.minimized .sidebar-header {
+  padding: 0 16px;
+  justify-content: center;
+}
+.sidebar.minimized .sidebar-toggle-btn {
+  margin: 0;
+}
+.sidebar.minimized .org-switcher-btn {
+  justify-content: center;
+  padding: 10px 0;
+}
+.sidebar.minimized .org-switcher-btn::before {
+  content: '🏢';
+}
+.sidebar.minimized .nav-link {
+  justify-content: center;
+  padding: 10px;
+}
+.sidebar.minimized .nav-link svg {
+  opacity: 0.8 !important;
+  margin: 0;
+}
+.sidebar.minimized .user-info {
+  justify-content: center !important;
 }
 
 .sidebar-logo {
