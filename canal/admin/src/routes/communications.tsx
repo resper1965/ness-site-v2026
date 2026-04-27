@@ -10,10 +10,19 @@ type Message = {
   created_at: string;
 };
 
-const TYPE_CONFIG: Record<string, { icon: string; label: string; color: string }> = {
-  form: { icon: "📋", label: "Formulário", color: "var(--accent)" },
-  lead: { icon: "🎯", label: "Lead", color: "#e67e00" },
-  chat: { icon: "💬", label: "Chat", color: "#2a9d2a" },
+const TYPE_CONFIG: Record<string, { icon: React.ReactNode; label: string; colorClass: string }> = {
+  form: { 
+    icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>,
+    label: "Formulário", colorClass: "text-blue-500 bg-blue-500/10 border-blue-500/20" 
+  },
+  lead: { 
+    icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+    label: "Lead", colorClass: "text-amber-500 bg-amber-500/10 border-amber-500/20" 
+  },
+  chat: { 
+    icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
+    label: "Chat", colorClass: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20" 
+  },
 };
 
 export default function CommunicationsPage() {
@@ -68,128 +77,187 @@ export default function CommunicationsPage() {
   function timeAgo(dateStr: string) {
     const diff = Date.now() - new Date(dateStr).getTime();
     const mins = Math.floor(diff / 60000);
-    if (mins < 60) return `${mins}min`;
+    if (mins < 60) return `${mins}m`;
     const hrs = Math.floor(mins / 60);
     if (hrs < 24) return `${hrs}h`;
     return `${Math.floor(hrs / 24)}d`;
   }
 
   if (loading) {
-    return <div style={{ display: "flex", justifyContent: "center", padding: 64 }}><div className="loader-inline" /></div>;
+    return <div className="flex justify-center p-16 animate-pulse"><div className="loader-inline" /></div>;
   }
 
   return (
-    <div style={{ display: "flex", gap: 16, height: "calc(100vh - 180px)" }}>
-      {/* Left panel: message list */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
-        {/* Filters */}
-        <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
-          {["all", "form", "lead", "chat"].map((f) => (
-            <button
-              key={f}
-              className={`btn btn-sm ${filter === f ? "" : "btn-ghost"}`}
-              style={filter === f ? { background: "var(--accent)", color: "#fff" } : {}}
-              onClick={() => setFilter(f)}
-            >
-              {f === "all" ? "Todos" : TYPE_CONFIG[f]?.label || f} ({f === "all" ? messages.length : messages.filter((m) => m.type === f).length})
-            </button>
-          ))}
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Buscar por nome, e-mail..."
-            style={{ flex: 1, minWidth: 150, padding: "6px 10px", border: "1px solid var(--border)", borderRadius: 6, background: "var(--surface-2)", color: "var(--text)", fontSize: 12 }}
-          />
-        </div>
-
-        {/* Messages list */}
-        <div className="card" style={{ flex: 1, overflow: "auto", padding: 0 }}>
-          {filtered.length === 0 && (
-            <div style={{ padding: 32, textAlign: "center", color: "var(--text-muted)" }}>Nenhuma mensagem encontrada.</div>
-          )}
-          {filtered.map((msg, i) => {
-            const cfg = TYPE_CONFIG[msg.type] || { icon: "📄", label: msg.type, color: "var(--text-muted)" };
-            const isSelected = selected?.id === msg.id && selected?.type === msg.type;
-            return (
-              <div
-                key={`${msg.type}-${msg.id}-${i}`}
-                onClick={() => setSelected(msg)}
-                style={{
-                  padding: "14px 20px",
-                  borderBottom: "1px solid var(--border)",
-                  cursor: "pointer",
-                  background: isSelected ? "var(--surface-2)" : "transparent",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 12,
-                  transition: "background 0.15s",
-                }}
-              >
-                <span style={{ fontSize: 18 }}>{cfg.icon}</span>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 13, fontWeight: 500, color: "var(--text)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                    {msg.title || "Sem título"}
-                  </div>
-                  <div style={{ fontSize: 11, color: "var(--text-muted)" }}>
-                    <span style={{ color: cfg.color, fontWeight: 600 }}>{cfg.label}</span> · via {msg.source || "—"}
-                  </div>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
-                  <span style={{ fontSize: 11, color: "var(--text-muted)" }}>{msg.created_at ? timeAgo(msg.created_at) : "—"}</span>
-                  <span className={`badge ${msg.status === "new" ? "badge-new" : "badge-read"}`} style={{ fontSize: 9 }}>
-                    {msg.status}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
+    <div className="flex-1 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300 h-full flex flex-col">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6 shrink-0">
+        <div>
+          <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
+             <svg className="text-muted-foreground" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4Z"/></svg>
+            Inbox Unificado <span className="text-muted-foreground font-light">::</span> Comunicações
+          </h2>
+          <p className="text-sm font-medium text-muted-foreground tracking-wide mt-1 uppercase">
+            Visão Omnichannel de Contatos
+          </p>
         </div>
       </div>
 
-      {/* Right panel: detail */}
-      <div className="card" style={{ width: 380, flexShrink: 0, padding: 24, overflow: "auto" }}>
-        {!selected ? (
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "var(--text-muted)", fontSize: 13 }}>
-            Selecione uma mensagem para ver os detalhes.
-          </div>
-        ) : (() => {
-          const cfg = TYPE_CONFIG[selected.type] || { icon: "📄", label: selected.type, color: "var(--text-muted)" };
-          const parsed = parseData(selected.data);
-          return (
-            <>
-              <div style={{ fontSize: 18, display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
-                <span>{cfg.icon}</span>
-                <span className="card-title" style={{ fontSize: 16 }}>{cfg.label}</span>
-                <span className={`badge ${selected.status === "new" ? "badge-new" : "badge-read"}`} style={{ fontSize: 10, marginLeft: "auto" }}>{selected.status}</span>
-              </div>
-
-              <div style={{ fontSize: 11, color: "var(--text-muted)", marginBottom: 16 }}>
-                {selected.created_at?.slice(0, 16)} · via {selected.source}
-              </div>
-
-              <div style={{ background: "var(--surface-2)", borderRadius: 8, padding: 16, fontSize: 13, lineHeight: 1.7 }}>
-                {parsed.name && <div><strong>Nome:</strong> {parsed.name}</div>}
-                {parsed.contact && <div><strong>Contato:</strong> {parsed.contact}</div>}
-                {parsed.email && <div><strong>Email:</strong> {parsed.email}</div>}
-                {parsed.phone && <div><strong>Fone:</strong> {parsed.phone}</div>}
-                {parsed.intent && <div><strong>Intenção:</strong> {parsed.intent}</div>}
-                {parsed.urgency && <div><strong>Urgência:</strong> <span style={{ textTransform: "capitalize", fontWeight: 600 }}>{parsed.urgency}</span></div>}
-                {parsed.company && <div><strong>Empresa:</strong> {parsed.company}</div>}
-                {parsed.subject && <div><strong>Assunto:</strong> {parsed.subject}</div>}
-                {parsed.message && <div style={{ marginTop: 8, whiteSpace: "pre-wrap", color: "var(--text-muted)", borderTop: "1px solid var(--border)", paddingTop: 8 }}>{parsed.message}</div>}
-                {parsed.raw && <div style={{ whiteSpace: "pre-wrap", fontFamily: "var(--mono)", fontSize: 11 }}>{parsed.raw}</div>}
-              </div>
-
-              <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
-                <button className="btn btn-ghost btn-sm" onClick={() => handleForward(selected)} disabled={forwarding}>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4Z"/></svg>
-                  {forwarding ? " Enviando..." : " Encaminhar"}
+      <div className="flex flex-col lg:flex-row gap-6 mt-6 flex-1 min-h-0 overflow-hidden">
+        {/* Left panel: List */}
+        <div className="flex flex-col flex-1 lg:max-w-md w-full shrink-0 min-h-0">
+          <div className="flex gap-2 mb-4 shrink-0 flex-wrap">
+            <div className="inline-flex h-9 items-center justify-center rounded-lg bg-card border border-border/60 p-1 text-muted-foreground shadow-sm">
+              {["all", "form", "lead", "chat"].map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setFilter(f)}
+                  className={`inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-[11px] font-bold uppercase tracking-wider transition-all ${
+                    filter === f
+                      ? "bg-background text-foreground shadow-sm border border-border/50"
+                      : "hover:text-foreground hover:bg-muted/50"
+                  }`}
+                >
+                  {f === "all" ? "Todos" : TYPE_CONFIG[f]?.label || f} 
                 </button>
+              ))}
+            </div>
+            <div className="relative flex-1 min-w-[150px]">
+              <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Buscar contatos..."
+                className="flex h-9 w-full rounded-md border border-input bg-background pl-9 pr-3 py-1 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
+              />
+            </div>
+          </div>
+
+          <div className="rounded-xl border bg-card text-card-foreground shadow-sm flex-1 overflow-y-auto w-full relative h-[400px] lg:h-auto">
+            {filtered.length === 0 ? (
+              <div className="p-16 flex flex-col items-center justify-center text-center bg-background/40 h-full">
+                <div className="h-12 w-12 rounded-full bg-accent text-muted-foreground flex items-center justify-center mb-3">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <h4 className="font-semibold text-foreground text-sm">Inbox Vazio</h4>
               </div>
-            </>
-          );
-        })()}
+            ) : (
+               <div className="flex flex-col divide-y divide-border/50">
+                {filtered.map((msg, i) => {
+                  const cfg = TYPE_CONFIG[msg.type] || { icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>, label: msg.type, colorClass: "text-slate-500 bg-slate-500/10 border-slate-500/20" };
+                  const isSelected = selected?.id === msg.id && selected?.type === msg.type;
+                  return (
+                    <button
+                      key={`${msg.type}-${msg.id}-${i}`}
+                      onClick={() => setSelected(msg)}
+                      className={`text-left p-4 flex gap-3 items-start transition-all ${isSelected ? 'bg-muted/40 shadow-inner' : 'hover:bg-muted/20 bg-card'}`}
+                    >
+                      <div className={`mt-0.5 inline-flex items-center justify-center p-2 rounded-lg border ${cfg.colorClass}`}>
+                        {cfg.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                         <div className="font-semibold text-sm text-foreground truncate">{msg.title || "Sem título ID:" + msg.id}</div>
+                         <div className="text-xs text-muted-foreground mt-0.5 truncate flex items-center gap-1.5 opacity-80">
+                            <span className="font-mono text-[10px] uppercase tracking-wider">{cfg.label}</span>
+                            <span className="w-1 h-1 rounded-full bg-border"></span>
+                            via {msg.source || "—"}
+                         </div>
+                      </div>
+                      <div className="flex flex-col items-end gap-1.5 shrink-0">
+                         <span className="text-[10px] font-mono font-medium text-muted-foreground">{msg.created_at ? timeAgo(msg.created_at) : "—"}</span>
+                         {msg.status === "new" ? (
+                           <span className="w-2.5 h-2.5 rounded-full bg-primary ring-2 ring-primary/20 shrink-0"></span>
+                         ) : (
+                           <span className="w-2 h-2 rounded-full border border-border shrink-0 opacity-50"></span>
+                         )}
+                      </div>
+                    </button>
+                  );
+                })}
+               </div>
+            )}
+          </div>
+        </div>
+
+        {/* Right panel: Detail */}
+        <div className="rounded-xl border bg-card text-card-foreground shadow-sm flex-1 flex flex-col h-[600px] lg:h-auto shrink-0 relative overflow-hidden">
+          {!selected ? (
+            <div className="flex-1 flex flex-col items-center justify-center text-center p-10 bg-background/50">
+               <div className="h-16 w-16 rounded-full bg-border/40 text-muted-foreground flex items-center justify-center mb-4">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+               </div>
+               <p className="text-sm font-medium text-muted-foreground">Selecione uma mensagem no painel esquerdo para visualizar detalhes.</p>
+            </div>
+          ) : (() => {
+            const cfg = TYPE_CONFIG[selected.type] || { icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>, label: selected.type, colorClass: "text-slate-500 bg-slate-500/10 border-slate-500/20" };
+            const parsed = parseData(selected.data);
+            return (
+              <div className="flex flex-col h-full absolute inset-0 overflow-hidden">
+                <div className="p-5 border-b border-border/40 flex items-start gap-4 shrink-0 bg-muted/20">
+                  <div className={`mt-0.5 inline-flex items-center justify-center p-2 rounded-lg border shadow-sm ${cfg.colorClass}`}>
+                    {cfg.icon}
+                  </div>
+                  <div className="flex-1">
+                     <h3 className="text-lg font-bold tracking-tight text-foreground">{cfg.label}</h3>
+                     <div className="text-xs font-mono text-muted-foreground mt-1 flex items-center gap-2">
+                        <span>{new Date(selected.created_at).toLocaleString('pt-BR')}</span>
+                        <span className="w-1 h-1 rounded-full bg-border"></span>
+                        <span className="uppercase tracking-wider">Origem: {selected.source}</span>
+                     </div>
+                  </div>
+                  <div className="shrink-0 flex items-center gap-2">
+                     <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                        selected.status === "new" ? "bg-primary/10 text-primary ring-1 ring-inset ring-primary/20" : "bg-muted text-muted-foreground ring-1 ring-inset ring-border"
+                      }`}>
+                        {selected.status}
+                      </span>
+                  </div>
+                </div>
+
+                <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-background border border-border/50 p-5 rounded-xl shadow-sm">
+                      {parsed.name && <div><strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-1">Nome</strong> <span className="text-sm font-semibold text-foreground">{parsed.name}</span></div>}
+                      {parsed.contact && <div><strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-1">Contato</strong> <span className="text-sm font-mono text-foreground">{parsed.contact}</span></div>}
+                      {parsed.email && <div><strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-1">E-mail</strong> <span className="text-sm font-mono text-foreground">{parsed.email}</span></div>}
+                      {parsed.phone && <div><strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-1">Telefone</strong> <span className="text-sm font-mono text-foreground">{parsed.phone}</span></div>}
+                      {parsed.intent && <div><strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-1">Intenção</strong> <span className="text-sm font-medium text-foreground">{parsed.intent}</span></div>}
+                      {parsed.urgency && <div><strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-1">Urgência</strong> <span className="text-sm font-bold uppercase text-foreground">{parsed.urgency}</span></div>}
+                      {parsed.company && <div><strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-1">Empresa</strong> <span className="text-sm font-medium text-foreground">{parsed.company}</span></div>}
+                      {parsed.subject && <div className="md:col-span-2"><strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-1">Assunto</strong> <span className="text-sm font-medium text-foreground">{parsed.subject}</span></div>}
+                   </div>
+                   
+                   {parsed.message && (
+                     <div>
+                       <strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-2 px-1">Mensagem</strong>
+                       <div className="bg-muted/30 p-5 rounded-xl border border-border/50 text-sm whitespace-pre-wrap text-foreground leading-relaxed shadow-inner">
+                         {parsed.message}
+                       </div>
+                     </div>
+                   )}
+
+                   {parsed.raw && (
+                     <div>
+                       <strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-2 px-1">Payload JSON</strong>
+                       <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-xs font-mono whitespace-pre-wrap text-emerald-400 shadow-inner overflow-x-auto">
+                         {parsed.raw}
+                       </div>
+                     </div>
+                   )}
+                </div>
+
+                <div className="p-4 border-t border-border/40 bg-muted/10 shrink-0 flex gap-3 justify-end items-center">
+                  <button 
+                    className="inline-flex h-9 items-center justify-center rounded-md border border-input shadow-sm bg-background px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-colors hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
+                    onClick={() => handleForward(selected)} 
+                    disabled={forwarding}
+                  >
+                    <svg className="mr-2" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4Z"/></svg>
+                    {forwarding ? "Executando..." : "Encaminhar Flow"}
+                  </button>
+                </div>
+              </div>
+            );
+          })()}
+        </div>
       </div>
     </div>
   );

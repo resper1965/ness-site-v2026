@@ -35,71 +35,116 @@ export default function FormsPage() {
   };
 
   if (loading) {
-    return <div style={{ display: "flex", justifyContent: "center", padding: 64 }}><div className="loader-inline" /></div>;
+    return <div className="flex justify-center p-16 animate-pulse"><div className="loader-inline" /></div>;
   }
 
   return (
-    <>
-      <div className="collection-toolbar" style={{ marginBottom: 16 }}>
-        <div className="toolbar-left">
-          <span className="toolbar-count">{items.length} {items.length === 1 ? "submissão" : "submissões"}</span>
+    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
+        <div>
+          <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
+             <svg className="text-muted-foreground" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Caixa de Entrada <span className="text-muted-foreground font-light">::</span> Formulários
+          </h2>
+          <p className="text-sm font-medium text-muted-foreground tracking-wide mt-1 uppercase">
+            Ingestão de Dados e Contatos Diretos
+          </p>
         </div>
-        {activeOrg && <span className="badge badge-new" style={{ fontSize: 10 }}>{activeOrg.slug}</span>}
+        <div className="flex items-center gap-3">
+          {activeOrg && (
+            <span className="inline-flex items-center rounded-md bg-primary/10 px-2.5 py-1 text-xs font-semibold uppercase text-primary tracking-wide">
+               {activeOrg.slug}
+            </span>
+          )}
+          <div className="bg-background border border-border shadow-sm rounded-lg px-3 py-1.5 flex items-center gap-2">
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Total</span>
+            <span className="text-sm font-black font-mono">{items.length}</span>
+          </div>
+        </div>
       </div>
 
-      <div className="card">
-        <div className="table-wrap">
-          <table>
-            <thead>
-              <tr><th>ID</th><th>Origem</th><th>Status</th><th>Data</th><th>Dados</th><th>Ações</th></tr>
-            </thead>
-            <tbody>
-              {items.length === 0 && (
-                <tr><td colSpan={6} style={{ color: "var(--text-muted)", textAlign: "center", padding: "32px 16px" }}>Nenhum formulário recebido.</td></tr>
-              )}
-              {items.map((item) => {
-                let parsed: any = {};
-                try { parsed = typeof item.payload === 'string' ? JSON.parse(item.payload) : item.payload; } catch { /* */ }
-                return (
-                  <tr key={item.id}>
-                    <td style={{ fontFamily: "var(--mono)", fontSize: 12 }}>#{item.id}</td>
-                    <td><span className="badge badge-new">{item.source}</span></td>
-                    <td>
-                      <span className={`badge ${item.status === "new" ? "badge-new" : "badge-read"}`}>
-                        {item.status === "new" ? "Novo" : "Lido"}
-                      </span>
-                    </td>
-                    <td style={{ color: "var(--text-muted)", fontSize: 12 }}>{item.created_at?.slice(0, 16)}</td>
-                    <td>
-                      <details>
-                        <summary style={{ cursor: "pointer", color: "var(--accent)", fontSize: 12 }}>ver dados</summary>
-                        <div style={{ marginTop: 8, background: "var(--surface-2)", padding: 12, borderRadius: 8, fontSize: 12, fontFamily: "var(--mono)" }}>
-                          {parsed.name && <div><strong>Nome:</strong> {parsed.name}</div>}
-                          {parsed.email && <div><strong>Email:</strong> {parsed.email}</div>}
-                          {parsed.phone && <div><strong>Fone:</strong> {parsed.phone}</div>}
-                          {parsed.company && <div><strong>Empresa:</strong> {parsed.company}</div>}
-                          {parsed.subject && <div><strong>Assunto:</strong> {parsed.subject}</div>}
-                          {parsed.message && <div style={{ marginTop: 6, whiteSpace: "pre-wrap", color: "var(--text-muted)" }}>{parsed.message}</div>}
-                        </div>
-                      </details>
-                    </td>
-                    <td>
-                      <div className="action-row" style={{ marginTop: 0 }}>
-                        {item.status === "new" && (
-                          <button className="btn btn-ghost btn-sm" onClick={() => handleMarkRead(item.id)}>
-                            Marcar Lido
-                          </button>
+      <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
+        <div className="w-full overflow-auto">
+          {items.length === 0 ? (
+             <div className="p-16 flex flex-col items-center justify-center text-center bg-background/40">
+                <div className="h-16 w-16 rounded-full bg-accent text-muted-foreground flex items-center justify-center mb-4">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <h4 className="font-semibold text-foreground">Caixa Vazia</h4>
+                <p className="text-sm text-muted-foreground mt-1 max-w-[300px]">Nenhum formulário recebido no momento.</p>
+              </div>
+          ) : (
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border/50 bg-muted/20 text-xs uppercase tracking-wider text-muted-foreground text-left">
+                  <th className="font-medium p-4">ID</th>
+                  <th className="font-medium p-4">Origem</th>
+                  <th className="font-medium p-4">Status</th>
+                  <th className="font-medium p-4">Data</th>
+                  <th className="font-medium p-4">Dados</th>
+                  <th className="font-medium p-4 w-[100px]">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((item) => {
+                  let parsed: any = {};
+                  try { parsed = typeof item.payload === 'string' ? JSON.parse(item.payload) : item.payload; } catch { /* */ }
+                  return (
+                    <tr key={item.id} className="border-b border-border/50 transition-colors hover:bg-muted/30">
+                      <td className="p-4"><code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">#{item.id}</code></td>
+                      <td className="p-4">
+                        <span className="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 text-xs font-medium text-slate-800 dark:text-slate-300">
+                          {item.source}
+                        </span>
+                      </td>
+                      <td className="p-4">
+                        {item.status === "new" ? (
+                           <span className="inline-flex items-center rounded-full bg-primary/10 text-primary px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide">
+                             Novo
+                           </span>
+                        ) : (
+                           <span className="inline-flex items-center rounded-full bg-slate-500/10 text-slate-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide">
+                             Lido
+                           </span>
                         )}
-                        <button className="btn btn-danger btn-sm" onClick={() => handleDelete(item.id)}>X</button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                      </td>
+                      <td className="p-4 font-mono text-xs text-muted-foreground">{item.created_at?.slice(0, 16)}</td>
+                      <td className="p-4 min-w-[300px]">
+                        <details className="group">
+                          <summary className="cursor-pointer text-xs font-semibold text-primary select-none flex items-center gap-1 hover:text-primary/80 transition-colors">
+                            <svg className="transition-transform group-open:rotate-90" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="9 18 15 12 9 6"/></svg>
+                            Explorar payload
+                          </summary>
+                          <div className="mt-3 bg-muted/40 p-4 rounded-lg border border-border/50 text-xs font-mono grid gap-2 shadow-inner">
+                            {parsed.name && <div className="text-foreground"><strong className="text-muted-foreground mr-2 font-sans text-[11px] uppercase tracking-wider">Nome:</strong> {parsed.name}</div>}
+                            {parsed.email && <div className="text-foreground"><strong className="text-muted-foreground mr-2 font-sans text-[11px] uppercase tracking-wider">Email:</strong> {parsed.email}</div>}
+                            {parsed.phone && <div className="text-foreground"><strong className="text-muted-foreground mr-2 font-sans text-[11px] uppercase tracking-wider">Fone:</strong> {parsed.phone}</div>}
+                            {parsed.company && <div className="text-foreground"><strong className="text-muted-foreground mr-2 font-sans text-[11px] uppercase tracking-wider">Empresa:</strong> {parsed.company}</div>}
+                            {parsed.subject && <div className="text-foreground"><strong className="text-muted-foreground mr-2 font-sans text-[11px] uppercase tracking-wider">Assunto:</strong> {parsed.subject}</div>}
+                            {parsed.message && <div className="mt-2 text-foreground p-3 bg-background rounded border border-border whitespace-pre-wrap leading-relaxed shadow-sm"><strong className="text-muted-foreground block mb-1 font-sans text-[11px] uppercase tracking-wider">Mensagem:</strong>{parsed.message}</div>}
+                          </div>
+                        </details>
+                      </td>
+                      <td className="p-4">
+                        <div className="flex items-center gap-2">
+                          {item.status === "new" && (
+                            <button className="inline-flex h-7 items-center justify-center rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground px-2 text-[10px] font-bold uppercase transition-all shadow-sm" onClick={() => handleMarkRead(item.id)}>
+                              Marcar
+                            </button>
+                          )}
+                          <button className="inline-flex h-7 w-7 items-center justify-center rounded border border-red-500/30 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all focus:outline-none" onClick={() => handleDelete(item.id)} title="Excluir Permanente">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
