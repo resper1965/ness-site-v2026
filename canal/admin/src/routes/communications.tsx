@@ -277,7 +277,7 @@ export default function CommunicationsPage() {
                    {parsed.raw && (
                      <div>
                        <strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-2 px-1">Payload JSON</strong>
-                       <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-xs font-mono whitespace-pre-wrap text-emerald-400 shadow-inner overflow-x-auto">
+                       <div className="bg-muted/20 p-4 rounded-xl border border-border/50 text-xs font-mono whitespace-pre-wrap text-foreground/80 shadow-inner overflow-x-auto">
                          {parsed.raw}
                        </div>
                      </div>
