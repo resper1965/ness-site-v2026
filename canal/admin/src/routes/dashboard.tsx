@@ -212,7 +212,9 @@ export default function DashboardLayout() {
         
         {/* Scrollable page area */}
         <div className="flex-1 overflow-y-auto w-full custom-scrollbar relative">
-          <Outlet />
+          <div className="max-w-7xl mx-auto w-full">
+            <Outlet />
+          </div>
         </div>
       </main>
     </div>
