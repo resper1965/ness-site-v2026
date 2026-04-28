@@ -239,7 +239,7 @@ export default function DashboardHome() {
   const hasError = health && HEALTH_SERVICES.some((s) => health[s.key]?.status === "error");
 
   return (
-    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+    <div className="flex-1 space-y-8 p-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
 
       {/* ── System Health ── */}
       <Card>
@@ -277,7 +277,7 @@ export default function DashboardHome() {
       </Card>
 
       {/* ── KPI Grid (using StatCard component) ── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
         {kpis.map((kpi) => (
           <StatCard
             key={kpi.label}
@@ -294,14 +294,14 @@ export default function DashboardHome() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
 
         {/* Weekly Trend */}
-        <Card>
+        <Card className="min-h-[320px]">
           <CardHeader>
             <CardTitle icon={<IconTrend />}>Tração Semanal (Leads)</CardTitle>
             <CardAction>
-              <StatusDot status="ok" size="md" />
+              <StatusDot status={weeklyData.length > 1 ? "ok" : "loading"} size="md" />
             </CardAction>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1 flex flex-col justify-center">
             {weeklyData.length > 1 ? (
               <div className="space-y-4">
                 <div className="w-full bg-muted/20 rounded-xl p-4 border border-border/50">
@@ -319,16 +319,19 @@ export default function DashboardHome() {
                 </div>
               </div>
             ) : (
-              <div className="text-sm text-muted-foreground flex items-center gap-2">
-                <IconAlert />
-                Série histórica curta para exibição.
+              <div className="flex flex-col items-center justify-center text-center py-8 gap-3">
+                <div className="w-10 h-10 rounded-full bg-muted/50 flex items-center justify-center text-muted-foreground border border-border/40">
+                  <IconAlert />
+                </div>
+                <p className="text-sm text-muted-foreground">Série histórica curta para exibição.</p>
+                <p className="text-[11px] text-muted-foreground/60">Dados insuficientes para gerar tendência semanal.</p>
               </div>
             )}
           </CardContent>
         </Card>
 
         {/* Activity Feed */}
-        <Card className="h-[400px]">
+        <Card className="min-h-[320px] max-h-[420px]">
           <CardHeader className="shrink-0">
             <CardTitle icon={<IconEdit />}>Atividade Recente</CardTitle>
             <CardAction>

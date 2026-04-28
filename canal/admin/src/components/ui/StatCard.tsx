@@ -13,20 +13,20 @@ export function StatCard({ label, value, icon, change, changeColor = "text-emera
   const formatted = typeof value === "number" ? value.toLocaleString("pt-BR") : value;
 
   return (
-    <div className={`rounded-xl border border-border/60 bg-card py-5 px-5 flex flex-col gap-2 shadow-sm hover:shadow-md transition-all cursor-default group ${className}`}>
+    <div className={`rounded-xl border border-border/60 bg-card py-4 px-4 flex flex-col gap-1.5 shadow-sm hover:shadow-md hover:border-border/80 transition-all cursor-default group ${className}`}>
       <div className="flex items-center justify-between">
-        <span className="text-sm font-semibold text-muted-foreground">{label}</span>
+        <span className="text-xs font-semibold text-muted-foreground tracking-wide">{label}</span>
         {icon && (
-          <div className="w-8 h-8 rounded-lg bg-muted/40 flex items-center justify-center text-muted-foreground/70 group-hover:text-foreground group-hover:bg-muted/60 transition-all">
+          <div className="w-7 h-7 rounded-lg bg-muted/40 flex items-center justify-center text-muted-foreground/60 group-hover:text-foreground group-hover:bg-muted/60 transition-all" aria-hidden="true">
             {icon}
           </div>
         )}
       </div>
-      <div className="text-3xl font-bold leading-none text-foreground tracking-tight">
+      <div className="text-2xl font-bold leading-none text-foreground tracking-tight">
         {formatted}
       </div>
       {change && (
-        <p className="text-xs text-muted-foreground">
+        <p className="text-[11px] text-muted-foreground">
           <span className={changeColor}>{change}</span>
         </p>
       )}
