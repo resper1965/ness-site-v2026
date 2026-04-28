@@ -71,43 +71,41 @@ export default function DashboardLayout() {
   }
 
   return (
-    <div className="flex flex-row h-screen w-full bg-background font-sans text-foreground selection:bg-primary/20 selection:text-primary overflow-hidden">
-      
-      {/* Sidebar (Fully Responsive & Collapsible, FULL HEIGHT) */}
-      <aside className={`shrink-0 flex flex-col z-30 transition-[width] duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] bg-background will-change-[width] ${isMinimized ? 'w-[80px]' : 'w-[260px]'}`}>
-        
-        {/* Sidebar Header Space */}
-        <div className="flex items-center h-14 px-5 shrink-0 justify-between">
-          <h2 className={`font-heading text-[22px] font-black tracking-tighter text-foreground select-none transition-opacity duration-300 ${isMinimized ? 'opacity-0 hidden' : 'opacity-100'}`}>
-            canal<span className="text-primary leading-none">.</span>
+    <div className="flex h-screen w-full bg-background font-sans text-foreground overflow-hidden">
+
+      {/* ── Sidebar ── */}
+      <aside className={`shrink-0 flex flex-col border-r border-border/50 transition-[width] duration-200 bg-background ${isMinimized ? 'w-[72px]' : 'w-[240px]'}`}>
+
+        {/* Logo */}
+        <div className="flex items-center h-14 px-4 shrink-0 justify-between">
+          <h2 className={`font-heading text-xl font-black tracking-tight select-none transition-opacity duration-200 ${isMinimized ? 'opacity-0 hidden' : ''}`}>
+            canal<span className="text-primary">.</span>
           </h2>
-          <button 
-             onClick={toggleSidebar}
-             className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/10 text-muted-foreground transition-all hover:text-foreground outline-none shrink-0"
-             title={isMinimized ? "Expandir menu" : "Recolher menu"}
+          <button
+            onClick={toggleSidebar}
+            className="w-7 h-7 rounded-md flex items-center justify-center hover:bg-muted text-muted-foreground transition-colors shrink-0"
+            title={isMinimized ? "Expandir" : "Recolher"}
           >
-             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform duration-300 ${isMinimized ? 'rotate-180' : ''}`}>
-               <path d="M15 18l-6-6 6-6" />
-             </svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform ${isMinimized ? 'rotate-180' : ''}`}>
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
           </button>
         </div>
 
-        {/* Org Switcher Space */}
-        <div className={`py-4 shrink-0 transition-all duration-300 ${isMinimized ? 'px-3' : 'px-5'}`}>
-           {!isMinimized ? (
-              <OrgSwitcher userEmail={session?.user?.email ?? ''} isSuperAdmin={isSuperAdmin} />
-           ) : (
-              <div className="w-[48px] h-[48px] rounded-xl bg-card border border-border shadow-sm flex items-center justify-center mx-auto" title={activeOrg?.name}>
-                <div className="w-8 h-8 bg-black/5 dark:bg-white/10 rounded-lg flex items-center justify-center">
-                  <span className="font-bold text-foreground text-xs uppercase">{activeOrg?.name?.substring(0, 2) || "NS"}</span>
-                </div>
-              </div>
-           )}
+        {/* Org Switcher */}
+        <div className={`pb-3 shrink-0 ${isMinimized ? 'px-2' : 'px-4'}`}>
+          {!isMinimized ? (
+            <OrgSwitcher userEmail={session?.user?.email ?? ''} isSuperAdmin={isSuperAdmin} />
+          ) : (
+            <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center mx-auto" title={activeOrg?.name}>
+              <span className="font-semibold text-xs uppercase text-foreground">{activeOrg?.name?.substring(0, 2) || "NS"}</span>
+            </div>
+          )}
         </div>
 
-        {/* Navigation Core */}
-        <nav className={`flex-1 overflow-y-auto pb-8 flex flex-col gap-6 custom-scrollbar ${isMinimized ? 'px-3 scrollbar-hide' : 'px-5'}`}>
-          {(isSysAdminMode ? ADMIN_NAV : NAV).map((group, index) => {
+        {/* Nav */}
+        <nav className={`flex-1 overflow-y-auto flex flex-col gap-5 pb-6 ${isMinimized ? 'px-2' : 'px-3'}`}>
+          {(isSysAdminMode ? ADMIN_NAV : NAV).map((group) => {
             if (group.adminOnly && !isSuperAdmin) return null;
             if (group.ownerOnly && !isSuperAdmin && myRole !== "owner") return null;
 
@@ -116,18 +114,17 @@ export default function DashboardLayout() {
               if (item.ownerOnly && !isSuperAdmin && myRole !== "owner") return false;
               return true;
             });
-
             if (visibleItems.length === 0) return null;
 
             return (
-              <div key={group.section} className={`flex flex-col relative`}>
-                <div className={`mb-3 flex items-center transition-all duration-300 ${isMinimized ? 'justify-center h-[2px] bg-border/40 mx-2 mb-4 rounded-full' : 'px-4'}`}>
-                  <span className={`text-xs font-medium text-muted-foreground/45 uppercase tracking-wide whitespace-nowrap overflow-hidden transition-all duration-300 ${isMinimized ? 'w-0 opacity-0' : 'w-auto opacity-100'}`}>
-                    {group.section}
-                  </span>
-                </div>
-                
-                <div className={`flex flex-col ${isMinimized ? 'gap-2 items-center' : 'gap-1'}`}>
+              <div key={group.section}>
+                {!isMinimized && (
+                  <div className="px-3 mb-2">
+                    <span className="text-[11px] font-medium text-muted-foreground/50 uppercase tracking-wider">{group.section}</span>
+                  </div>
+                )}
+                {isMinimized && <div className="h-px bg-border/40 mx-2 mb-2" />}
+                <div className={`flex flex-col ${isMinimized ? 'gap-1 items-center' : 'gap-0.5'}`}>
                   {visibleItems.map((item) => (
                     <NavLink
                       key={item.to}
@@ -135,17 +132,15 @@ export default function DashboardLayout() {
                       end={item.end}
                       title={isMinimized ? item.label : undefined}
                       className={({ isActive }) => `
-                         flex items-center transition-all duration-200 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] outline-none group/link
-                         ${isMinimized ? 'w-[44px] h-[44px] justify-center rounded-2xl' : 'w-full gap-4 px-4 py-2.5 rounded-[12px] active:scale-[0.98]'}
-                         ${isActive 
-                            ? 'bg-primary/5 text-primary shadow-sm font-semibold dark:bg-primary/10' 
-                            : 'text-foreground/75 hover:bg-black/5 dark:hover:bg-white/5 hover:text-foreground border border-transparent'}
+                        flex items-center transition-colors duration-150 outline-none
+                        ${isMinimized ? 'w-10 h-10 justify-center rounded-lg' : 'gap-3 px-3 py-2 rounded-lg'}
+                        ${isActive
+                          ? 'bg-primary/8 text-primary font-medium'
+                          : 'text-muted-foreground hover:bg-muted hover:text-foreground'}
                       `}
                     >
-                      <span className="shrink-0 opacity-70 group-hover/link:opacity-100 transition-opacity ease-in-out duration-200">{item.icon}</span>
-                      <span className={`text-[14px] whitespace-nowrap overflow-hidden transition-all duration-300 ${isMinimized ? 'w-0 opacity-0 hidden' : 'w-auto opacity-100'}`}>
-                        {item.label}
-                      </span>
+                      <span className="shrink-0 [&>svg]:w-[18px] [&>svg]:h-[18px]">{item.icon}</span>
+                      {!isMinimized && <span className="text-[13px] truncate">{item.label}</span>}
                     </NavLink>
                   ))}
                 </div>
@@ -154,65 +149,52 @@ export default function DashboardLayout() {
           })}
         </nav>
 
-        {/* User Drops / SignOut */}
-        <div className={`shrink-0 py-5 border-t border-border/40 transition-all duration-300 ${isMinimized ? 'px-3' : 'px-5'}`}>
-           {isMinimized ? (
-              <button 
-                onClick={handleSignOut} 
-                title="Log out" 
-                className="w-[44px] h-[44px] mx-auto flex items-center justify-center rounded-[14px] bg-black/5 hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors outline-none border border-transparent"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
-                </svg>
-              </button>
-           ) : (
-              <UserDropdown user={session.user} isSuperAdmin={isSuperAdmin} onSignOut={handleSignOut} />
-           )}
+        {/* User */}
+        <div className={`shrink-0 py-3 border-t border-border/40 ${isMinimized ? 'px-2' : 'px-3'}`}>
+          {isMinimized ? (
+            <button
+              onClick={handleSignOut}
+              title="Sair"
+              className="w-10 h-10 mx-auto flex items-center justify-center rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+              </svg>
+            </button>
+          ) : (
+            <UserDropdown user={session?.user} isSuperAdmin={isSuperAdmin} onSignOut={handleSignOut} />
+          )}
         </div>
       </aside>
 
-      {/* Content Pane (The White Card / System Surface) */}
-      <main className="flex-1 overflow-hidden relative flex flex-col bg-card z-20 transition-all duration-300 border-l border-border/40">
-        
-        {/* Inner Topbar specific to Main Content Area */}
-        <header className="flex-none h-12 flex items-center justify-between px-6 md:px-8 z-40 border-b border-border/40 bg-background/80 backdrop-blur-md sticky top-0">
-          <div className="flex items-center gap-4 flex-1 min-w-0">
-            <h1 className="text-lg font-semibold text-foreground truncate">{meta.title}</h1>
-          </div>
-          <div className="flex items-center gap-4 shrink-0">
-             {/* Theme Toggler */}
-             <button 
-               onClick={toggleTheme}
-               className="w-9 h-9 flex items-center justify-center rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 text-foreground transition-all outline-none border border-black/5 dark:border-white/10 active:scale-[0.96]"
-               title={theme === 'light' ? 'Mudar para modo escuro' : 'Mudar para modo claro'}
-             >
-               {theme === 'light' ? (
-                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                   <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                 </svg>
-               ) : (
-                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                   <circle cx="12" cy="12" r="5"></circle>
-                   <line x1="12" y1="1" x2="12" y2="3"></line>
-                   <line x1="12" y1="21" x2="12" y2="23"></line>
-                   <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                   <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                   <line x1="1" y1="12" x2="3" y2="12"></line>
-                   <line x1="21" y1="12" x2="23" y2="12"></line>
-                   <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                   <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                 </svg>
-               )}
-             </button>
-          </div>
+      {/* ── Main Content ── */}
+      <main className="flex-1 flex flex-col overflow-hidden bg-card">
+
+        {/* Topbar */}
+        <header className="shrink-0 h-14 flex items-center justify-between px-8 border-b border-border/50">
+          <h1 className="text-base font-semibold text-foreground truncate">{meta.title}</h1>
+          <button
+            onClick={toggleTheme}
+            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+            title={theme === 'light' ? 'Modo escuro' : 'Modo claro'}
+          >
+            {theme === 'light' ? (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            ) : (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+              </svg>
+            )}
+          </button>
         </header>
 
-        <div className="absolute top-0 right-0 -z-10 w-[800px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none opacity-40 mix-blend-multiply dark:mix-blend-screen" />
-        
-        {/* Scrollable page area — shell owns ALL spacing */}
-        <div className="flex-1 overflow-y-auto w-full custom-scrollbar relative p-6">
-          <Outlet />
+        {/* Content — SINGLE source of padding for ALL routes */}
+        <div className="flex-1 overflow-y-auto p-8">
+          <div className="max-w-6xl space-y-6">
+            <Outlet />
+          </div>
         </div>
       </main>
     </div>
