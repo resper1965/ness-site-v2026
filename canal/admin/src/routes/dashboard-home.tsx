@@ -277,7 +277,7 @@ export default function DashboardHome() {
       </Card>
 
       {/* ── KPI Grid (using StatCard component) ── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
         {kpis.map((kpi) => (
           <StatCard
             key={kpi.label}

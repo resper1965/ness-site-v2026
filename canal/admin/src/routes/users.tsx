@@ -66,7 +66,7 @@ export default function UsersPage() {
   }
 
   return (
-    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+    <div className="flex-1 space-y-6 p-9 animate-in fade-in slide-in-from-bottom-2 duration-300">
 
       {errorMsg && (
         <div className="p-4 rounded-xl border border-red-500/30 bg-red-500/10 text-red-500 flex items-start gap-3">
