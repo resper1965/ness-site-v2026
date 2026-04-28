@@ -95,7 +95,7 @@ export default function DashboardLayout() {
         {/* Org Switcher Space */}
         <div className={`py-4 shrink-0 transition-all duration-300 ${isMinimized ? 'px-3' : 'px-5'}`}>
            {!isMinimized ? (
-              <OrgSwitcher userEmail={session.user.email} isSuperAdmin={isSuperAdmin} />
+              <OrgSwitcher userEmail={session?.user?.email ?? ''} isSuperAdmin={isSuperAdmin} />
            ) : (
               <div className="w-[48px] h-[48px] rounded-xl bg-card border border-border shadow-sm flex items-center justify-center mx-auto" title={activeOrg?.name}>
                 <div className="w-8 h-8 bg-black/5 dark:bg-white/10 rounded-lg flex items-center justify-center">
