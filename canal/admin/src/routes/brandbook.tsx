@@ -30,37 +30,35 @@ export default function BrandbookHub() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl w-full flex-1 min-w-0 p-6 md:p-8 pt-6 md:pt-8 space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-400 overflow-y-auto custom-scrollbar">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border-b border-border/50 pb-6 relative shrink-0">
-        <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-border/60 to-transparent"></div>
+    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
-          <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-3">
-             <svg className="text-muted-foreground/60" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
             Brandbook & Identidade
             {activeOrg && (
-              <span className="inline-flex items-center rounded-lg bg-primary/10 px-2 py-1 text-xs uppercase tracking-wide font-semibold text-primary border border-primary/20">
+              <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-1 text-xs font-semibold text-primary ring-1 ring-inset ring-primary/20">
                 {activeOrg.slug}
               </span>
             )}
           </h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Assets de Marca do Grupo
+          <p className="text-sm font-medium text-muted-foreground tracking-wide mt-1">
+            ASSETS DE MARCA DO GRUPO
           </p>
         </div>
-        <div className="flex items-center gap-3 w-full sm:w-auto">
+        <div className="flex items-center gap-3">
           <button 
             onClick={() => setShowManual(v => !v)}
-            className={`inline-flex items-center justify-center whitespace-nowrap rounded-xl text-xs uppercase tracking-wide font-semibold h-10 px-5 transition-all w-full sm:w-auto shadow-sm ${
+            className={`inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-semibold h-9 px-4 transition-all ${
               showManual 
-                ? 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-primary/20' 
-                : 'border border-border/60 bg-card hover:bg-muted/80 text-foreground'
+                ? 'bg-primary text-primary-foreground shadow hover:bg-primary/90' 
+                : 'border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground'
             }`}
           >
-            <svg className="mr-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <svg className="mr-2" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
             {showManual ? 'Ocultar Manual' : 'Como Usar'}
           </button>
-          <Link to="/crud/brandbook" className="inline-flex items-center justify-center whitespace-nowrap rounded-xl text-xs uppercase tracking-wide font-semibold h-10 px-5 bg-accent text-accent-foreground shadow-sm hover:bg-accent/90 transition-all w-full sm:w-auto">
-            <svg className="mr-2 opacity-70" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+          <Link to="/crud/brandbook" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-semibold h-9 px-4 bg-foreground text-background shadow hover:bg-foreground/90 transition-all">
+            <svg className="mr-2 opacity-70" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
             Gerenciar Cadastros
           </Link>
         </div>
@@ -101,19 +99,19 @@ export default function BrandbookHub() {
 
       <div className="space-y-6">
         {/* Colors */}
-        <div className="rounded-2xl border border-border/50 bg-card text-card-foreground shadow-sm overflow-hidden">
-          <div className="bg-muted/30 p-5 px-6 border-b border-border/50 flex justify-between items-center">
+        <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
+          <div className="bg-muted/30 p-5 border-b border-border/40 flex justify-between items-center">
             <div>
-              <h3 className="text-sm font-semibold text-foreground">Cores Corporativas</h3>
+              <h3 className="font-semibold leading-none tracking-tight">Cores Corporativas</h3>
             </div>
-            <span className="inline-flex items-center justify-center rounded-lg bg-background border border-border/60 px-3 py-1 font-mono text-xs font-medium tracking-wide text-muted-foreground">
+            <span className="inline-flex items-center rounded-md bg-muted px-2.5 py-0.5 text-xs font-semibold text-muted-foreground font-mono">
               {colors.length} {colors.length === 1 ? "cor" : "cores"}
             </span>
           </div>
           
-          <div className="p-6 md:p-8">
+          <div className="p-6">
             {colors.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-border/60 bg-muted/10 p-12 text-center text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              <div className="rounded-lg border border-dashed border-border/60 bg-muted/20 p-8 text-center text-sm text-muted-foreground">
                 Nenhuma cor alocada para o tenant ativo no contexto visual.
               </div>
             ) : (
@@ -125,8 +123,8 @@ export default function BrandbookHub() {
                     onClick={() => navigator.clipboard.writeText(color.hex_value)} title="Clique para copiar HEX"
                   >
                     <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-                    <div className="w-full aspect-4/3 rounded-lg mb-3 relative" style={{ backgroundColor: color.hex_value || '#ccc' }}>
-                       <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-lg"></div>
+                    <div className="w-full aspect-[4/3] rounded-md mb-3 shadow-inner relative" style={{ backgroundColor: color.hex_value || '#ccc' }}>
+                       <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-md"></div>
                     </div>
                     <div className="flex flex-col gap-0.5 z-10">
                       <span className="font-bold text-sm tracking-tight text-foreground truncate">{color.title}</span>
@@ -140,19 +138,19 @@ export default function BrandbookHub() {
         </div>
 
         {/* Logos */}
-        <div className="rounded-2xl border border-border/50 bg-card text-card-foreground shadow-sm overflow-hidden">
-          <div className="bg-muted/30 p-5 px-6 border-b border-border/50 flex justify-between items-center">
+        <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
+          <div className="bg-muted/30 p-5 border-b border-border/40 flex justify-between items-center">
             <div>
-              <h3 className="text-sm font-semibold text-foreground">Logos e Assinaturas (Preview Renderer)</h3>
+              <h3 className="font-semibold leading-none tracking-tight">Logos e Assinaturas (Preview Renderer)</h3>
             </div>
-            <span className="inline-flex items-center justify-center rounded-lg bg-background border border-border/60 px-3 py-1 font-mono text-xs font-medium tracking-wide text-muted-foreground">
+            <span className="inline-flex items-center rounded-md bg-muted px-2.5 py-0.5 text-xs font-semibold text-muted-foreground font-mono">
               {logos.length} {logos.length === 1 ? "logo" : "logos"}
             </span>
           </div>
           
-          <div className="p-6 md:p-8">
+          <div className="p-6">
             {logos.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-border/60 bg-muted/10 p-12 text-center text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              <div className="rounded-lg border border-dashed border-border/60 bg-muted/20 p-8 text-center text-sm text-muted-foreground">
                 Nenhum motor de logo configurado para processamento dinâmico neste tenant.
               </div>
             ) : (
@@ -164,19 +162,19 @@ export default function BrandbookHub() {
         </div>
 
         {/* Typography */}
-        <div className="rounded-2xl border border-border/50 bg-card text-card-foreground shadow-sm overflow-hidden">
-          <div className="bg-muted/30 p-5 px-6 border-b border-border/50 flex justify-between items-center">
+        <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
+          <div className="bg-muted/30 p-5 border-b border-border/40 flex justify-between items-center">
             <div>
-              <h3 className="text-sm font-semibold text-foreground">Tipografia</h3>
+              <h3 className="font-semibold leading-none tracking-tight">Tipografia</h3>
             </div>
-            <span className="inline-flex items-center justify-center rounded-lg bg-background border border-border/60 px-3 py-1 font-mono text-xs font-medium tracking-wide text-muted-foreground">
+            <span className="inline-flex items-center rounded-md bg-muted px-2.5 py-0.5 text-xs font-semibold text-muted-foreground font-mono">
               {typography.length} {typography.length === 1 ? "fonte" : "fontes"}
             </span>
           </div>
           
-          <div className="p-6 md:p-8">
+          <div className="p-6">
             {typography.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-border/60 bg-muted/10 p-12 text-center text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              <div className="rounded-lg border border-dashed border-border/60 bg-muted/20 p-8 text-center text-sm text-muted-foreground">
                 Familia tipográfica não estabelecida no manual central.
               </div>
             ) : (

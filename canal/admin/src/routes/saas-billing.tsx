@@ -30,9 +30,9 @@ export default function SaasBilling() {
           <p className="text-muted-foreground text-sm mb-8">
             Nossa nova infraestrutura de faturamento e gestão de planos está sendo finalizada e estará disponível no seu próximo ciclo.
           </p>
-          <button 
+          <button
             onClick={() => navigate("/")}
-            className="px-6 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-lg text-sm font-bold transition-all flex items-center gap-2 shadow-sm"
+            className="px-6 py-2 bg-card border border-border text-foreground rounded-lg text-sm font-bold transition-all flex items-center gap-2 shadow-sm hover:bg-muted/50"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="m15 18-6-6 6-6"/>

@@ -4,14 +4,15 @@ export default function EmergencyDashboard() {
   const [activeTab, setActiveTab] = useState('active');
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6 mx-auto max-w-7xl w-full flex-1 overflow-hidden min-w-0">
+    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
-          <h2 className="text-lg font-semibold tracking-tight uppercase font-mono bg-clip-text text-transparent bg-linear-to-r from-red-600 to-orange-500 dark:from-red-500 dark:to-orange-400">
-            Tratativa de Crises (Incidentes P1)
+          <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
+            <svg className="text-destructive shrink-0" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Tratativa de Crises <span className="text-muted-foreground font-light">::</span> Incidentes P1
           </h2>
-          <p className="text-sm font-medium text-muted-foreground tracking-wide mt-1">
-            FLUXO DE CHAMADOS DE EMERGÊNCIA DOS CLIENTES DA NESS
+          <p className="text-sm font-medium text-muted-foreground tracking-wide mt-1 uppercase">
+            Fluxo de Chamados de Emergência dos Clientes da ness.
           </p>
         </div>
         <button className="group relative inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-semibold h-10 px-5 py-2 bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 transition-all focus:outline-none focus:ring-2 focus:ring-destructive focus:ring-offset-2 dark:focus:ring-offset-background">
@@ -32,8 +33,8 @@ export default function EmergencyDashboard() {
               <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
             </svg>
           </div>
-          <div className="p-5 pt-0 relative border-t border-border/50 mt-2">
-            <div className="text-4xl font-semibold font-mono text-foreground mt-4 tracking-tighter">0</div>
+          <div className="p-5 pt-0 relative border-t border-border/40 mt-2">
+            <div className="text-4xl font-black font-mono text-foreground mt-4 tracking-tighter">0</div>
           </div>
         </div>
         
@@ -44,8 +45,8 @@ export default function EmergencyDashboard() {
               <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
             </svg>
           </div>
-          <div className="p-5 pt-0 relative border-t border-border/50 mt-2">
-            <div className="text-4xl font-semibold font-mono text-muted-foreground mt-4 tracking-tighter">--<span className="text-lg opacity-50 ml-1">min</span></div>
+          <div className="p-5 pt-0 relative border-t border-border/40 mt-2">
+            <div className="text-4xl font-black font-mono text-muted-foreground mt-4 tracking-tighter">--<span className="text-lg opacity-50 ml-1">min</span></div>
             <p className="text-xs text-muted-foreground mt-2 font-medium tracking-wide">Meta: &le; 15min</p>
           </div>
         </div>
@@ -58,8 +59,8 @@ export default function EmergencyDashboard() {
               <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
             </svg>
           </div>
-          <div className="p-5 pt-0 relative border-t border-border/50 mt-2">
-            <div className="text-4xl font-semibold font-mono text-green-500 dark:text-green-400 mt-4 tracking-tighter">0.00<span className="text-lg ml-1">%</span></div>
+          <div className="p-5 pt-0 relative border-t border-border/40 mt-2">
+            <div className="text-4xl font-black font-mono text-green-500 dark:text-green-400 mt-4 tracking-tighter">0.00<span className="text-lg ml-1">%</span></div>
           </div>
         </div>
       </div>
@@ -109,7 +110,7 @@ export default function EmergencyDashboard() {
           {activeTab === 'history' && (
             <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
               <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-                <div className="bg-muted/30 p-6 border-b border-border/50">
+                <div className="bg-muted/30 p-6 border-b border-border/40">
                   <h3 className="font-semibold leading-none tracking-tight">Histórico de Crises (RCA)</h3>
                   <p className="text-sm text-muted-foreground mt-2">Baixe relatórios estruturados gerados por inteligência artificial após a resolução de Root Causes.</p>
                 </div>
@@ -124,7 +125,7 @@ export default function EmergencyDashboard() {
           {activeTab === 'analytics' && (
             <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
               <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-                <div className="bg-muted/30 p-6 border-b border-border/50">
+                <div className="bg-muted/30 p-6 border-b border-border/40">
                   <h3 className="font-semibold leading-none tracking-tight flex items-center gap-2">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" y1="8" x2="12" y2="8"/><line x1="3.95" y1="6.06" x2="8.54" y2="14"/><line x1="10.88" y1="21.94" x2="15.46" y2="14"/></svg>
                     Telemetria de API (Tenant Isolation)
@@ -132,11 +133,11 @@ export default function EmergencyDashboard() {
                   <p className="text-sm text-muted-foreground mt-2">Consulta raw ao dataset <code>canal_metrics</code> processado nos nós de borda (Edge).</p>
                 </div>
                 <div className="p-6">
-                  <div className="bg-neutral-900 border border-neutral-800 p-5 rounded-lg overflow-x-auto">
-                    <code className="text-xs font-mono leading-loose text-blue-300">
-                      <span className="text-pink-400">SELECT</span> blob1 <span className="text-pink-400">AS</span> tenant_id, blob2 <span className="text-pink-400">AS</span> path, <span className="text-cyan-400">SUM</span>(double1) <span className="text-pink-400">AS</span> latency <br/>
-                      <span className="text-pink-400">FROM</span> canal_metrics <br/>
-                      <span className="text-pink-400">GROUP BY</span> blob1, blob2
+                  <div className="bg-muted/20 border border-border/50 p-5 rounded-lg shadow-inner overflow-x-auto">
+                    <code className="text-xs font-mono leading-loose text-foreground/80">
+                      SELECT blob1 AS tenant_id, blob2 AS path, SUM(double1) AS latency <br/>
+                      FROM canal_metrics <br/>
+                      GROUP BY blob1, blob2
                     </code>
                   </div>
                   <div className="mt-5 flex justify-end">

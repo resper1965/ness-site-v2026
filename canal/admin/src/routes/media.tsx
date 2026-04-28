@@ -153,11 +153,11 @@ export default function MediaPage() {
              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                 {filteredItems.map((item) => (
                   <div key={item.id} className="group relative rounded-xl border border-border/50 bg-background hover:bg-muted/50 overflow-hidden shadow-sm transition-all hover:shadow-md outline-none">
-                     <div className="aspect-square bg-slate-100 dark:bg-slate-900 overflow-hidden relative flex items-center justify-center border-b border-border/50">
+                     <div className="aspect-square bg-muted/30 overflow-hidden relative flex items-center justify-center border-b border-border/50">
                         {isImage(item.content_type) ? (
                            <img src={item.url} alt={item.filename} loading="lazy" className="object-cover w-full h-full opacity-90 group-hover:opacity-100 transition-opacity" />
                         ) : (
-                           <div className="text-slate-400 dark:text-slate-600">
+                           <div className="text-muted-foreground/50">
                              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                            </div>
                         )}
