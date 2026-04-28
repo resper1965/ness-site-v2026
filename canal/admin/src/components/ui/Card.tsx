@@ -4,7 +4,7 @@ import type { ReactNode, HTMLAttributes } from "react";
 export function Card({ children, className = "", ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`rounded-xl border border-border/60 bg-card text-card-foreground flex flex-col shadow-sm ${className}`}
+      className={`rounded-xl border border-border/60 bg-card text-card-foreground flex flex-col shadow-sm hover:border-border/80 transition-colors ${className}`}
       {...props}
     >
       {children}
@@ -28,7 +28,7 @@ export function CardHeader({ children, className = "", ...props }: HTMLAttribute
 export function CardTitle({ children, icon, className = "" }: { children: ReactNode; icon?: ReactNode; className?: string }) {
   return (
     <h3 className={`font-semibold text-sm leading-none text-foreground flex items-center gap-2 ${className}`}>
-      {icon && <span className="text-muted-foreground">{icon}</span>}
+      {icon && <span className="text-muted-foreground" aria-hidden="true">{icon}</span>}
       {children}
     </h3>
   );

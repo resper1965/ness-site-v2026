@@ -134,7 +134,7 @@ export default function CommunicationsPage() {
     <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300 flex flex-col">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6 shrink-0">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-3">
+          <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-3">
              <svg className="text-muted-foreground" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4Z"/></svg>
             Inbox Unificado <span className="text-muted-foreground font-light">::</span> Comunicações
           </h2>

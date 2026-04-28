@@ -176,7 +176,7 @@ export default function AutomationDashboard() {
     <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-3">
+          <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-3">
             Growth & Automação <span className="text-muted-foreground font-light">::</span> Fase 5
           </h2>
           <p className="text-sm font-medium text-muted-foreground tracking-wide mt-1">

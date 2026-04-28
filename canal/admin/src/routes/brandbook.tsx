@@ -35,7 +35,7 @@ export default function BrandbookHub() {
     <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-3">
+          <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-3">
             Brandbook & Identidade
             {activeOrg && (
               <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-1 text-xs font-semibold text-primary ring-1 ring-inset ring-primary/20">

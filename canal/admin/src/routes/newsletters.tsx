@@ -112,7 +112,7 @@ export default function NewslettersPage() {
     <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-3">
+          <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-3">
              <svg className="text-muted-foreground" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M4 7V4a2 2 0 0 1 2-2h8.5L20 7.5V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3"/><polyline points="14 2 14 8 20 8"/><path d="M5 11l-3 3 3 3"/><path d="M9 11l3 3-3 3"/></svg>
             Broadcasts <span className="text-muted-foreground font-light">::</span> Newsletters
           </h2>

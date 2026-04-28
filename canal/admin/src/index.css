@@ -131,6 +131,18 @@ body {
   font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
 }
 
+/* ── Global Interactive Polish ─────────────────── */
+button, [role="button"], select { cursor: pointer; }
+button:not(:disabled), select:not(:disabled) {
+  transition: background-color 0.15s ease, color 0.15s ease,
+              border-color 0.15s ease, opacity 0.15s ease,
+              box-shadow 0.15s ease, transform 0.15s ease;
+}
+button:disabled, select:disabled { opacity: 0.5; cursor: not-allowed; }
+select { appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%236b7280' viewBox='0 0 24 24'%3e%3cpath d='m6 9 6 6 6-6'/%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 8px center; padding-right: 28px; }
+input:not([type="checkbox"]):not([type="radio"]) { transition: border-color 0.15s ease, box-shadow 0.15s ease; }
+svg { pointer-events: none; }
+
 /* ── Mapple Scrollbar ─────────────────────────────────── */
 ::-webkit-scrollbar { width: 8px; height: 8px; background: transparent; }
 ::-webkit-scrollbar-track { background: transparent; }

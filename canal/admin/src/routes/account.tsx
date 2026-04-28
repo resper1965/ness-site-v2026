@@ -204,7 +204,7 @@ export default function AccountSettingsPage() {
                     <div key={acc.id} className="flex justify-between items-center p-3 rounded border border-border/50 bg-background/40">
                       <strong className="font-mono text-sm capitalize">{acc.providerId}</strong>
                       <button 
-                        className="text-xs font-bold text-red-500 uppercase hover:text-red-600 tracking-wider" 
+                        className="text-xs font-bold text-red-500 uppercase hover:text-red-600 tracking-wider transition-colors" 
                         onClick={() => handleUnlink(acc.providerId)}
                       >
                         Desvincular
