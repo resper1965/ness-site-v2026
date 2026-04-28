@@ -75,10 +75,10 @@ export default function AccountSettingsPage() {
   };
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300 mx-auto max-w-7xl w-full flex-1 overflow-hidden min-w-0">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
-          <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
+          <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-3">
              <svg className="text-muted-foreground" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             Identidade Central <span className="text-muted-foreground font-light">::</span> Perfil
           </h2>
@@ -102,7 +102,7 @@ export default function AccountSettingsPage() {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {/* Profile Card */}
         <section className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
-          <div className="bg-muted/30 p-5 border-b border-border/40">
+          <div className="bg-muted/30 p-5 border-b border-border/50">
             <h3 className="font-semibold leading-none tracking-tight">Dados Cadastrais</h3>
           </div>
           <div className="p-6 space-y-5 flex-1">
@@ -110,7 +110,7 @@ export default function AccountSettingsPage() {
               <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Nome de Exibição</label>
               <input 
                 type="text" 
-                className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm shadow-inner transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 value={name} 
                 onChange={(e) => setName(e.target.value)} 
               />
@@ -126,11 +126,11 @@ export default function AccountSettingsPage() {
 
         {/* Email Card */}
         <section className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
-          <div className="bg-muted/30 p-5 border-b border-border/40">
+          <div className="bg-muted/30 p-5 border-b border-border/50">
             <h3 className="font-semibold leading-none tracking-tight">Endereço de E-mail</h3>
           </div>
           <div className="p-6 space-y-5 flex-1">
-            <p className="text-sm text-muted-foreground bg-muted/20 p-3 rounded-lg border border-border/20">
+            <p className="text-sm text-muted-foreground bg-muted/30 p-3 rounded-lg border border-border/20">
               E-mail autenticado: <strong className="text-foreground mono ml-1">{session.user.email}</strong>
             </p>
             <div className="space-y-2.5">
@@ -138,7 +138,7 @@ export default function AccountSettingsPage() {
               <input 
                 type="email" 
                 placeholder="novo@dominio.com"
-                className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm shadow-inner transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 value={newEmail} 
                 onChange={(e) => setNewEmail(e.target.value)} 
               />
@@ -154,7 +154,7 @@ export default function AccountSettingsPage() {
 
         {/* Security / Password Card */}
         <section className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
-          <div className="bg-muted/30 p-5 border-b border-border/40">
+          <div className="bg-muted/30 p-5 border-b border-border/50">
             <h3 className="font-semibold leading-none tracking-tight">Chaves de Acesso e Sessão</h3>
           </div>
           <div className="p-6 space-y-5 flex-1">
@@ -162,7 +162,7 @@ export default function AccountSettingsPage() {
               <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Senha Atual</label>
               <input 
                 type="password" 
-                className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm shadow-inner transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 value={currentPassword} 
                 onChange={(e) => setCurrentPassword(e.target.value)} 
               />
@@ -171,7 +171,7 @@ export default function AccountSettingsPage() {
               <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Nova Senha Forte</label>
               <input 
                 type="password" 
-                className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm shadow-inner transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 value={newPassword} 
                 onChange={(e) => setNewPassword(e.target.value)} 
               />
@@ -192,7 +192,7 @@ export default function AccountSettingsPage() {
 
         {/* Social / SSO Links */}
         <section className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
-          <div className="bg-muted/30 p-5 border-b border-border/40">
+          <div className="bg-muted/30 p-5 border-b border-border/50">
             <h3 className="font-semibold leading-none tracking-tight">Delegações SSO (IdP)</h3>
           </div>
           <div className="p-6 space-y-6 flex-1">
@@ -251,7 +251,7 @@ export default function AccountSettingsPage() {
                 <input 
                   type="password" 
                   placeholder="Confirme sua senha para destravar..."
-                  className="flex h-11 w-full rounded-lg border border-red-500/20 bg-background/50 px-4 py-2 text-sm shadow-inner transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                  className="flex h-11 w-full rounded-lg border border-red-500/20 bg-background/50 px-4 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                   value={deletePassword} 
                   onChange={(e) => setDeletePassword(e.target.value)} 
                 />

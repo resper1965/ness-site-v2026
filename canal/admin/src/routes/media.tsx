@@ -71,10 +71,10 @@ export default function MediaPage() {
   const filteredItems = items.filter(item => activeTab === 'public' ? isImage(item.content_type) : (!isImage(item.content_type) || item.content_type === "application/pdf"));
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300 mx-auto max-w-7xl w-full flex-1 overflow-hidden min-w-0">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
-          <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
+          <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-3">
              <svg className="text-muted-foreground" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
             Repositório Ativo <span className="text-muted-foreground font-light">::</span> Cloud Media
           </h2>
@@ -135,7 +135,7 @@ export default function MediaPage() {
       </div>
 
       <div className="rounded-xl border bg-card text-card-foreground shadow-sm mt-6 overflow-hidden">
-        <div className="bg-muted/30 p-5 border-b border-border/40 flex items-center justify-between">
+        <div className="bg-muted/30 p-5 border-b border-border/50 flex items-center justify-between">
           <h3 className="font-semibold leading-none tracking-tight">Index de Recursos ({activeTab === 'public' ? 'Estáticos Globais' : 'Vetores de IA'})</h3>
         </div>
 
@@ -163,7 +163,7 @@ export default function MediaPage() {
                         )}
                         
                         {activeTab === 'knowledge' && (
-                           <div className="absolute top-2 left-2 bg-emerald-500/90 backdrop-blur-sm text-white px-2 py-0.5 rounded text-[9px] uppercase font-bold tracking-widest flex items-center gap-1 shadow-sm">
+                           <div className="absolute top-2 left-2 bg-emerald-500/90 backdrop-blur-sm text-white px-2 py-0.5 rounded  font-bold tracking-wide flex items-center gap-1 shadow-sm">
                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                              Vetorizado
                            </div>
@@ -190,8 +190,8 @@ export default function MediaPage() {
                      <div className="p-3">
                         <div className="truncate text-xs font-bold text-foreground" title={item.filename}>{item.filename}</div>
                         <div className="flex justify-between items-center mt-1">
-                           <div className="font-mono text-[10px] uppercase text-muted-foreground tracking-wider">{formatSize(item.size)}</div>
-                           <div className="text-[10px] font-bold text-primary capitalize">{item.content_type.split('/')[1] || item.content_type}</div>
+                           <div className="font-mono text-xs uppercase text-muted-foreground tracking-wider">{formatSize(item.size)}</div>
+                           <div className="text-xs font-bold text-primary capitalize">{item.content_type.split('/')[1] || item.content_type}</div>
                         </div>
                      </div>
                   </div>
@@ -199,17 +199,17 @@ export default function MediaPage() {
              </div>
              
              {meta && meta.totalPages > 1 && (
-               <div className="pt-8 border-t border-border/40 mt-8 flex justify-between items-center px-4">
+               <div className="pt-8 border-t border-border/50 mt-8 flex justify-between items-center px-4">
                   <button 
-                     className="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background/50 px-4 text-[11px] font-bold uppercase tracking-wider shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
+                     className="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background/50 px-4 text-xs font-bold uppercase tracking-wider shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
                      disabled={page <= 1} 
                      onClick={() => setPage(page - 1)}
                   >
                      <svg className="mr-2" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m15 18-6-6 6-6"/></svg> Rebobinar
                   </button>
-                  <span className="font-mono text-[11px] uppercase tracking-widest font-semibold text-muted-foreground">Vol. {page} — {meta.totalPages}</span>
+                  <span className="font-mono text-xs uppercase tracking-wide font-semibold text-muted-foreground">Vol. {page} — {meta.totalPages}</span>
                   <button 
-                     className="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background/50 px-4 text-[11px] font-bold uppercase tracking-wider shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
+                     className="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background/50 px-4 text-xs font-bold uppercase tracking-wider shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
                      disabled={page >= meta.totalPages} 
                      onClick={() => setPage(page + 1)}
                   >

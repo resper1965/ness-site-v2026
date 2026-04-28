@@ -5,22 +5,6 @@ import { OrgSwitcher } from "../components/dashboard/OrgSwitcher";
 import { UserDropdown } from "../components/dashboard/UserDropdown";
 import { NAV, ADMIN_NAV, PAGE_META, SUPER_ADMIN_EMAILS } from "../components/dashboard/nav-config";
 
-function useCollapsedGroups() {
-  const key = 'canal_nav_expanded';
-  const [expanded, setExpanded] = useState<string | null>(() => {
-    try { return localStorage.getItem(key) || null; } catch { return null; }
-  });
-  const toggle = (section: string) => {
-    setExpanded(prev => {
-      const next = prev === section ? null : section;
-      if (next) localStorage.setItem(key, next);
-      else localStorage.removeItem(key);
-      return next;
-    });
-  };
-  return { expanded, toggle };
-}
-
 function useSidebarCollapse() {
   const key = 'canal_sidebar_minimized';
   const [isMinimized, setIsMinimized] = useState(() => {
@@ -36,12 +20,34 @@ function useSidebarCollapse() {
   return { isMinimized, toggleSidebar };
 }
 
+function useTheme() {
+  const key = 'canal_theme';
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    try {
+      const stored = localStorage.getItem(key);
+      if (stored === 'light' || stored === 'dark') return stored;
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+    } catch {}
+    return 'light';
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.remove('light', 'dark');
+    root.classList.add(theme);
+    localStorage.setItem(key, theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  return { theme, toggleTheme };
+}
+
 export default function DashboardLayout() {
   const { data: session, isPending } = useSession();
   const { data: activeOrg } = authClient.useActiveOrganization();
   const navigate = useNavigate();
   const location = useLocation();
-  const { expanded, toggle } = useCollapsedGroups();
+  const { theme, toggleTheme } = useTheme();
   const { isMinimized, toggleSidebar } = useSidebarCollapse();
 
   useEffect(() => {
@@ -51,7 +57,7 @@ export default function DashboardLayout() {
   if (isPending) return <div className="min-h-screen flex items-center justify-center bg-background"><div className="loader-inline" /></div>;
   if (!session) return null;
 
-  const isSuperAdmin = session.user.role === 'admin' || SUPER_ADMIN_EMAILS.includes(session.user.email);
+  const isSuperAdmin = session?.user?.role === 'admin' || SUPER_ADMIN_EMAILS.includes(session?.user?.email ?? '');
   const myMembership = activeOrg?.members?.find((m: any) => m.userId === session?.user?.id || m.user?.email === session?.user?.email);
   const myRole = myMembership?.role || "member";
 
@@ -65,35 +71,43 @@ export default function DashboardLayout() {
   }
 
   return (
-    <div className="flex h-screen w-full bg-background font-sans overflow-hidden text-foreground selection:bg-primary/20 selection:text-primary">
-      {/* Sidebar (Apple HIG Glassmorphism Híbrida) */}
-      <aside className={`shrink-0 flex flex-col border-r border-black/5 dark:border-white/10 transition-[width] duration-300 z-40 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] will-change-[width] ${
-         isMinimized ? 'w-[74px]' : 'w-64 max-w-[280px]'
-      } ${isSysAdminMode ? 'bg-red-500/5 dark:bg-red-500/10 backdrop-blur-3xl' : 'bg-white/50 dark:bg-black/40 backdrop-blur-3xl'}`}>
-        <div className="flex items-center h-[52px] px-5 border-b border-black/5 dark:border-white/10 shrink-0 justify-between">
-          <span className={`font-black tracking-tighter text-lg leading-none transition-all flex items-center text-neutral-900 dark:text-white truncate ${isMinimized ? 'opacity-0 w-0' : 'opacity-100'}`}>
-            canal<span className={isSysAdminMode ? "text-red-500" : "text-primary"}>.</span>
-            {isSysAdminMode && <span className="ml-2 text-[10px] bg-red-500/20 text-red-500 px-1.5 py-0.5 rounded uppercase tracking-widest font-bold">Sys</span>}
-          </span>
-          <div className="flex items-center gap-3">
-             {!isMinimized && <span className="text-[9px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow-sm shrink-0">v2 IO</span>}
-             <button 
-                className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/10 text-white/60 hover:text-white transition-colors shrink-0 outline-none" 
-                onClick={toggleSidebar}
-             >
-               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ transform: isMinimized ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
-                 <polyline points="15 18 9 12 15 6"></polyline>
-               </svg>
-             </button>
-          </div>
+    <div className="flex flex-row h-screen w-full bg-background font-sans text-foreground selection:bg-primary/20 selection:text-primary overflow-hidden pl-[15px] gap-6">
+      
+      {/* Sidebar (Fully Responsive & Collapsible, FULL HEIGHT) */}
+      <aside className={`shrink-0 flex flex-col z-30 transition-[width] duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] bg-background will-change-[width] border-r border-border/40 ${isMinimized ? 'w-[80px]' : 'w-[260px]'}`}>
+        
+        {/* Sidebar Header Space */}
+        <div className="flex items-center h-14 px-5 shrink-0 justify-between">
+          <h2 className={`font-heading text-[22px] font-black tracking-tighter text-foreground select-none transition-opacity duration-300 ${isMinimized ? 'opacity-0 hidden' : 'opacity-100'}`}>
+            canal<span className="text-primary leading-none">.</span>
+          </h2>
+          <button 
+             onClick={toggleSidebar}
+             className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/10 text-muted-foreground transition-all hover:text-foreground outline-none shrink-0"
+             title={isMinimized ? "Expandir menu" : "Recolher menu"}
+          >
+             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform duration-300 ${isMinimized ? 'rotate-180' : ''}`}>
+               <path d="M15 18l-6-6 6-6" />
+             </svg>
+          </button>
         </div>
 
-        <div className={`p-4 border-b border-black/5 dark:border-white/10 shrink-0 ${isMinimized ? 'px-3' : 'px-4'}`}>
-           <OrgSwitcher userEmail={session.user.email} isSuperAdmin={isSuperAdmin} />
+        {/* Org Switcher Space */}
+        <div className={`py-4 shrink-0 transition-all duration-300 ${isMinimized ? 'px-3' : 'px-5'}`}>
+           {!isMinimized ? (
+              <OrgSwitcher userEmail={session.user.email} isSuperAdmin={isSuperAdmin} />
+           ) : (
+              <div className="w-[48px] h-[48px] rounded-xl bg-card border border-border shadow-sm flex items-center justify-center mx-auto" title={activeOrg?.name}>
+                <div className="w-8 h-8 bg-black/5 dark:bg-white/10 rounded-lg flex items-center justify-center">
+                  <span className="font-bold text-foreground text-xs uppercase">{activeOrg?.name?.substring(0, 2) || "NS"}</span>
+                </div>
+              </div>
+           )}
         </div>
 
-        <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-4 custom-scrollbar">
-          {(isSysAdminMode ? ADMIN_NAV : NAV).map((group) => {
+        {/* Navigation Core */}
+        <nav className={`flex-1 overflow-y-auto pb-8 flex flex-col gap-6 custom-scrollbar ${isMinimized ? 'px-3 scrollbar-hide' : 'px-5'}`}>
+          {(isSysAdminMode ? ADMIN_NAV : NAV).map((group, index) => {
             if (group.adminOnly && !isSuperAdmin) return null;
             if (group.ownerOnly && !isSuperAdmin && myRole !== "owner") return null;
 
@@ -105,92 +119,102 @@ export default function DashboardLayout() {
 
             if (visibleItems.length === 0) return null;
 
-            const isCollapsed = expanded !== group.section;
-
             return (
-              <div key={group.section} className="space-y-1">
-                <button
-                  className={`w-full flex items-center justify-between text-muted-foreground hover:text-foreground transition-colors px-3 py-2 outline-none group rounded-md ${isMinimized ? 'justify-center' : ''}`}
-                  onClick={() => toggle(group.section)}
-                  aria-expanded={!isCollapsed}
-                  title={isMinimized ? group.section : undefined}
-                >
-                  <div className="flex items-center gap-3 w-full">
-                    <span className="shrink-0">{group.icon || (
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-55">
-                        <rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect>
-                      </svg>
-                    )}</span>
-                    {!isMinimized && (
-                       <span className="text-[10px] font-bold uppercase tracking-widest text-left line-clamp-1">{group.section}</span>
-                    )}
-                  </div>
-                  {!isMinimized && (
-                    <svg
-                      width="14" height="14" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-                      className="opacity-40 transition-transform duration-200"
-                      style={{ transform: isCollapsed ? 'rotate(-90deg)' : 'rotate(0deg)' }}
-                    >
-                      <polyline points="6 9 12 15 18 9"/>
-                    </svg>
-                  )}
-                </button>
+              <div key={group.section} className={`flex flex-col relative`}>
+                <div className={`mb-3 flex items-center transition-all duration-300 ${isMinimized ? 'justify-center h-[2px] bg-border/40 mx-2 mb-4 rounded-full' : 'px-4'}`}>
+                  <span className={`text-xs font-medium text-muted-foreground/45 uppercase tracking-wide whitespace-nowrap overflow-hidden transition-all duration-300 ${isMinimized ? 'w-0 opacity-0' : 'w-auto opacity-100'}`}>
+                    {group.section}
+                  </span>
+                </div>
                 
-                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[800px] opacity-100'}`}>
-                  <div className={`flex flex-col gap-1 py-1 ${isMinimized ? 'items-center' : 'pl-3'}`}>
-                    {visibleItems.map((item) => (
-                      <NavLink
-                        key={item.to}
-                        to={item.to}
-                        end={item.end}
-                        className={({ isActive }) => `
-                           flex items-center gap-3 px-3 py-1.5 rounded-lg transition-all duration-150 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] text-[13px] font-medium outline-none active:scale-[0.98] group/link
-                           ${isActive 
-                              ? 'bg-white/10 dark:bg-black/20 text-neutral-900 dark:text-white shadow-sm border border-black/5 dark:border-white/10' 
-                              : 'text-neutral-500 dark:text-neutral-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-white border border-transparent'}
-                           ${isMinimized ? 'justify-center w-10 h-10 p-0 shadow-none' : 'w-full'}
-                        `}
-                        title={isMinimized ? item.label : undefined}
-                      >
-                        <span className="shrink-0">{item.icon}</span>
-                        {!isMinimized && <span className="truncate">{item.label}</span>}
-                      </NavLink>
-                    ))}
-                  </div>
+                <div className={`flex flex-col ${isMinimized ? 'gap-2 items-center' : 'gap-1'}`}>
+                  {visibleItems.map((item) => (
+                    <NavLink
+                      key={item.to}
+                      to={item.to}
+                      end={item.end}
+                      title={isMinimized ? item.label : undefined}
+                      className={({ isActive }) => `
+                         flex items-center transition-all duration-200 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] outline-none group/link
+                         ${isMinimized ? 'w-[44px] h-[44px] justify-center rounded-2xl' : 'w-full gap-4 px-4 py-2.5 rounded-[12px] active:scale-[0.98]'}
+                         ${isActive 
+                            ? 'bg-primary/5 text-primary shadow-sm font-semibold dark:bg-primary/10' 
+                            : 'text-foreground/75 hover:bg-black/5 dark:hover:bg-white/5 hover:text-foreground border border-transparent'}
+                      `}
+                    >
+                      <span className="shrink-0 opacity-70 group-hover/link:opacity-100 transition-opacity ease-in-out duration-200">{item.icon}</span>
+                      <span className={`text-[14px] whitespace-nowrap overflow-hidden transition-all duration-300 ${isMinimized ? 'w-0 opacity-0 hidden' : 'w-auto opacity-100'}`}>
+                        {item.label}
+                      </span>
+                    </NavLink>
+                  ))}
                 </div>
               </div>
             );
           })}
         </nav>
 
-        <div className={`shrink-0 border-t border-black/5 dark:border-white/10 p-4 ${isSysAdminMode ? 'bg-red-500/5' : 'bg-transparent'}`}>
-           <UserDropdown user={session.user} isSuperAdmin={isSuperAdmin} onSignOut={handleSignOut} />
+        {/* User Drops / SignOut */}
+        <div className={`shrink-0 py-5 border-t border-border/40 transition-all duration-300 ${isMinimized ? 'px-3' : 'px-5'}`}>
+           {isMinimized ? (
+              <button 
+                onClick={handleSignOut} 
+                title="Log out" 
+                className="w-[44px] h-[44px] mx-auto flex items-center justify-center rounded-[14px] bg-black/5 hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors outline-none border border-transparent"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+              </button>
+           ) : (
+              <UserDropdown user={session.user} isSuperAdmin={isSuperAdmin} onSignOut={handleSignOut} />
+           )}
         </div>
       </aside>
 
-      {/* Main Container */}
-      <div className="flex flex-col flex-1 min-w-0 bg-transparent relative">
-        {/* Glow Effects Container (Subtle Aura Híbrida) */}
-        <div className="absolute top-0 right-0 -z-10 w-[800px] h-[500px] bg-sky-500/10 rounded-full blur-[120px] pointer-events-none opacity-40 mix-blend-multiply dark:mix-blend-screen" />
-        <div className="absolute bottom-0 left-0 -z-10 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none opacity-30 mix-blend-multiply dark:mix-blend-screen" />
-
-        {/* Global Nav Bar (Frosted Glass Topbar HIG) */}
-        <header className="flex items-center justify-between h-[52px] px-8 border-b border-black/5 dark:border-white/5 shrink-0 bg-white/60 dark:bg-black/40 backdrop-blur-[20px] sticky top-0 z-30 shadow-[0_1px_0_rgba(255,255,255,0.4)_inset] dark:shadow-[0_1px_0_rgba(255,255,255,0.02)_inset]">
-          <div className="flex flex-col justify-center">
-            <h1 className="text-[14px] font-semibold tracking-tight text-neutral-900 dark:text-white/90 leading-tight">{meta.title}</h1>
-            {meta.sub && <p className="text-[10px] font-medium uppercase tracking-wider text-neutral-500 dark:text-white/40 leading-tight">{meta.sub}</p>}
+      {/* Content Pane (The White Card / System Surface) */}
+      <main className="flex-1 overflow-hidden relative flex flex-col bg-card z-20 transition-all duration-300">
+        
+        {/* Inner Topbar specific to Main Content Area */}
+        <header className="flex-none h-12 flex items-center justify-between px-6 md:px-8 z-40 border-b border-border/40">
+          <div className="flex items-center gap-4 flex-1 min-w-0">
+            <h1 className="text-lg font-semibold text-foreground truncate">{meta.title}</h1>
           </div>
-          <div className="flex items-center gap-4">
-             {/* Slot for future global actions */}
+          <div className="flex items-center gap-4 shrink-0">
+             {/* Theme Toggler */}
+             <button 
+               onClick={toggleTheme}
+               className="w-9 h-9 flex items-center justify-center rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 text-foreground transition-all outline-none border border-black/5 dark:border-white/10 active:scale-[0.96]"
+               title={theme === 'light' ? 'Mudar para modo escuro' : 'Mudar para modo claro'}
+             >
+               {theme === 'light' ? (
+                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                   <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                 </svg>
+               ) : (
+                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                   <circle cx="12" cy="12" r="5"></circle>
+                   <line x1="12" y1="1" x2="12" y2="3"></line>
+                   <line x1="12" y1="21" x2="12" y2="23"></line>
+                   <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                   <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                   <line x1="1" y1="12" x2="3" y2="12"></line>
+                   <line x1="21" y1="12" x2="23" y2="12"></line>
+                   <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                   <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                 </svg>
+               )}
+             </button>
           </div>
         </header>
 
-        {/* Dynamic Content Outlet */}
-        <main className="flex-1 overflow-x-hidden overflow-y-auto">
+        <div className="absolute top-0 right-0 -z-10 w-[800px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none opacity-40 mix-blend-multiply dark:mix-blend-screen" />
+        
+        {/* Scrollable page area */}
+        <div className="flex-1 overflow-y-auto w-full custom-scrollbar relative">
           <Outlet />
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }

@@ -4,16 +4,16 @@ export default function SaasBilling() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300 relative min-h-screen">
+    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300 relative min-h-screen mx-auto max-w-7xl w-full flex-1 overflow-hidden min-w-0">
       <div className="flex items-center justify-between">
         <div className="space-y-1">
-          <h2 className="text-2xl font-black tracking-tight text-foreground flex items-center gap-2">
+          <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-2">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
               <rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line>
             </svg>
             Billing e Faturamento
           </h2>
-          <p className="text-[13px] font-medium text-muted-foreground uppercase tracking-widest">
+          <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
             Gestão de Assinatura
           </p>
         </div>

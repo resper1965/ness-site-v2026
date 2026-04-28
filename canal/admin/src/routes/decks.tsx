@@ -28,10 +28,10 @@ export default function DecksPage() {
   };
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300 mx-auto max-w-7xl w-full flex-1 overflow-hidden min-w-0">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
-          <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
+          <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-3">
              <svg className="text-muted-foreground" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
             Decks Engine <span className="text-muted-foreground font-light">::</span> Apresentações
           </h2>
@@ -44,7 +44,7 @@ export default function DecksPage() {
       <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 items-start">
          <div className="xl:col-span-1 space-y-6">
            <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-             <div className="bg-muted/30 p-5 border-b border-border/40">
+             <div className="bg-muted/30 p-5 border-b border-border/50">
                <h3 className="font-semibold leading-none tracking-tight">Parametrizar Upload</h3>
              </div>
              <div className="p-6 space-y-5">
@@ -53,7 +53,7 @@ export default function DecksPage() {
                    <select 
                      value={brand} 
                      onChange={(e) => setBrand(e.target.value)} 
-                     className="flex h-11 w-full items-center justify-between rounded-lg border border-input bg-background/50 px-4 py-2 text-[11px] font-bold uppercase tracking-wider shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary cursor-pointer text-foreground"
+                     className="flex h-11 w-full items-center justify-between rounded-lg border border-input bg-background/50 px-4 py-2 text-xs font-bold uppercase tracking-wider shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary cursor-pointer text-foreground"
                    >
                      {Object.entries(BRANDS).map(([k, v]) => <option key={k} value={k}>{v.name}</option>)}
                    </select>
@@ -65,7 +65,7 @@ export default function DecksPage() {
                      value={title} 
                      onChange={(e) => setTitle(e.target.value)} 
                      placeholder="Ex: Q3 Master Deck"
-                     className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm shadow-inner transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" 
+                     className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" 
                    />
                 </div>
              </div>
@@ -107,9 +107,9 @@ export default function DecksPage() {
 
             {history.length > 0 && (
               <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-                <div className="bg-muted/30 p-5 border-b border-border/40 flex items-center justify-between">
+                <div className="bg-muted/30 p-5 border-b border-border/50 flex items-center justify-between">
                   <h3 className="font-semibold leading-none tracking-tight">Histórico de Decks da Organização</h3>
-                  <span className="inline-flex items-center justify-center rounded-md bg-background border border-border px-2 py-0.5 font-mono text-[10px] font-bold shadow-sm">
+                  <span className="inline-flex items-center justify-center rounded-md bg-background border border-border px-2 py-0.5 font-mono text-xs font-bold shadow-sm">
                     {history.length}
                   </span>
                 </div>
@@ -119,13 +119,13 @@ export default function DecksPage() {
                       <div className="flex flex-col gap-1.5">
                         <span className="text-sm font-bold text-foreground lead-tight">{h.title}</span>
                         <div className="flex gap-2 items-center">
-                           <span className="inline-flex items-center rounded bg-accent/10 border border-border px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                           <span className="inline-flex items-center rounded bg-accent/10 border border-border px-1.5 py-0.5 text-xs font-bold uppercase tracking-wider text-muted-foreground">
                               Marca: {BRANDS[h.brand as keyof typeof BRANDS]?.name || h.brand}
                            </span>
-                           <span className="text-[10px] font-mono text-muted-foreground uppercase">{h.date}</span>
+                           <span className="text-xs font-mono text-muted-foreground uppercase">{h.date}</span>
                         </div>
                       </div>
-                      <button className="inline-flex items-center justify-center h-8 text-[11px] font-bold uppercase tracking-wider text-primary bg-primary/10 hover:bg-primary hover:text-white rounded transition-colors w-max px-4 border border-primary/20">
+                      <button className="inline-flex items-center justify-center h-8 text-xs font-bold uppercase tracking-wider text-primary bg-primary/10 hover:bg-primary hover:text-white rounded transition-colors w-max px-4 border border-primary/20">
                          Baixar Original
                       </button>
                     </div>

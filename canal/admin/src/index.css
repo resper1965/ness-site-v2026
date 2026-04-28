@@ -1,37 +1,44 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
 @import './styles/auth.css';
 @import './styles/saas.css';
 @import './styles/collection.css';
 @import './styles/dashboard.css';
 
+@source "../src";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --font-sans: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'Fira Code', 'SF Mono', monospace;
+  --font-heading: 'Montserrat', sans-serif;
 
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
 
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
 
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
 
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
 
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
 
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
 
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
@@ -44,70 +51,68 @@
   /* ========================================================= */
   /* Apple HIG Híbrido (Light Mode Padrão)                     */
   /* ========================================================= */
-  --background: 0 0% 96.1%;     /* #F5F5F7 System Gray 6 equivalent */
-  --foreground: 0 0% 0%;        /* #000000 */
+  --background: 240 20% 97%;    /* #F5F6F8 Claríssimo, macOS Window */
+  --foreground: 240 10% 10%;    /* #171719 Quase preto grafite */
 
-  --card: 0 0% 100%;            /* #FFFFFF */
-  --card-foreground: 0 0% 0%;   /* #000000 */
+  --card: 0 0% 100%;            /* #FFFFFF Branco Puro Apple */
+  --card-foreground: 240 10% 10%; 
 
   --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 0%;
+  --popover-foreground: 240 10% 10%;
 
   --primary: 195 100% 45.5%;    /* #00ade8 (Ness Primary) */
   --primary-foreground: 0 0% 100%;
 
-  --secondary: 240 4.8% 95.9%;  /* System Gray */
-  --secondary-foreground: 240 5.9% 10%;
+  --secondary: 240 10% 93%;     /* #ECECEF System Gray Elevado */
+  --secondary-foreground: 240 15% 20%;
 
-  --muted: 240 4.8% 95.9%;      /* Muted background (#F2F2F7 ish) */
-  --muted-foreground: 240 3.8% 46.1%; /* System Gray for text */
+  --muted: 240 10% 90%;         /* #E5E5EA System Gray 5 */
+  --muted-foreground: 240 5% 45%; 
 
-  --accent: 195 100% 45.5%;     /* Secondary interactive */
-  --accent-foreground: 0 0% 0%;
+  --accent: 195 100% 45.5%;     
+  --accent-foreground: 0 0% 100%;
 
-  --destructive: 0 84.2% 60.2%; /* #FF3B30 */
-  --destructive-foreground: 0 0% 98%;
+  --destructive: 0 84.2% 60.2%; /* Apple Red */
+  --destructive-foreground: 0 0% 100%;
 
-  --border: 0 0% 0% / 0.08;     /* HIG Subtle Borders */
-  --input: 0 0% 0% / 0.08;
+  --border: 240 5% 85% / 0.5;   /* Borda cristalina delicada */
+  --input: 240 5% 85% / 0.5;
   --ring: 195 100% 45.5%;
 
-  --radius: 0.75rem;            /* 12px HIG Geometry */
+  --radius: 12px;               /* 12px HIG Geometry */
   
   --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: 'SF Mono', 'Fira Code', ui-monospace, Menlo, Monaco, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: 0 0% 0%;        /* #000000 - True macOS Dark */
-    --foreground: 0 0% 100%;      /* #FFFFFF */
+.dark {
+    --background: 240 10% 8%;     /* #131315 Elegante macOS Graphite, NÃO #000 */
+    --foreground: 0 0% 98%;       /* #FAFAFA */
 
-    --card: 240 3.7% 11%;         /* #1C1C1E Elevated Surface */
-    --card-foreground: 0 0% 100%;
+    --card: 240 10% 12%;          /* #1B1B1D Elevated Surface Fino */
+    --card-foreground: 0 0% 98%;
 
-    --popover: 240 3.7% 11%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 240 10% 12%;
+    --popover-foreground: 0 0% 98%;
 
     --primary: 195 100% 45.5%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 240 3.7% 18%;    /* #2C2C2E Deeper component */
+    --secondary: 240 8% 18%;      /* #2B2B2D Deeper component */
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 240 3.7% 18%;        
-    --muted-foreground: 240 5% 64.9%;
+    --muted: 240 8% 18%;        
+    --muted-foreground: 240 5% 65%;
 
     --accent: 195 100% 45.5%;
     --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 84.2% 60.2%; /* #FF3B30 */
+    --destructive: 0 84% 60%; 
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 100% / 0.12;   /* White frost border */
-    --input: 0 0% 100% / 0.12;
+    --border: 0 0% 100% / 0.08;   /* White frost ultra-fino */
+    --input: 0 0% 100% / 0.08;
     --ring: 195 100% 45.5%;
-  }
 }
 
 html, body, #root { height: 100%; }

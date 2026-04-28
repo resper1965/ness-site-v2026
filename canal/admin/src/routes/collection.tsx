@@ -110,57 +110,74 @@ export default function CollectionPage({ slug }: { slug: string }) {
   }
 
   if (!collection) {
-    return <div className="empty-state"><p>Collection "{slug}" não encontrada.</p></div>;
+    return <div className="flex items-center justify-center h-full"><div className="loader-inline" /></div>;
   }
 
   return (
-    <>
-      {/* Toolbar */}
-      <div className="collection-toolbar">
-        <div className="toolbar-left">
-          {collection.has_locale ? (
-            <div className="locale-tabs">
-              {LOCALES.map((l) => (
-                <button key={l} className={`locale-tab ${l === locale ? "active" : ""}`} onClick={() => setLocale(l)}>
-                  {l.toUpperCase()}
-                </button>
-              ))}
+    <div className="flex flex-col h-full overflow-hidden fadeIn">
+      {/* 
+        This is the global Data View header.
+      */}
+      <div className="flex-none px-6 md:px-12 py-8 flex border-b border-border/50 w-full min-w-0 overflow-hidden">
+        <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto min-w-0">
+          {/* Top row: Metrics & Locale */}
+          <div className="flex items-center justify-between w-full h-12">
+            <div className="flex items-center gap-6">
+              {collection.has_locale && (
+                <div className="flex p-1 bg-black/5 dark:bg-white/5 rounded-full border border-black/5 dark:border-white/5">
+                  {LOCALES.map((l) => (
+                    <button 
+                      key={l} 
+                      className={`px-4 py-1.5 rounded-full text-xs uppercase transition-all duration-200 outline-none ${l === locale ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                      onClick={() => setLocale(l)}
+                    >
+                      {l}
+                    </button>
+                  ))}
+                </div>
+              )}
+              {meta && (
+                <span className="text-[14px] font-medium text-muted-foreground bg-muted/40 px-3 py-1 rounded-full border border-border/50">
+                  {meta.total} {meta.total === 1 ? "registro ativo" : "registros ativos"}
+                </span>
+              )}
             </div>
-          ) : null}
-          {meta && (
-            <span className="toolbar-count">
-              {meta.total} {meta.total === 1 ? "item" : "itens"}
-            </span>
-          )}
+
+            <button 
+              className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground text-[14px] font-semibold px-5 py-2.5 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all outline-none"
+              onClick={openCreate}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              <span>{`Novo ${collection.label}`}</span>
+            </button>
+          </div>
         </div>
-        <button className="btn btn-primary btn-sm" onClick={openCreate}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
-          Novo {collection.label}
-        </button>
       </div>
 
-      {/* Table */}
-      <div className="card">
-        <EntryTable
-          collection={collection}
-          items={items}
-          meta={meta}
-          loading={loading}
-          page={page}
-          togglingId={togglingId}
-          togglingFeaturedId={togglingFeaturedId}
-          onPageChange={setPage}
-          onEdit={openEdit}
-          onDelete={handleDelete}
-          onToggleStatus={handleToggleStatus}
-          onToggleFeatured={handleToggleFeatured}
-          onCreateFirst={openCreate}
-        />
+      {/* Main Data Container */}
+      <div className="flex-1 overflow-y-auto px-6 md:px-12 py-8 custom-scrollbar w-full min-w-0 overflow-hidden">
+        <div className="max-w-[1400px] mx-auto min-w-0">
+          <EntryTable
+            collection={collection}
+            items={items}
+            meta={meta}
+            loading={loading}
+            page={page}
+            togglingId={togglingId}
+            togglingFeaturedId={togglingFeaturedId}
+            onPageChange={setPage}
+            onEdit={openEdit}
+            onDelete={handleDelete}
+            onToggleStatus={handleToggleStatus}
+            onToggleFeatured={handleToggleFeatured}
+            onCreateFirst={openCreate}
+          />
+        </div>
       </div>
 
-      {/* Modal */}
+      {/* Modal is injected correctly */}
       {modal && (
         <EntryModal
           mode={modal}
@@ -174,6 +191,6 @@ export default function CollectionPage({ slug }: { slug: string }) {
           onClose={closeModal}
         />
       )}
-    </>
+    </div>
   );
 }

@@ -42,14 +42,14 @@ export default function SaasSettingsPage() {
 
   if (!activeOrg) {
     return (
-      <div className="flex-1 p-8 flex flex-col animate-in fade-in slide-in-from-bottom-2">
-         <div className="flex-1 flex flex-col items-center justify-center p-16 rounded-xl border border-border/50 bg-background/50 text-center">
-            <div className="h-20 w-20 rounded-full bg-accent/10 flex items-center justify-center mb-6">
+      <div className="mx-auto max-w-7xl w-full flex-1 min-w-0 p-6 md:p-8 pt-6 md:pt-8 flex flex-col animate-in fade-in slide-in-from-bottom-2 duration-400 overflow-y-auto custom-scrollbar">
+         <div className="flex-1 flex flex-col items-center justify-center p-20 rounded-2xl border border-border/50 bg-background/50 text-center">
+            <div className="h-20 w-20 rounded-full bg-accent/20 border border-border/50 text-accent flex items-center justify-center mb-6 shadow-sm">
                <ShieldIcon />
             </div>
-            <h2 className="text-xl font-bold tracking-tight text-foreground">Nenhuma organização focada</h2>
-            <p className="text-sm text-muted-foreground mt-2 max-w-md">
-               Acesso restrito ao painel SaaS. Você precisa selecionar ativamente um grupo inquilino na barra de contexto para visualizar este painel.
+            <h2 className="text-lg font-semibold tracking-tighter text-foreground uppercase">Nenhuma Organização Focada</h2>
+            <p className="text-sm font-medium text-muted-foreground mt-2 max-w-md">
+               Acesso restrito ao painel SaaS. Você precisa selecionar ativamente um grupo inquilino na barra de contexto lateral para visualizar este painel.
             </p>
          </div>
       </div>
@@ -57,26 +57,29 @@ export default function SaasSettingsPage() {
   }
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
+    <div className="mx-auto max-w-7xl w-full flex-1 min-w-0 p-6 md:p-8 pt-6 md:pt-8 space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-400 overflow-y-auto custom-scrollbar">
+      <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6 border-b border-border/50 pb-6 relative shrink-0">
+         <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-border/60 to-transparent"></div>
          <div>
-            <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
-               <svg className="text-muted-foreground" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m22 8-6 4 6 4V8Z"/><rect x="2" y="6" width="14" height="12" rx="2" ry="2"/></svg>
-               SaaS Config <span className="text-muted-foreground font-light">::</span> Organização
+            <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-3">
+               <svg className="text-muted-foreground/60" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m22 8-6 4 6 4V8Z"/><rect x="2" y="6" width="14" height="12" rx="2" ry="2"/></svg>
+               SaaS Config <span className="text-muted-foreground/30 font-light mx-1">/</span> Organização
             </h2>
-            <p className="text-sm font-medium text-muted-foreground tracking-wide mt-1 uppercase">
+            <p className="text-sm text-muted-foreground mt-1">
                Gerenciador do Espaço de Trabalho Virtual
             </p>
          </div>
-         <div className="inline-flex h-10 items-center justify-center rounded-lg bg-card border border-border/60 p-1 text-muted-foreground shadow-sm w-full sm:w-auto">
+
+         {/* Apple Segmented Control */}
+         <div className="inline-flex h-10 items-center justify-center rounded-xl bg-muted/40 border border-border/50 p-1 text-muted-foreground w-full xl:w-auto flex-nowrap overflow-x-auto overflow-y-hidden custom-scrollbar">
             {tabs.filter(t => t.visible).map((t) => (
               <button
                 key={t.key}
                 onClick={() => setActiveTab(t.key)}
-                className={`inline-flex items-center gap-2 justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-all ${
+                className={`inline-flex items-center gap-2 justify-center whitespace-nowrap rounded-lg px-4 py-1.5 text-xs font-bold uppercase tracking-wider transition-all ${
                   activeTab === t.key
-                    ? "bg-background text-foreground shadow-sm border border-border/50"
-                    : "hover:text-foreground hover:bg-muted/50"
+                    ? "bg-background text-foreground shadow-sm border border-border/60"
+                    : "hover:text-foreground hover:bg-muted/80 opacity-80"
                 }`}
               >
                 {t.icon}

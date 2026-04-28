@@ -58,104 +58,107 @@ export default function UsersPage() {
 
   if (!isSuperAdmin) {
     return (
-      <div className="flex-1 p-8 flex flex-col animate-in fade-in slide-in-from-bottom-2">
-         <div className="flex-1 flex flex-col items-center justify-center p-16 rounded-xl border border-red-500/20 bg-background/50">
-            <div className="h-16 w-16 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mb-4 border border-red-500/20">
-               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <div className="mx-auto max-w-7xl w-full flex-1 min-w-0 p-6 md:p-8 pt-6 md:pt-8 flex flex-col animate-in fade-in slide-in-from-bottom-2 duration-400 overflow-y-auto custom-scrollbar">
+         <div className="flex-1 flex flex-col items-center justify-center p-20 rounded-2xl border border-red-500/20 bg-background/50">
+            <div className="h-20 w-20 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mb-6 border border-red-500/20 shadow-sm animate-pulse">
+               <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             </div>
-            <h2 className="text-xl font-bold text-foreground">Acesso Negado</h2>
-            <p className="text-muted-foreground mt-2">{errorMsg}</p>
+            <h2 className="text-lg font-semibold tracking-tighter text-foreground uppercase">Acesso Negado</h2>
+            <p className="text-muted-foreground font-medium mt-2 max-w-md text-center">{errorMsg}</p>
          </div>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
+    <div className="mx-auto max-w-7xl w-full flex-1 min-w-0 p-6 md:p-8 pt-6 md:pt-8 space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-400 overflow-y-auto custom-scrollbar">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6 relative shrink-0">
+        <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-border/60 to-transparent"></div>
         <div>
-          <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
-             <svg className="text-muted-foreground" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            Data Center <span className="text-muted-foreground font-light">::</span> IAM Usuários
+          <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-3">
+             <svg className="text-muted-foreground/60" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Data Center <span className="text-muted-foreground/30 font-light mx-1">/</span> IAM Usuários
           </h2>
-          <p className="text-sm font-medium text-muted-foreground tracking-wide mt-1 uppercase">
+          <p className="text-sm text-muted-foreground mt-1">
             Plataforma Global Identity Access Management
           </p>
         </div>
       </div>
 
       {errorMsg && (
-         <div className="p-4 rounded-xl border bg-red-500/10 border-red-500/30 text-red-500 flex items-start gap-3">
-            <svg className="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+         <div className="p-4 rounded-xl border bg-red-500/10 border-red-500/30 text-red-500 flex items-start gap-4 shadow-sm">
+            <div className="mt-0.5 inline-flex items-center justify-center p-1 rounded-md bg-red-500/20 border border-red-500/30">
+              <svg className="shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
             <span className="text-sm font-bold tracking-wide">{errorMsg}</span>
          </div>
       )}
 
-      <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-        <div className="bg-muted/30 p-5 border-b border-border/40 flex items-center justify-between">
-          <h3 className="font-semibold leading-none tracking-tight">Censo de Identidades Globais</h3>
-          <span className="inline-flex items-center justify-center rounded-md bg-background border border-border px-3 py-1 font-mono text-sm font-bold shadow-sm">
+      <div className="rounded-2xl border border-border/50 bg-card text-card-foreground shadow-sm overflow-hidden">
+        <div className="bg-muted/30 p-5 px-6 border-b border-border/50 flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-foreground">Censo de Identidades Globais</h3>
+          <span className="inline-flex items-center justify-center rounded-lg bg-background border border-border/60 px-3 py-1 font-mono text-xs font-medium tracking-wide text-muted-foreground">
              T: {users.length}
           </span>
         </div>
         
         {loading ? (
-          <div className="flex justify-center p-16 animate-pulse"><div className="loader-inline" /></div>
+          <div className="flex justify-center p-20 animate-pulse"><div className="loader-inline" /></div>
         ) : (
-          <div className="w-full overflow-auto">
+          <div className="w-full overflow-x-auto min-w-0 max-w-full custom-scrollbar">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border/50 bg-muted/20 text-xs uppercase tracking-wider text-muted-foreground text-left">
-                  <th className="font-medium p-4 pl-6">Node Identidade</th>
-                  <th className="font-medium p-4">Email Principal</th>
-                  <th className="font-medium p-4">Privilégio</th>
-                  <th className="font-medium p-4">Estado (Flag)</th>
-                  <th className="font-medium p-4 pr-6 text-right">Diretivas</th>
+                <tr className="border-b border-border/50 bg-background/40 text-xs uppercase tracking-wide text-muted-foreground text-left">
+                  <th className="font-bold py-3.5 px-6">Node Identidade</th>
+                  <th className="font-bold py-3.5 px-4">Email Principal</th>
+                  <th className="font-bold py-3.5 px-4">Privilégio</th>
+                  <th className="font-bold py-3.5 px-4">Estado (Flag)</th>
+                  <th className="font-bold py-3.5 px-6 text-right w-[150px]">Diretivas</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((u: any) => {
                   const isBanned = u.banned;
                   return (
-                    <tr key={u.id} className={`border-b border-border/50 transition-colors ${isBanned ? 'bg-red-500/5' : 'hover:bg-muted/30'}`}>
-                      <td className="p-4 pl-6">
-                         <div className="font-semibold text-foreground flex items-center gap-2">
-                           <div className="w-6 h-6 rounded bg-primary/10 text-primary flex items-center justify-center font-bold text-[10px] uppercase border border-primary/20 shrink-0">
+                    <tr key={u.id} className={`border-b border-border/20 transition-colors ${isBanned ? 'bg-red-500/5' : 'hover:bg-muted/30'}`}>
+                      <td className="py-3 px-6">
+                         <div className="font-bold text-sm text-foreground flex items-center gap-3">
+                           <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-semibold text-xs uppercase border border-primary/20 shrink-0 shadow-sm">
                               {u.name?.charAt(0) || '?'}
                            </div>
                            {u.name || "N/A"}
                          </div>
-                         <div className="text-[10px] uppercase font-mono text-muted-foreground mt-1.5 tracking-wider opacity-70">ID: {u.id}</div>
+                         <div className="text-xs uppercase font-mono text-muted-foreground mt-1.5 tracking-wider opacity-70 ml-11">ID: {u.id}</div>
                       </td>
-                      <td className="p-4 text-xs font-mono font-medium text-muted-foreground">{u.email}</td>
-                      <td className="p-4">
+                      <td className="py-3 px-4 text-xs font-mono font-medium text-muted-foreground">{u.email}</td>
+                      <td className="py-3 px-4">
                         <select
-                          className="flex h-8 items-center justify-between rounded-md border border-input bg-background/50 px-3 py-1 text-[11px] uppercase tracking-wider shadow-sm transition-colors focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary cursor-pointer font-bold disabled:opacity-50"
+                          className="flex h-9 w-[140px] items-center justify-between rounded-xl border border-border/50 bg-background/50 px-3 py-1 text-xs uppercase tracking-wide transition-all hover:bg-background focus:bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary font-bold disabled:opacity-50 appearance-none cursor-pointer"
                           value={u.role || "user"}
                           onChange={(e) => handleRoleChange(u.id, e.target.value as "user" | "admin")}
                           disabled={u.email === session?.user?.email}
                         >
-                          <option value="user">MEMBER</option>
-                          <option value="admin">ROOT / ADMIN</option>
+                          <option value="user">Member Default</option>
+                          <option value="admin">Root Admin</option>
                         </select>
                       </td>
-                      <td className="p-4">
+                      <td className="py-3 px-4">
                         {isBanned ? (
-                          <span className="inline-flex items-center rounded-full bg-red-500/10 text-red-500 border border-red-500/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+                          <span className="inline-flex shadow-sm items-center rounded-md bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 px-2 py-0.5 text-xs font-medium uppercase tracking-wide">
                             Quarentena
                           </span>
                         ) : (
-                          <span className="inline-flex items-center rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+                          <span className="inline-flex shadow-sm items-center rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-2 py-0.5 text-xs font-medium uppercase tracking-wide">
                             Health Active
                           </span>
                         )}
                       </td>
-                      <td className="p-4 pr-6 flex justify-end">
+                      <td className="py-3 px-6 flex justify-end">
                         <button
-                          className={`inline-flex h-8 items-center justify-center rounded-md border text-[10px] font-bold uppercase tracking-wider px-3 transition-all ${
+                          className={`inline-flex h-9 items-center justify-center rounded-xl border text-xs font-medium uppercase tracking-wide px-4 transition-all shadow-sm ${
                              isBanned 
-                               ? 'border-input bg-background hover:bg-emerald-500 hover:text-white hover:border-emerald-500'
-                               : 'border-input bg-background hover:bg-red-500 hover:text-white hover:border-red-500'
+                               ? 'border-border/60 bg-background/50 hover:bg-emerald-500 hover:text-white hover:border-emerald-500 hover:shadow-emerald-500/20'
+                               : 'border-border/60 bg-background/50 hover:bg-red-500 hover:text-white hover:border-red-500 hover:shadow-red-500/20'
                           }`}
                           onClick={() => handleBan(u.id, isBanned)}
                           disabled={u.email === session?.user?.email}

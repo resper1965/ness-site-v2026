@@ -61,12 +61,12 @@ export default function SignaturesHub() {
   };
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300 mx-auto max-w-7xl w-full flex-1 overflow-hidden min-w-0">
       {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
-           <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
+           <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-3">
              <svg className="text-muted-foreground" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M10 12l2 2 4-4"/></svg>
              Branding <span className="text-muted-foreground font-light">::</span> Assinaturas
           </h2>
@@ -91,7 +91,7 @@ export default function SignaturesHub() {
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_1.5fr] gap-6 items-start">
         {/* Form Node */}
         <div className="rounded-xl border bg-card shadow-sm overflow-hidden flex flex-col">
-          <div className="bg-muted/30 p-5 border-b border-border/40">
+          <div className="bg-muted/30 p-5 border-b border-border/50">
              <h3 className="font-semibold leading-none tracking-tight">Parametrização Visual</h3>
           </div>
           <div className="p-6 space-y-5">
@@ -104,10 +104,10 @@ export default function SignaturesHub() {
                  ["URI do LinkedIn", "linkedin", "https://linkedin.com/…", "text"],
                ] as [string, string, string, string][]).map(([label, key, placeholder, type]) => (
                  <div key={key} className="space-y-2.5">
-                   <label className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground">{label}</label>
+                   <label className="text-xs font-bold tracking-wide uppercase text-muted-foreground">{label}</label>
                    <input 
                      type={type} 
-                     className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm text-foreground shadow-inner transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary"
+                     className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary"
                      value={form[key as keyof typeof form] as string}
                      placeholder={placeholder}
                      onChange={e => setForm({ ...form, [key]: e.target.value })} 
@@ -116,9 +116,9 @@ export default function SignaturesHub() {
                ))}
                <div className="grid grid-cols-2 gap-4">
                  <div className="space-y-2.5">
-                   <label className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground">Entidade / Marca</label>
+                   <label className="text-xs font-bold tracking-wide uppercase text-muted-foreground">Entidade / Marca</label>
                    <select 
-                     className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-3 py-2 text-[11px] font-bold tracking-wider uppercase text-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                     className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-3 py-2 text-xs font-bold tracking-wider uppercase text-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                      value={form.brand}
                      onChange={e => setForm({ ...form, brand: e.target.value })}
                    >
@@ -126,9 +126,9 @@ export default function SignaturesHub() {
                    </select>
                  </div>
                  <div className="space-y-2.5">
-                   <label className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground">Vínculo O.G.</label>
+                   <label className="text-xs font-bold tracking-wide uppercase text-muted-foreground">Vínculo O.G.</label>
                    <select 
-                     className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-3 py-2 text-[11px] font-bold tracking-wider uppercase text-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                     className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-3 py-2 text-xs font-bold tracking-wider uppercase text-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                      value={form.department}
                      onChange={e => setForm({ ...form, department: e.target.value })}
                    >
@@ -137,7 +137,7 @@ export default function SignaturesHub() {
                  </div>
                </div>
                
-               <div className="mt-2 pt-4 border-t border-border/40">
+               <div className="mt-2 pt-4 border-t border-border/50">
                  <label className="flex items-center gap-3 cursor-pointer">
                    <div className="relative flex items-center">
                      <input 
@@ -147,7 +147,7 @@ export default function SignaturesHub() {
                        className="w-4 h-4 rounded border-input bg-background focus:ring-primary text-primary shadow-sm" 
                      />
                    </div>
-                   <span className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground">Afixar Disclaimer LGPD no rodapé</span>
+                   <span className="text-xs font-bold tracking-wide uppercase text-muted-foreground">Afixar Disclaimer LGPD no rodapé</span>
                  </label>
                </div>
              </div>
@@ -157,21 +157,21 @@ export default function SignaturesHub() {
         {/* Preview Engine Node */}
         <div className="flex flex-col gap-6 sticky top-6">
            <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
-             <div className="bg-muted/30 p-5 border-b border-border/40 flex items-center justify-between">
+             <div className="bg-muted/30 p-5 border-b border-border/50 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                    <h3 className="font-semibold leading-none tracking-tight">Render Engine</h3>
-                   <span className="inline-flex px-1.5 py-0.5 rounded text-[8px] font-black uppercase text-white bg-accent animate-pulse tracking-wide ml-2">LIVE IO</span>
+                   <span className="inline-flex px-1.5 py-0.5 rounded text-[8px] font-semibold uppercase text-white bg-accent animate-pulse tracking-wide ml-2">LIVE IO</span>
                 </div>
                 <button 
                   onClick={copyHTML} 
-                  className={`inline-flex h-8 px-4 items-center justify-center rounded border ${copied ? "bg-emerald-500 border-emerald-600 text-white" : "bg-background border-border text-foreground hover:bg-accent hover:text-accent-foreground"} text-[10px] font-bold uppercase tracking-wider transition-colors shadow-sm`}
+                  className={`inline-flex h-8 px-4 items-center justify-center rounded border ${copied ? "bg-emerald-500 border-emerald-600 text-white" : "bg-background border-border text-foreground hover:bg-accent hover:text-accent-foreground"} text-xs font-bold uppercase tracking-wider transition-colors shadow-sm`}
                 >
                   {copied ? "Cód. Fonte na Área de Transf." : "Clonar HTML"}
                 </button>
              </div>
              
              {/* Virtual Container representing email body background */}
-             <div className="p-8 md:p-12 bg-slate-100 flex items-center justify-center min-h-[300px] overflow-auto">
+             <div className="p-8 md:p-12 bg-slate-100 flex items-center justify-center min-h-[300px] overflow-auto min-w-0 max-w-full custom-scrollbar">
                 <div className="inline-block bg-white p-6 rounded border shadow-sm" style={{ boxShadow: '0 2px 20px rgba(0,0,0,0.05)' }}>
                   <SignaturePreview form={form} />
                 </div>
@@ -185,7 +185,7 @@ export default function SignaturesHub() {
               <div>
                  <p className="text-sm font-semibold text-foreground">Como acoplar o elemento no Workspace:</p>
                  <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
-                   Opere o extrator acima via botão <strong>"Clonar HTML"</strong>. Navegue até seu G-Suite local (Web) &gt; Console Settings &gt; Signature e execute a colagem (<kbd className="bg-muted px-1.5 py-0.5 rounded border border-border/50 shadow-sm font-mono text-[10px]">CMD+V</kbd> ou <kbd className="bg-muted px-1.5 py-0.5 rounded border border-border/50 shadow-sm font-mono text-[10px]">CTRL+V</kbd>).
+                   Opere o extrator acima via botão <strong>"Clonar HTML"</strong>. Navegue até seu G-Suite local (Web) &gt; Console Settings &gt; Signature e execute a colagem (<kbd className="bg-muted px-1.5 py-0.5 rounded border border-border/50 shadow-sm font-mono text-xs">CMD+V</kbd> ou <kbd className="bg-muted px-1.5 py-0.5 rounded border border-border/50 shadow-sm font-mono text-xs">CTRL+V</kbd>).
                  </p>
               </div>
            </div>

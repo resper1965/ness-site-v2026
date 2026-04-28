@@ -27,7 +27,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4 selection:bg-primary/20 selection:text-primary">
       <div className="w-full max-w-md bg-card border border-border/50 rounded-2xl shadow-xl overflow-hidden shadow-black/5">
-        <div className="p-8 sm:p-10 space-y-8">
+        <div className="p-8 sm:p-10 space-y-6">
           
           <div className="flex flex-col items-center justify-center space-y-4">
              <div className="w-16 h-16 rounded-2xl bg-foreground text-background flex items-center justify-center mb-2 shadow-sm border border-border/20">
@@ -44,7 +44,7 @@ export default function LoginPage() {
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="space-y-4">
                <div className="space-y-2">
-                 <label htmlFor="email" className="text-xs font-bold tracking-widest uppercase text-muted-foreground flex items-center gap-2">
+                 <label htmlFor="email" className="text-xs font-bold tracking-wide uppercase text-muted-foreground flex items-center gap-2">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                     Correio Eletrônico
                  </label>
@@ -56,12 +56,12 @@ export default function LoginPage() {
                    placeholder="voce@ness.com.br"
                    required
                    autoFocus
-                   className="flex h-12 w-full rounded-xl border border-input bg-background/50 px-4 py-2 text-sm shadow-inner transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary text-foreground placeholder:text-muted"
+                   className="flex h-12 w-full rounded-xl border border-input bg-background/50 px-4 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary text-foreground placeholder:text-muted"
                  />
                </div>
 
                <div className="space-y-2">
-                 <label htmlFor="password" className="text-xs font-bold tracking-widest uppercase text-muted-foreground flex items-center gap-2">
+                 <label htmlFor="password" className="text-xs font-bold tracking-wide uppercase text-muted-foreground flex items-center gap-2">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                     Acesso Criptográfico
                  </label>
@@ -72,7 +72,7 @@ export default function LoginPage() {
                    onChange={(e) => setPassword(e.target.value)}
                    placeholder="••••••••"
                    required
-                   className="flex h-12 w-full rounded-xl border border-input bg-background/50 px-4 py-2 text-sm shadow-inner transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary text-foreground placeholder:-translate-y-0.5 placeholder:text-3xl placeholder:align-middle"
+                   className="flex h-12 w-full rounded-xl border border-input bg-background/50 px-4 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary text-foreground placeholder:-translate-y-0.5 placeholder:text-3xl placeholder:align-middle"
                  />
                </div>
             </div>
@@ -87,7 +87,7 @@ export default function LoginPage() {
             <button 
               type="submit" 
               disabled={loading} 
-              className="inline-flex w-full h-12 items-center justify-center rounded-xl bg-foreground text-background px-6 font-black uppercase text-sm tracking-widest shadow-md hover:bg-foreground/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed border-0"
+              className="inline-flex w-full h-12 items-center justify-center rounded-xl bg-foreground text-background px-6 font-black uppercase text-sm tracking-wide shadow-md hover:bg-foreground/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed border-0"
             >
               {loading ? (
                 <>
@@ -102,7 +102,7 @@ export default function LoginPage() {
         </div>
         
         <div className="p-4 bg-muted/30 border-t border-border/50 text-center">
-           <p className="text-[10px] font-mono font-medium text-muted-foreground uppercase opacity-70 tracking-widest">
+           <p className="text-xs font-mono font-medium text-muted-foreground uppercase opacity-70 tracking-wide">
               Acesso Monitorado & Auditado (SOC2)
            </p>
         </div>
