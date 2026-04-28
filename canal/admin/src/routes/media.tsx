@@ -72,7 +72,7 @@ export default function MediaPage() {
   const filteredItems = items.filter(item => activeTab === 'public' ? isImage(item.content_type) : (!isImage(item.content_type) || item.content_type === "application/pdf"));
 
   return (
-    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+    <div className="flex-1 space-y-6 p-9 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2">
         <div>
           <h2 className="text-lg font-semibold tracking-tight text-foreground">Cloud Media</h2>

@@ -239,7 +239,7 @@ export default function DashboardHome() {
   const hasError = health && HEALTH_SERVICES.some((s) => health[s.key]?.status === "error");
 
   return (
-    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+    <div className="flex-1 space-y-6 p-9 animate-in fade-in slide-in-from-bottom-2 duration-300">
 
       {/* ── System Health ── */}
       <Card>
