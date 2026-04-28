@@ -6,7 +6,7 @@ export default function EmergencyDashboard() {
   const [activeTab, setActiveTab] = useState('active');
 
   return (
-    <div className="flex-1 space-y-6 p-9 animate-in fade-in slide-in-from-bottom-2 duration-300">
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
 
       {/* KPI Cards */}
       <div className="grid gap-4 md:grid-cols-3">

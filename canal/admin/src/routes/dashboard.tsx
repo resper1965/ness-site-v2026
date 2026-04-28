@@ -210,11 +210,9 @@ export default function DashboardLayout() {
 
         <div className="absolute top-0 right-0 -z-10 w-[800px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none opacity-40 mix-blend-multiply dark:mix-blend-screen" />
         
-        {/* Scrollable page area */}
-        <div className="flex-1 overflow-y-auto w-full custom-scrollbar relative">
-          <div className="max-w-7xl w-full p-2">
-            <Outlet />
-          </div>
+        {/* Scrollable page area — shell owns ALL spacing */}
+        <div className="flex-1 overflow-y-auto w-full custom-scrollbar relative p-6">
+          <Outlet />
         </div>
       </main>
     </div>
