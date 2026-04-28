@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { authClient } from '../lib/auth-client'
 import { Card, CardHeader, CardTitle, CardAction, CardContent } from "../components/ui/Card"
+import { TabGroup, TabPanel } from "../components/ui/Tabs"
+import { EmptyState } from "../components/ui/EmptyState"
 
 interface DSARRequest {
   id: string; requester_name: string; requester_email: string; request_type: string;
@@ -96,29 +98,21 @@ export default function CompliancePage() {
           </p>
         </div>
         
-        <div className="inline-flex h-10 items-center justify-center rounded-lg bg-card border border-border/60 p-1 text-muted-foreground shadow-sm">
-          {(['dsar', 'whistleblower', 'policies'] as const).map(t => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`inline-flex items-center gap-2 justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-xs font-semibold transition-all ${
-                tab === t
-                  ? "bg-background text-foreground shadow-sm border border-border/50"
-                  : "hover:text-foreground hover:bg-muted/50"
-              }`}
-            >
-              {t === 'dsar' && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>}
-              {t === 'whistleblower' && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>}
-              {t === 'policies' && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>}
-              {t === 'dsar' ? 'Solicitações DSAR' : t === 'whistleblower' ? 'Denúncias' : 'Políticas'}
-            </button>
-          ))}
-        </div>
+        <TabGroup
+          tabs={[
+            { id: 'dsar', label: 'Solicitações DSAR', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> },
+            { id: 'whistleblower', label: 'Denúncias', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> },
+            { id: 'policies', label: 'Políticas', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> },
+          ]}
+          active={tab}
+          onChange={(id) => setTab(id as 'dsar' | 'whistleblower' | 'policies')}
+        />
       </div>
 
       {loading ? (
         <div className="flex justify-center p-16 animate-pulse"><div className="loader-inline" /></div>
-      ) : tab === 'dsar' ? (
+      ) : (<>
+      <TabPanel id="dsar" active={tab}>
         <Card>
           <CardHeader>
             <CardTitle>Solicitações DSAR (LGPD)</CardTitle>
@@ -130,13 +124,11 @@ export default function CompliancePage() {
             </CardAction>
           </CardHeader>
           {dsars.length === 0 ? (
-            <div className="p-16 flex flex-col items-center justify-center text-center bg-background/40">
-              <div className="h-16 w-16 rounded-full bg-accent text-muted-foreground flex items-center justify-center mb-4">
-                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22v-5"/><path d="M9 7V2"/><path d="M15 7V2"/><path d="M12 7V2"/><path d="M3 15h2"/><path d="M19 15h2"/><path d="M4 8l1.4 1.4"/><path d="M20 8l-1.4 1.4"/></svg>
-              </div>
-              <h4 className="font-semibold text-foreground">SLA Cumprido</h4>
-              <p className="text-sm text-muted-foreground mt-1 max-w-[300px]">Sem solicitações ativas no funil DSAR.</p>
-            </div>
+            <EmptyState
+              icon={<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 7V2"/><path d="M15 7V2"/><path d="M12 7V2"/><path d="M3 15h2"/><path d="M19 15h2"/><path d="M4 8l1.4 1.4"/><path d="M20 8l-1.4 1.4"/></svg>}
+              title="SLA Cumprido"
+              description="Sem solicitações ativas no funil DSAR."
+            />
           ) : (
             <div className="w-full overflow-auto">
               <table className="w-full text-sm">
@@ -199,7 +191,8 @@ export default function CompliancePage() {
             </div>
           )}
         </Card>
-      ) : tab === 'whistleblower' ? (
+      </TabPanel>
+      <TabPanel id="whistleblower" active={tab}>
         <Card>
           <CardHeader>
             <CardTitle>Canal de Denúncias (Whistleblower)</CardTitle>
@@ -211,13 +204,11 @@ export default function CompliancePage() {
             </CardAction>
           </CardHeader>
           {cases.length === 0 ? (
-            <div className="p-16 flex flex-col items-center justify-center text-center bg-background/40">
-               <div className="h-16 w-16 rounded-full bg-accent text-muted-foreground flex items-center justify-center mb-4">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-               </div>
-               <h4 className="font-semibold text-foreground">Zero Relatos</h4>
-               <p className="text-sm text-muted-foreground mt-1 max-w-[300px]">Nenhuma incidência listada anonimamente pela organização.</p>
-            </div>
+            <EmptyState
+              icon={<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>}
+              title="Zero Relatos"
+              description="Nenhuma incidência listada anonimamente pela organização."
+            />
           ) : (
             <div className="w-full overflow-auto">
               <table className="w-full text-sm">
@@ -274,7 +265,8 @@ export default function CompliancePage() {
             </div>
           )}
         </Card>
-      ) : (
+      </TabPanel>
+      <TabPanel id="policies" active={tab}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1">
             <Card className="sticky top-6">
@@ -324,13 +316,11 @@ export default function CompliancePage() {
                  <CardTitle>Diretório de Termos de Uso</CardTitle>
                </CardHeader>
                {policies.length === 0 ? (
-                 <div className="p-16 flex flex-col items-center justify-center text-center bg-background/40">
-                    <div className="h-16 w-16 rounded-full bg-accent text-muted-foreground flex items-center justify-center mb-4">
-                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                    </div>
-                    <h4 className="font-semibold text-foreground">Sem Histórico DGT</h4>
-                    <p className="text-sm text-muted-foreground mt-1 max-w-[300px]">Nenhuma política gerada neste tenant de infraestrutura.</p>
-                 </div>
+                 <EmptyState
+                   icon={<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>}
+                   title="Sem Histórico DGT"
+                   description="Nenhuma política gerada neste tenant de infraestrutura."
+                 />
                ) : (
                  <div className="w-full overflow-auto">
                    <table className="w-full text-sm">
@@ -375,7 +365,8 @@ export default function CompliancePage() {
             </Card>
           </div>
         </div>
-      )}
+      </TabPanel>
+      </>)}
     </div>
   )
 }

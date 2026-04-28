@@ -4,3 +4,5 @@ export { PageHeader } from "./PageHeader";
 export { Badge } from "./Badge";
 export { StatusDot } from "./StatusDot";
 export { SectionTitle } from "./SectionTitle";
+export { TabGroup, TabPanel } from "./Tabs";
+export { EmptyState } from "./EmptyState";

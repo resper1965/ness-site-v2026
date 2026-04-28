@@ -42,7 +42,7 @@ export default function SaasSettingsPage() {
 
   if (!activeOrg) {
     return (
-      <div className="mx-auto max-w-7xl w-full flex-1 min-w-0 p-6 md:p-6 md:pt-8 flex flex-col animate-in fade-in slide-in-from-bottom-2 duration-400 overflow-y-auto custom-scrollbar">
+      <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
          <div className="flex-1 flex flex-col items-center justify-center p-20 rounded-2xl border border-border/50 bg-background/50 text-center">
             <div className="h-20 w-20 rounded-full bg-accent/20 border border-border/50 text-accent flex items-center justify-center mb-6 shadow-sm">
                <ShieldIcon />
@@ -57,7 +57,7 @@ export default function SaasSettingsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl w-full flex-1 min-w-0 p-6 md:p-6 md:pt-8 space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-400 overflow-y-auto custom-scrollbar">
+    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6 border-b border-border/50 pb-6 relative shrink-0">
          <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-border/60 to-transparent"></div>
          <div>
@@ -89,7 +89,7 @@ export default function SaasSettingsPage() {
          </div>
       </div>
 
-      <div className="mt-6">
+      <div>
         {activeTab === "overview" && <OverviewTab org={activeOrg} agents={agents} />}
         {activeTab === "members" && isEditor && <MembersTab org={activeOrg} isAdmin={isAdmin} />}
         {activeTab === "plan" && <PlanTab org={activeOrg} />}

@@ -53,7 +53,7 @@ export default function UsersPage() {
 
   if (!isSuperAdmin) {
     return (
-      <div className="flex-1 p-6 flex flex-col items-center justify-center animate-in fade-in slide-in-from-bottom-2 duration-400">
+      <div className="flex-1 p-6 flex flex-col items-center justify-center animate-in fade-in slide-in-from-bottom-2 duration-300">
         <div className="flex flex-col items-center justify-center p-20 rounded-xl border border-red-500/20 bg-background/50">
           <div className="h-20 w-20 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mb-6 border border-red-500/20 shadow-sm animate-pulse">
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -66,7 +66,7 @@ export default function UsersPage() {
   }
 
   return (
-    <div className="flex-1 p-6 space-y-6 overflow-y-auto custom-scrollbar animate-in fade-in slide-in-from-bottom-2 duration-400">
+    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
 
       {errorMsg && (
         <div className="p-4 rounded-xl border border-red-500/30 bg-red-500/10 text-red-500 flex items-start gap-3">

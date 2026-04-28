@@ -4,7 +4,7 @@ export default function SaasBilling() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300 relative min-h-screen mx-auto max-w-7xl w-full flex-1 overflow-hidden min-w-0">
+    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="flex items-center justify-between">
         <div className="space-y-1">
           <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-2">

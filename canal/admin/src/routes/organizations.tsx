@@ -89,7 +89,7 @@ export default function OrganizationsPage() {
 
   if (!isSuperAdmin) {
     return (
-      <div className="mx-auto max-w-7xl w-full flex-1 min-w-0 p-6 md:p-6 md:pt-8 flex flex-col animate-in fade-in slide-in-from-bottom-2 duration-400 overflow-y-auto custom-scrollbar">
+      <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
          <div className="flex-1 flex flex-col items-center justify-center p-20 rounded-2xl border border-red-500/20 bg-background/50">
             <div className="h-20 w-20 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mb-6 border border-red-500/20 shadow-sm animate-pulse">
                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -102,7 +102,7 @@ export default function OrganizationsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl w-full flex-1 min-w-0 p-6 md:p-6 md:pt-8 space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-400 overflow-y-auto custom-scrollbar">
+    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6 relative shrink-0">
         <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-border/60 to-transparent"></div>
         <div>
@@ -142,11 +142,11 @@ export default function OrganizationsPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border/50 bg-background/40 text-xs tracking-tight text-muted-foreground text-left">
-                  <th className="font-bold py-3.5 px-6">Estrutura Org. (Tenant)</th>
-                  <th className="font-bold py-3.5 px-4">Identifier / Slug</th>
-                  <th className="font-bold py-3.5 px-4">Policy / Billing</th>
-                  <th className="font-bold py-3.5 px-4 text-center">Seats Utilizados</th>
-                  <th className="font-bold py-3.5 px-6 text-right w-[150px]">Diretiva</th>
+                  <th className="font-bold py-3 px-6">Estrutura Org. (Tenant)</th>
+                  <th className="font-bold py-3 px-4">Identifier / Slug</th>
+                  <th className="font-bold py-3 px-4">Policy / Billing</th>
+                  <th className="font-bold py-3 px-4 text-center">Seats Utilizados</th>
+                  <th className="font-bold py-3 px-6 text-right w-[150px]">Diretiva</th>
                 </tr>
               </thead>
               <tbody>

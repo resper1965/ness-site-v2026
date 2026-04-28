@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card } from "../components/ui/Card";
+import { TabGroup } from "../components/ui/Tabs";
+import { EmptyState } from "../components/ui/EmptyState";
 
 type Message = {
   type: string;
@@ -129,7 +131,7 @@ export default function CommunicationsPage() {
   }
 
   return (
-    <div className="flex-1 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300 h-full flex flex-col">
+    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300 flex flex-col">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6 shrink-0">
         <div>
           <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-3">
@@ -146,21 +148,17 @@ export default function CommunicationsPage() {
         {/* Left panel: List */}
         <div className="flex flex-col flex-1 lg:max-w-md w-full shrink-0 min-h-0">
           <div className="flex gap-2 mb-4 shrink-0 flex-wrap">
-            <div className="inline-flex h-9 items-center justify-center rounded-lg bg-card border border-border/60 p-1 text-muted-foreground shadow-sm">
-              {["all", "form", "lead", "chat"].map((f) => (
-                <button
-                  key={f}
-                  onClick={() => setFilter(f)}
-                  className={`inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-xs font-semibold transition-all ${
-                    filter === f
-                      ? "bg-background text-foreground shadow-sm border border-border/50"
-                      : "hover:text-foreground hover:bg-muted/50"
-                  }`}
-                >
-                  {f === "all" ? "Todos" : TYPE_CONFIG[f]?.label || f} 
-                </button>
-              ))}
-            </div>
+            <TabGroup
+              tabs={[
+                { id: "all", label: "Todos" },
+                { id: "form", label: "Formulário" },
+                { id: "lead", label: "Lead" },
+                { id: "chat", label: "Chat" },
+              ]}
+              active={filter}
+              onChange={setFilter}
+              className="h-9"
+            />
             <div className="relative flex-1 min-w-[150px]">
               <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
               <input
@@ -175,12 +173,11 @@ export default function CommunicationsPage() {
 
           <Card className="flex-1 overflow-y-auto w-full relative h-[400px] lg:h-auto">
             {filtered.length === 0 ? (
-              <div className="p-16 flex flex-col items-center justify-center text-center bg-background/40 h-full">
-                <div className="h-12 w-12 rounded-full bg-accent text-muted-foreground flex items-center justify-center mb-3">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                </div>
-                <h4 className="font-semibold text-foreground text-sm">Inbox Vazio</h4>
-              </div>
+              <EmptyState
+                icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>}
+                title="Inbox Vazio"
+                className="h-full"
+              />
             ) : (
                <div className="flex flex-col divide-y divide-border/50">
                 {filtered.map((msg, i) => {

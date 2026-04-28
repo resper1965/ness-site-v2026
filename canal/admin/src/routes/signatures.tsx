@@ -62,7 +62,7 @@ export default function SignaturesHub() {
   };
 
   return (
-    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300 mx-auto max-w-7xl w-full flex-1 overflow-hidden min-w-0">
+    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
       {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
@@ -96,7 +96,7 @@ export default function SignaturesHub() {
             <CardTitle>Parametrização Visual</CardTitle>
           </CardHeader>
           <CardContent className="space-y-5">
-             <div className="grid gap-5">
+             <div className="grid gap-6">
                {([
                  ["Nome Completo", "name", "Ex: Ana Souza", "text"],
                  ["Cargo", "role", "Ex: CPO", "text"],
