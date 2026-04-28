@@ -4,14 +4,15 @@ export default function EmergencyDashboard() {
   const [activeTab, setActiveTab] = useState('active');
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6">
+    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
-          <h2 className="text-3xl font-black tracking-tighter uppercase font-mono bg-clip-text text-transparent bg-linear-to-r from-red-600 to-orange-500 dark:from-red-500 dark:to-orange-400">
-            Tratativa de Crises (Incidentes P1)
+          <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
+            <svg className="text-destructive shrink-0" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Tratativa de Crises <span className="text-muted-foreground font-light">::</span> Incidentes P1
           </h2>
-          <p className="text-sm font-medium text-muted-foreground tracking-wide mt-1">
-            FLUXO DE CHAMADOS DE EMERGÊNCIA DOS CLIENTES DA NESS
+          <p className="text-sm font-medium text-muted-foreground tracking-wide mt-1 uppercase">
+            Fluxo de Chamados de Emergência dos Clientes da ness.
           </p>
         </div>
         <button className="group relative inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-semibold h-10 px-5 py-2 bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 transition-all focus:outline-none focus:ring-2 focus:ring-destructive focus:ring-offset-2 dark:focus:ring-offset-background">
@@ -132,11 +133,11 @@ export default function EmergencyDashboard() {
                   <p className="text-sm text-muted-foreground mt-2">Consulta raw ao dataset <code>canal_metrics</code> processado nos nós de borda (Edge).</p>
                 </div>
                 <div className="p-6">
-                  <div className="bg-neutral-900 border border-neutral-800 p-5 rounded-lg shadow-inner overflow-x-auto">
-                    <code className="text-xs font-mono leading-loose text-blue-300">
-                      <span className="text-pink-400">SELECT</span> blob1 <span className="text-pink-400">AS</span> tenant_id, blob2 <span className="text-pink-400">AS</span> path, <span className="text-cyan-400">SUM</span>(double1) <span className="text-pink-400">AS</span> latency <br/>
-                      <span className="text-pink-400">FROM</span> canal_metrics <br/>
-                      <span className="text-pink-400">GROUP BY</span> blob1, blob2
+                  <div className="bg-muted/20 border border-border/50 p-5 rounded-lg shadow-inner overflow-x-auto">
+                    <code className="text-xs font-mono leading-loose text-foreground/80">
+                      SELECT blob1 AS tenant_id, blob2 AS path, SUM(double1) AS latency <br/>
+                      FROM canal_metrics <br/>
+                      GROUP BY blob1, blob2
                     </code>
                   </div>
                   <div className="mt-5 flex justify-end">

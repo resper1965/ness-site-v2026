@@ -172,7 +172,7 @@ export default function AutomationDashboard() {
   };
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6">
+    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
           <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
@@ -229,7 +229,7 @@ export default function AutomationDashboard() {
                         <select 
                           value={socialPlatform}
                           onChange={e => setSocialPlatform(e.target.value)}
-                          className="flex h-11 w-full items-center justify-between rounded-lg border border-input bg-background/50 px-3 py-2 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent disabled:cursor-not-allowed disabled:opacity-50">
+                          className="flex h-11 w-full items-center justify-between rounded-lg border border-input bg-background/50 px-3 py-2 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary disabled:cursor-not-allowed disabled:opacity-50">
                           <option value="linkedin">LinkedIn (B2B Authority)</option>
                           <option value="instagram">Instagram (Visual First)</option>
                         </select>
@@ -239,7 +239,7 @@ export default function AutomationDashboard() {
                         <input 
                           value={socialBrief}
                           onChange={e => setSocialBrief(e.target.value)}
-                          className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent" placeholder="Descreva brevemente o conceito ou a news..." />
+                          className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary" placeholder="Descreva brevemente o conceito ou a news..." />
                       </div>
                     </div>
                     
@@ -249,7 +249,7 @@ export default function AutomationDashboard() {
                         <button 
                           onClick={handleGenerateSocial}
                           disabled={isDrafting || !socialBrief}
-                          className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-xs font-semibold h-7 px-3 bg-accent text-primary-foreground shadow hover:bg-accent/90 transition-all disabled:opacity-50">
+                          className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-xs font-semibold h-7 px-3 bg-primary text-primary-foreground shadow hover:bg-primary/90 transition-all disabled:opacity-50">
                           {isDrafting ? <div className="loader-inline w-3 h-3 mr-1.5" /> : <svg className="mr-1.5" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>}
                           Processar Prompt Generativo
                         </button>
@@ -318,8 +318,8 @@ export default function AutomationDashboard() {
                   <p className="text-sm text-muted-foreground mt-2">Central de sincronização de Identidade. Exporte as assinaturas estruturadas do domínio root.</p>
                 </div>
                 <div className="p-6 flex flex-col sm:flex-row items-center gap-4">
-                  <div className="flex-1 bg-neutral-900 border border-neutral-800 p-4 rounded-lg shadow-inner overflow-x-auto w-full">
-                    <code className="text-xs font-mono leading-loose text-blue-300">
+                  <div className="flex-1 bg-muted/20 border border-border/50 p-4 rounded-lg shadow-inner overflow-x-auto w-full">
+                    <code className="text-xs font-mono leading-loose text-foreground/80">
                       &lt;div style=&quot;font-family: Arial, sans-serif; font-size: 14px;&quot;&gt;<br/>
                         &nbsp;&nbsp;&lt;strong&gt;Seu Nome&lt;/strong&gt;&lt;br/&gt;<br/>
                         &nbsp;&nbsp;&lt;span style=&quot;color: #888;&quot;&gt;Cargo / Título&lt;/span&gt;<br/>

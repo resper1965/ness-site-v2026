@@ -230,7 +230,7 @@ export default function NewslettersPage() {
           </div>
 
           <div className="space-y-6">
-             <div className={`rounded-xl border shadow-xl overflow-hidden sticky top-6 ${showPreview ? 'bg-slate-200 dark:bg-slate-900' : 'bg-card text-card-foreground'}`}>
+             <div className={`rounded-xl border shadow-xl overflow-hidden sticky top-6 ${showPreview ? 'bg-muted/40' : 'bg-card text-card-foreground'}`}>
                <div className="bg-muted/30 p-5 border-b border-border/40 flex justify-between items-center bg-background/90 backdrop-blur">
                   <h3 className="font-semibold leading-none tracking-tight">Painel de Preview HTML</h3>
                </div>

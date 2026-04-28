@@ -302,7 +302,7 @@ export default function CompliancePage() {
                   </div>
                   <div className="space-y-2.5">
                      <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Corpo (Markdown Format)</label>
-                     <textarea placeholder="## 1. Disposições Iniciais..." value={newPolicy.body_md} onChange={e => setNewPolicy(p => ({ ...p, body_md: e.target.value }))} rows={8} className="flex w-full rounded-lg border border-input bg-slate-950 font-mono text-emerald-400 p-4 text-xs shadow-inner transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary resize-y" />
+                     <textarea placeholder="## 1. Disposições Iniciais..." value={newPolicy.body_md} onChange={e => setNewPolicy(p => ({ ...p, body_md: e.target.value }))} rows={8} className="flex w-full rounded-lg border border-input bg-background/80 font-mono text-foreground p-4 text-xs shadow-inner transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary resize-y" />
                   </div>
                   <div className="pt-2">
                      <button className="inline-flex h-11 w-full items-center justify-center rounded-md bg-foreground text-background px-6 font-bold uppercase text-xs tracking-wider shadow hover:bg-foreground/90 transition-all disabled:opacity-50" onClick={createPolicy} disabled={!newPolicy.title || !newPolicy.body_md}>
@@ -355,7 +355,7 @@ export default function CompliancePage() {
                            <td className="p-4 font-mono font-bold tracking-widest opacity-80 text-foreground text-xs">v{p.version}.0</td>
                            <td className="p-4">
                               <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border ${
-                                 p.status === 'published' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-slate-500/10 text-slate-500 border-slate-500/20'
+                                 p.status === 'published' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-muted/30 text-muted-foreground border-border/50'
                               }`}>
                                  {p.status}
                               </span>

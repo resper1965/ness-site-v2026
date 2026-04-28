@@ -262,6 +262,35 @@ admin.post('/newsletters/send', async (c) => {
   return c.json({ success: true, sent: sentCount })
 })
 
+// ── System Health Check ────────────────────────────────────────
+admin.get('/health', async (c) => {
+  if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
+
+  const checks: Record<string, { status: 'ok' | 'degraded' | 'error'; latency_ms?: number }> = {}
+
+  const t0 = Date.now()
+  try {
+    await c.env.DB.prepare('SELECT 1').first()
+    checks.db = { status: 'ok', latency_ms: Date.now() - t0 }
+  } catch {
+    checks.db = { status: 'error', latency_ms: Date.now() - t0 }
+  }
+
+  const t1 = Date.now()
+  try {
+    await c.env.CANAL_KV.get('__ping__')
+    checks.kv = { status: 'ok', latency_ms: Date.now() - t1 }
+  } catch {
+    checks.kv = { status: 'error' }
+  }
+
+  checks.ai = { status: c.env.AI ? 'ok' : 'degraded' }
+  checks.storage = { status: c.env.MEDIA ? 'ok' : 'degraded' }
+  checks.queue = { status: c.env.QUEUE ? 'ok' : 'degraded' }
+
+  return c.json({ ...checks, checked_at: new Date().toISOString() })
+})
+
 // ── AI Settings (KV-backed) ────────────────────────────────────
 admin.get('/ai-settings', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)

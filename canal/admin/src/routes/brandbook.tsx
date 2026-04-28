@@ -30,7 +30,7 @@ export default function BrandbookHub() {
   }
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6">
+    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
           <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
@@ -57,7 +57,7 @@ export default function BrandbookHub() {
             <svg className="mr-2" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
             {showManual ? 'Ocultar Manual' : 'Como Usar'}
           </button>
-          <Link to="/crud/brandbook" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-semibold h-9 px-4 bg-accent text-primary-foreground shadow hover:bg-accent/90 transition-all">
+          <Link to="/crud/brandbook" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-semibold h-9 px-4 bg-foreground text-background shadow hover:bg-foreground/90 transition-all">
             <svg className="mr-2 opacity-70" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
             Gerenciar Cadastros
           </Link>
