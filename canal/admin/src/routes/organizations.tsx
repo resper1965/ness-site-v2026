@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { authClient } from "../lib/auth-client";
+import { Card, CardHeader, CardTitle, CardAction, CardContent } from "../components/ui/Card";
+import { Badge } from "../components/ui/Badge";
 
 interface Organization {
   id: string;
@@ -87,7 +89,7 @@ export default function OrganizationsPage() {
 
   if (!isSuperAdmin) {
     return (
-      <div className="mx-auto max-w-7xl w-full flex-1 min-w-0 p-6 md:p-8 pt-6 md:pt-8 flex flex-col animate-in fade-in slide-in-from-bottom-2 duration-400 overflow-y-auto custom-scrollbar">
+      <div className="mx-auto max-w-7xl w-full flex-1 min-w-0 p-6 md:p-6 md:pt-8 flex flex-col animate-in fade-in slide-in-from-bottom-2 duration-400 overflow-y-auto custom-scrollbar">
          <div className="flex-1 flex flex-col items-center justify-center p-20 rounded-2xl border border-red-500/20 bg-background/50">
             <div className="h-20 w-20 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mb-6 border border-red-500/20 shadow-sm animate-pulse">
                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -100,7 +102,7 @@ export default function OrganizationsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl w-full flex-1 min-w-0 p-6 md:p-8 pt-6 md:pt-8 space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-400 overflow-y-auto custom-scrollbar">
+    <div className="mx-auto max-w-7xl w-full flex-1 min-w-0 p-6 md:p-6 md:pt-8 space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-400 overflow-y-auto custom-scrollbar">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6 relative shrink-0">
         <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-border/60 to-transparent"></div>
         <div>
@@ -123,13 +125,15 @@ export default function OrganizationsPage() {
          </div>
       )}
 
-      <div className="rounded-2xl border border-border/50 bg-card text-card-foreground shadow-sm overflow-hidden">
-        <div className="bg-muted/30 p-5 px-6 border-b border-border/50 flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-foreground">Topologia de Instâncias Aprovadas</h3>
-          <span className="inline-flex items-center justify-center rounded-lg bg-background border border-border/60 px-3 py-1 font-mono text-xs font-medium tracking-wide text-muted-foreground">
-             Nodes: {organizations.length}
-          </span>
-        </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Instâncias Aprovadas</CardTitle>
+          <CardAction>
+            <Badge variant="neutral">
+              <span className="font-mono">Nodes: {organizations.length}</span>
+            </Badge>
+          </CardAction>
+        </CardHeader>
         
         {loading ? (
           <div className="flex justify-center p-20 animate-pulse"><div className="loader-inline" /></div>
@@ -137,7 +141,7 @@ export default function OrganizationsPage() {
            <div className="w-full overflow-x-auto min-w-0 max-w-full custom-scrollbar">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border/50 bg-background/40 text-xs uppercase tracking-wide text-muted-foreground text-left">
+                <tr className="border-b border-border/50 bg-background/40 text-xs tracking-tight text-muted-foreground text-left">
                   <th className="font-bold py-3.5 px-6">Estrutura Org. (Tenant)</th>
                   <th className="font-bold py-3.5 px-4">Identifier / Slug</th>
                   <th className="font-bold py-3.5 px-4">Policy / Billing</th>
@@ -163,7 +167,7 @@ export default function OrganizationsPage() {
                       </td>
                       <td className="py-3 px-4">
                         <select
-                          className="flex h-9 w-[140px] items-center justify-between rounded-xl border border-border/50 bg-background/50 px-3 py-1 text-xs uppercase tracking-wide transition-all hover:bg-background focus:bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary font-bold appearance-none cursor-pointer"
+                          className="flex h-9 w-[140px] items-center justify-between rounded-xl border border-border/50 bg-background/50 px-3 py-1 text-xs tracking-tight transition-all hover:bg-background focus:bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary font-bold appearance-none cursor-pointer"
                           value={meta.plan || "free"}
                           onChange={(e) => handleUpdatePlan(o, e.target.value)}
                         >
@@ -193,7 +197,7 @@ export default function OrganizationsPage() {
             </table>
           </div>
         )}
-      </div>
+      </Card>
     </div>
   );
 }

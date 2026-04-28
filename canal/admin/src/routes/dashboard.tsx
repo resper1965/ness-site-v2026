@@ -71,10 +71,10 @@ export default function DashboardLayout() {
   }
 
   return (
-    <div className="flex flex-row h-screen w-full bg-background font-sans text-foreground selection:bg-primary/20 selection:text-primary overflow-hidden pl-[15px] gap-6">
+    <div className="flex flex-row h-screen w-full bg-background font-sans text-foreground selection:bg-primary/20 selection:text-primary overflow-hidden">
       
       {/* Sidebar (Fully Responsive & Collapsible, FULL HEIGHT) */}
-      <aside className={`shrink-0 flex flex-col z-30 transition-[width] duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] bg-background will-change-[width] border-r border-border/40 ${isMinimized ? 'w-[80px]' : 'w-[260px]'}`}>
+      <aside className={`shrink-0 flex flex-col z-30 transition-[width] duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] bg-background will-change-[width] ${isMinimized ? 'w-[80px]' : 'w-[260px]'}`}>
         
         {/* Sidebar Header Space */}
         <div className="flex items-center h-14 px-5 shrink-0 justify-between">
@@ -173,10 +173,10 @@ export default function DashboardLayout() {
       </aside>
 
       {/* Content Pane (The White Card / System Surface) */}
-      <main className="flex-1 overflow-hidden relative flex flex-col bg-card z-20 transition-all duration-300">
+      <main className="flex-1 overflow-hidden relative flex flex-col bg-card z-20 transition-all duration-300 border-l border-border/40">
         
         {/* Inner Topbar specific to Main Content Area */}
-        <header className="flex-none h-12 flex items-center justify-between px-6 md:px-8 z-40 border-b border-border/40">
+        <header className="flex-none h-12 flex items-center justify-between px-6 md:px-8 z-40 border-b border-border/40 bg-background/80 backdrop-blur-md sticky top-0">
           <div className="flex items-center gap-4 flex-1 min-w-0">
             <h1 className="text-lg font-semibold text-foreground truncate">{meta.title}</h1>
           </div>

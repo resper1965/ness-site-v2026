@@ -1,5 +1,7 @@
 import { useState, useRef } from "react";
 import { BRANDS } from "../components/decks/DeckDocument";
+import { Card, CardHeader, CardTitle, CardAction, CardContent } from "../components/ui/Card";
+import { Badge } from "../components/ui/Badge";
 
 export default function DecksPage() {
   const [brand, setBrand] = useState("ness");
@@ -28,7 +30,7 @@ export default function DecksPage() {
   };
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300 mx-auto max-w-7xl w-full flex-1 overflow-hidden min-w-0">
+    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300 mx-auto max-w-7xl w-full flex-1 overflow-hidden min-w-0">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
           <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-3">
@@ -43,23 +45,23 @@ export default function DecksPage() {
 
       <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 items-start">
          <div className="xl:col-span-1 space-y-6">
-           <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-             <div className="bg-muted/30 p-5 border-b border-border/50">
-               <h3 className="font-semibold leading-none tracking-tight">Parametrizar Upload</h3>
-             </div>
-             <div className="p-6 space-y-5">
+           <Card>
+             <CardHeader>
+               <CardTitle>Parametrizar Upload</CardTitle>
+             </CardHeader>
+             <CardContent className="space-y-5">
                 <div className="space-y-2.5">
-                   <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Tenant / Marca</label>
+                   <label className="text-sm font-semibold text-muted-foreground">Tenant / Marca</label>
                    <select 
                      value={brand} 
                      onChange={(e) => setBrand(e.target.value)} 
-                     className="flex h-11 w-full items-center justify-between rounded-lg border border-input bg-background/50 px-4 py-2 text-xs font-bold uppercase tracking-wider shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary cursor-pointer text-foreground"
+                     className="flex h-11 w-full items-center justify-between rounded-lg border border-input bg-background/50 px-4 py-2 text-xs font-semibold shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary cursor-pointer text-foreground"
                    >
                      {Object.entries(BRANDS).map(([k, v]) => <option key={k} value={k}>{v.name}</option>)}
                    </select>
                 </div>
                 <div className="space-y-2.5">
-                   <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Título Comercial Opcional</label>
+                   <label className="text-sm font-semibold text-muted-foreground">Título Comercial Opcional</label>
                    <input 
                      type="text" 
                      value={title} 
@@ -68,8 +70,8 @@ export default function DecksPage() {
                      className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" 
                    />
                 </div>
-             </div>
-           </div>
+             </CardContent>
+           </Card>
          </div>
 
          <div className="xl:col-span-3 space-y-6">
@@ -92,7 +94,7 @@ export default function DecksPage() {
               {uploading ? (
                 <div className="flex flex-col items-center justify-center gap-4 text-primary animate-pulse">
                   <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                  <span className="font-bold uppercase tracking-wider text-sm">Processando PDF...</span>
+                  <span className="font-bold tracking-tight text-sm">Processando PDF...</span>
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center gap-3 text-muted-foreground pointer-events-none">
@@ -100,38 +102,40 @@ export default function DecksPage() {
                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                   </div>
                   <p className="text-sm font-semibold text-foreground">Solte sua apresentação PDF pronta aqui</p>
-                  <p className="text-xs font-semibold uppercase tracking-wider">Apenas material estático e aprovado</p>
+                  <p className="text-xs font-semibold">Apenas material estático e aprovado</p>
                 </div>
               )}
             </div>
 
             {history.length > 0 && (
-              <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-                <div className="bg-muted/30 p-5 border-b border-border/50 flex items-center justify-between">
-                  <h3 className="font-semibold leading-none tracking-tight">Histórico de Decks da Organização</h3>
-                  <span className="inline-flex items-center justify-center rounded-md bg-background border border-border px-2 py-0.5 font-mono text-xs font-bold shadow-sm">
-                    {history.length}
-                  </span>
-                </div>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Histórico de Decks</CardTitle>
+                  <CardAction>
+                    <Badge variant="neutral">
+                      <span className="font-mono">{history.length}</span>
+                    </Badge>
+                  </CardAction>
+                </CardHeader>
                 <div className="divide-y divide-border">
                   {history.map((h, i) => (
                     <div key={i} className="p-4 hover:bg-muted/50 transition-colors flex items-center justify-between gap-4">
                       <div className="flex flex-col gap-1.5">
                         <span className="text-sm font-bold text-foreground lead-tight">{h.title}</span>
                         <div className="flex gap-2 items-center">
-                           <span className="inline-flex items-center rounded bg-accent/10 border border-border px-1.5 py-0.5 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                           <span className="inline-flex items-center rounded bg-accent/10 border border-border px-1.5 py-0.5 text-xs font-semibold text-muted-foreground">
                               Marca: {BRANDS[h.brand as keyof typeof BRANDS]?.name || h.brand}
                            </span>
                            <span className="text-xs font-mono text-muted-foreground uppercase">{h.date}</span>
                         </div>
                       </div>
-                      <button className="inline-flex items-center justify-center h-8 text-xs font-bold uppercase tracking-wider text-primary bg-primary/10 hover:bg-primary hover:text-white rounded transition-colors w-max px-4 border border-primary/20">
+                      <button className="inline-flex items-center justify-center h-8 text-xs font-semibold text-primary bg-primary/10 hover:bg-primary hover:text-white rounded transition-colors w-max px-4 border border-primary/20">
                          Baixar Original
                       </button>
                     </div>
                   ))}
                 </div>
-              </div>
+              </Card>
             )}
          </div>
       </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
 
 type Subscriber = { id: number; email: string; created_at: string };
 
@@ -108,10 +109,10 @@ export default function NewslettersPage() {
   };
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
-          <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
+          <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-3">
              <svg className="text-muted-foreground" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M4 7V4a2 2 0 0 1 2-2h8.5L20 7.5V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3"/><polyline points="14 2 14 8 20 8"/><path d="M5 11l-3 3 3 3"/><path d="M9 11l3 3-3 3"/></svg>
             Broadcasts <span className="text-muted-foreground font-light">::</span> Newsletters
           </h2>
@@ -121,11 +122,11 @@ export default function NewslettersPage() {
         </div>
 
         <div className="inline-flex h-10 items-center justify-center rounded-lg bg-card border border-border/60 p-1 text-muted-foreground shadow-sm w-full sm:w-auto">
-          <button onClick={() => setTab('compose')} className={`inline-flex items-center gap-2 justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-all ${tab === 'compose' ? 'bg-background text-foreground shadow-sm border border-border/50' : 'hover:text-foreground hover:bg-muted/50'}`}>
+          <button onClick={() => setTab('compose')} className={`inline-flex items-center gap-2 justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-xs font-semibold transition-all ${tab === 'compose' ? 'bg-background text-foreground shadow-sm border border-border/50' : 'hover:text-foreground hover:bg-muted/50'}`}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M21 15V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v10"/></svg>
             Composição
           </button>
-          <button onClick={() => setTab('subscribers')} className={`inline-flex items-center gap-2 justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-all ${tab === 'subscribers' ? 'bg-background text-foreground shadow-sm border border-border/50' : 'hover:text-foreground hover:bg-muted/50'}`}>
+          <button onClick={() => setTab('subscribers')} className={`inline-flex items-center gap-2 justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-xs font-semibold transition-all ${tab === 'subscribers' ? 'bg-background text-foreground shadow-sm border border-border/50' : 'hover:text-foreground hover:bg-muted/50'}`}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             Assinantes ({subscribers.length})
           </button>
@@ -135,14 +136,14 @@ export default function NewslettersPage() {
       {tab === "compose" && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
-            <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-              <div className="bg-muted/30 p-5 border-b border-border/40">
-                <h3 className="font-semibold leading-none tracking-tight">Nova Campanha</h3>
-              </div>
-              <div className="p-6 space-y-5">
+            <Card>
+              <CardHeader>
+                <CardTitle>Nova Campanha</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="space-y-2.5">
-                    <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Assunto do E-mail</label>
+                    <label className="text-sm font-semibold text-muted-foreground">Assunto do E-mail</label>
                     <input
                       type="text"
                       className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm shadow-inner transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary"
@@ -152,7 +153,7 @@ export default function NewslettersPage() {
                     />
                   </div>
                   <div className="space-y-2.5">
-                    <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Cluster de Audiência</label>
+                    <label className="text-sm font-semibold text-muted-foreground">Cluster de Audiência</label>
                     <select
                       value={draft.audience}
                       onChange={(e) => setDraft({ ...draft, audience: e.target.value })}
@@ -164,7 +165,7 @@ export default function NewslettersPage() {
                 </div>
 
                 <div className="space-y-2.5">
-                  <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Pré-header (Caixa de Entrada)</label>
+                  <label className="text-sm font-semibold text-muted-foreground">Pré-header (Caixa de Entrada)</label>
                   <input
                     type="text"
                     className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm shadow-inner transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary"
@@ -175,7 +176,7 @@ export default function NewslettersPage() {
                 </div>
 
                 <div className="space-y-2.5 border-t border-border/40 pt-5 mt-2">
-                  <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground flex justify-between">
+                  <label className="text-sm font-semibold text-muted-foreground flex justify-between">
                     Text Plain Output (Rmarkdown-like)
                     <span className="bg-primary/10 text-primary px-1.5 py-0.5 rounded text-[10px]">Markdown Auto-convertido</span>
                   </label>
@@ -193,22 +194,22 @@ export default function NewslettersPage() {
                     <svg className="mr-2" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
                     {showPreview ? "Recolher Editor" : "Renderizar HTML"}
                   </button>
-                  <button className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-xs font-bold uppercase tracking-wider text-primary-foreground shadow hover:bg-primary/90 transition-all disabled:opacity-50" onClick={handleSend} disabled={sending}>
+                  <button className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-all disabled:opacity-50" onClick={handleSend} disabled={sending}>
                     {sending ? "Transmitindo..." : `Atirar p/ ${subscribers.length} Emails`}
                   </button>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
             {sent.length > 0 && (
-              <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-                <div className="bg-muted/30 p-5 border-b border-border/40">
-                  <h3 className="font-semibold leading-none tracking-tight">Registro de Transmissão (Sessão Atual)</h3>
-                </div>
-                <div className="w-full overflow-auto">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Registro de Transmissão</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-border/50 bg-muted/20 text-xs uppercase tracking-wider text-muted-foreground text-left">
+                      <tr className="border-b border-border/50 bg-muted/20 text-xs tracking-tight text-muted-foreground text-left">
                         <th className="font-medium p-4">Assunto Compilado</th>
                         <th className="font-medium p-4">Destinatários Hits</th>
                         <th className="font-medium p-4">Data/Hora Log</th>
@@ -224,8 +225,8 @@ export default function NewslettersPage() {
                       ))}
                     </tbody>
                   </table>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             )}
           </div>
 
@@ -252,29 +253,26 @@ export default function NewslettersPage() {
       )}
 
       {tab === "subscribers" && (
-        <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-2">
-          <div className="bg-muted/30 p-5 border-b border-border/40 flex sm:flex-row flex-col sm:items-center justify-between gap-4">
-            <div>
-              <h3 className="font-semibold leading-none tracking-tight">CRM de Assinantes</h3>
-              <p className="text-[11px] text-muted-foreground uppercase font-bold tracking-wider mt-1.5">Mailing List Master</p>
-            </div>
+        <Card className="animate-in fade-in slide-in-from-bottom-2">
+          <CardHeader>
+            <CardTitle>CRM de Assinantes</CardTitle>
             <div className="flex items-center gap-2 w-full sm:w-auto">
               <input
                 type="email"
                 value={newEmail}
                 onChange={(e) => setNewEmail(e.target.value)}
-                placeholder="Incluir raw email..."
+                placeholder="Incluir email..."
                 onKeyDown={(e) => e.key === "Enter" && handleAddSubscriber()}
-                className="flex h-9 w-full sm:w-[250px] rounded-md border border-input bg-background px-3 py-1 text-xs shadow-inner transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
+                className="flex h-9 w-full sm:w-[250px] rounded-md border border-border bg-background px-3 py-1 text-xs transition-colors focus:outline-none focus:ring-1 focus:ring-primary"
               />
               <button 
-                className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-xs font-bold uppercase tracking-wider text-primary-foreground shadow hover:bg-primary/90 transition-all shrink-0" 
+                className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-all shrink-0" 
                 onClick={handleAddSubscriber}
               >
-                Injetar
+                Adicionar
               </button>
             </div>
-          </div>
+          </CardHeader>
 
           <div className="w-full overflow-auto">
             {subscribers.length === 0 ? (
@@ -288,7 +286,7 @@ export default function NewslettersPage() {
             ) : (
                <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-border/50 bg-muted/20 text-xs uppercase tracking-wider text-muted-foreground text-left">
+                  <tr className="border-b border-border/50 bg-muted/20 text-xs tracking-tight text-muted-foreground text-left">
                     <th className="font-medium p-4 pl-6">Nó Email (Identificável)</th>
                     <th className="font-medium p-4">Captado Em</th>
                     <th className="font-medium p-4 w-[100px] text-right pr-6">Remover</th>
@@ -320,7 +318,7 @@ export default function NewslettersPage() {
               </table>
             )}
           </div>
-        </div>
+        </Card>
       )}
     </div>
   );

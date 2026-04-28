@@ -3,6 +3,8 @@ import { Link } from "react-router";
 import { fetchEntries } from "../lib/api";
 import { authClient } from "../lib/auth-client";
 import { LogoCard } from "../components/brandbook/LogoCard";
+import { Card, CardHeader, CardTitle, CardAction, CardContent } from "../components/ui/Card";
+import { Badge } from "../components/ui/Badge";
 
 export default function BrandbookHub() {
   const { data: activeOrg } = authClient.useActiveOrganization();
@@ -30,10 +32,10 @@ export default function BrandbookHub() {
   }
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
-          <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
+          <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-3">
             Brandbook & Identidade
             {activeOrg && (
               <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-1 text-xs font-semibold text-primary ring-1 ring-inset ring-primary/20">
@@ -99,17 +101,16 @@ export default function BrandbookHub() {
 
       <div className="space-y-6">
         {/* Colors */}
-        <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-          <div className="bg-muted/30 p-5 border-b border-border/40 flex justify-between items-center">
-            <div>
-              <h3 className="font-semibold leading-none tracking-tight">Cores Corporativas</h3>
-            </div>
-            <span className="inline-flex items-center rounded-md bg-muted px-2.5 py-0.5 text-xs font-semibold text-muted-foreground font-mono">
-              {colors.length} {colors.length === 1 ? "cor" : "cores"}
-            </span>
-          </div>
-          
-          <div className="p-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Cores Corporativas</CardTitle>
+            <CardAction>
+              <Badge variant="neutral">
+                <span className="font-mono">{colors.length} {colors.length === 1 ? "cor" : "cores"}</span>
+              </Badge>
+            </CardAction>
+          </CardHeader>
+          <CardContent>
             {colors.length === 0 ? (
               <div className="rounded-lg border border-dashed border-border/60 bg-muted/20 p-8 text-center text-sm text-muted-foreground">
                 Nenhuma cor alocada para o tenant ativo no contexto visual.
@@ -134,21 +135,20 @@ export default function BrandbookHub() {
                 ))}
               </div>
             )}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Logos */}
-        <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-          <div className="bg-muted/30 p-5 border-b border-border/40 flex justify-between items-center">
-            <div>
-              <h3 className="font-semibold leading-none tracking-tight">Logos e Assinaturas (Preview Renderer)</h3>
-            </div>
-            <span className="inline-flex items-center rounded-md bg-muted px-2.5 py-0.5 text-xs font-semibold text-muted-foreground font-mono">
-              {logos.length} {logos.length === 1 ? "logo" : "logos"}
-            </span>
-          </div>
-          
-          <div className="p-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Logos e Assinaturas</CardTitle>
+            <CardAction>
+              <Badge variant="neutral">
+                <span className="font-mono">{logos.length} {logos.length === 1 ? "logo" : "logos"}</span>
+              </Badge>
+            </CardAction>
+          </CardHeader>
+          <CardContent>
             {logos.length === 0 ? (
               <div className="rounded-lg border border-dashed border-border/60 bg-muted/20 p-8 text-center text-sm text-muted-foreground">
                 Nenhum motor de logo configurado para processamento dinâmico neste tenant.
@@ -158,21 +158,20 @@ export default function BrandbookHub() {
                 {logos.map((logo: any) => <LogoCard key={logo.id} logo={logo} />)}
               </div>
             )}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Typography */}
-        <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-          <div className="bg-muted/30 p-5 border-b border-border/40 flex justify-between items-center">
-            <div>
-              <h3 className="font-semibold leading-none tracking-tight">Tipografia</h3>
-            </div>
-            <span className="inline-flex items-center rounded-md bg-muted px-2.5 py-0.5 text-xs font-semibold text-muted-foreground font-mono">
-              {typography.length} {typography.length === 1 ? "fonte" : "fontes"}
-            </span>
-          </div>
-          
-          <div className="p-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Tipografia</CardTitle>
+            <CardAction>
+              <Badge variant="neutral">
+                <span className="font-mono">{typography.length} {typography.length === 1 ? "fonte" : "fontes"}</span>
+              </Badge>
+            </CardAction>
+          </CardHeader>
+          <CardContent>
             {typography.length === 0 ? (
               <div className="rounded-lg border border-dashed border-border/60 bg-muted/20 p-8 text-center text-sm text-muted-foreground">
                 Familia tipográfica não estabelecida no manual central.
@@ -190,8 +189,8 @@ export default function BrandbookHub() {
                 ))}
               </div>
             )}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

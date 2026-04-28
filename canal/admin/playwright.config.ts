@@ -3,9 +3,10 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * Canal Admin — Playwright E2E Configuration
  * 
- * Two modes:
- * - LOCAL: Tests against Vite dev server (localhost:5173)
- * - PROD:  Tests against canal.ness.com.br (set PROD_URL env)
+ * Three project modes:
+ * - api-smoke:    API endpoint verification (no browser)
+ * - admin-ui:     Mocked auth UI tests (vite dev server)
+ * - production:   Real auth E2E against canal.ness.com.br
  */
 const PROD_URL = process.env.PROD_URL || 'https://canal.ness.com.br';
 const isCI = !!process.env.CI;
@@ -15,16 +16,17 @@ export default defineConfig({
   testDir: './tests',
   timeout: 30_000,
   expect: { timeout: 10_000 },
-  fullyParallel: true,
+  fullyParallel: false, // Sequential for prod tests (shared auth state)
   forbidOnly: isCI,
   retries: isCI ? 2 : 0,
-  workers: isCI ? 1 : undefined,
+  workers: 1,
   reporter: isCI ? 'github' : 'html',
 
   use: {
     baseURL,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
   },
 
   projects: [
@@ -35,17 +37,20 @@ export default defineConfig({
     },
     {
       name: 'admin-ui',
-      testMatch: /admin\.spec\.ts/,
+      testMatch: /(admin|smoke)\.spec\.ts/,
       use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'production',
+      testMatch: /prod-.*\.spec\.ts/,
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: PROD_URL,
+        screenshot: 'on',
+      },
     },
   ],
 
-  // Only start dev server for local runs (not CI or API-only tests)
-  ...(isCI ? {} : {
-    webServer: {
-      command: 'npm run dev',
-      url: 'http://localhost:5173',
-      reuseExistingServer: true,
-    },
-  }),
+  // Web server only for admin-ui project (not production)
+  // Start manually with: npm run dev
 });

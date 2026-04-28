@@ -118,7 +118,7 @@ export default function CollectionPage({ slug }: { slug: string }) {
       {/* 
         This is the global Data View header.
       */}
-      <div className="flex-none px-6 md:px-12 py-8 flex border-b border-border/50 w-full min-w-0 overflow-hidden">
+      <div className="flex-none px-6 md:px-12 py-8 flex border-b border-border/50 w-full min-w-0">
         <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto min-w-0">
           {/* Top row: Metrics & Locale */}
           <div className="flex items-center justify-between w-full h-12">
@@ -157,7 +157,7 @@ export default function CollectionPage({ slug }: { slug: string }) {
       </div>
 
       {/* Main Data Container */}
-      <div className="flex-1 overflow-y-auto px-6 md:px-12 py-8 custom-scrollbar w-full min-w-0 overflow-hidden">
+      <div className="flex-1 overflow-y-auto overflow-x-auto px-6 md:px-12 py-8 custom-scrollbar w-full min-w-0">
         <div className="max-w-[1400px] mx-auto min-w-0">
           <EntryTable
             collection={collection}

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { fetchMedia, uploadMedia, deleteMedia, type EntryMeta } from "../lib/api";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
 
 type MediaItem = {
   id: string;
@@ -71,16 +72,11 @@ export default function MediaPage() {
   const filteredItems = items.filter(item => activeTab === 'public' ? isImage(item.content_type) : (!isImage(item.content_type) || item.content_type === "application/pdf"));
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300 mx-auto max-w-7xl w-full flex-1 overflow-hidden min-w-0">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
+    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300 mx-auto max-w-7xl w-full flex-1 overflow-hidden min-w-0">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2">
         <div>
-          <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-3">
-             <svg className="text-muted-foreground" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            Repositório Ativo <span className="text-muted-foreground font-light">::</span> Cloud Media
-          </h2>
-          <p className="text-sm font-medium text-muted-foreground tracking-wide mt-1 uppercase">
-            Armazenamento R2 S3 Backend-Agnostic
-          </p>
+          <h2 className="text-xl font-bold tracking-tight text-foreground">Cloud Media</h2>
+          <p className="text-sm text-muted-foreground mt-1">Armazenamento R2 S3</p>
         </div>
       </div>
 
@@ -121,7 +117,7 @@ export default function MediaPage() {
         {uploading ? (
           <div className="flex flex-col items-center justify-center gap-4 text-primary animate-pulse">
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            <span className="font-bold uppercase tracking-wider text-sm">Transferindo pacotes via protocolo...</span>
+            <span className="font-bold tracking-tight text-sm">Transferindo pacotes via protocolo...</span>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center gap-3 text-muted-foreground pointer-events-none">
@@ -129,15 +125,15 @@ export default function MediaPage() {
                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
             </div>
             <p className="text-sm font-medium text-foreground">Solte binários no perímetro</p>
-            <p className="text-xs font-semibold uppercase tracking-wider">ou clique no seletor manual</p>
+            <p className="text-xs font-semibold">ou clique no seletor manual</p>
           </div>
         )}
       </div>
 
-      <div className="rounded-xl border bg-card text-card-foreground shadow-sm mt-6 overflow-hidden">
-        <div className="bg-muted/30 p-5 border-b border-border/50 flex items-center justify-between">
-          <h3 className="font-semibold leading-none tracking-tight">Index de Recursos ({activeTab === 'public' ? 'Estáticos Globais' : 'Vetores de IA'})</h3>
-        </div>
+      <Card className="mt-6">
+        <CardHeader>
+          <CardTitle>Index de Recursos ({activeTab === 'public' ? 'Estáticos Globais' : 'Vetores de IA'})</CardTitle>
+        </CardHeader>
 
         {loading ? (
           <div className="flex justify-center p-16 animate-pulse"><div className="loader-inline" /></div>
@@ -201,15 +197,15 @@ export default function MediaPage() {
              {meta && meta.totalPages > 1 && (
                <div className="pt-8 border-t border-border/50 mt-8 flex justify-between items-center px-4">
                   <button 
-                     className="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background/50 px-4 text-xs font-bold uppercase tracking-wider shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
+                     className="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background/50 px-4 text-xs font-semibold shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
                      disabled={page <= 1} 
                      onClick={() => setPage(page - 1)}
                   >
                      <svg className="mr-2" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m15 18-6-6 6-6"/></svg> Rebobinar
                   </button>
-                  <span className="font-mono text-xs uppercase tracking-wide font-semibold text-muted-foreground">Vol. {page} — {meta.totalPages}</span>
+                  <span className="font-mono text-xs tracking-tight font-semibold text-muted-foreground">Vol. {page} — {meta.totalPages}</span>
                   <button 
-                     className="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background/50 px-4 text-xs font-bold uppercase tracking-wider shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
+                     className="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background/50 px-4 text-xs font-semibold shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
                      disabled={page >= meta.totalPages} 
                      onClick={() => setPage(page + 1)}
                   >
@@ -219,7 +215,7 @@ export default function MediaPage() {
              )}
           </div>
         )}
-      </div>
+      </Card>
     </div>
   );
 }

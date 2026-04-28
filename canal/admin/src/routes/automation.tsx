@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Card, CardHeader, CardTitle, CardAction, CardContent } from "../components/ui/Card";
 
 function GithubKanbanTab() {
   const [issues, setIssues] = useState<any[]>([]);
@@ -31,17 +32,16 @@ function GithubKanbanTab() {
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-      <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-        <div className="bg-muted/30 p-6 border-b border-border/40 flex justify-between items-center">
-          <div>
-            <h3 className="font-semibold leading-none tracking-tight">GitHub Projects Kanban</h3>
-            <p className="text-sm text-muted-foreground mt-2">Visão consolidada das Issues e tracking de desenvolvimento integrado ao Github.</p>
-          </div>
-          <button onClick={fetchIssues} disabled={loading} className="text-xs px-3 py-1 bg-primary text-primary-foreground rounded-md shadow hover:bg-primary/90 transition-all font-semibold disabled:opacity-50 hover:scale-95">
-            {loading ? 'Sincronizando...' : 'Atualizar Board'}
-          </button>
-        </div>
-        <div className="p-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>GitHub Projects Kanban</CardTitle>
+          <CardAction>
+            <button onClick={fetchIssues} disabled={loading} className="text-xs px-3 py-1 bg-primary text-primary-foreground rounded-md shadow hover:bg-primary/90 transition-all font-semibold disabled:opacity-50">
+              {loading ? 'Sincronizando...' : 'Atualizar Board'}
+            </button>
+          </CardAction>
+        </CardHeader>
+        <CardContent>
           {error && <div className="text-sm text-red-500 mb-4 bg-red-500/10 p-3 rounded-md border border-red-500/20">{error}</div>}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Todo Column */}
@@ -57,7 +57,7 @@ function GithubKanbanTab() {
                     <h4 className="text-[13px] font-semibold leading-tight group-hover:text-accent transition-colors">{issue.title}</h4>
                     {issue.labels && issue.labels.length > 0 && (
                       <div className="flex gap-1 flex-wrap mt-2">
-                        {issue.labels.map((l: string) => <span key={l} className="text-[9px] bg-accent/10 text-accent px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">{l}</span>)}
+                        {issue.labels.map((l: string) => <span key={l} className="text-[9px] bg-accent/10 text-accent px-1.5 py-0.5 rounded uppercase font-semibold">{l}</span>)}
                       </div>
                     )}
                     <div className="flex gap-2 mt-3 items-center justify-between">
@@ -83,7 +83,7 @@ function GithubKanbanTab() {
                       <h4 className="text-[13px] font-semibold leading-tight text-foreground">{issue.title}</h4>
                       {issue.labels && issue.labels.length > 0 && (
                         <div className="flex gap-1 flex-wrap mt-2">
-                          {issue.labels.map((l: string) => <span key={l} className="text-[9px] bg-accent/10 text-accent px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">{l}</span>)}
+                          {issue.labels.map((l: string) => <span key={l} className="text-[9px] bg-accent/10 text-accent px-1.5 py-0.5 rounded uppercase font-semibold">{l}</span>)}
                         </div>
                       )}
                       <div className="flex gap-2 mt-3 items-center justify-between">
@@ -111,8 +111,8 @@ function GithubKanbanTab() {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
@@ -172,10 +172,10 @@ export default function AutomationDashboard() {
   };
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
-          <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
+          <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-3">
             Growth & Automação <span className="text-muted-foreground font-light">::</span> Fase 5
           </h2>
           <p className="text-sm font-medium text-muted-foreground tracking-wide mt-1">
@@ -212,20 +212,17 @@ export default function AutomationDashboard() {
         <div className="min-h-[400px]">
           {activeTab === 'social' && (
             <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-              <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden relative group">
-                <div className="bg-muted/30 p-6 border-b border-border/40">
-                  <h3 className="font-semibold leading-none tracking-tight flex items-center gap-2">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              <Card>
+                <CardHeader>
+                  <CardTitle icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>}>
                     Criar Postagem Automatizada
-                  </h3>
-                  <p className="text-sm text-muted-foreground mt-2">Utilize o roteador Generativo para abstrair copys para suas redes e engatilhar o agendamento de forma robusta.</p>
-                </div>
-                
-                <div className="p-6">
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
                   <form className="space-y-6" onSubmit={e => e.preventDefault()}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-3">
-                        <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Plataforma de Destino</label>
+                        <label className="text-sm font-semibold text-muted-foreground">Plataforma de Destino</label>
                         <select 
                           value={socialPlatform}
                           onChange={e => setSocialPlatform(e.target.value)}
@@ -235,7 +232,7 @@ export default function AutomationDashboard() {
                         </select>
                       </div>
                       <div className="space-y-3">
-                        <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Instrução Base (Brainstorming)</label>
+                        <label className="text-sm font-semibold text-muted-foreground">Instrução Base (Brainstorming)</label>
                         <input 
                           value={socialBrief}
                           onChange={e => setSocialBrief(e.target.value)}
@@ -245,7 +242,7 @@ export default function AutomationDashboard() {
                     
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
-                        <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Rascunho Inteligente (Preview Raw)</label>
+                        <label className="text-sm font-semibold text-muted-foreground">Rascunho Inteligente (Preview Raw)</label>
                         <button 
                           onClick={handleGenerateSocial}
                           disabled={isDrafting || !socialBrief}
@@ -278,19 +275,18 @@ export default function AutomationDashboard() {
                       </button>
                     </div>
                   </form>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             </div>
           )}
 
           {activeTab === 'newsletter' && (
             <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-              <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-                <div className="bg-muted/30 p-6 border-b border-border/40">
-                  <h3 className="font-semibold leading-none tracking-tight">Campanhas de Email (SMTP Dispatcher)</h3>
-                  <p className="text-sm text-muted-foreground mt-2">Monte newsletters e dispare por double opt-in para sua matriz de contatos isolada por tenant.</p>
-                </div>
-                <div className="p-8 h-80 flex flex-col items-center justify-center text-muted-foreground bg-background/40">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Campanhas de Email</CardTitle>
+                </CardHeader>
+                <CardContent className="h-80 flex flex-col items-center justify-center text-muted-foreground bg-background/40">
                   <div className="h-16 w-16 mb-4 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
                       <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
@@ -301,8 +297,8 @@ export default function AutomationDashboard() {
                   <button className="mt-6 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-semibold h-10 px-6 border border-input shadow-sm bg-background hover:bg-accent hover:text-accent-foreground transition-all">
                     Criar Novo Blueprint
                   </button>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             </div>
           )}
 
@@ -312,12 +308,11 @@ export default function AutomationDashboard() {
           
           {activeTab === 'brandbook' && (
             <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-              <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-                <div className="bg-muted/30 p-6 border-b border-border/40">
-                  <h3 className="font-semibold leading-none tracking-tight">Assinaturas HTML (Identity Provider)</h3>
-                  <p className="text-sm text-muted-foreground mt-2">Central de sincronização de Identidade. Exporte as assinaturas estruturadas do domínio root.</p>
-                </div>
-                <div className="p-6 flex flex-col sm:flex-row items-center gap-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Assinaturas HTML</CardTitle>
+                </CardHeader>
+                <CardContent className="flex flex-col sm:flex-row items-center gap-4">
                   <div className="flex-1 bg-muted/20 border border-border/50 p-4 rounded-lg shadow-inner overflow-x-auto w-full">
                     <code className="text-xs font-mono leading-loose text-foreground/80">
                       &lt;div style=&quot;font-family: Arial, sans-serif; font-size: 14px;&quot;&gt;<br/>
@@ -329,8 +324,8 @@ export default function AutomationDashboard() {
                   <button className="whitespace-nowrap shrink-0 rounded-md text-sm font-semibold h-10 px-5 border border-input shadow-sm bg-background hover:bg-accent hover:text-accent-foreground transition-all">
                     Extrair Build.HTML
                   </button>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             </div>
           )}
         </div>

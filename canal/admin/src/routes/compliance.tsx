@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { authClient } from '../lib/auth-client'
+import { Card, CardHeader, CardTitle, CardAction, CardContent } from "../components/ui/Card"
 
 interface DSARRequest {
   id: string; requester_name: string; requester_email: string; request_type: string;
@@ -83,10 +84,10 @@ export default function CompliancePage() {
   }
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
-           <h2 className="text-3xl font-black tracking-tighter text-foreground flex items-center gap-3">
+           <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-3">
              <svg className="text-muted-foreground" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M10 12l2 2 4-4"/></svg>
              Aegis <span className="text-muted-foreground font-light">::</span> Compliance
           </h2>
@@ -100,7 +101,7 @@ export default function CompliancePage() {
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`inline-flex items-center gap-2 justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider transition-all ${
+              className={`inline-flex items-center gap-2 justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-xs font-semibold transition-all ${
                 tab === t
                   ? "bg-background text-foreground shadow-sm border border-border/50"
                   : "hover:text-foreground hover:bg-muted/50"
@@ -118,14 +119,16 @@ export default function CompliancePage() {
       {loading ? (
         <div className="flex justify-center p-16 animate-pulse"><div className="loader-inline" /></div>
       ) : tab === 'dsar' ? (
-        <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-          <div className="bg-muted/30 p-5 border-b border-border/40 flex items-center justify-between">
-            <h3 className="font-semibold leading-none tracking-tight">Solicitações de Titulares de Dados (LGPD/DSAR)</h3>
-            <button className="inline-flex items-center justify-center gap-2 rounded text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/5 px-2 py-1 border border-primary/20 hover:bg-primary/10 transition-colors">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-              Conectar OneTrust / Externo
-            </button>
-          </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Solicitações DSAR (LGPD)</CardTitle>
+            <CardAction>
+              <button className="inline-flex items-center justify-center gap-2 rounded text-xs font-medium text-primary bg-primary/5 px-2 py-1 border border-primary/20 hover:bg-primary/10 transition-colors">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                Conectar OneTrust
+              </button>
+            </CardAction>
+          </CardHeader>
           {dsars.length === 0 ? (
             <div className="p-16 flex flex-col items-center justify-center text-center bg-background/40">
               <div className="h-16 w-16 rounded-full bg-accent text-muted-foreground flex items-center justify-center mb-4">
@@ -138,7 +141,7 @@ export default function CompliancePage() {
             <div className="w-full overflow-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-border/50 bg-muted/20 text-xs uppercase tracking-wider text-muted-foreground text-left">
+                  <tr className="border-b border-border/50 bg-muted/20 text-xs tracking-tight text-muted-foreground text-left">
                     <th className="font-medium p-4 pl-6">ID Protocolo</th>
                     <th className="font-medium p-4">Titular (Nome)</th>
                     <th className="font-medium p-4">Categoria do Pedido</th>
@@ -153,16 +156,16 @@ export default function CompliancePage() {
                     return (
                       <tr key={d.id} className="border-b border-border/50 transition-colors hover:bg-muted/30">
                         <td className="p-4 pl-6">
-                           <code className="font-mono text-foreground font-bold tracking-widest">{d.id.substring(0, 8).toUpperCase()}</code>
+                           <code className="font-mono text-foreground font-bold tracking-tight">{d.id.substring(0, 8).toUpperCase()}</code>
                         </td>
                         <td className="p-4 font-semibold text-foreground">{d.requester_name}</td>
                         <td className="p-4">
-                           <span className="inline-flex items-center rounded-full bg-muted border border-border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                           <span className="inline-flex items-center rounded-full bg-muted border border-border px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
                               {d.request_type}
                            </span>
                         </td>
                         <td className="p-4">
-                           <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border ${
+                           <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium border ${
                               d.status === 'resolved' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' :
                               d.status === 'rejected' ? 'bg-red-500/10 text-red-500 border-red-500/20' :
                               d.status === 'in-progress' ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' :
@@ -172,7 +175,7 @@ export default function CompliancePage() {
                            </span>
                         </td>
                         <td className="p-4">
-                           <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider ${sla.colorClass}`}>
+                           <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] uppercase font-semibold ${sla.colorClass}`}>
                              {sla.label}
                            </span>
                         </td>
@@ -180,7 +183,7 @@ export default function CompliancePage() {
                           <select 
                             value={d.status} 
                             onChange={e => updateDsar(d.id, e.target.value)} 
-                            className="flex h-8 items-center justify-between rounded-md border border-input bg-background/50 px-3 py-1 text-[11px] uppercase tracking-wider shadow-sm transition-colors focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary cursor-pointer font-bold"
+                            className="flex h-8 items-center justify-between rounded-md border border-input bg-background/50 px-3 py-1 text-[11px] tracking-tight shadow-sm transition-colors focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary cursor-pointer font-bold"
                           >
                             <option value="received">Recebido</option>
                             <option value="in-progress">Em análise</option>
@@ -195,16 +198,18 @@ export default function CompliancePage() {
               </table>
             </div>
           )}
-        </div>
+        </Card>
       ) : tab === 'whistleblower' ? (
-        <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
-          <div className="bg-muted/30 p-5 border-b border-border/40 flex items-center justify-between">
-            <h3 className="font-semibold leading-none tracking-tight">Canal de Denúncias Anônimo (Whistleblower)</h3>
-            <button className="inline-flex items-center justify-center gap-2 rounded text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/5 px-2 py-1 border border-primary/20 hover:bg-primary/10 transition-colors">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-              Conectar Sistema Terceiro
-            </button>
-          </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Canal de Denúncias (Whistleblower)</CardTitle>
+            <CardAction>
+              <button className="inline-flex items-center justify-center gap-2 rounded text-xs font-medium text-primary bg-primary/5 px-2 py-1 border border-primary/20 hover:bg-primary/10 transition-colors">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                Conectar Sistema Terceiro
+              </button>
+            </CardAction>
+          </CardHeader>
           {cases.length === 0 ? (
             <div className="p-16 flex flex-col items-center justify-center text-center bg-background/40">
                <div className="h-16 w-16 rounded-full bg-accent text-muted-foreground flex items-center justify-center mb-4">
@@ -217,7 +222,7 @@ export default function CompliancePage() {
             <div className="w-full overflow-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-border/50 bg-muted/20 text-xs uppercase tracking-wider text-muted-foreground text-left">
+                  <tr className="border-b border-border/50 bg-muted/20 text-xs tracking-tight text-muted-foreground text-left">
                     <th className="font-medium p-4 pl-6">Ghost Code</th>
                     <th className="font-medium p-4">Classificação de Incidência</th>
                     <th className="font-medium p-4">Status Interno</th>
@@ -232,11 +237,11 @@ export default function CompliancePage() {
                     return (
                       <tr key={c.id} className="border-b border-border/50 transition-colors hover:bg-muted/30">
                         <td className="p-4 pl-6">
-                           <code className="font-mono text-foreground font-bold tracking-widest">{c.case_code}</code>
+                           <code className="font-mono text-foreground font-bold tracking-tight">{c.case_code}</code>
                         </td>
                         <td className="p-4 font-semibold text-foreground uppercase text-[11px] tracking-wider">{c.category || '—'}</td>
                         <td className="p-4">
-                           <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border ${
+                           <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium border ${
                               c.status === 'closed' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' :
                               c.status === 'investigating' ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' :
                               'bg-amber-500/10 text-amber-500 border-amber-500/20'
@@ -245,7 +250,7 @@ export default function CompliancePage() {
                            </span>
                         </td>
                         <td className="p-4">
-                           <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider ${sla.colorClass}`}>
+                           <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] uppercase font-semibold ${sla.colorClass}`}>
                              {sla.label}
                            </span>
                         </td>
@@ -254,7 +259,7 @@ export default function CompliancePage() {
                           <select 
                             value={c.status} 
                             onChange={e => updateCase(c.id, e.target.value)} 
-                            className="flex h-8 items-center justify-between rounded-md border border-input bg-background/50 px-3 py-1 text-[11px] uppercase tracking-wider shadow-sm transition-colors focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary cursor-pointer font-bold"
+                            className="flex h-8 items-center justify-between rounded-md border border-input bg-background/50 px-3 py-1 text-[11px] tracking-tight shadow-sm transition-colors focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary cursor-pointer font-bold"
                           >
                             <option value="new">Novo</option>
                             <option value="investigating">Investigando</option>
@@ -268,19 +273,19 @@ export default function CompliancePage() {
               </table>
             </div>
           )}
-        </div>
+        </Card>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1">
-            <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden sticky top-6">
-               <div className="bg-muted/30 p-5 border-b border-border/40">
-                  <h3 className="font-semibold leading-none tracking-tight">Cunhar Nova Política</h3>
-               </div>
-               <div className="p-6 space-y-5">
+            <Card className="sticky top-6">
+               <CardHeader>
+                 <CardTitle>Cunhar Nova Política</CardTitle>
+               </CardHeader>
+               <CardContent className="space-y-5">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2.5">
-                       <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Domínio</label>
-                       <select value={newPolicy.type} onChange={e => setNewPolicy(p => ({ ...p, type: e.target.value }))} className="flex h-11 w-full items-center justify-between rounded-lg border border-input bg-background/50 px-4 py-2 text-[11px] font-bold uppercase tracking-wider shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary cursor-pointer text-foreground">
+                       <label className="text-sm font-semibold text-muted-foreground">Domínio</label>
+                       <select value={newPolicy.type} onChange={e => setNewPolicy(p => ({ ...p, type: e.target.value }))} className="flex h-11 w-full items-center justify-between rounded-lg border border-input bg-background/50 px-4 py-2 text-xs font-semibold shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary cursor-pointer text-foreground">
                           <option value="privacy">PRIVACIDADE</option>
                           <option value="terms">TERMOS E USO</option>
                           <option value="cookie">COOKIES INFO</option>
@@ -288,8 +293,8 @@ export default function CompliancePage() {
                        </select>
                     </div>
                     <div className="space-y-2.5">
-                       <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Idioma Alvo</label>
-                       <select value={newPolicy.locale} onChange={e => setNewPolicy(p => ({ ...p, locale: e.target.value }))} className="flex h-11 w-full items-center justify-between rounded-lg border border-input bg-background/50 px-4 py-2 text-[11px] font-bold uppercase tracking-wider shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary cursor-pointer text-foreground">
+                       <label className="text-sm font-semibold text-muted-foreground">Idioma Alvo</label>
+                       <select value={newPolicy.locale} onChange={e => setNewPolicy(p => ({ ...p, locale: e.target.value }))} className="flex h-11 w-full items-center justify-between rounded-lg border border-input bg-background/50 px-4 py-2 text-xs font-semibold shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary cursor-pointer text-foreground">
                           <option value="pt">PT-BR</option>
                           <option value="en">EN-US</option>
                           <option value="es">ES-ES</option>
@@ -297,11 +302,11 @@ export default function CompliancePage() {
                     </div>
                   </div>
                   <div className="space-y-2.5">
-                     <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Título do Contrato</label>
+                     <label className="text-sm font-semibold text-muted-foreground">Título do Contrato</label>
                      <input type="text" placeholder="Nomeie o documento formal" value={newPolicy.title} onChange={e => setNewPolicy(p => ({ ...p, title: e.target.value }))} className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm shadow-inner transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
                   </div>
                   <div className="space-y-2.5">
-                     <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Corpo (Markdown Format)</label>
+                     <label className="text-sm font-semibold text-muted-foreground">Corpo (Markdown Format)</label>
                      <textarea placeholder="## 1. Disposições Iniciais..." value={newPolicy.body_md} onChange={e => setNewPolicy(p => ({ ...p, body_md: e.target.value }))} rows={8} className="flex w-full rounded-lg border border-input bg-background/80 font-mono text-foreground p-4 text-xs shadow-inner transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary resize-y" />
                   </div>
                   <div className="pt-2">
@@ -309,15 +314,15 @@ export default function CompliancePage() {
                         Publicar Documento Padrão
                      </button>
                   </div>
-               </div>
-            </div>
+               </CardContent>
+            </Card>
           </div>
           
           <div className="lg:col-span-2">
-            <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden h-full">
-               <div className="bg-muted/30 p-5 border-b border-border/40">
-                  <h3 className="font-semibold leading-none tracking-tight">Diretório Global de Termos de Uso (DGT)</h3>
-               </div>
+            <Card className="h-full">
+               <CardHeader>
+                 <CardTitle>Diretório de Termos de Uso</CardTitle>
+               </CardHeader>
                {policies.length === 0 ? (
                  <div className="p-16 flex flex-col items-center justify-center text-center bg-background/40">
                     <div className="h-16 w-16 rounded-full bg-accent text-muted-foreground flex items-center justify-center mb-4">
@@ -330,7 +335,7 @@ export default function CompliancePage() {
                  <div className="w-full overflow-auto">
                    <table className="w-full text-sm">
                      <thead>
-                       <tr className="border-b border-border/50 bg-muted/20 text-xs uppercase tracking-wider text-muted-foreground text-left">
+                       <tr className="border-b border-border/50 bg-muted/20 text-xs tracking-tight text-muted-foreground text-left">
                          <th className="font-medium p-4 pl-6">Label de Arquivo</th>
                          <th className="font-medium p-4">ISO Lang</th>
                          <th className="font-medium p-4">Index / v</th>
@@ -343,7 +348,7 @@ export default function CompliancePage() {
                          <tr key={p.id} className="border-b border-border/50 transition-colors hover:bg-muted/30">
                            <td className="p-4 pl-6">
                               <div className="font-semibold text-foreground">{p.title}</div>
-                              <span className="inline-flex mt-1 items-center rounded bg-muted px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                              <span className="inline-flex mt-1 items-center rounded bg-muted px-1.5 py-0.5 text-xs font-medium text-muted-foreground">
                                  {p.type}
                               </span>
                            </td>
@@ -352,9 +357,9 @@ export default function CompliancePage() {
                                  {p.locale}
                               </span>
                            </td>
-                           <td className="p-4 font-mono font-bold tracking-widest opacity-80 text-foreground text-xs">v{p.version}.0</td>
+                           <td className="p-4 font-mono font-bold tracking-tight opacity-80 text-foreground text-xs">v{p.version}.0</td>
                            <td className="p-4">
-                              <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border ${
+                              <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium border ${
                                  p.status === 'published' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-muted/30 text-muted-foreground border-border/50'
                               }`}>
                                  {p.status}
@@ -367,7 +372,7 @@ export default function CompliancePage() {
                    </table>
                  </div>
                )}
-            </div>
+            </Card>
           </div>
         </div>
       )}

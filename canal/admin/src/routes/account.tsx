@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSession, signOut, authClient } from "../lib/auth-client";
+import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
 
 export default function AccountSettingsPage() {
   const { data: session } = useSession();
@@ -75,7 +76,7 @@ export default function AccountSettingsPage() {
   };
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300 mx-auto max-w-7xl w-full flex-1 overflow-hidden min-w-0">
+    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300 mx-auto max-w-7xl w-full flex-1 overflow-hidden min-w-0">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
         <div>
           <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-3">
@@ -101,13 +102,13 @@ export default function AccountSettingsPage() {
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {/* Profile Card */}
-        <section className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
-          <div className="bg-muted/30 p-5 border-b border-border/50">
-            <h3 className="font-semibold leading-none tracking-tight">Dados Cadastrais</h3>
-          </div>
-          <div className="p-6 space-y-5 flex-1">
+        <Card>
+          <CardHeader>
+            <CardTitle>Dados Cadastrais</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-5">
             <div className="space-y-2.5">
-              <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Nome de Exibição</label>
+              <label className="text-sm font-semibold text-muted-foreground">Nome de Exibição</label>
               <input 
                 type="text" 
                 className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
@@ -121,20 +122,20 @@ export default function AccountSettingsPage() {
             >
               Salvar Perfil
             </button>
-          </div>
-        </section>
+          </CardContent>
+        </Card>
 
         {/* Email Card */}
-        <section className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
-          <div className="bg-muted/30 p-5 border-b border-border/50">
-            <h3 className="font-semibold leading-none tracking-tight">Endereço de E-mail</h3>
-          </div>
-          <div className="p-6 space-y-5 flex-1">
+        <Card>
+          <CardHeader>
+            <CardTitle>Endereço de E-mail</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-5">
             <p className="text-sm text-muted-foreground bg-muted/30 p-3 rounded-lg border border-border/20">
               E-mail autenticado: <strong className="text-foreground mono ml-1">{session.user.email}</strong>
             </p>
             <div className="space-y-2.5">
-              <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Habilitar Novo E-mail</label>
+              <label className="text-sm font-semibold text-muted-foreground">Habilitar Novo E-mail</label>
               <input 
                 type="email" 
                 placeholder="novo@dominio.com"
@@ -149,17 +150,17 @@ export default function AccountSettingsPage() {
             >
               Solicitar Migração
             </button>
-          </div>
-        </section>
+          </CardContent>
+        </Card>
 
         {/* Security / Password Card */}
-        <section className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
-          <div className="bg-muted/30 p-5 border-b border-border/50">
-            <h3 className="font-semibold leading-none tracking-tight">Chaves de Acesso e Sessão</h3>
-          </div>
-          <div className="p-6 space-y-5 flex-1">
+        <Card>
+          <CardHeader>
+            <CardTitle>Chaves de Acesso e Sessão</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-5">
             <div className="space-y-2.5">
-              <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Senha Atual</label>
+              <label className="text-sm font-semibold text-muted-foreground">Senha Atual</label>
               <input 
                 type="password" 
                 className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
@@ -168,7 +169,7 @@ export default function AccountSettingsPage() {
               />
             </div>
             <div className="space-y-2.5">
-              <label className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">Nova Senha Forte</label>
+              <label className="text-sm font-semibold text-muted-foreground">Nova Senha Forte</label>
               <input 
                 type="password" 
                 className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
@@ -183,19 +184,19 @@ export default function AccountSettingsPage() {
               >
                 Rotacionar Chave
               </button>
-              <p className="text-xs text-muted-foreground mt-3 uppercase tracking-wide font-semibold opacity-70">
+              <p className="text-xs text-muted-foreground mt-3 tracking-tight font-semibold opacity-70">
                 Atenção: Revoga todas as outras sessões ativas do usuário.
               </p>
             </div>
-          </div>
-        </section>
+          </CardContent>
+        </Card>
 
         {/* Social / SSO Links */}
-        <section className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
-          <div className="bg-muted/30 p-5 border-b border-border/50">
-            <h3 className="font-semibold leading-none tracking-tight">Delegações SSO (IdP)</h3>
-          </div>
-          <div className="p-6 space-y-6 flex-1">
+        <Card>
+          <CardHeader>
+            <CardTitle>Delegações SSO (IdP)</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
             <div className="space-y-3">
               {linkedAccounts.length > 0 ? (
                 <div className="space-y-2">
@@ -232,8 +233,8 @@ export default function AccountSettingsPage() {
                 Vincular Microsoft
               </button>
             </div>
-          </div>
-        </section>
+          </CardContent>
+        </Card>
 
         {/* Danger Zone */}
         <section className="rounded-xl border border-red-500/20 bg-card text-card-foreground shadow-sm overflow-hidden md:col-span-1 xl:col-span-2 mt-4 relative">
@@ -247,7 +248,7 @@ export default function AccountSettingsPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 items-end max-w-xl">
                <div className="space-y-2.5 w-full">
-                <label className="text-xs font-semibold tracking-wide uppercase text-red-500">Confirmar Senha</label>
+                <label className="text-xs font-semibold text-red-500">Confirmar Senha</label>
                 <input 
                   type="password" 
                   placeholder="Confirme sua senha para destravar..."

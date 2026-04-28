@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { createEntry } from "../lib/api";
 import { SignaturePreview, BRAND_CONFIG } from "../components/signatures/SignaturePreview";
+import { Card, CardHeader, CardTitle, CardAction, CardContent } from "../components/ui/Card";
 
 const BRANDS = ["ness", "trustness", "forense"];
 const DEPARTMENTS = [
@@ -61,7 +62,7 @@ export default function SignaturesHub() {
   };
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6 animate-in fade-in slide-in-from-bottom-2 duration-300 mx-auto max-w-7xl w-full flex-1 overflow-hidden min-w-0">
+    <div className="flex-1 space-y-6 p-6 animate-in fade-in slide-in-from-bottom-2 duration-300 mx-auto max-w-7xl w-full flex-1 overflow-hidden min-w-0">
       {toast && <Toast message={toast.message} type={toast.type} />}
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
@@ -90,11 +91,11 @@ export default function SignaturesHub() {
 
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_1.5fr] gap-6 items-start">
         {/* Form Node */}
-        <div className="rounded-xl border bg-card shadow-sm overflow-hidden flex flex-col">
-          <div className="bg-muted/30 p-5 border-b border-border/50">
-             <h3 className="font-semibold leading-none tracking-tight">Parametrização Visual</h3>
-          </div>
-          <div className="p-6 space-y-5">
+        <Card>
+          <CardHeader>
+            <CardTitle>Parametrização Visual</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-5">
              <div className="grid gap-5">
                {([
                  ["Nome Completo", "name", "Ex: Ana Souza", "text"],
@@ -118,7 +119,7 @@ export default function SignaturesHub() {
                  <div className="space-y-2.5">
                    <label className="text-xs font-bold tracking-wide uppercase text-muted-foreground">Entidade / Marca</label>
                    <select 
-                     className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-3 py-2 text-xs font-bold tracking-wider uppercase text-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                     className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-3 py-2 text-xs font-semibold uppercase text-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                      value={form.brand}
                      onChange={e => setForm({ ...form, brand: e.target.value })}
                    >
@@ -128,7 +129,7 @@ export default function SignaturesHub() {
                  <div className="space-y-2.5">
                    <label className="text-xs font-bold tracking-wide uppercase text-muted-foreground">Vínculo O.G.</label>
                    <select 
-                     className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-3 py-2 text-xs font-bold tracking-wider uppercase text-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                     className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-3 py-2 text-xs font-semibold uppercase text-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                      value={form.department}
                      onChange={e => setForm({ ...form, department: e.target.value })}
                    >
@@ -151,24 +152,24 @@ export default function SignaturesHub() {
                  </label>
                </div>
              </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Preview Engine Node */}
         <div className="flex flex-col gap-6 sticky top-6">
-           <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
-             <div className="bg-muted/30 p-5 border-b border-border/50 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                   <h3 className="font-semibold leading-none tracking-tight">Render Engine</h3>
-                   <span className="inline-flex px-1.5 py-0.5 rounded text-[8px] font-semibold uppercase text-white bg-accent animate-pulse tracking-wide ml-2">LIVE IO</span>
-                </div>
-                <button 
-                  onClick={copyHTML} 
-                  className={`inline-flex h-8 px-4 items-center justify-center rounded border ${copied ? "bg-emerald-500 border-emerald-600 text-white" : "bg-background border-border text-foreground hover:bg-accent hover:text-accent-foreground"} text-xs font-bold uppercase tracking-wider transition-colors shadow-sm`}
-                >
-                  {copied ? "Cód. Fonte na Área de Transf." : "Clonar HTML"}
-                </button>
-             </div>
+           <Card>
+             <CardHeader>
+               <CardTitle>Render Engine</CardTitle>
+               <CardAction>
+                 <span className="inline-flex px-1.5 py-0.5 rounded text-[8px] font-semibold text-white bg-accent animate-pulse ml-2">LIVE</span>
+                 <button 
+                   onClick={copyHTML} 
+                   className={`inline-flex h-8 px-4 items-center justify-center rounded border ${copied ? "bg-emerald-500 border-emerald-600 text-white" : "bg-background border-border text-foreground hover:bg-muted/50"} text-xs font-semibold transition-colors`}
+                 >
+                   {copied ? "Copiado!" : "Clonar HTML"}
+                 </button>
+               </CardAction>
+             </CardHeader>
              
              {/* Virtual Container representing email body background */}
              <div className="p-8 md:p-12 bg-slate-100 flex items-center justify-center min-h-[300px] overflow-auto min-w-0 max-w-full custom-scrollbar">
@@ -176,7 +177,7 @@ export default function SignaturesHub() {
                   <SignaturePreview form={form} />
                 </div>
              </div>
-           </div>
+           </Card>
 
            <div className="flex items-center gap-4 p-4 rounded-xl bg-accent/5 border border-accent/20">
               <div className="h-10 w-10 shrink-0 rounded-full bg-accent/10 flex items-center justify-center text-accent">
