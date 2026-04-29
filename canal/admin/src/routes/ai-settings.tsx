@@ -2,11 +2,16 @@ import { useState, useEffect } from "react";
 import { authClient } from "../lib/auth-client";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../components/ui/Card";
 import { StatCard } from "../components/ui/StatCard";
+import ChatsHistory from "./chats";
 
 type AIConfig = {
   enabled: boolean;
-  tone: string;
-  customPrompt: string;
+  bot_name: string;
+  avatar_url: string;
+  welcome_message: string;
+  system_prompt: string;
+  theme_color: string;
+  max_turns: number;
 };
 
 type AIStats = {
@@ -14,13 +19,6 @@ type AIStats = {
   totalLeads: number;
   recentChats: number;
 };
-
-const TONES = [
-  { value: "executivo", label: "Executivo — Direto e elegante (padrão)" },
-  { value: "formal", label: "Formal — Institucional e polido" },
-  { value: "tecnico", label: "Técnico — Preciso e detalhado" },
-  { value: "casual", label: "Casual — Acessível e leve" },
-];
 
 const DEFAULT_PROMPT = `Você é a Gabi, Secretária Executiva e concierge de alto nível da ness.
 Elegante, discreta, de extrema confiança e DIRETA.
@@ -30,7 +28,15 @@ Peça o contato do usuário de forma natural.`;
 
 export default function AISettingsPage() {
   const { data: activeOrg } = authClient.useActiveOrganization();
-  const [config, setConfig] = useState<AIConfig>({ enabled: true, tone: "executivo", customPrompt: "" });
+  const [config, setConfig] = useState<AIConfig>({ 
+    enabled: true, 
+    bot_name: "Gabi.OS", 
+    avatar_url: "", 
+    welcome_message: "Olá! Como posso ajudar?", 
+    system_prompt: "", 
+    theme_color: "#00E5A0", 
+    max_turns: 20 
+  });
   const [stats, setStats] = useState<AIStats>({ totalChats: 0, totalLeads: 0, recentChats: 0 });
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -123,33 +129,79 @@ export default function AISettingsPage() {
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-muted-foreground">Tom de Voz</label>
-              <select
-                value={config.tone}
-                onChange={(e) => setConfig({ ...config, tone: e.target.value })}
-                className="flex h-10 w-full rounded-lg border border-border bg-background px-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
-              >
-                {TONES.map((t) => (
-                  <option key={t.value} value={t.value}>{t.label}</option>
-                ))}
-              </select>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-muted-foreground">Nome do Robô</label>
+                <input
+                  type="text"
+                  value={config.bot_name}
+                  onChange={(e) => setConfig({ ...config, bot_name: e.target.value })}
+                  className="flex h-10 w-full rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-muted-foreground">Avatar URL (Opcional)</label>
+                <input
+                  type="text"
+                  value={config.avatar_url || ""}
+                  onChange={(e) => setConfig({ ...config, avatar_url: e.target.value })}
+                  placeholder="https://exemplo.com/avatar.png"
+                  className="flex h-10 w-full rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-muted-foreground">Cor Padrão (Theme Color)</label>
+                <div className="flex gap-4 items-center">
+                  <input
+                    type="color"
+                    value={config.theme_color}
+                    onChange={(e) => setConfig({ ...config, theme_color: e.target.value })}
+                    className="h-10 w-20 cursor-pointer rounded-lg border-0 p-0"
+                  />
+                  <span className="text-sm font-mono text-muted-foreground">{config.theme_color}</span>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-muted-foreground">Máximo de Interações</label>
+                <input
+                  type="number"
+                  value={config.max_turns}
+                  min={1} max={50}
+                  onChange={(e) => setConfig({ ...config, max_turns: parseInt(e.target.value) || 20 })}
+                  className="flex h-10 w-full rounded-lg border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <div className="flex justify-between items-end">
-                <label className="text-sm font-semibold text-muted-foreground">Prompt Customizado</label>
-                <span className="text-[10px] text-muted-foreground/70">
-                  Variáveis: <code className="bg-muted px-1 py-0.5 rounded text-xs font-mono">{"${lang}"}</code> <code className="bg-muted px-1 py-0.5 rounded text-xs font-mono">{"${ragContext}"}</code>
-                </span>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-muted-foreground">Mensagem de Boas-vindas</label>
+                <textarea
+                  value={config.welcome_message}
+                  onChange={(e) => setConfig({ ...config, welcome_message: e.target.value })}
+                  rows={3}
+                  className="flex w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                />
               </div>
-              <textarea
-                value={config.customPrompt}
-                onChange={(e) => setConfig({ ...config, customPrompt: e.target.value })}
-                rows={10}
-                placeholder={DEFAULT_PROMPT}
-                className="flex w-full rounded-lg border border-border bg-background px-4 py-3 text-sm font-mono transition-colors placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-vertical"
-              />
+
+              <div className="space-y-2">
+                <div className="flex justify-between items-end">
+                  <label className="text-sm font-semibold text-muted-foreground">Prompt Customizado</label>
+                  <span className="text-[10px] text-muted-foreground/70">
+                    Variáveis: <code className="bg-muted px-1 py-0.5 rounded text-xs font-mono">{"${lang}"}</code> <code className="bg-muted px-1 py-0.5 rounded text-xs font-mono">{"${ragContext}"}</code>
+                  </span>
+                </div>
+                <textarea
+                  value={config.system_prompt}
+                  onChange={(e) => setConfig({ ...config, system_prompt: e.target.value })}
+                  rows={8}
+                  placeholder={DEFAULT_PROMPT}
+                  className="flex w-full rounded-lg border border-border bg-background px-4 py-3 text-sm font-mono transition-colors placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                />
+              </div>
             </div>
           </div>
         </CardContent>
@@ -170,6 +222,10 @@ export default function AISettingsPage() {
           </button>
         </CardFooter>
       </Card>
+
+      <div className="mt-8 pt-6 border-t border-border">
+        <ChatsHistory />
+      </div>
     </div>
   );
 }

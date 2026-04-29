@@ -2,20 +2,82 @@ import { EnvWithAI } from './ai/client'
 import { upsertVector } from './vectorize-sync'
 
 import { drizzle } from 'drizzle-orm/d1'
-import { webhooks_targets, entries } from './db/schema'
+import { webhooks_targets, entries, knowledge_base } from './db/schema'
+import * as schema from './db/schema'
 import { eq } from 'drizzle-orm'
 
 export interface QueueMessage {
-  type: 'generate-draft' | 'audit-content' | 'translate' | 'vectorize-entry' | 'webhook-dispatch' | 'SCORE_CV' | 'SEND_NEWSLETTER' | 'SOCIAL_POST_DISPATCH'
+  type: 'generate-draft' | 'audit-content' | 'translate' | 'vectorize-entry' | 'webhook-dispatch' | 'SCORE_CV' | 'SEND_NEWSLETTER' | 'SOCIAL_POST_DISPATCH' | 'vectorize-document'
   payload: any
 }
 
-export async function queueHandler(batch: MessageBatch<QueueMessage>, env: EnvWithAI & { DB: any; VECTORIZE: VectorizeIndex }) {
+export async function queueHandler(batch: MessageBatch<QueueMessage>, env: EnvWithAI & { DB: any; VECTORIZE: VectorizeIndex; MEDIA: R2Bucket }) {
   for (const message of batch.messages) {
     try {
       console.log(`[Queue] Processing message type: ${message.body.type}`)
       
       switch (message.body.type) {
+        case 'vectorize-document': {
+          const { id, tenantId, r2_key } = message.body.payload
+          console.log(`[Queue] Vectorizing document ${id} [${tenantId}]`)
+          try {
+            // 1. Fetch text from R2
+            const r2Obj = await env.MEDIA.get(r2_key)
+            if (!r2Obj) throw new Error('File not found in R2: ' + r2_key)
+            const textContent = await r2Obj.text()
+
+            // 2. Chunking (naive 500 words split for MVP)
+            const words = textContent.split(/\s+/)
+            const chunks: string[] = []
+            let currentChunk = []
+            for (const word of words) {
+              currentChunk.push(word)
+              if (currentChunk.length >= 500) {
+                chunks.push(currentChunk.join(' '))
+                currentChunk = []
+              }
+            }
+            if (currentChunk.length > 0) chunks.push(currentChunk.join(' '))
+
+            // 3. Embed & Insert into Vectorize
+            if (!env.VECTORIZE) throw new Error('Vectorize binding not found')
+            
+            const aiModel = '@cf/baai/bge-base-en-v1.5'
+            const embeddingsObj = await env.AI.run(aiModel, {
+              text: chunks
+            })
+            // data is Array of arrays
+            const embeddings = (embeddingsObj as any).data
+            
+            const vectors = chunks.map((chunk, index) => ({
+              id: `${id}-chunk-${index}`,
+              values: embeddings[index],
+              namespace: tenantId, // Using tenantId as namespace for strict isolation!
+              metadata: {
+                docId: id,
+                tenantId: tenantId,
+                text_chunk: chunk.substring(0, 5000) // Ensure below limits (Vectorize metadata limit)
+              }
+            }))
+
+            await env.VECTORIZE.insert(vectors)
+            
+            // 4. Mark D1 as indexed
+            const db = drizzle(env.DB)
+            await db.update(schema.knowledge_base)
+              .set({ status: 'indexed', chunk_count: chunks.length, updated_at: new Date().toISOString() })
+              .where(eq(schema.knowledge_base.id, id))
+              
+            console.log(`[Queue] Document ${id} indexed with ${chunks.length} chunks.`)
+          } catch (e) {
+            console.error('[Queue] Vectorize document failed:', e)
+            const db = drizzle(env.DB)
+            await db.update(schema.knowledge_base)
+              .set({ status: 'error', updated_at: new Date().toISOString() })
+              .where(eq(schema.knowledge_base.id, id))
+          }
+          break
+        }
         case 'vectorize-entry': {
           const { entryId, data, collectionSlug } = message.body.payload
           await upsertVector(env, entryId, data, collectionSlug)

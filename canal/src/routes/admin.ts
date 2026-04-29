@@ -35,7 +35,12 @@ admin.get('/organizations', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
   const db = getDb(c)
   const results = await db.select({
-    ...schema.organization,
+    id: schema.organization.id,
+    name: schema.organization.name,
+    slug: schema.organization.slug,
+    logo: schema.organization.logo,
+    metadata: schema.organization.metadata,
+    createdAt: schema.organization.createdAt,
     memberCount: sql<number>`(SELECT COUNT(*) FROM "member" m WHERE m.organizationId = ${schema.organization.id})`,
   }).from(schema.organization).orderBy(desc(schema.organization.createdAt))
   return c.json(results)
@@ -291,18 +296,78 @@ admin.get('/health', async (c) => {
   return c.json({ ...checks, checked_at: new Date().toISOString() })
 })
 
-// ── AI Settings (KV-backed) ────────────────────────────────────
+// ── AI Settings (D1-backed via chatbot_config) ─────────────────
 admin.get('/ai-settings', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
-  const raw = await c.env.CANAL_KV.get('ai-config')
-  if (raw) return c.json(JSON.parse(raw))
-  return c.json({ enabled: true, tone: 'executivo', customPrompt: '' })
+  const tenantId = c.get('tenantId') || 'ness'
+  const db = getDb(c)
+  const [config] = await db.select().from(schema.chatbot_config).where(eq(schema.chatbot_config.tenant_id, tenantId)).limit(1)
+  
+  if (config) {
+    return c.json({
+      enabled: config.enabled === 1,
+      bot_name: config.bot_name,
+      avatar_url: config.avatar_url,
+      welcome_message: config.welcome_message,
+      system_prompt: config.system_prompt,
+      theme_color: config.theme_color,
+      max_turns: config.max_turns
+    })
+  }
+  return c.json({ 
+    enabled: true, 
+    bot_name: 'Gabi.OS',
+    avatar_url: '',
+    welcome_message: 'Olá! Como posso ajudar?',
+    system_prompt: '',
+    theme_color: '#00E5A0',
+    max_turns: 20
+  })
 })
 
 admin.put('/ai-settings', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
-  const config = await c.req.json()
-  await c.env.CANAL_KV.put('ai-config', JSON.stringify(config))
+  const tenantId = c.get('tenantId') || 'ness'
+  const db = getDb(c)
+  
+  const payload = await c.req.json() as {
+    enabled?: boolean;
+    bot_name?: string;
+    avatar_url?: string;
+    welcome_message?: string;
+    system_prompt?: string;
+    theme_color?: string;
+    max_turns?: number;
+  }
+
+  const existing = await db.select({ id: schema.chatbot_config.id }).from(schema.chatbot_config).where(eq(schema.chatbot_config.tenant_id, tenantId)).limit(1)
+  
+  if (existing.length > 0) {
+    await db.update(schema.chatbot_config).set({
+      enabled: payload.enabled !== false ? 1 : 0,
+      bot_name: payload.bot_name,
+      avatar_url: payload.avatar_url,
+      welcome_message: payload.welcome_message,
+      system_prompt: payload.system_prompt,
+      theme_color: payload.theme_color,
+      max_turns: payload.max_turns,
+      updated_at: new Date().toISOString()
+    }).where(eq(schema.chatbot_config.id, existing[0].id))
+  } else {
+    await db.insert(schema.chatbot_config).values({
+      id: crypto.randomUUID(),
+      tenant_id: tenantId,
+      enabled: payload.enabled !== false ? 1 : 0,
+      bot_name: payload.bot_name || 'Gabi.OS',
+      avatar_url: payload.avatar_url,
+      welcome_message: payload.welcome_message || 'Olá! Como posso ajudar?',
+      system_prompt: payload.system_prompt,
+      theme_color: payload.theme_color || '#00E5A0',
+      max_turns: payload.max_turns || 20,
+      created_at: new Date().toISOString()
+    })
+  }
+
   return c.json({ success: true })
 })
 
@@ -371,6 +436,139 @@ admin.post('/communications/forward', async (c) => {
   })
 
   return c.json({ success: true })
+})
+
+// ── Knowledge Base (RAG) ─────────────────────────────────────────
+admin.get('/knowledge-base', async (c) => {
+  if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
+  const tenantId = c.get('tenantId') || 'ness'
+  const db = getDb(c)
+  const results = await db.select().from(schema.knowledge_base)
+    .where(eq(schema.knowledge_base.tenant_id, tenantId))
+    .orderBy(desc(schema.knowledge_base.created_at))
+  return c.json(results)
+})
+
+admin.post('/knowledge-base', async (c) => {
+  if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
+  const tenantId = c.get('tenantId') || 'ness'
+  const session = c.get('session')
+  const { title, text_payload } = await c.req.json() as { title: string; text_payload: string }
+  
+  if (!title || !text_payload) return c.json({ error: 'Missing title or text payload' }, 400)
+
+  const id = crypto.randomUUID()
+  const r2_key = `knowledge-base/${tenantId}/${id}.txt`
+  
+  // 1. Salvar no R2 como backup raw text
+  await c.env.MEDIA.put(r2_key, text_payload, {
+    httpMetadata: { contentType: 'text/plain' },
+  })
+
+  // 2. Inserir registro pendente no Drizzle
+  const db = getDb(c)
+  await db.insert(schema.knowledge_base).values({
+    id,
+    tenant_id: tenantId,
+    title,
+    r2_key,
+    status: 'pending',
+    created_by: session?.user?.email || 'api',
+    created_at: new Date().toISOString()
+  })
+
+  // 3. Disparar Queue de background para Chunking e Embeddings
+  if (c.env.QUEUE) {
+    await c.env.QUEUE.send({
+      type: 'vectorize-document',
+      payload: { id, tenantId, r2_key }
+    })
+  } else {
+    // Fallback if queue not bound (local dev without queue simulator sometimes)
+    console.warn('Queue not bound, skipping vectorization.')
+  }
+
+  return c.json({ success: true, id })
+})
+
+admin.delete('/knowledge-base/:id', async (c) => {
+  if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
+  const id = c.req.param('id')
+  const tenantId = c.get('tenantId') || 'ness'
+  const db = getDb(c)
+  
+  const [doc] = await db.select().from(schema.knowledge_base).where(eq(schema.knowledge_base.id, id)).limit(1)
+  if (!doc) return c.json({ error: 'Not found' }, 404)
+  if (doc.tenant_id !== tenantId) return c.json({ error: 'Forbidden' }, 403)
+
+  // 1. Deletar do R2
+  await c.env.MEDIA.delete(doc.r2_key)
+
+  // 2. Deletar os vetores no Vectorize filtrando pelo namespace/id (This will be done via API or queue? 
+  // O SDK deleteByID aceita lista de IDs, precisaremos remover os chunks do Vectorize,
+  // ou marcar a deleção. Se tivermos ID = doc.id + "-chunk-1", podemos ter dificuldades sem query. 
+  // Por enquanto, faremos o melhor possível (excluir base e ignorar vectors até termos namespace full reset).
+  await db.delete(schema.knowledge_base).where(eq(schema.knowledge_base.id, id))
+
+  return c.json({ success: true })
+})
+
+// ── Epic 3.3: Chat History & Analytics ──────────────────────────────
+
+admin.get('/chat-sessions', async (c) => {
+  if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
+  const tenantId = c.get('tenantId') || 'ness'
+  const db = getDb(c)
+
+  // Consultar estatísticas gerais e a lista de sessões recentes
+  const statsResult = await c.env.DB.prepare(`
+    SELECT
+      COUNT(id) as total_sessions,
+      AVG(turn_count) as avg_turns,
+      AVG(csat_score) as avg_csat
+    FROM chat_sessions
+    WHERE tenant_id = ?
+  `).bind(tenantId).all()
+
+  const listResult = await c.env.DB.prepare(`
+    SELECT id, turn_count, csat_score, locale, status, created_at, ended_at
+    FROM chat_sessions
+    WHERE tenant_id = ?
+    ORDER BY created_at DESC
+    LIMIT 100
+  `).bind(tenantId).all()
+
+  return c.json({
+    stats: statsResult.results[0] || { total_sessions: 0, avg_turns: 0, avg_csat: null },
+    sessions: listResult.results || []
+  })
+})
+
+admin.get('/chat-sessions/export', async (c) => {
+  if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
+  const tenantId = c.get('tenantId') || 'ness'
+
+  const rows = await c.env.DB.prepare(`
+    SELECT s.id, s.created_at, s.csat_score, m.role, m.content
+    FROM chat_sessions s
+    JOIN chat_messages m ON s.id = m.session_id
+    WHERE s.tenant_id = ?
+    ORDER BY s.created_at DESC, m.id ASC
+  `).bind(tenantId).all()
+
+  const header = 'Session ID,Data,Feedback,Remetente,Mensagem\n'
+  const csv = rows.results.map((r: any) => {
+    // Sanitização super básica para CSV
+    const txt = String(r.content).replace(/"/g, '""').replace(/\n/g, ' ')
+    return `"${r.id}","${r.created_at}","${r.csat_score || ''}","${r.role}","${txt}"`
+  }).join('\n')
+
+  return new Response(header + csv, {
+    headers: {
+      'Content-Type': 'text/csv; charset=utf-8',
+      'Content-Disposition': 'attachment; filename="historico_gabi.csv"'
+    }
+  })
 })
 
 export { admin }

@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { CANAL_BASE } from '../config/api';
-import { Send, X, MessageSquare, Bot } from "lucide-react";
+import { Send, X, MessageSquare, Bot, ThumbsUp, ThumbsDown } from "lucide-react";
 
 
 
@@ -16,12 +16,31 @@ const ChatbotWidget = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<DisplayMessage[]>([
-    { role: 'bot', content: t('chatbot.welcome', "Olá! Eu sou a Gabi, cicerone digital da ness.\nUse os atalhos abaixo para abrir um chamado rápido, ou digite sua dúvida caso queira bater papo.") }
-  ]);
+  const [messages, setMessages] = useState<DisplayMessage[]>([]);
+  const [botConfig, setBotConfig] = useState<any>(null);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  
+  const [sessionId] = useState(`gabi-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`);
+  const [csatGiven, setCsatGiven] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch(`${CANAL_BASE}/api/chatbot-config?tenant=ness`)
+      .then(res => res.json())
+      .then(config => {
+        setBotConfig(config);
+        if (config.enabled === false) return; // Se quiser desligar o widget
+        setMessages([
+          { role: 'bot', content: config.welcome_message || t('chatbot.welcome', "Olá! Como posso ajudar?") }
+        ]);
+      })
+      .catch(() => {
+        setMessages([
+          { role: 'bot', content: t('chatbot.welcome', "Olá! Como posso ajudar?") }
+        ]);
+      });
+  }, [t]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -48,7 +67,10 @@ const ChatbotWidget = () => {
     try {
       const response = await fetch(`${CANAL_BASE}/api/chat`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-session-id': sessionId
+        },
         body: JSON.stringify({
           messages: [...apiHistory, { role: 'user', content: userMsg }],
           locale: i18n.language,
@@ -82,6 +104,24 @@ const ChatbotWidget = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleCsat = async (score: number) => {
+    if (csatGiven !== null) return;
+    setCsatGiven(score);
+    try {
+      await fetch(`${CANAL_BASE}/api/chat/csat`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-session-id': sessionId
+        },
+        body: JSON.stringify({ csat_score: score }),
+      });
+    } catch (e) {
+      console.error(e);
+      setCsatGiven(null);
     }
   };
 
@@ -124,8 +164,16 @@ const ChatbotWidget = () => {
     }
   };
 
+    if (botConfig && botConfig.enabled === false) {
+      return null;
+    }
+
+    const primaryColor = botConfig?.theme_color || '#00E5A0';
+    const avatarUrl = botConfig?.avatar_url || '/gabi-avatar.png';
+    const botName = botConfig?.bot_name || 'Gabi';
+
   return (
-    <div className="fixed bottom-8 right-8 z-60">
+    <div className="fixed bottom-8 right-8 z-60" style={{ '--chat-primary': primaryColor } as React.CSSProperties}>
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -135,14 +183,17 @@ const ChatbotWidget = () => {
             className="absolute bottom-20 right-0 w-[350px] md:w-[400px] h-[500px] bg-surface-container-low border border-primary-container/20 rounded-[2.5rem] nebula-shadow flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="p-6 bg-primary-container/10 border-b border-white/5 flex items-center justify-between">
+            <div className="p-6 bg-primary-container/10 border-b border-white/5 flex items-center justify-between" style={{ backgroundColor: `${primaryColor}20` }}>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl overflow-hidden border-2 border-primary-container/40">
-                  <img src="/gabi-avatar.png" alt="Gabi" className="w-full h-full object-cover" />
+                <div className="w-10 h-10 rounded-xl overflow-hidden border-2 border-primary-container/40" style={{ borderColor: `${primaryColor}66` }}>
+                  <img src={avatarUrl} alt={botName} className="w-full h-full object-cover" />
                 </div>
                 <div>
-                  <h4 className="text-white font-display font-bold text-sm lowercase-all">Gabi<BlueDot /></h4>
-                  <p className="text-[10px] text-primary-container uppercase tracking-widest font-bold">{t('chatbot.status')}</p>
+                  <h4 className="text-white font-display font-bold text-sm lowercase-all flex items-center gap-1">
+                    {botName}
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: primaryColor }} />
+                  </h4>
+                  <p className="text-[10px] text-primary-container uppercase tracking-widest font-bold" style={{ color: primaryColor }}>{t('chatbot.status')}</p>
                 </div>
               </div>
               <button
@@ -160,17 +211,42 @@ const ChatbotWidget = () => {
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[80%] p-4 rounded-2xl text-sm font-light leading-relaxed whitespace-pre-wrap ${
                     msg.role === 'user'
-                      ? 'bg-primary-container text-on-primary rounded-tr-none'
+                      ? 'text-[#0a0a0a] rounded-tr-none'
                       : 'bg-white/5 text-white border border-white/10 rounded-tl-none'
-                  }`}>
+                  }`}
+                  style={msg.role === 'user' ? { backgroundColor: primaryColor } : undefined}
+                  >
                     {/* Show typing cursor while streaming the last bot message */}
                     {renderMessageContent(msg.content)}
                     {loading && i === messages.length - 1 && msg.role === 'bot' && msg.content === '' && (
                       <span className="inline-flex gap-1 ml-1">
-                        <span className="w-1.5 h-1.5 bg-primary-container rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                        <span className="w-1.5 h-1.5 bg-primary-container rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                        <span className="w-1.5 h-1.5 bg-primary-container rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                        <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: primaryColor, animationDelay: '0ms' }} />
+                        <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: primaryColor, animationDelay: '150ms' }} />
+                        <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: primaryColor, animationDelay: '300ms' }} />
                       </span>
+                    )}
+
+                    {/* CSAT Rating buttons for the last bot message when stream finishes */}
+                    {!loading && i === messages.length - 1 && msg.role === 'bot' && msg.content.length > 5 && i > 0 && (
+                      <div className="flex items-center gap-3 mt-3 pt-3 border-t border-white/10">
+                        <p className="text-[10px] text-white/40 uppercase tracking-wider font-bold">Foi Útil?</p>
+                        <div className="flex gap-1.5">
+                          <button
+                            onClick={() => handleCsat(1)}
+                            disabled={csatGiven !== null}
+                            className={`p-1.5 rounded-md transition-colors ${csatGiven === 1 ? 'bg-emerald-500/20 text-emerald-400' : 'text-white/40 hover:text-white hover:bg-white/10 disabled:opacity-50'}`}
+                          >
+                            <ThumbsUp size={14} />
+                          </button>
+                          <button
+                            onClick={() => handleCsat(-1)}
+                            disabled={csatGiven !== null}
+                            className={`p-1.5 rounded-md transition-colors ${csatGiven === -1 ? 'bg-red-500/20 text-red-400' : 'text-white/40 hover:text-white hover:bg-white/10 disabled:opacity-50'}`}
+                          >
+                            <ThumbsDown size={14} />
+                          </button>
+                        </div>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -207,12 +283,14 @@ const ChatbotWidget = () => {
                 onChange={(e) => setInput(e.target.value)}
                 aria-label="Input field"
                 placeholder={t('chatbot.placeholder')}
-                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
+                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition-all"
+                style={{ '--tw-ring-color': primaryColor } as any}
               />
               <button
                 type="submit"
                 aria-label={t('a11y.send')}
-                className="w-12 h-12 bg-primary-container text-on-primary rounded-xl flex items-center justify-center hover:brightness-110 transition-all"
+                className="w-12 h-12 text-[#0a0a0a] rounded-xl flex items-center justify-center hover:brightness-110 transition-all font-bold"
+                style={{ backgroundColor: primaryColor }}
               >
                 <Send size={18} />
               </button>
@@ -225,14 +303,15 @@ const ChatbotWidget = () => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? t('a11y.close') : 'Gabi'}
+        aria-label={isOpen ? t('a11y.close') : botName}
         aria-expanded={isOpen}
-        className="w-16 h-16 rounded-2xl overflow-hidden shadow-2xl shadow-primary-container/40 relative group border-2 border-primary-container/60"
+        className="w-16 h-16 rounded-2xl overflow-hidden shadow-2xl relative group border-2"
+        style={{ borderColor: primaryColor, boxShadow: `0 25px 50px -12px ${primaryColor}40` }}
       >
         <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 border-2 border-surface rounded-full z-10"></div>
         {isOpen
-          ? <div className="w-full h-full bg-primary-container flex items-center justify-center"><X className="text-on-primary" size={24} /></div>
-          : <img src="/gabi-avatar.png" alt="Gabi" className="w-full h-full object-cover" />
+          ? <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: primaryColor }}><X className="text-[#0a0a0a]" size={24} /></div>
+          : <img src={avatarUrl} alt={botName} className="w-full h-full object-cover" />
         }
       </motion.button>
     </div>

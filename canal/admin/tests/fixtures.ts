@@ -64,7 +64,18 @@ export const test = base.extend({
     });
 
     await page.route('**/api/admin/stats*', async (route) => {
-      await route.fulfill({ json: { visitors: 0, actions: 0 } });
+      await route.fulfill({ json: { 
+        totalLeads: 10, newLeads: 2, totalForms: 5, newForms: 1, 
+        totalChats: 3, publishedEntries: 42, totalPosts: 12, 
+        totalCases: 5, totalJobs: 2, totalUsers: 3, weeklyLeads: [] 
+      } });
+    });
+
+    await page.route('**/api/admin/health*', async (route) => {
+      await route.fulfill({ json: { 
+        db: { status: "ok" }, kv: { status: "ok" }, ai: { status: "ok" }, 
+        storage: { status: "ok" }, queue: { status: "ok" } 
+      } });
     });
     
     await page.route('**/api/admin/activity*', async (route) => {

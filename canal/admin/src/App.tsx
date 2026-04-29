@@ -20,6 +20,8 @@ const CompliancePage = React.lazy(() => import("./routes/compliance"));
 const AutomationPage = React.lazy(() => import("./routes/automation"));
 const EmergencyPage = React.lazy(() => import("./routes/emergency"));
 const SaasBillingPage = React.lazy(() => import("./routes/saas-billing"));
+const KnowledgeBasePage = React.lazy(() => import("./routes/knowledge-base"));
+const ChatsHistoryPage = React.lazy(() => import("./routes/chats"));
 function GlobalErrorBoundary() {
   const error = useRouteError() as Error;
   
@@ -75,6 +77,8 @@ const router = createBrowserRouter([
       { path: "users", element: <UsersPage /> },
       { path: "organizations", element: <OrganizationsPage /> },
       { path: "compliance", element: <CompliancePage /> },
+      { path: "knowledge-base", element: <KnowledgeBasePage /> },
+      { path: "chats", element: <ChatsHistoryPage /> },
       { path: "automation", element: <AutomationPage /> },
       { path: "emergency", element: <EmergencyPage /> },
       { path: "saas-billing", element: <SaasBillingPage /> },

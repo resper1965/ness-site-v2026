@@ -98,16 +98,26 @@ ${ragContext}
 
     const backgroundTask = async () => {
       try {
-        // ALWAYS persist chat session for admin visibility
+        // ALWAYS persist chat session for admin visibility (Relational Schema)
         const sessionId = request.headers.get("x-session-id") || `gabi-${Date.now()}`;
-        const messagesJson = JSON.stringify(messages.map((m: any) => ({
-          role: m.role,
-          content: String(m.content),
-        })));
+        
+        // 1. Upsert session summary
         await this.env.DB.prepare(
-          "INSERT INTO chats (session_id, messages) VALUES (?, ?) ON CONFLICT(session_id) DO UPDATE SET messages=excluded.messages, updated_at=CURRENT_TIMESTAMP"
-        ).bind(sessionId, messagesJson).run();
-        console.log("[BG CHAT SAVED]", sessionId);
+          "INSERT INTO chat_sessions (id, tenant_id, locale, turn_count, created_at, status) VALUES (?, 'ness', ?, ?, CURRENT_TIMESTAMP, 'active') ON CONFLICT(id) DO UPDATE SET turn_count = excluded.turn_count, ended_at = CURRENT_TIMESTAMP"
+        ).bind(sessionId, locale || 'pt', messages.length).run();
+
+        // 2. Sync full message context (Naive re-insert for exact sequence state)
+        await this.env.DB.prepare("DELETE FROM chat_messages WHERE session_id = ?").bind(sessionId).run();
+        
+        // Using batch for better DO performance
+        const batchStmts = messages.map((m: any) => 
+          this.env.DB.prepare(
+            "INSERT INTO chat_messages (session_id, role, content, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP)"
+          ).bind(sessionId, m.role, String(m.content))
+        );
+        await this.env.DB.batch(batchStmts);
+
+        console.log("[BG CHAT RELATIONAL SAVED]", sessionId);
 
         // Lead extraction — only when user provides contact info
         const lastMsg = messages[messages.length - 1]?.content || "";

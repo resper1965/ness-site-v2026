@@ -10,7 +10,7 @@ import { defineConfig, devices } from '@playwright/test';
  */
 const PROD_URL = process.env.PROD_URL || 'https://canal.ness.com.br';
 const isCI = !!process.env.CI;
-const baseURL = isCI ? PROD_URL : 'http://localhost:5173';
+const baseURL = isCI ? PROD_URL : 'http://127.0.0.1:5173';
 
 export default defineConfig({
   testDir: './tests',
@@ -51,6 +51,11 @@ export default defineConfig({
     },
   ],
 
-  // Web server only for admin-ui project (not production)
-  // Start manually with: npm run dev
+  // Auto-start web server for admin-ui local testing
+  webServer: {
+    command: 'npm run dev',
+    url: 'http://127.0.0.1:5173',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120 * 1000,
+  },
 });

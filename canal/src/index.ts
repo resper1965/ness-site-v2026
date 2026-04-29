@@ -186,6 +186,27 @@ app.post('/api/incidents', async (c) => {
   return c.json({ success: true, message: 'Equipe de resposta notificada com sucesso.' });
 })
 
+// ── Feedback do Chat (CSAT) ─────────────────────────────────────
+app.post('/api/chat/csat', async (c) => {
+  const body = await c.req.json().catch(() => ({}));
+  const sessionId = c.req.header('x-session-id');
+  const score = body.csat_score; // 1 (thumbs up) ou -1 (thumbs down)
+
+  if (!sessionId || typeof score !== 'number') {
+    return c.json({ error: 'Missing session_id or csat_score' }, 400);
+  }
+
+  try {
+    // Utilize db/schema futuramente se importado, ou D1 nativo para leveza da borda
+    await c.env.DB.prepare(
+      "UPDATE chat_sessions SET csat_score = ? WHERE id = ?"
+    ).bind(score, sessionId).run();
+    return c.json({ success: true });
+  } catch (err) {
+    return c.json({ error: 'Failed to record feedback' }, 500);
+  }
+})
+
 // ── Webhook Agêntico (Omnichannel / Teams / WhatsApp) ────────────────
 app.post('/api/webhooks/omnichannel', async (c) => {
   const body = await c.req.json().catch(() => ({}));

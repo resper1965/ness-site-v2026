@@ -177,6 +177,18 @@ export const chatbot_config = sqliteTable('chatbot_config', {
   updated_at: text('updated_at'),
 });
 
+export const knowledge_base = sqliteTable('knowledge_base', {
+  id: text('id').primaryKey(),
+  tenant_id: text('tenant_id').notNull(),
+  title: text('title').notNull(),
+  r2_key: text('r2_key').notNull(),
+  status: text('status').default('pending'), // pending, indexed, error
+  chunk_count: integer('chunk_count').default(0),
+  created_by: text('created_by'),
+  created_at: text('created_at'),
+  updated_at: text('updated_at'),
+});
+
 // ── Fase 3: Chat Sessions & Messages ────────────────────────────
 
 export const chat_sessions = sqliteTable('chat_sessions', {

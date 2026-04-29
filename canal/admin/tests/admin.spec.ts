@@ -26,8 +26,7 @@ test.describe('Admin Dashboard', () => {
 
     // Dashboard should have stat-like elements
     const cards = page.locator('.stat-card, .card, [class*="stat"]');
-    const count = await cards.count();
-    expect(count).toBeGreaterThan(0);
+    await expect(cards.first()).toBeVisible({ timeout: 15_000 });
   });
 });
 
@@ -38,8 +37,7 @@ test.describe('Admin Navigation', () => {
 
     // Key nav items should exist
     const navItems = page.locator('nav a, .sidebar a, [class*="nav"] a');
-    const count = await navItems.count();
-    expect(count).toBeGreaterThan(3); // At least Dashboard, Insights, Cases, etc.
+    await expect(navItems.nth(3)).toBeVisible({ timeout: 15_000 }); // At least Dashboard, Insights, Cases, etc.
   });
 });
 
