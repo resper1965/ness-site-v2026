@@ -132,14 +132,14 @@ export default function DashboardLayout() {
                       end={item.end}
                       title={isMinimized ? item.label : undefined}
                       className={({ isActive }) => `
-                        flex items-center transition-colors duration-150 outline-none
-                        ${isMinimized ? 'w-10 h-10 justify-center rounded-lg' : 'gap-3 px-3 py-2 rounded-lg'}
+                        flex items-center transition-all duration-200 outline-none group
+                        ${isMinimized ? 'w-10 h-10 justify-center rounded-xl' : 'gap-3 px-3 py-2.5 rounded-xl'}
                         ${isActive
-                          ? 'bg-primary/8 text-primary font-medium'
-                          : 'text-muted-foreground hover:bg-muted hover:text-foreground'}
+                          ? 'bg-primary/10 text-primary font-bold active-glow shadow-[0_0_12px_rgba(var(--primary-rgb),0.1)]'
+                          : 'text-muted-foreground hover:bg-muted hover:text-foreground hover:scale-[0.98]'}
                       `}
                     >
-                      <span className="shrink-0 [&>svg]:w-[18px] [&>svg]:h-[18px]">{item.icon}</span>
+                      <span className={`shrink-0 [&>svg]:w-[18px] [&>svg]:h-[18px] transition-transform duration-200 group-hover:scale-110`}>{item.icon}</span>
                       {!isMinimized && <span className="text-[13px] truncate">{item.label}</span>}
                     </NavLink>
                   ))}
@@ -149,13 +149,23 @@ export default function DashboardLayout() {
           })}
         </nav>
 
-        {/* User */}
-        <div className={`shrink-0 py-3 border-t border-border/40 ${isMinimized ? 'px-2' : 'px-3'}`}>
+        {/* User / Telemetry */}
+        <div className={`shrink-0 flex flex-col gap-3 py-4 border-t border-border/40 ${isMinimized ? 'px-2 items-center' : 'px-4'}`}>
+          {!isMinimized && (
+            <div className="flex items-center gap-2 bg-zinc-950 dark:bg-black rounded-lg p-2 border border-border shadow-inner">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+              <div className="flex flex-col overflow-hidden">
+                 <span className="text-[9px] font-mono font-bold text-emerald-400 uppercase tracking-widest truncate">SOC2 Secure</span>
+                 <span className="text-[8px] font-mono text-muted-foreground truncate">Latency 14ms</span>
+              </div>
+            </div>
+          )}
+
           {isMinimized ? (
             <button
               onClick={handleSignOut}
               title="Sair"
-              className="w-10 h-10 mx-auto flex items-center justify-center rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors shrink-0"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>

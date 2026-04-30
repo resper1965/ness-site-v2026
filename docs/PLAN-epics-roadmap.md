@@ -249,22 +249,22 @@ Este roadmap consolida **todos os processos** do ecossistema ness. em 6 fases (�
 
 | Task | Descrição | Status |
 |------|-----------|--------|
-| T3.2.1 | Admin UI: upload de documentos (PDF, MD, TXT) para R2 | `[ ]` |
-| T3.2.2 | API: `POST /api/admin/seed-vectors` com namespace por tenant | `[ ]` |
-| T3.2.3 | API: `DELETE /api/admin/vectors/:id` | `[ ]` |
-| T3.2.4 | Lista de documentos ingeridos (pending / indexed / error) | `[ ]` |
-| T3.2.5 | Vectorize query filtrando por namespace do tenant | `[ ]` |
+| T3.2.1 | Admin UI: upload de documentos (PDF, MD, TXT) para R2 | `[x]` |
+| T3.2.2 | API: `POST /api/admin/seed-vectors` com namespace por tenant | `[x]` |
+| T3.2.3 | API: `DELETE /api/admin/vectors/:id` | `[x]` |
+| T3.2.4 | Lista de documentos ingeridos (pending / indexed / error) | `[x]` |
+| T3.2.5 | Vectorize query filtrando por namespace do tenant | `[x]` |
 
 ### E3.3 — Chat History & Analytics (Backlog Epic 1.4)
 - **Agent:** `database-architect` + `frontend-specialist`
 
 | Task | Descrição | Status |
 |------|-----------|--------|
-| T3.3.1 | Schema: `chat_sessions` + `chat_messages` tables em Drizzle | `[ ]` |
-| T3.3.2 | Salvar turns no D1 via GabiAgent DO | `[ ]` |
-| T3.3.3 | Admin dashboard: session count, avg turns, top intents | `[ ]` |
-| T3.3.4 | CSAT widget (thumbs up/down) no chat | `[ ]` |
-| T3.3.5 | Export CSV de conversas | `[ ]` |
+| T3.3.1 | Schema: `chat_sessions` + `chat_messages` tables em Drizzle | `[x]` |
+| T3.3.2 | Salvar turns no D1 via GabiAgent DO | `[x]` |
+| T3.3.3 | Admin dashboard: session count, avg turns, top intents | `[x]` |
+| T3.3.4 | CSAT widget (thumbs up/down) no chat | `[x]` |
+| T3.3.5 | Export CSV de conversas | `[x]` |
 
 ### E3.4 — Content Automation (Backlog Epic 2.1)
 - **Agent:** `backend-specialist`
@@ -272,10 +272,10 @@ Este roadmap consolida **todos os processos** do ecossistema ness. em 6 fases (�
 
 | Task | Descrição | Status |
 |------|-----------|--------|
-| T3.4.1 | Queue consumer: auto SEO title + meta description via Workers AI | `[ ]` |
-| T3.4.2 | Auto-translate para EN/ES com Llama 3 + insert em D1 | `[ ]` |
-| T3.4.3 | Social caption generator (LinkedIn + Instagram) | `[ ]` |
-| T3.4.4 | Newsletter digest: cron semanal coletando insights publicados | `[ ]` |
+| T3.4.1 | Queue consumer: auto SEO title + meta description via Workers AI | `[x]` |
+| T3.4.2 | Auto-translate para EN/ES com Llama 3 + insert em D1 | `[x]` |
+| T3.4.3 | Social caption generator (LinkedIn + Instagram) | `[x]` |
+| T3.4.4 | Newsletter digest: cron semanal coletando insights publicados | `[x]` |
 
 ### E3.5 — Media Pipeline (R2 Image Delivery)
 - **Agent:** `backend-specialist`

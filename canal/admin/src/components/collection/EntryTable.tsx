@@ -36,7 +36,32 @@ export function EntryTable({
   const hasFeatured = collection.fields.some(f => f.name === 'featured');
 
   if (loading) {
-    return <div className="p-12 flex justify-center"><div className="loader-inline" /></div>;
+    return (
+      <div className="bg-card rounded-[24px] border border-border/60 shadow-[0_2px_20px_-8px_rgba(0,0,0,0.05)] overflow-hidden mt-6">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-left border-collapse whitespace-nowrap">
+            <thead>
+              <tr className="bg-muted/30 border-b border-border/60">
+                <th className="py-4 px-8 w-1/3"><div className="h-3 w-24 bg-muted/50 rounded-full"></div></th>
+                <th className="py-4 px-4 w-1/4"><div className="h-3 w-16 bg-muted/50 rounded-full"></div></th>
+                <th className="py-4 px-4 w-1/4"><div className="h-3 w-20 bg-muted/50 rounded-full"></div></th>
+                <th className="py-4 px-8 w-auto text-right"><div className="h-3 w-12 bg-muted/50 rounded-full ml-auto"></div></th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border/40">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <tr key={i}>
+                  <td className="py-5 px-8"><div className="h-4 w-3/4 rounded-lg bg-muted/50" style={{ animation: 'skeletonPulse 1.5s ease-in-out infinite', animationDelay: `${i * 0.1}s` }}></div></td>
+                  <td className="py-5 px-4"><div className="h-4 w-1/2 rounded-lg bg-muted/50" style={{ animation: 'skeletonPulse 1.5s ease-in-out infinite', animationDelay: `${i * 0.15}s` }}></div></td>
+                  <td className="py-5 px-4"><div className="h-4 w-24 rounded-lg bg-muted/50" style={{ animation: 'skeletonPulse 1.5s ease-in-out infinite', animationDelay: `${i * 0.2}s` }}></div></td>
+                  <td className="py-5 px-8 text-right"><div className="h-8 w-16 rounded-lg bg-muted/50 inline-block" style={{ animation: 'skeletonPulse 1.5s ease-in-out infinite', animationDelay: `${i * 0.25}s` }}></div></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
   }
 
   if (items.length === 0) {

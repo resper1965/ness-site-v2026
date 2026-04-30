@@ -570,5 +570,98 @@ admin.get('/chat-sessions/export', async (c) => {
     }
   })
 })
+// ── Tarefas Assíncronas (Content Automation / Backlog Epic 2.1) ────────────────────
+admin.post('/entries/:id/translate', async (c) => {
+  if (!assertAdmin(c)) return c.json({ error: 'Unauthorized' }, 401)
+  
+  const entryId = c.req.param('id')
+  const body = await c.req.json().catch(() => ({}))
+  const targetLocale = body.targetLocale || 'en'
+  const tenantId = c.get('tenantId')
+
+  if (!c.env.QUEUE) return c.json({ error: 'Queue binding not found' }, 500)
+
+  const db = getDb(c)
+  const [entry] = await db.select().from(schema.entries).where(eq(schema.entries.id, entryId)).limit(1)
+
+  if (!entry) return c.json({ error: 'Entry not found' }, 404)
+
+  const data = typeof entry.data === 'string' ? JSON.parse(entry.data) : entry.data
+
+  c.env.QUEUE.send({
+    type: 'translate',
+    payload: { entryId: entry.id, data, targetLocale, tenantId }
+  })
+
+  return c.json({ success: true, message: 'Translation queued' })
+})
+
+admin.post('/entries/:id/social', async (c) => {
+  if (!assertAdmin(c)) return c.json({ error: 'Unauthorized' }, 401)
+  
+  const entryId = c.req.param('id')
+  const tenantId = c.get('tenantId')
+  const body = await c.req.json().catch(() => ({}))
+  const platform = body.platform || 'linkedin'
+
+  if (!c.env.QUEUE) return c.json({ error: 'Queue binding not found' }, 500)
+
+  const db = getDb(c)
+  const [entry] = await db.select().from(schema.entries).where(eq(schema.entries.id, entryId)).limit(1)
+
+  if (!entry) return c.json({ error: 'Entry not found' }, 404)
+
+  const data = typeof entry.data === 'string' ? JSON.parse(entry.data) : entry.data
+
+  c.env.QUEUE.send({
+    type: 'generate-social-caption',
+    payload: { entryId: entry.id, data, tenantId, platform }
+  })
+
+  return c.json({ success: true, message: 'Social caption generation queued' })
+})
+// ── Compliance & Segurança: ROPA & Incidentes ──────────────────────
+admin.get('/compliance/ropa', async (c) => {
+  if (!assertAdmin(c)) return c.json({ error: 'Unauthorized' }, 401)
+  const tenantId = c.get('tenantId') as string
+  const db = getDb(c)
+  
+  const records = await db.select().from(schema.ropa_records).where(eq(schema.ropa_records.tenant_id, tenantId))
+  return c.json(records)
+})
+
+admin.post('/compliance/ropa', async (c) => {
+  if (!assertAdmin(c)) return c.json({ error: 'Unauthorized' }, 401)
+  const tenantId = c.get('tenantId') as string
+  const db = getDb(c)
+  const body = await c.req.json()
+
+  const newRecord = {
+    id: crypto.randomUUID(),
+    tenant_id: tenantId,
+    process_name: body.process_name,
+    purpose: body.purpose,
+    data_categories: typeof body.data_categories === 'string' ? body.data_categories : JSON.stringify(body.data_categories || []),
+    data_subjects: typeof body.data_subjects === 'string' ? body.data_subjects : JSON.stringify(body.data_subjects || []),
+    legal_basis: body.legal_basis,
+    retention_period: body.retention_period || '',
+    international_transfer: body.international_transfer ? 1 : 0,
+    security_measures: body.security_measures || '',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  }
+
+  await db.insert(schema.ropa_records).values(newRecord)
+  return c.json({ success: true, record: newRecord })
+})
+
+admin.get('/compliance/incidents', async (c) => {
+  if (!assertAdmin(c)) return c.json({ error: 'Unauthorized' }, 401)
+  const tenantId = c.get('tenantId') as string
+  const db = getDb(c)
+  
+  const records = await db.select().from(schema.incidents).where(eq(schema.incidents.tenant_id, tenantId))
+  return c.json(records)
+})
 
 export { admin }

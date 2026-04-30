@@ -1,5 +1,5 @@
 import { drizzle } from 'drizzle-orm/d1'
-import { eq } from 'drizzle-orm'
+import { eq, sql, and } from 'drizzle-orm'
 import { entries, forms } from './db/schema'
 
 export async function cronHandler(event: ScheduledEvent, env: any) {
@@ -34,6 +34,49 @@ export async function cronHandler(event: ScheduledEvent, env: any) {
           text: `⚖️ *ALERTA COMPLIANCE (SLA LGPD)*\nExistem ${formsSLA.results.length} solicitações/denúncias no sistema que superaram 10 dias de ociosidade. Ação do DPO requerida imediatamente.`
         })
       }).catch(() => {})
+    }
+
+    // Newsletter Digest (Weekly recap)
+    const lastWeek = new Date()
+    lastWeek.setDate(lastWeek.getDate() - 7)
+    
+    // Obtemos o id the collection insights primeiro (por segurança)
+    const insightCol: any = await (env.DB.prepare("SELECT id FROM collections WHERE slug = 'insights' LIMIT 1") as any).first();
+    if (insightCol) {
+      const colId = insightCol.id;
+      const recentPosts = await db.select({ title: sql`json_extract(data, '$.title')`, description: sql`json_extract(data, '$.seo_description')` })
+        .from(entries)
+        .where(and(eq(entries.collection_id, String(colId)), eq(entries.status, 'published'), sql`created_at >= ${lastWeek.toISOString()}`))
+
+      if (recentPosts && recentPosts.length > 0) {
+        console.log(`[Cron] Encontrou ${recentPosts.length} posts recentes para newsletter.`)
+        let digestContent = `Esses são os insights publicados pelo escritório nos últimos 7 dias:\n\n`
+        recentPosts.forEach((p: any) => digestContent += `- ${p.title} (${p.description || 'Sem descrição'})\n`)
+        
+        const summarizePrompt = `Você é um curador de conteúdo jurídico. Resuma de forma envolvente as seguintes publicações para ser enviado como um boletim informativo (newsletter) da semana. Comece com uma saudação breve e siga com highlights curtos.\n\nConteúdo bruto:\n${digestContent}`
+        
+        try {
+          const aiResponse = await env.AI.run('@cf/meta/llama-3-8b-instruct', {
+            messages: [{ role: 'system', content: summarizePrompt }]
+          })
+          const newsletterText = String((aiResponse as any).response).trim()
+          
+          console.log(`[Cron] Newsletter gerada:\n${newsletterText}`)
+          
+          // Notifica no Slack o Rascunho
+          if (env.SLACK_WEBHOOK_URL) {
+            await fetch(env.SLACK_WEBHOOK_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                text: `📰 *Newsletter Semanal (Rascunho por Gabi IA)*\n\n${newsletterText}`
+              })
+            }).catch(() => {})
+          }
+        } catch (err) {
+          console.error('[Cron] Falha ao gerar newsletter AI:', err)
+        }
+      }
     }
 
   } catch (err) {

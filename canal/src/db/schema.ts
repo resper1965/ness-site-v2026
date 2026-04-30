@@ -212,24 +212,6 @@ export const chat_messages = sqliteTable('chat_messages', {
   created_at: text('created_at'),
 });
 
-// ── Fase 4: DSAR (Data Subject Access Requests) ─────────────────
-
-export const dsar_requests = sqliteTable('dsar_requests', {
-  id: text('id').primaryKey(),
-  tenant_id: text('tenant_id'),
-  requester_name: text('requester_name').notNull(),
-  requester_email: text('requester_email').notNull(),
-  requester_document: text('requester_document'),
-  request_type: text('request_type').notNull(),
-  description: text('description'),
-  status: text('status').default('received'),
-  response_file_key: text('response_file_key'),
-  assigned_to: text('assigned_to'),
-  sla_deadline: text('sla_deadline'),
-  resolved_at: text('resolved_at'),
-  created_at: text('created_at'),
-  updated_at: text('updated_at'),
-});
 
 // ── Fase 4: Whistleblower / Canal de Denúncia ───────────────────
 
@@ -344,7 +326,40 @@ export const brand_assets = sqliteTable('brand_assets', {
   created_at: text('created_at'),
 });
 
-// ── Fase 6: Growth & Incidentes ──────────────────────────────────────
+// ── Fase 4: Compliance & Segurança ──────────────────────────────────────
+
+export const dsar_requests = sqliteTable('dsar_requests', {
+  id: text('id').primaryKey(),
+  tenant_id: text('tenant_id').notNull(),
+  requester_name: text('requester_name').notNull(),
+  requester_email: text('requester_email').notNull(),
+  requester_document: text('requester_document'),
+  request_type: text('request_type').notNull(),
+  status: text('status').default('open'),
+  description: text('description'),
+  details: text('details'),
+  response_package_url: text('response_package_url'),
+  assigned_to: text('assigned_to'),
+  deadline: text('deadline'),
+  resolved_at: text('resolved_at'),
+  created_at: text('created_at'),
+  updated_at: text('updated_at'),
+});
+
+export const ropa_records = sqliteTable('ropa_records', {
+  id: text('id').primaryKey(),
+  tenant_id: text('tenant_id').notNull(),
+  process_name: text('process_name').notNull(),
+  purpose: text('purpose').notNull(),
+  data_categories: text('data_categories').notNull(), // JSON string
+  data_subjects: text('data_subjects').notNull(), // JSON string
+  legal_basis: text('legal_basis').notNull(),
+  retention_period: text('retention_period'),
+  international_transfer: integer('international_transfer').default(0),
+  security_measures: text('security_measures'),
+  created_at: text('created_at'),
+  updated_at: text('updated_at'),
+});
 
 export const incidents = sqliteTable('incidents', {
   id: text('id').primaryKey(),

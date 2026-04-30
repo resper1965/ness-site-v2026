@@ -343,6 +343,35 @@ entries.post('/collections/:slug/entries', async (c) => {
     }
   }
 
+  // Auto-SEO para posts e pages sem meta tags
+  if (col.slug === 'insights' || col.slug === 'pages') {
+    const d = data as Record<string, any>
+    if (!d.seo_title || !d.seo_description) {
+      try {
+        if (c.env.QUEUE) {
+          c.env.QUEUE.send({
+            type: 'generate-seo',
+            payload: { entryId: id, data, tenantId }
+          })
+        }
+      } catch(e) {
+        console.error('[Queue Auto-SEO] Erro ao enfileirar job', e)
+      }
+    }
+    
+    // Auto-Translate para inglês e espanhol (se publicado e for post principal)
+    if (status === 'published' && locale === 'pt') {
+      try {
+        if (c.env.QUEUE) {
+          c.env.QUEUE.send({ type: 'translate', payload: { entryId: id, data, targetLocale: 'en', tenantId } })
+          c.env.QUEUE.send({ type: 'translate', payload: { entryId: id, data, targetLocale: 'es', tenantId } })
+        }
+      } catch(e) {
+        console.error('[Queue Auto-Translate] Erro ao agendar', e)
+      }
+    }
+  }
+
   return c.json({ id, slug, locale, status }, 201)
 })
 

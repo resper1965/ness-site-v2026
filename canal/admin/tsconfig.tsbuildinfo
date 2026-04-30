@@ -1,1 +1,0 @@
-{"root":["./src/App.tsx","./src/main.tsx","./src/lib/auth-client.ts","./src/routes/dashboard.tsx","./src/routes/forms.tsx","./src/routes/insights.tsx","./src/routes/jobs.tsx","./src/routes/login.tsx"],"errors":true,"version":"5.9.3"}

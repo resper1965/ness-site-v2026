@@ -186,6 +186,42 @@ app.post('/api/incidents', async (c) => {
   return c.json({ success: true, message: 'Equipe de resposta notificada com sucesso.' });
 })
 
+// ── DSAR Pública (LGPD) ─────────────────────────────────────────
+app.post('/api/dsar', async (c) => {
+  const body = await c.req.json().catch(() => ({}));
+  
+  if (!body.requester_name || !body.requester_email || !body.request_type || !body.tenant_id) {
+    return c.json({ error: 'Campos requeridos ausentes' }, 400);
+  }
+
+  const id = crypto.randomUUID();
+  // 15 dias úteis, simplificando para 20 dias corridos
+  const deadline = new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString();
+  
+  try {
+    await c.env.DB.prepare(
+      "INSERT INTO dsar_requests (id, tenant_id, requester_name, requester_email, request_type, status, details, deadline, created_at, updated_at) VALUES (?, ?, ?, ?, ?, 'open', ?, ?, datetime('now'), datetime('now'))"
+    ).bind(id, body.tenant_id, body.requester_name, body.requester_email, body.request_type, body.details || '', deadline).run();
+
+    // Enviar email via Fila
+    if (c.env.QUEUE) {
+      c.env.QUEUE.send({
+        type: 'send-email',
+        payload: {
+          to: body.requester_email,
+          subject: 'Confirmação de Solicitação LGPD (DSAR)',
+          body: `Olá ${body.requester_name},\n\nRecebemos sua solicitação de privacidade do tipo "${body.request_type}" (Ticket: ${id}).\nSideraremos esta demanda e enviaremos seu pacote de resposta/relatório em até 15 dias úteis (Prazo máximo: ${new Date(deadline).toLocaleDateString('pt-BR')}).\n\nAtt,\nTime de Privacidade Ness`
+        }
+      });
+    }
+
+    return c.json({ success: true, ticket_id: id, deadline });
+  } catch (err) {
+    console.error('Failed to create DSAR', err);
+    return c.json({ error: 'Falha interna' }, 500);
+  }
+})
+
 // ── Feedback do Chat (CSAT) ─────────────────────────────────────
 app.post('/api/chat/csat', async (c) => {
   const body = await c.req.json().catch(() => ({}));

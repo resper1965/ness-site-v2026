@@ -35,7 +35,7 @@ app.post('/dsar', async (c) => {
     request_type: body.type, // access, deletion, correction, portability
     description: body.description,
     status: 'received',
-    sla_deadline: deadline.toISOString(),
+    deadline: deadline.toISOString(),
     created_at: now,
     updated_at: now,
   })
@@ -89,8 +89,7 @@ app.put('/admin/dsar/:id', async (c) => {
 
   await db.update(dsar_requests).set({
     status: body.status,
-    assigned_to: body.assigned_to,
-    response_file_key: body.response_file_key,
+    response_package_url: body.response_package_url,
     resolved_at: body.status === 'resolved' ? now : undefined,
     updated_at: now,
   }).where(eq(dsar_requests.id, id))
@@ -124,7 +123,7 @@ app.post('/admin/dsar/:id/upload-response', async (c) => {
   })
 
   await db.update(dsar_requests).set({
-    response_file_key: key,
+    response_package_url: key,
     updated_at: new Date().toISOString(),
   }).where(eq(dsar_requests.id, id))
 

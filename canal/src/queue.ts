@@ -7,16 +7,37 @@ import * as schema from './db/schema'
 import { eq } from 'drizzle-orm'
 
 export interface QueueMessage {
-  type: 'generate-draft' | 'audit-content' | 'translate' | 'vectorize-entry' | 'webhook-dispatch' | 'SCORE_CV' | 'SEND_NEWSLETTER' | 'SOCIAL_POST_DISPATCH' | 'vectorize-document'
+  type: 'generate-draft' | 'audit-content' | 'translate' | 'vectorize-entry' | 'webhook-dispatch' | 'SCORE_CV' | 'SEND_NEWSLETTER' | 'SOCIAL_POST_DISPATCH' | 'vectorize-document' | 'generate-seo' | 'generate-social-caption' | 'send-email'
   payload: any
 }
 
-export async function queueHandler(batch: MessageBatch<QueueMessage>, env: EnvWithAI & { DB: any; VECTORIZE: VectorizeIndex; MEDIA: R2Bucket }) {
+export async function queueHandler(batch: MessageBatch<QueueMessage>, env: EnvWithAI & { DB: any; VECTORIZE: VectorizeIndex; MEDIA: R2Bucket; RESEND_API_KEY?: string }) {
   for (const message of batch.messages) {
     try {
       console.log(`[Queue] Processing message type: ${message.body.type}`)
       
       switch (message.body.type) {
+        case 'send-email': {
+          const { to, subject, body } = message.body.payload;
+          if (env.RESEND_API_KEY) {
+            await fetch('https://api.resend.com/emails', {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                from: 'Privacidade <privacidade@ness.com.br>',
+                to,
+                subject,
+                text: body
+              })
+            }).catch(e => console.error('[Queue] External Email API Error:', e));
+          } else {
+            console.log(`[Queue] Simulated Email to: ${to} | Subject: ${subject}`);
+          }
+          break;
+        }
         case 'vectorize-document': {
           const { id, tenantId, r2_key } = message.body.payload
           console.log(`[Queue] Vectorizing document ${id} [${tenantId}]`)
@@ -87,6 +108,45 @@ export async function queueHandler(batch: MessageBatch<QueueMessage>, env: EnvWi
         case 'generate-draft':
           console.log('Generating draft for:', message.body.payload.topic)
           break;
+        case 'generate-seo': {
+          const { entryId, data, tenantId } = message.body.payload
+          console.log(`[Queue] Generating SEO for entry ${entryId}`)
+          try {
+            const contentToAnalyze = data.content || data.body || JSON.stringify(data)
+            const prompt = `Você é um especialista em SEO. Baseado no conteúdo fornecido, retorne APENAS um objeto JSON válido com duas chaves: "seo_title" (máx 60 caracteres) e "seo_description" (máx 160 caracteres). Conteúdo: ${contentToAnalyze.substring(0, 3000)}`
+            
+            const aiResponse = await env.AI.run('@cf/meta/llama-3-8b-instruct', {
+              messages: [{ role: 'system', content: prompt }]
+            })
+            
+            const jsonText = String((aiResponse as any).response).replace(/```json/g, '').replace(/```/g, '').trim()
+            let seoData = { seo_title: '', seo_description: '' }
+            try {
+              seoData = JSON.parse(jsonText)
+            } catch (err) {
+              console.warn('[Queue] Falha no parse do SEO JSON', jsonText)
+            }
+            
+            if (seoData.seo_title || seoData.seo_description) {
+              const db = drizzle(env.DB)
+              const [originalRow] = await db.select().from(entries).where(eq(entries.id, entryId)).limit(1)
+              
+              if (originalRow) {
+                const currentData = typeof originalRow.data === 'string' ? JSON.parse(originalRow.data) : (originalRow.data || {})
+                const updatedData = { ...currentData, seo_title: seoData.seo_title || currentData.seo_title, seo_description: seoData.seo_description || currentData.seo_description }
+                
+                await db.update(entries)
+                  .set({ data: JSON.stringify(updatedData), updated_at: new Date().toISOString() })
+                  .where(eq(entries.id, entryId))
+                  
+                console.log(`[Queue] SEO auto-gerado e salvo no Entry-${entryId}`)
+              }
+            }
+          } catch (e) {
+            console.error('[Queue] Gerar SEO falhou:', e)
+          }
+          break;
+        }
         case 'translate': {
           const { entryId, data, targetLocale, tenantId } = message.body.payload
           console.log(`[Queue] Translating entry ${entryId} to ${targetLocale}`)
@@ -130,6 +190,47 @@ export async function queueHandler(batch: MessageBatch<QueueMessage>, env: EnvWi
             }
           } catch (e) {
             console.error('[Queue] Translate falhou:', e)
+          }
+          break;
+        }
+        case 'generate-social-caption': {
+          const { entryId, data, tenantId, platform } = message.body.payload
+          console.log(`[Queue] Generating social caption (${platform}) for entry ${entryId}`)
+          try {
+            const contentToAnalyze = data.content || data.body || JSON.stringify(data)
+            let systemPrompt = `Você é um Social Media Manager. Leia o texto abaixo e crie uma legenda para o LinkedIn B2B. Tom profissional, engajador, sem exagerar nos emojis.`
+            if (platform === 'instagram') {
+              systemPrompt = `Você é um Social Media Manager. Leia o texto abaixo e crie uma legenda para o Instagram do escritório. Tom mais leve, visual, use hashtags adequadas.`
+            }
+
+            const aiResponse = await env.AI.run('@cf/meta/llama-3-8b-instruct', {
+              messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: contentToAnalyze.substring(0, 3000) }
+              ]
+            })
+
+            const caption = String((aiResponse as any).response).trim()
+            
+            const db = drizzle(env.DB)
+            const [originalRow] = await db.select().from(entries).where(eq(entries.id, entryId)).limit(1)
+            
+            if (originalRow) {
+              const currentData = typeof originalRow.data === 'string' ? JSON.parse(originalRow.data) : (originalRow.data || {})
+              // Anexar no array ou string de social_captions dentro do JSON da entry
+              const socialCaptions = currentData.social_captions || {}
+              socialCaptions[platform] = caption
+              
+              const updatedData = { ...currentData, social_captions: socialCaptions }
+              
+              await db.update(entries)
+                .set({ data: JSON.stringify(updatedData), updated_at: new Date().toISOString() })
+                .where(eq(entries.id, entryId))
+                
+              console.log(`[Queue] Social caption para ${platform} salvo no Entry-${entryId}`)
+            }
+          } catch (e) {
+            console.error('[Queue] Gerar caption social falhou:', e)
           }
           break;
         }
