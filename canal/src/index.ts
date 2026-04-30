@@ -414,10 +414,12 @@ app.route('/api/saas', saasRoutes)
 // ── Mount: Admin Routes (modular, auth-protected) ────────────────
 import { admin } from './routes/admin'
 import { webhooksApi } from './routes/webhooks-api'
+import { brandRouter } from './routes/brand'
 
 app.use('/api/admin/*', requireSession)
 app.route('/api/admin', admin)
 app.route('/api/admin/webhooks', webhooksApi)
+app.route('/api/admin/brand', brandRouter)
 app.route('/api/admin', contentRoutes)
 
 // ── Integração Edge Image Delivery (Mapeada via Explorer) ────────
