@@ -222,6 +222,56 @@ app.post('/api/dsar', async (c) => {
   }
 })
 
+// ── ATS Applicant Tracking (Upload via Fila p/ AI) ────────────────
+app.post('/api/apply', async (c) => {
+  try {
+    const body = await c.req.parseBody();
+    const name = body['name'] as string;
+    const email = body['email'] as string;
+    const linkedin = body['linkedin_url'] as string;
+    const resumeFile = body['resume'] as File;
+    const tenantId = body['tenant_id'] as string || 'default';
+    const jobId = body['job_id'] as string || 'general';
+
+    if (!name || !email || !resumeFile) {
+      return c.json({ error: 'Name, email, and resume are required.' }, 400);
+    }
+
+    const id = crypto.randomUUID();
+    const r2Key = `resumes/${tenantId}/${id}-${resumeFile.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+
+    // 1. Upload to R2 Bucket
+    if (c.env.MEDIA) {
+      await c.env.MEDIA.put(r2Key, await resumeFile.arrayBuffer(), {
+        httpMetadata: { contentType: resumeFile.type }
+      });
+    }
+
+    // 2. Insert Draft Applicant into D1 Tracker
+    await c.env.DB.prepare(
+      `INSERT INTO applicants (id, tenant_id, job_id, name, email, linkedin_url, resume_r2_key, status, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, 'analyzing', datetime('now'))`
+    ).bind(id, tenantId, jobId, name, email, linkedin || '', r2Key).run();
+
+    // 3. Dispatch to background Queue for AI reading
+    if (c.env.QUEUE) {
+      await c.env.QUEUE.send({
+        type: 'process-resume',
+        payload: {
+          applicant_id: id,
+          r2_key: r2Key,
+          mime_type: resumeFile.type
+        }
+      });
+    }
+
+    return c.json({ success: true, applicant_id: id, message: 'Application received and digesting by AI.' }, 202);
+  } catch (error) {
+    console.error('Error applying to ATS:', error);
+    return c.json({ error: 'Internal Server Error processing application.' }, 500);
+  }
+})
+
 // ── Feedback do Chat (CSAT) ─────────────────────────────────────
 app.post('/api/chat/csat', async (c) => {
   const body = await c.req.json().catch(() => ({}));
@@ -540,7 +590,24 @@ app.post('/api/chat', async (c) => {
   return stub.fetch(agentReq);
 })
 
-
+// ── OPEN GRAPH GENERATOR ──────────────────────────────────────────
+app.get('/api/og', (c) => {
+  const title = c.req.query('title') || 'Canal CMS'
+  const svg = `
+    <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1200" height="630" fill="111" />
+      <text x="600" y="315" fill="white" font-family="sans-serif" font-size="64" font-weight="900" text-anchor="middle" dominant-baseline="middle">
+        ${title}
+      </text>
+    </svg>
+  `
+  return new Response(svg, {
+    headers: {
+      'Content-Type': 'image/svg+xml',
+      'Cache-Control': 'public, max-age=31536000, immutable'
+    }
+  })
+})
 import { queueHandler } from './queue'
 import { cronHandler } from './cron'
 

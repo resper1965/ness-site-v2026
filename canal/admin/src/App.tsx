@@ -22,6 +22,8 @@ const EmergencyPage = React.lazy(() => import("./routes/emergency"));
 const SaasBillingPage = React.lazy(() => import("./routes/saas-billing"));
 const KnowledgeBasePage = React.lazy(() => import("./routes/knowledge-base"));
 const ChatsHistoryPage = React.lazy(() => import("./routes/chats"));
+const ApplicantsPage = React.lazy(() => import("./routes/applicants"));
+const SocialCalendarPage = React.lazy(() => import("./routes/social-calendar"));
 function GlobalErrorBoundary() {
   const error = useRouteError() as Error;
   
@@ -64,6 +66,7 @@ const router = createBrowserRouter([
       { path: "insights", element: <CollectionRoute slug="insights" /> },
       { path: "cases", element: <CollectionRoute slug="cases" /> },
       { path: "jobs", element: <CollectionRoute slug="jobs" /> },
+      { path: "applicants", element: <ApplicantsPage /> },
       { path: "pages", element: <CollectionRoute slug="pages" /> },
       { path: "brandbook", element: <BrandbookPage /> },
       { path: "signatures", element: <SignaturesPage /> },
@@ -79,6 +82,7 @@ const router = createBrowserRouter([
       { path: "compliance", element: <CompliancePage /> },
       { path: "knowledge-base", element: <KnowledgeBasePage /> },
       { path: "chats", element: <ChatsHistoryPage /> },
+      { path: "social-calendar", element: <SocialCalendarPage /> },
       { path: "automation", element: <AutomationPage /> },
       { path: "emergency", element: <EmergencyPage /> },
       { path: "saas-billing", element: <SaasBillingPage /> },

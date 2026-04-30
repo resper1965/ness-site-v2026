@@ -89,7 +89,34 @@ admin.delete('/api-keys/:id', async (c) => {
   return c.json({ success: true })
 })
 
-// ── Forms, Chats, Leads ─────────────────────────────────────────
+// ── Forms, Chats, Leads, Applicants ───────────────────────────────
+admin.get('/applicants', async (c) => {
+  if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
+  const db = getDb(c)
+  const results = await db.select().from(schema.applicants)
+    .orderBy(desc(schema.applicants.created_at)).limit(100)
+  return c.json(results)
+})
+
+admin.patch('/applicants/:id', async (c) => {
+  if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
+  const id = c.req.param('id')
+  const { status } = await c.req.json() as { status: string }
+  const db = getDb(c)
+  await db.update(schema.applicants)
+    .set({ status })
+    .where(eq(schema.applicants.id, id))
+  return c.json({ success: true })
+})
+
+admin.delete('/applicants/:id', async (c) => {
+  if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
+  const id = c.req.param('id')
+  const db = getDb(c)
+  await db.delete(schema.applicants).where(eq(schema.applicants.id, id))
+  return c.json({ success: true })
+})
+
 admin.get('/forms', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Forbidden' }, 403)
   const db = getDb(c)
@@ -620,6 +647,27 @@ admin.post('/entries/:id/social', async (c) => {
 
   return c.json({ success: true, message: 'Social caption generation queued' })
 })
+
+admin.get('/social-posts', async (c) => {
+  if (!assertAdmin(c)) return c.json({ error: 'Unauthorized' }, 401)
+  const tenantId = c.get('tenantId') as string
+  const db = getDb(c)
+  const posts = await db.select().from(schema.social_posts).where(eq(schema.social_posts.tenant_id, tenantId))
+  return c.json(posts)
+})
+
+admin.patch('/social-posts/:id', async (c) => {
+  if (!assertAdmin(c)) return c.json({ error: 'Unauthorized' }, 401)
+  const tenantId = c.get('tenantId') as string
+  const id = c.req.param('id')
+  const body = await c.req.json()
+  const db = getDb(c)
+  await db.update(schema.social_posts)
+    .set({ status: body.status, updated_at: new Date().toISOString() })
+    .where(and(eq(schema.social_posts.tenant_id, tenantId), eq(schema.social_posts.id, id)))
+  return c.json({ success: true })
+})
+
 // ── Compliance & Segurança: ROPA & Incidentes ──────────────────────
 admin.get('/compliance/ropa', async (c) => {
   if (!assertAdmin(c)) return c.json({ error: 'Unauthorized' }, 401)

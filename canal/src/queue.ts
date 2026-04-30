@@ -7,7 +7,7 @@ import * as schema from './db/schema'
 import { eq } from 'drizzle-orm'
 
 export interface QueueMessage {
-  type: 'generate-draft' | 'audit-content' | 'translate' | 'vectorize-entry' | 'webhook-dispatch' | 'SCORE_CV' | 'SEND_NEWSLETTER' | 'SOCIAL_POST_DISPATCH' | 'vectorize-document' | 'generate-seo' | 'generate-social-caption' | 'send-email'
+  type: 'generate-draft' | 'audit-content' | 'translate' | 'vectorize-entry' | 'webhook-dispatch' | 'SCORE_CV' | 'SEND_NEWSLETTER' | 'SOCIAL_POST_DISPATCH' | 'vectorize-document' | 'generate-seo' | 'generate-social-caption' | 'send-email' | 'process-resume'
   payload: any
 }
 
@@ -35,6 +35,55 @@ export async function queueHandler(batch: MessageBatch<QueueMessage>, env: EnvWi
             }).catch(e => console.error('[Queue] External Email API Error:', e));
           } else {
             console.log(`[Queue] Simulated Email to: ${to} | Subject: ${subject}`);
+          }
+          break;
+        }
+        case 'process-resume': {
+          const { applicant_id, r2_key } = message.body.payload;
+          console.log(`[Queue] Processing resume for applicant ${applicant_id}`);
+          try {
+            // 1. Fetch file from R2
+            const r2Obj = await env.MEDIA.get(r2_key);
+            if (!r2Obj) throw new Error(`Resume not found in R2: ${r2_key}`);
+            
+            // For MVP: assume PDF text can be extracted or it is a simple markdown/text. 
+            // Since Llama 3 on Workers AI doesn't read binaries out-of-the-box, we'll extract as text if possible.
+            // *Real PDF parsing* would use pdf.js compiled for edge, but here we fallback to raw text parsing for POC.
+            let fileContent = await r2Obj.text();
+            
+            // Limit to 3000 chars to avoid prompt overflow on Llama-3-8b
+            const prompt = `Você é um bot ATS (Applicant Tracking System) de RH. Leia o texto deste currículo e extraia um JSON estrito contendo: 'ai_score' (número de 0 a 100 baseado na clareza e impacto), e 'ai_summary' (parágrafo de 3 linhas com os maiores destaques e skills). Currículo: ${fileContent.substring(0, 3000)}`;
+
+            const aiResponse = await env.AI.run('@cf/meta/llama-3-8b-instruct', {
+              messages: [{ role: 'system', content: prompt }]
+            });
+            
+            const rawResponse = String((aiResponse as any).response);
+            const jsonText = rawResponse.replace(/```json/g, '').replace(/```/g, '').trim();
+            
+            let parsedData = { ai_score: 50, ai_summary: 'Falha ao extrair sumário.' };
+            try {
+              parsedData = JSON.parse(jsonText);
+            } catch (e) {
+              parsedData.ai_summary = jsonText.substring(0, 500);
+            }
+
+            const db = drizzle(env.DB);
+            await db.update(schema.applicants)
+              .set({ 
+                ai_score: parsedData.ai_score || 50, 
+                ai_summary: parsedData.ai_summary, 
+                status: 'analyzed' 
+              })
+              .where(eq(schema.applicants.id, applicant_id));
+              
+            console.log(`[Queue] Resume processed for ${applicant_id}. Score: ${parsedData.ai_score}`);
+          } catch (e) {
+            console.error('[Queue] Failed to process resume:', e);
+            const db = drizzle(env.DB);
+            await db.update(schema.applicants)
+              .set({ status: 'error', ai_summary: 'Erro na leitura do arquivo via IA.' })
+              .where(eq(schema.applicants.id, applicant_id));
           }
           break;
         }
