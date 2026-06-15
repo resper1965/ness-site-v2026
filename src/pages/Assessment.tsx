@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { ArrowRight, ArrowLeft, BarChart3, Send, CheckCircle2 } from "lucide-react";
+import { ArrowRight, ArrowLeft, BarChart3, Send, CheckCircle2, AlertTriangle } from "lucide-react";
 import { assessments, AssessmentConfig } from "../data/assessments";
 import { CANAL_BASE } from "../config/api";
+import { canalApi } from "../services/canal";
 import BlueDot from "../components/BlueDot";
 import SchemaOrg from "../components/SchemaOrg";
 
@@ -17,12 +18,13 @@ export default function Assessment() {
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   if (!config) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-surface-container-lowest px-8">
         <div className="text-center">
-          <h1 className="text-3xl font-display text-white mb-4">Assessment não encontrado</h1>
+          <h2 className="text-3xl font-display text-white mb-4">Assessment não encontrado</h2>
           <Link to="/" className="text-primary-container font-display font-bold text-sm uppercase tracking-widest">
             voltar ao início
           </Link>
@@ -78,24 +80,25 @@ export default function Assessment() {
     e.preventDefault();
     setIsLoading(true);
     const formData = new FormData(e.currentTarget);
+    setSubmitError(null);
     try {
-      await fetch(`${CANAL_BASE}/api/submit-form`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          formType: "assessment",
-          assessmentType: config.slug,
-          score: scorePercent,
-          level: level.label,
-          categoryScores,
-          name: formData.get("name"),
-          email: formData.get("email"),
-          company: formData.get("company"),
-        }),
+      await canalApi.submitForm({
+        formType: "assessment",
+        assessmentType: config.slug,
+        score: scorePercent,
+        level: level.label,
+        categoryScores,
+        name: formData.get("name"),
+        email: formData.get("email"),
+        company: formData.get("company"),
       });
-    } catch {}
-    setEmailSent(true);
-    setIsLoading(false);
+      setEmailSent(true);
+    } catch (err) {
+      console.error("Form error:", err);
+      setSubmitError("Erro ao enviar dados. Tente novamente.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -319,6 +322,15 @@ export default function Assessment() {
                       placeholder="Empresa"
                       className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary-container"
                     />
+                    {submitError && (
+                      <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-5 py-3 rounded-xl text-xs font-light flex items-start gap-3">
+                        <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+                        <div>
+                          <p className="font-bold mb-1">{submitError}</p>
+                          <p className="text-red-400/80">Por favor, verifique sua conexão ou tente novamente em alguns instantes.</p>
+                        </div>
+                      </div>
+                    )}
                     <button
                       type="submit"
                       disabled={isLoading}

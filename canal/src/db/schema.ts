@@ -76,6 +76,7 @@ export const newsletter = sqliteTable('newsletter', {
 
 export const mediaTable = sqliteTable('media', {
   id: text('id').primaryKey(),
+  tenant_id: text('tenant_id'),
   filename: text('filename').notNull(),
   mime_type: text('mime_type').notNull(),
   size_bytes: integer('size_bytes'),

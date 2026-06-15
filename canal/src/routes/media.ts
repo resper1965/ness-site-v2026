@@ -24,17 +24,37 @@ function getDb(c: { env: { DB: D1Database } }) {
 }
 
 // ── Upload direto (multipart) ───────────────────────────────────
+// Função auxiliar para validar magic bytes de arquivos comuns
+function validateMagicBytes(buffer: ArrayBuffer, mimeType: string): boolean {
+  const bytes = new Uint8Array(buffer.slice(0, 4));
+  const hex = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+  
+  if (mimeType === 'application/pdf') return hex.startsWith('25504446');
+  if (mimeType === 'image/png') return hex.startsWith('89504E47');
+  if (mimeType === 'image/jpeg' || mimeType === 'image/jpg') return hex.startsWith('FFD8FF');
+  
+  // Para outros tipos, confia no mime (ou adicione mais assinaturas conforme necessidade)
+  return true;
+}
+
 media.post('/media/upload', async (c) => {
   const formData = await c.req.formData()
   const file = formData.get('file') as File | null
+  const tenant_id = formData.get('tenant_id') as string | null
 
   if (!file) return c.json({ error: 'No file provided' }, 400)
+
+  const arrayBuffer = await file.arrayBuffer()
+  
+  // Validar magic bytes para evitar bypass de extensão
+  if (!validateMagicBytes(arrayBuffer, file.type)) {
+    return c.json({ error: 'Invalid file signature (magic bytes mismatch)' }, 400)
+  }
 
   const id = crypto.randomUUID()
   const ext = file.name.split('.').pop() || 'bin'
   const r2Key = `uploads/${new Date().toISOString().slice(0, 7)}/${id}.${ext}`
 
-  const arrayBuffer = await file.arrayBuffer()
   await c.env.MEDIA.put(r2Key, arrayBuffer, {
     httpMetadata: { contentType: file.type },
   })
@@ -42,6 +62,7 @@ media.post('/media/upload', async (c) => {
   const db = getDb(c)
   await db.insert(mediaTable).values({
     id,
+    tenant_id,
     filename: file.name,
     mime_type: file.type,
     size_bytes: file.size,
@@ -53,6 +74,7 @@ media.post('/media/upload', async (c) => {
 
   return c.json({
     id,
+    tenant_id,
     filename: file.name,
     mimeType: file.type,
     sizeBytes: file.size,

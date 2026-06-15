@@ -76,18 +76,7 @@ export default function AccountSettingsPage() {
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
-        <div>
-          <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-3">
-             <svg className="text-muted-foreground" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Identidade Central <span className="text-muted-foreground font-light">::</span> Perfil
-          </h2>
-          <p className="text-sm font-medium text-muted-foreground tracking-wide mt-1 uppercase">
-            Gestão de Credenciais e SSO
-          </p>
-        </div>
-      </div>
+    <div className="max-w-[1600px] w-full px-10 md:px-12 py-10 space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
 
       {(msg || errorMsg) && (
         <div className={`p-4 rounded-xl border ${errorMsg ? 'bg-red-500/10 border-red-500/30 text-red-500' : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500'} flex items-start gap-3`}>
@@ -117,7 +106,7 @@ export default function AccountSettingsPage() {
               />
             </div>
             <button 
-              className="inline-flex h-10 items-center justify-center rounded-md bg-foreground text-background px-6 font-bold uppercase text-xs tracking-wider shadow hover:bg-foreground/90 transition-all"
+              className="inline-flex h-11 items-center justify-center rounded-xl bg-brand-primary px-8 font-bold uppercase text-[11px] tracking-widest text-white shadow-[0_10px_20px_rgba(0,173,232,0.3)] hover:brightness-110 transition-all"
               onClick={handleUpdateProfile}
             >
               Salvar Perfil
@@ -145,7 +134,7 @@ export default function AccountSettingsPage() {
               />
             </div>
             <button 
-              className="inline-flex h-10 items-center justify-center rounded-md border border-input shadow-sm bg-background px-6 font-semibold uppercase text-xs tracking-wider hover:bg-accent hover:text-accent-foreground transition-colors"
+              className="inline-flex h-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-8 font-bold uppercase text-[11px] tracking-widest text-white shadow-lg hover:bg-white/10 transition-all"
               onClick={handleChangeEmail}
             >
               Solicitar Migração
@@ -179,12 +168,12 @@ export default function AccountSettingsPage() {
             </div>
             <div className="pt-2">
               <button 
-                className="inline-flex h-10 items-center justify-center rounded-md bg-foreground text-background px-6 font-bold uppercase text-xs tracking-wider shadow hover:bg-foreground/90 transition-all"
+                className="inline-flex h-11 items-center justify-center rounded-xl bg-brand-primary px-8 font-bold uppercase text-[11px] tracking-widest text-white shadow-[0_10px_20px_rgba(0,173,232,0.3)] hover:brightness-110 transition-all"
                 onClick={handleChangePassword}
               >
                 Rotacionar Chave
               </button>
-              <p className="text-xs text-muted-foreground mt-3 tracking-tight font-semibold opacity-70">
+              <p className="text-[10px] text-zinc-500 mt-4 tracking-widest font-bold uppercase opacity-70">
                 Atenção: Revoga todas as outras sessões ativas do usuário.
               </p>
             </div>
@@ -217,48 +206,48 @@ export default function AccountSettingsPage() {
               )}
             </div>
             
-            <div className="flex gap-3 pt-2">
+            <div className="flex gap-4 pt-2">
               <button 
-                className="inline-flex h-10 items-center gap-2 justify-center rounded-md border border-input shadow-sm bg-background px-4 font-semibold uppercase text-xs tracking-wider hover:bg-accent hover:text-accent-foreground transition-colors"
+                className="inline-flex h-11 items-center gap-3 justify-center rounded-xl border border-white/10 bg-white/5 px-6 font-bold uppercase text-[10px] tracking-widest text-white shadow-lg hover:bg-white/10 transition-all"
                 onClick={() => handleLinkSocial("google")}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 12c0-.8-.1-1.6-.3-2.3H12v4.4h5.7c-.2 1.4-1 2.6-2.2 3.4v2.8h3.6C21.2 18.3 22 15.4 22 12V12z"/><path d="M12 22c2.8 0 5.2-.9 6.9-2.5l-3.6-2.8c-.9.6-2.1.9-3.3.9-2.5 0-4.6-1.7-5.4-4H3v2.8C4.7 20 8.1 22 12 22z"/><path d="M6.6 13.6c-.2-.6-.3-1.2-.3-1.8s.1-1.2.3-1.8V7.2H3C2.4 8.7 2 10.3 2 12s.4 3.3 1 4.8l3.6-3.2z"/><path d="M12 5.8c1.5 0 2.9.5 4 1.5l3-3C17.2 2.6 14.8 1.6 12 1.6 8.1 1.6 4.7 3.6 3 7.2l3.6 2.8C7.4 7.5 9.5 5.8 12 5.8z"/></svg> 
-                Vincular Google
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M22 12c0-.8-.1-1.6-.3-2.3H12v4.4h5.7c-.2 1.4-1 2.6-2.2 3.4v2.8h3.6C21.2 18.3 22 15.4 22 12V12z"/><path d="M12 22c2.8 0 5.2-.9 6.9-2.5l-3.6-2.8c-.9.6-2.1.9-3.3.9-2.5 0-4.6-1.7-5.4-4H3v2.8C4.7 20 8.1 22 12 22z"/><path d="M6.6 13.6c-.2-.6-.3-1.2-.3-1.8s.1-1.2.3-1.8V7.2H3C2.4 8.7 2 10.3 2 12s.4 3.3 1 4.8l3.6-3.2z"/><path d="M12 5.8c1.5 0 2.9.5 4 1.5l3-3C17.2 2.6 14.8 1.6 12 1.6 8.1 1.6 4.7 3.6 3 7.2l3.6 2.8C7.4 7.5 9.5 5.8 12 5.8z"/></svg> 
+                Google
               </button>
               <button 
-                className="inline-flex h-10 items-center gap-2 justify-center rounded-md border border-input shadow-sm bg-background px-4 font-semibold uppercase text-xs tracking-wider hover:bg-accent hover:text-accent-foreground transition-colors"
+                className="inline-flex h-11 items-center gap-3 justify-center rounded-xl border border-white/10 bg-white/5 px-6 font-bold uppercase text-[10px] tracking-widest text-white shadow-lg hover:bg-white/10 transition-all"
                 onClick={() => handleLinkSocial("microsoft")}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg> 
-                Vincular Microsoft
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg> 
+                Microsoft (SSO)
               </button>
             </div>
           </CardContent>
         </Card>
 
         {/* Danger Zone */}
-        <section className="rounded-xl border border-red-500/20 bg-card text-card-foreground shadow-sm overflow-hidden md:col-span-1 xl:col-span-2 mt-4 relative">
-          <div className="absolute top-0 left-0 w-1 h-full bg-red-500/50"></div>
-          <div className="bg-red-500/5 p-5 border-b border-red-500/10">
-            <h3 className="font-bold leading-none tracking-tight text-red-500">Limpeza Nuclear</h3>
+        <section className="rounded-2xl border border-red-500/10 bg-black/40 backdrop-blur-3xl shadow-2xl overflow-hidden md:col-span-1 xl:col-span-2 mt-4 relative radial-gradient-glass">
+          <div className="absolute top-0 left-0 w-1 h-full bg-red-500/30"></div>
+          <div className="bg-red-500/5 p-6 border-b border-white/5">
+            <h3 className="font-bold uppercase tracking-widest text-red-500 text-[14px]">Limpeza Nuclear</h3>
           </div>
-          <div className="p-6">
-            <p className="text-sm font-medium text-muted-foreground mb-6 max-w-xl">
+          <div className="p-8">
+            <p className="text-sm font-bold uppercase tracking-widest text-zinc-500 mb-8 max-w-xl leading-relaxed">
               Remoção permanente dos dados deste usuário, perda de vínculos e cancelamento de todos os direitos granulares atribuídos.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 items-end max-w-xl">
-               <div className="space-y-2.5 w-full">
-                <label className="text-xs font-semibold text-red-500">Confirmar Senha</label>
+            <div className="flex flex-col sm:flex-row gap-6 items-end max-w-xl">
+               <div className="space-y-4 w-full">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-red-500">Confirmar Senha</label>
                 <input 
                   type="password" 
                   placeholder="Confirme sua senha para destravar..."
-                  className="flex h-11 w-full rounded-lg border border-red-500/20 bg-background/50 px-4 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                  className="flex h-11 w-full rounded-xl border border-red-500/10 bg-black/40 px-4 text-sm transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-500 text-white"
                   value={deletePassword} 
                   onChange={(e) => setDeletePassword(e.target.value)} 
                 />
               </div>
               <button 
-                className="inline-flex h-11 items-center justify-center rounded-md bg-red-500 px-8 font-bold uppercase text-xs tracking-wider text-white shadow hover:bg-red-600 transition-all shrink-0 disabled:opacity-50"
+                className="inline-flex h-11 items-center justify-center rounded-xl bg-red-600 px-10 font-bold uppercase text-[11px] tracking-widest text-white shadow-[0_10px_20px_rgba(220,38,38,0.3)] hover:brightness-110 transition-all shrink-0 disabled:opacity-30"
                 onClick={handleDeleteAccount}
                 disabled={!deletePassword}
               >

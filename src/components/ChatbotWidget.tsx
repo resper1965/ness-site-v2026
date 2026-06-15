@@ -9,6 +9,8 @@ import { Send, X, MessageSquare, Bot, ThumbsUp, ThumbsDown } from "lucide-react"
 
 
 
+import type { ChatbotConfig } from '../types/canal';
+
 type DisplayMessage = { role: 'bot' | 'user'; content: string };
 type ApiMessage = { role: 'user' | 'assistant'; content: string };
 
@@ -17,7 +19,7 @@ const ChatbotWidget = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<DisplayMessage[]>([]);
-  const [botConfig, setBotConfig] = useState<any>(null);
+  const [botConfig, setBotConfig] = useState<ChatbotConfig | null>(null);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -164,7 +166,7 @@ const ChatbotWidget = () => {
     }
   };
 
-    if (botConfig && botConfig.enabled === false) {
+    if (botConfig && botConfig.enabled === 0) {
       return null;
     }
 
@@ -281,7 +283,7 @@ const ChatbotWidget = () => {
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                aria-label="Input field"
+                aria-label={t('chatbot.placeholder')}
                 placeholder={t('chatbot.placeholder')}
                 className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition-all"
                 style={{ '--tw-ring-color': primaryColor } as any}

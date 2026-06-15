@@ -1,9 +1,18 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useState } from "react"
+import { TabGroup, TabPanel } from "../../components/ui/Tabs"
 import DSARDashboard from "./dsar"
 import ROPADashboard from "./ropa"
 import IncidentsDashboard from "./incidents"
 
 export default function ComplianceLayout() {
+  const [activeTab, setActiveTab] = useState("dsar");
+
+  const tabs = [
+    { id: "dsar", label: "DSAR (Pedidos LGPD)" },
+    { id: "ropa", label: "ROPA (Inventário)" },
+    { id: "incidents", label: "Security Incidents" },
+  ];
+
   return (
     <div className="flex flex-col h-full overflow-hidden fadeIn bg-background">
       <div className="flex-none px-6 md:px-12 py-8 flex border-b border-border/50 w-full min-w-0 bg-background z-10">
@@ -19,27 +28,21 @@ export default function ComplianceLayout() {
 
       <div className="flex-1 overflow-y-auto px-6 md:px-12 py-8 custom-scrollbar w-full min-w-0">
         <div className="max-w-[1400px] mx-auto min-w-0">
-          <Tabs defaultValue="dsar" className="w-full">
-            <div className="mb-8">
-              <TabsList className="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 p-1 rounded-full h-auto flex flex-wrap">
-                <TabsTrigger value="dsar" className="rounded-full px-6 py-2 text-[13px] font-semibold data-[state=active]:bg-background data-[state=active]:shadow-sm">DSAR (Pedidos LGPD)</TabsTrigger>
-                <TabsTrigger value="ropa" className="rounded-full px-6 py-2 text-[13px] font-semibold data-[state=active]:bg-background data-[state=active]:shadow-sm">ROPA (Inventário)</TabsTrigger>
-                <TabsTrigger value="incidents" className="rounded-full px-6 py-2 text-[13px] font-semibold data-[state=active]:bg-background data-[state=active]:shadow-sm">Security Incidents</TabsTrigger>
-              </TabsList>
-            </div>
-            
-            <TabsContent value="dsar" className="mt-0 focus-visible:outline-none focus-visible:ring-0 animate-in fade-in zoom-in duration-500">
-              <DSARDashboard />
-            </TabsContent>
-            
-            <TabsContent value="ropa" className="mt-0 focus-visible:outline-none focus-visible:ring-0 animate-in fade-in zoom-in duration-500">
-              <ROPADashboard />
-            </TabsContent>
+          <div className="mb-8">
+            <TabGroup tabs={tabs} active={activeTab} onChange={setActiveTab} />
+          </div>
+          
+          <TabPanel id="dsar" active={activeTab}>
+            <DSARDashboard />
+          </TabPanel>
+          
+          <TabPanel id="ropa" active={activeTab}>
+            <ROPADashboard />
+          </TabPanel>
 
-            <TabsContent value="incidents" className="mt-0 focus-visible:outline-none focus-visible:ring-0 animate-in fade-in zoom-in duration-500">
-              <IncidentsDashboard />
-            </TabsContent>
-          </Tabs>
+          <TabPanel id="incidents" active={activeTab}>
+            <IncidentsDashboard />
+          </TabPanel>
         </div>
       </div>
     </div>

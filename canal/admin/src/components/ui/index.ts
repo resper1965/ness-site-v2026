@@ -6,3 +6,4 @@ export { StatusDot } from "./StatusDot";
 export { SectionTitle } from "./SectionTitle";
 export { TabGroup, TabPanel } from "./Tabs";
 export { EmptyState } from "./EmptyState";
+export { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "./Table";

@@ -21,10 +21,13 @@ const Hero = () => {
           initial={{ scale: 1.2, opacity: 0 }}
           animate={{ scale: 1, opacity: 0.6 }}
           transition={{ duration: 2, ease: "easeOut" }}
-          src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000"
+          src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=60&w=2000&fm=webp"
           alt="Abstract Tech Background"
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
+          fetchPriority="high"
+          width={2000}
+          height={1333}
         />
         <div className="absolute inset-0 bg-linear-to-b from-surface-container-lowest/20 via-surface-container-lowest/80 to-surface-container-lowest z-10"></div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,173,232,0.15),transparent_70%)] z-20"></div>

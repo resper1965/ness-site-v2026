@@ -8,6 +8,8 @@ import ReactMarkdown from 'react-markdown';
 import { usePageTitle } from '../hooks/usePageTitle';
 
 import { CANAL_BASE } from '../config/api';
+import { canalApi } from '../services/canal';
+import SchemaOrg from '../components/SchemaOrg';
 
 interface Insight {
   title: string;
@@ -32,9 +34,8 @@ const BlogPost = () => {
     const fetchPost = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`${CANAL_BASE}/api/insights/${slug}?lang=${i18n.language}`);
-        if (!res.ok) { navigate('/blog', { replace: true }); return; }
-        const data = await res.json();
+        const data = await canalApi.getInsightBySlug(slug, i18n.language);
+        if (!data || !data.title) { navigate('/blog', { replace: true }); return; }
         setPost(data);
       } catch {
         navigate('/blog', { replace: true });
@@ -57,7 +58,17 @@ const BlogPost = () => {
   if (!post) return null;
 
   return (
-    <motion.div
+    <>
+      <SchemaOrg 
+        type="article" 
+        data={{ 
+          title: post.title, 
+          description: post.desc || '', 
+          datePublished: post.date || new Date().toISOString(), 
+          url: window.location.href 
+        }} 
+      />
+      <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -137,6 +148,7 @@ const BlogPost = () => {
         </div>
       </div>
     </motion.div>
+    </>
   );
 };
 

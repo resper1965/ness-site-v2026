@@ -7,17 +7,7 @@ import { LayoutGrid } from "lucide-react";
 import EmptyState from '../components/EmptyState';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { CANAL_BASE } from '../config/api';
-interface Case {
-  slug?: string;
-  project?: string;
-  client: string;
-  category: string;
-  result: string;
-  desc: string;
-  stats: string;
-  image: string;
-  url?: string;
-}
+import type { Case } from '../types/canal';
 
 const Portfolio = () => {
   const { t, i18n } = useTranslation();
@@ -136,7 +126,7 @@ const Portfolio = () => {
                       highlightStat = `${keyName}: ${statsObj[keys[0]]}`;
                     }
                   } else {
-                    highlightStat = item.stats;
+                    highlightStat = item.stats || '';
                   }
                 } catch {
                   highlightStat = item.stats || '';

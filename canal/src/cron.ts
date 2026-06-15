@@ -83,7 +83,7 @@ export async function cronHandler(event: ScheduledEvent, env: any) {
     // Dispatch approved posts that are past their scheduled time
     const pendingPosts = await env.DB.prepare(
       `SELECT id, platform, content FROM social_posts WHERE status = 'approved' AND scheduled_at <= datetime('now') LIMIT 20`
-    ).all().catch(e => { console.error('[Cron] Error fetching social posts:', e); return { results: [] }; });
+    ).all().catch((e: any) => { console.error('[Cron] Error fetching social posts:', e); return { results: [] }; });
 
     if (pendingPosts.results && pendingPosts.results.length > 0) {
       console.log(`[Cron] Dispatching ${pendingPosts.results.length} scheduled social posts.`);

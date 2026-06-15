@@ -1,11 +1,13 @@
 import BlueDot from '../components/BlueDot';
-import React, {  } from "react";
+import React, { useState } from "react";
 import { motion } from "motion/react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
 import { encryptZeroTrustPayload } from '../utils/crypto';
 import { CANAL_BASE } from '../config/api';
+import { canalApi } from '../services/canal';
+import { BRAND } from '../config/brand';
 import { 
 AlertTriangle} from "lucide-react";
 
@@ -16,6 +18,9 @@ const Compliance = () => {
   const { t } = useTranslation();
   usePageTitle('compliance.meta_title', 'compliance — ness.');
   const { type } = useParams();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
+  const [caseCode, setCaseCode] = useState<string | null>(null);
 
   const content = {
     termos: {
@@ -162,52 +167,45 @@ const Compliance = () => {
                 className="space-y-6"
                 onSubmit={async (e) => {
                   e.preventDefault();
+                  setIsSubmitting(true);
+                  setSubmitStatus(null);
+                  setCaseCode(null);
+
                   const formData = new FormData(e.currentTarget);
                   const payload = {
-                    formType: "whistleblower",
-                    name: formData.get("name") || "Anônimo",
-                    email: formData.get("email") || "N/A",
-                    subject: formData.get("subject"),
-                    message: formData.get("message")
+                    tenant_id: BRAND,
+                    category: formData.get("subject"),
+                    description: formData.get("message"),
+                    evidence: `Nome: ${formData.get("name") || "Anônimo"}, Contato: ${formData.get("email") || "N/A"}`
                   };
-                  try {
-                    // ZERO-TRUST ARCHITECTURE: Encrypt the payload before sending to backend
-                    const cipherData = await encryptZeroTrustPayload(payload);
-                    const securePayload = {
-                      formType: "whistleblower_encrypted",
-                      cipherData: cipherData,
-                      timestamp: new Date().toISOString()
-                    };
 
-                    const response = await fetch(`${CANAL_BASE}/api/submit-form`, {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify(securePayload)
-                    });
-                    if (response.ok) {
-                      // Success feedback
-                      (e.target as HTMLFormElement).reset();
-                    } else {
-                      throw new Error("Failed to submit");
+                  try {
+                    const data = await canalApi.submitWhistleblower(payload);
+                    if (data.caseCode) {
+                      setCaseCode(data.caseCode);
                     }
+                    setSubmitStatus('success');
+                    (e.target as HTMLFormElement).reset();
                   } catch (error) {
-                    alert(t('contact.whistleblower.form.error'));
+                    setSubmitStatus('error');
+                  } finally {
+                    setIsSubmitting(false);
                   }
                 }}
               >
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.name_optional')}</label>
-                    <input name="name" type="text" placeholder={t('contact.form.name_placeholder', 'seu nome ou deixe em branco')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"  aria-label="Input field" />
+                    <input name="name" type="text" placeholder={t('contact.form.name_placeholder', 'seu nome ou deixe em branco')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('contact.form.name_optional')} />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.contact_optional')}</label>
-                    <input name="email" type="text" placeholder={t('contact.form.email_placeholder', 'email ou telefone para retorno')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"  aria-label="Input field" />
+                    <input name="email" type="text" placeholder={t('contact.form.email_placeholder', 'email ou telefone para retorno')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('contact.form.contact_optional')} />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.whistleblower.occurrence_type')}</label>
-                  <select name="subject" required className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all appearance-none">
+                  <select name="subject" required className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all appearance-none" aria-label={t('contact.whistleblower.occurrence_type')}>
                     <option value="" className="bg-surface">{t('contact.whistleblower.category_select')}</option>
                     <option value="etica" className="bg-surface">{t('contact.whistleblower.categories.ethics')}</option>
                     <option value="assédio" className="bg-surface">{t('contact.whistleblower.categories.harassment')}</option>
@@ -218,10 +216,30 @@ const Compliance = () => {
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.whistleblower.description')}</label>
-                  <textarea name="message" required rows={6} placeholder={t('contact.whistleblower.desc_placeholder', 'detalhe o ocorrido com o máximo de informações possíveis (datas, locais, envolvidos)...')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all resize-none"></textarea>
+                  <textarea name="message" required rows={6} placeholder={t('contact.whistleblower.desc_placeholder', 'detalhe o ocorrido com o máximo de informações possíveis (datas, locais, envolvidos)...')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all resize-none" aria-label={t('contact.whistleblower.description')}></textarea>
                 </div>
-                <button className="w-full bg-primary-container text-on-primary py-5 rounded-2xl font-display font-bold uppercase tracking-widest text-sm hover:brightness-110 transition-all shadow-xl shadow-primary-container/20">
-                  {t('contact.whistleblower.form.send_button')}
+
+                {submitStatus === 'success' && caseCode && (
+                  <div className="bg-primary-container/10 border border-primary-container/20 text-primary-container p-6 rounded-2xl text-xs font-light mt-4 space-y-3">
+                    <p className="text-white font-bold">{t('contact.whistleblower.form.success', 'Denúncia enviada com sucesso de forma anônima!')}</p>
+                    <p>Guarde este código para acompanhar o andamento da sua manifestação:</p>
+                    <div className="bg-white/5 border border-white/10 px-4 py-3 rounded-xl font-mono text-center text-base font-bold text-white tracking-widest select-all">
+                      {caseCode}
+                    </div>
+                  </div>
+                )}
+                {submitStatus === 'error' && (
+                  <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-6 py-4 rounded-2xl text-xs font-light mt-4">
+                    {t('contact.whistleblower.form.error')}
+                  </div>
+                )}
+
+                <button 
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-primary-container text-on-primary py-5 rounded-2xl font-display font-bold uppercase tracking-widest text-sm hover:brightness-110 transition-all shadow-xl shadow-primary-container/20 disabled:opacity-50"
+                >
+                  {isSubmitting ? t('common.sending', 'enviando...') : t('contact.whistleblower.form.send_button')}
                 </button>
               </form>
             </div>

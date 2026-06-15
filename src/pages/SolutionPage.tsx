@@ -12,6 +12,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
 import { solutionsData } from "../data/solutionsData";
+import SchemaOrg from '../components/SchemaOrg';
 import { 
   ChevronLeft,
   CheckCircle2,
@@ -28,7 +29,7 @@ const SolutionPage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const solution = slug ? solutionsData[slug] : null;
-  const Icon = solution?.icon;
+  const PageIcon = (solution?.icon || CheckCircle2) as React.ComponentType<{ className?: string; size?: number }>;
   const [showTech, setShowTech] = useState(false);
   const [isEmergencyChatOpen, setIsEmergencyChatOpen] = useState(false);
 
@@ -40,7 +41,16 @@ const SolutionPage = () => {
   if (!solution) return <div className="min-h-screen flex items-center justify-center text-white">{t('common.loading')}</div>;
 
   return (
-    <motion.div 
+    <>
+      <SchemaOrg 
+        type="service" 
+        data={{ 
+          name: solution.dashboard?.title || 'Solution', 
+          description: solution.overview || '', 
+          url: window.location.href 
+        }} 
+      />
+      <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -64,7 +74,7 @@ const SolutionPage = () => {
           >
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-2xl bg-primary-container/10 border border-primary-container/20 flex items-center justify-center">
-                <Icon className="text-primary-container" size={32} />
+                <PageIcon className="text-primary-container" size={32} />
               </div>
               <h1 className="text-2xl font-brand font-medium text-white lowercase-all">
                 {t(`solutions.${slug}.title`).split('.')[0]}<span className="text-primary-container">.</span>{t(`solutions.${slug}.title`).split('.')[1]}
@@ -193,7 +203,7 @@ const SolutionPage = () => {
         </section>
 
         {/* NEW Soluções Estratégicas (Full Width SaaS Modules) */}
-        <SolutionServicesGrid services={solution.services} t={t} icon={Icon} />
+        <SolutionServicesGrid services={solution.services} t={t} icon={PageIcon} />
 
         {/* NEW O Arsenal Técnico (Features Legadas) */}
         {solution.features && (
@@ -286,7 +296,7 @@ const SolutionPage = () => {
         <div className="mb-24 p-12 lg:p-16 rounded-[4rem] bg-surface-container-low border border-white/5 nebula-shadow relative overflow-hidden group text-center">
           <div className="absolute inset-0 bg-linear-to-br from-primary/10 to-primary-container/10 opacity-50 backdrop-blur-md"></div>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 scale-150 group-hover:scale-110 transition-transform duration-1000">
-            <Icon size={400} />
+            <PageIcon size={400} />
           </div>
           <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
             <h4 className="text-3xl lg:text-5xl font-display font-medium text-white mb-6 tracking-tight lowercase">{t('solutions.cta_title', 'sua empresa em um novo nível')}<BlueDot /></h4>
@@ -376,6 +386,7 @@ const SolutionPage = () => {
         onClose={() => setIsEmergencyChatOpen(false)} 
       />
     </motion.div>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Card } from "../components/ui/Card";
 import { TabGroup } from "../components/ui/Tabs";
 import { EmptyState } from "../components/ui/EmptyState";
@@ -131,81 +131,84 @@ export default function CommunicationsPage() {
   }
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300 flex flex-col">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6 shrink-0">
-        <div>
-          <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-3">
-             <svg className="text-muted-foreground" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4Z"/></svg>
-            Inbox Unificado <span className="text-muted-foreground font-light">::</span> Comunicações
-          </h2>
-          <p className="text-sm font-medium text-muted-foreground tracking-wide mt-1 uppercase">
-            Visão Omnichannel de Contatos
-          </p>
-        </div>
-      </div>
-
-      <div className="flex flex-col lg:flex-row gap-6 mt-6 flex-1 min-h-0 overflow-hidden">
-        {/* Left panel: List */}
-        <div className="flex flex-col flex-1 lg:max-w-md w-full shrink-0 min-h-0">
-          <div className="flex gap-2 mb-4 shrink-0 flex-wrap">
-            <TabGroup
-              tabs={[
-                { id: "all", label: "Todos" },
-                { id: "form", label: "Formulário" },
-                { id: "lead", label: "Lead" },
+    <div className="max-w-[1700px] w-full px-10 md:px-12 py-10 space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 overflow-hidden h-full flex flex-col">
+      <div className="flex flex-col lg:flex-row gap-10 items-stretch flex-1 min-h-0">
+        
+        {/* ── Dynamic Filter & List Column ── */}
+        <div className="flex flex-col w-full lg:w-[450px] shrink-0 gap-8 min-h-0">
+          <div className="space-y-6">
+            <div className="flex p-1.5 bg-black/40 backdrop-blur-3xl rounded-2xl border border-white/5 radial-gradient-glass h-14 shadow-2xl relative overflow-hidden group">
+              <div className="absolute -inset-10 bg-brand-primary/5 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+              {[
+                { id: "all", label: "Inbox" },
+                { id: "form", label: "Forms" },
+                { id: "lead", label: "Leads" },
                 { id: "chat", label: "Chat" },
-              ]}
-              active={filter}
-              onChange={setFilter}
-              className="h-9"
-            />
-            <div className="relative flex-1 min-w-[150px]">
-              <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setFilter(tab.id)}
+                  className={`flex-1 flex items-center justify-center rounded-xl text-[10px] font-black uppercase tracking-widest transition-all italic z-10 ${
+                    filter === tab.id ? 'bg-brand-primary text-white shadow-2xl scale-[1.05]' : 'text-zinc-600 hover:text-zinc-300'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-brand-primary/10 rounded-2xl blur-lg opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none" />
+              <svg className="absolute left-5 top-1/2 -translate-y-1/2 text-zinc-600 transition-colors group-focus-within:text-brand-primary z-10" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Buscar contatos..."
-                className="flex h-9 w-full rounded-md border border-input bg-background pl-9 pr-3 py-1 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
+                placeholder="PROCURAR COMUNICAÇÕES..."
+                className="flex h-14 w-full rounded-2xl border border-white/10 bg-black/40 pl-14 pr-6 text-[11px] font-black uppercase tracking-widest text-white italic placeholder:text-zinc-800 focus:outline-none focus:ring-2 focus:ring-brand-primary/20 shadow-2xl transition-all relative z-10"
               />
             </div>
           </div>
 
-          <Card className="flex-1 overflow-y-auto w-full relative h-[400px] lg:h-auto">
+          <div className="flex-1 overflow-y-auto bg-black/40 backdrop-blur-3xl border border-white/5 rounded-[40px] overflow-hidden radial-gradient-glass custom-scrollbar relative shadow-2xl">
             {filtered.length === 0 ? (
-              <EmptyState
-                icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>}
-                title="Inbox Vazio"
-                className="h-full"
-              />
+              <div className="flex flex-col items-center justify-center h-full text-center p-12 opacity-20 group">
+                <div className="w-20 h-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-700">
+                   <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-[0.4em] italic">Vault Vazio</span>
+              </div>
             ) : (
-               <div className="flex flex-col divide-y divide-border/50">
+               <div className="flex flex-col divide-y divide-white/5">
                 {filtered.map((msg, i) => {
-                  const cfg = TYPE_CONFIG[msg.type] || { icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>, label: msg.type, colorClass: "text-slate-500 bg-slate-500/10 border-slate-500/20" };
+                  const cfg = TYPE_CONFIG[msg.type] || { icon: null, label: msg.type, colorClass: "text-zinc-500 bg-white/5 border-white/5" };
                   const isSelected = selected?.id === msg.id && selected?.type === msg.type;
                   return (
                     <button
                       key={`${msg.type}-${msg.id}-${i}`}
                       onClick={() => setSelected(msg)}
-                      className={`text-left p-4 flex gap-3 items-start transition-all ${isSelected ? 'bg-muted/40 shadow-inner' : 'hover:bg-muted/20 bg-card'}`}
+                      className={`text-left p-8 flex gap-6 items-start transition-all duration-500 relative group/item ${isSelected ? 'bg-white/5' : 'hover:bg-white/2'}`}
                     >
-                      <div className={`mt-0.5 inline-flex items-center justify-center p-2 rounded-lg border ${cfg.colorClass}`}>
+                      {isSelected && <div className="absolute left-0 top-8 bottom-8 w-1.5 bg-brand-primary rounded-r-full shadow-[0_0_20px_rgba(0,173,232,0.8)]" />}
+                      <div className={`w-12 h-12 rounded-2xl border flex items-center justify-center shrink-0 shadow-2xl ${cfg.colorClass} opacity-80 group-hover/item:opacity-100 group-hover/item:scale-110 transition-all duration-500`}>
                         {cfg.icon}
                       </div>
                       <div className="flex-1 min-w-0">
-                         <div className="font-semibold text-sm text-foreground truncate">{msg.title || "Sem título ID:" + msg.id}</div>
-                         <div className="text-xs text-muted-foreground mt-0.5 truncate flex items-center gap-1.5 opacity-80">
-                            <span className="font-mono text-[10px] tracking-tight">{cfg.label}</span>
-                            <span className="w-1 h-1 rounded-full bg-border"></span>
-                            via {msg.source || "—"}
+                         <div className={`font-black text-[14px] italic tracking-tight truncate uppercase ${isSelected ? 'text-white' : 'text-zinc-400 group-hover/item:text-zinc-200'}`}>
+                           {msg.title || `Entry Protocol: ${msg.id}`}
+                         </div>
+                         <div className="flex items-center gap-2 mt-2 opacity-50">
+                            <span className="text-[9px] font-black uppercase tracking-widest italic">{cfg.label}</span>
+                            <span className="w-1 h-1 rounded-full bg-white/20" />
+                            <span className="text-[9px] font-black uppercase tracking-widest italic truncate">Node: {msg.source || "System"}</span>
                          </div>
                       </div>
-                      <div className="flex flex-col items-end gap-1.5 shrink-0">
-                         <span className="text-[10px] font-mono font-medium text-muted-foreground">{msg.created_at ? timeAgo(msg.created_at) : "—"}</span>
+                      <div className="flex flex-col items-end gap-3 shrink-0">
+                         <span className="text-[9px] font-black text-zinc-700 uppercase tracking-widest">{msg.created_at ? timeAgo(msg.created_at) : "—"}</span>
                          {msg.status === "new" ? (
-                           <span className="w-2.5 h-2.5 rounded-full bg-primary ring-2 ring-primary/20 shrink-0"></span>
+                           <span className="w-2.5 h-2.5 rounded-full bg-brand-primary shadow-[0_0_12px_rgba(0,173,232,1)] animate-pulse" />
                          ) : (
-                           <span className="w-2 h-2 rounded-full border border-border shrink-0 opacity-50"></span>
+                           <span className="w-2 h-2 rounded-full bg-white/10" />
                          )}
                       </div>
                     </button>
@@ -213,138 +216,147 @@ export default function CommunicationsPage() {
                 })}
                </div>
             )}
-          </Card>
+          </div>
         </div>
 
-        {/* Right panel: Detail */}
-        <Card className="flex-1 flex flex-col h-[600px] lg:h-auto shrink-0 relative overflow-hidden">
+        {/* ── Detailed Context Pane ── */}
+        <div className="flex-1 flex flex-col bg-black/40 backdrop-blur-3xl border border-white/5 rounded-[48px] overflow-hidden radial-gradient-glass relative min-h-[500px] shadow-2xl">
           {!selected ? (
-            <div className="flex-1 flex flex-col items-center justify-center text-center p-10 bg-background/50">
-               <div className="h-16 w-16 rounded-full bg-border/40 text-muted-foreground flex items-center justify-center mb-4">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+            <div className="flex-1 flex flex-col items-center justify-center text-center p-24 opacity-10 overflow-hidden relative group">
+               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,173,232,0.1),transparent_70%)] animate-pulse" />
+               <div className="h-32 w-32 rounded-[40px] border border-white/10 bg-white/5 flex items-center justify-center mb-10 relative z-10 scale-150 group-hover:scale-[1.6] transition-transform duration-1000">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
                </div>
-               <p className="text-sm font-medium text-muted-foreground">Selecione uma mensagem no painel esquerdo para visualizar detalhes.</p>
+               <p className="text-[11px] font-black uppercase tracking-[0.5em] relative z-10 italic">Aguardando Ingestão de Dados</p>
             </div>
           ) : (() => {
-            const cfg = TYPE_CONFIG[selected.type] || { icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>, label: selected.type, colorClass: "text-slate-500 bg-slate-500/10 border-slate-500/20" };
+            const cfg = TYPE_CONFIG[selected.type] || { icon: null, label: selected.type, colorClass: "text-zinc-500 bg-white/5 border-white/5" };
             const parsed = parseData(selected.data);
             return (
-              <div className="flex flex-col h-full absolute inset-0 overflow-hidden">
-                <div className="p-5 border-b border-border/40 flex items-start gap-4 shrink-0 bg-muted/20">
-                  <div className={`mt-0.5 inline-flex items-center justify-center p-2 rounded-lg border shadow-sm ${cfg.colorClass}`}>
-                    {cfg.icon}
+              <div className="flex-1 flex flex-col h-full overflow-hidden">
+                <div className="p-10 border-b border-white/5 flex items-center gap-8 shrink-0 bg-white/2 relative overflow-hidden group">
+                  <div className="absolute -inset-10 bg-brand-primary/5 rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                  <div className={`w-16 h-16 rounded-[24px] border flex items-center justify-center shadow-2xl relative z-10 ${cfg.colorClass} group-hover:scale-105 transition-transform duration-700`}>
+                    {cfg.icon && React.cloneElement(cfg.icon as React.ReactElement<any>, { width: 28, height: 28, strokeWidth: 3 })}
                   </div>
-                  <div className="flex-1">
-                     <h3 className="text-lg font-bold tracking-tight text-foreground">{cfg.label}</h3>
-                     <div className="text-xs font-mono text-muted-foreground mt-1 flex items-center gap-2">
-                        <span>{new Date(selected.created_at).toLocaleString('pt-BR')}</span>
-                        <span className="w-1 h-1 rounded-full bg-border"></span>
-                        <span className="tracking-tight">Origem: {selected.source}</span>
+                  <div className="flex-1 min-w-0 relative z-10">
+                     <div className="flex items-center gap-4 mb-2">
+                        <h3 className="text-3xl font-black italic tracking-tighter text-white uppercase">{cfg.label}</h3>
+                        <span className={`inline-flex h-6 items-center rounded-xl px-4 text-[9px] font-black uppercase tracking-[0.2em] italic border transition-all ${
+                          selected.status === "new" ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20 shadow-[0_0_20px_rgba(16,185,129,0.2)]" : "bg-white/5 text-zinc-600 border-white/10"
+                        }`}>
+                          {selected.status === "new" ? "LIVE ENTRY" : "AUDITED NODE"}
+                        </span>
                      </div>
-                  </div>
-                  <div className="shrink-0 flex items-center gap-2">
-                     <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
-                        selected.status === "new" ? "bg-primary/10 text-primary ring-1 ring-inset ring-primary/20" : "bg-muted text-muted-foreground ring-1 ring-inset ring-border"
-                      }`}>
-                        {selected.status}
-                      </span>
+                     <div className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em] flex items-center gap-4 italic">
+                        <span className="text-zinc-400">{new Date(selected.created_at).toLocaleString('pt-BR')}</span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-brand-primary/40 shadow-[0_0_8px_rgba(0,173,232,0.4)]" />
+                        <span>PROTOCOL SOURCE: <span className="text-brand-primary">{selected.source}</span></span>
+                     </div>
                   </div>
                 </div>
 
-                <div className="flex-1 overflow-y-auto p-6 space-y-6">
-                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-background border border-border/50 p-5 rounded-xl shadow-sm">
-                      {parsed.name && <div><strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-1">Nome</strong> <span className="text-sm font-semibold text-foreground">{parsed.name}</span></div>}
-                      {parsed.contact && <div><strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-1">Contato</strong> <span className="text-sm font-mono text-foreground">{parsed.contact}</span></div>}
-                      {parsed.email && <div><strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-1">E-mail</strong> <span className="text-sm font-mono text-foreground">{parsed.email}</span></div>}
-                      {parsed.phone && <div><strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-1">Telefone</strong> <span className="text-sm font-mono text-foreground">{parsed.phone}</span></div>}
-                      {parsed.intent && <div><strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-1">Intenção</strong> <span className="text-sm font-medium text-foreground">{parsed.intent}</span></div>}
-                      {parsed.urgency && <div><strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-1">Urgência</strong> <span className="text-sm font-bold uppercase text-foreground">{parsed.urgency}</span></div>}
-                      {parsed.company && <div><strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-1">Empresa</strong> <span className="text-sm font-medium text-foreground">{parsed.company}</span></div>}
-                      {parsed.subject && <div className="md:col-span-2"><strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-1">Assunto</strong> <span className="text-sm font-medium text-foreground">{parsed.subject}</span></div>}
+                <div className="flex-1 overflow-y-auto p-12 space-y-12 custom-scrollbar">
+                   {/* Tactical Data Grid */}
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 bg-white/2 border border-white/5 p-10 rounded-[40px] shadow-2xl relative overflow-hidden">
+                      <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-brand-primary/5 rounded-full blur-[120px] pointer-events-none" />
+                      
+                      {Object.entries(parsed).filter(([key]) => key !== 'message' && key !== 'raw').map(([key, value]) => (
+                        <div key={key} className="space-y-2 group/field">
+                          <span className="block text-[10px] font-black text-zinc-700 uppercase tracking-[0.3em] italic group-hover/field:text-brand-primary transition-colors">{key.replace(/_/g, ' ')}</span>
+                          <span className={`block text-[15px] font-bold tracking-tight italic ${key === 'email' || key === 'phone' ? 'font-mono text-zinc-300' : 'text-white'}`}>
+                            {String(value)}
+                          </span>
+                        </div>
+                      ))}
                    </div>
                    
                    {parsed.message && (
-                     <div>
-                       <strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-2 px-1">Mensagem</strong>
-                       <div className="bg-muted/30 p-5 rounded-xl border border-border/50 text-sm whitespace-pre-wrap text-foreground leading-relaxed shadow-inner">
+                     <div className="space-y-6">
+                       <span className="block text-[10px] font-black text-zinc-700 uppercase tracking-[0.4em] italic px-4">Intent Engine / Message Body</span>
+                       <div className="bg-black/60 p-10 rounded-[40px] border border-white/5 text-[15px] font-bold italic tracking-tight whitespace-pre-wrap text-zinc-300 leading-relaxed shadow-inner backdrop-blur-3xl border-l-[3px] border-l-brand-primary/40">
                          {parsed.message}
                        </div>
                      </div>
                    )}
 
                    {parsed.raw && (
-                     <div>
-                       <strong className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider block mb-2 px-1">Payload JSON</strong>
-                       <div className="bg-muted/20 p-4 rounded-xl border border-border/50 text-xs font-mono whitespace-pre-wrap text-foreground/80 shadow-inner overflow-x-auto">
+                     <div className="space-y-6">
+                       <span className="block text-[10px] font-black text-zinc-800 uppercase tracking-[0.4em] italic px-4">Telemetry Stream (JSON)</span>
+                       <div className="bg-black/80 p-8 rounded-3xl border border-white/5 text-[12px] font-mono whitespace-pre-wrap text-zinc-600 shadow-inner overflow-x-auto ring-1 ring-white/5">
                          {parsed.raw}
                        </div>
                      </div>
                    )}
                 </div>
 
-                <div className="p-4 border-t border-border/40 bg-muted/10 shrink-0 flex gap-3 justify-end items-center">
+                {/* ── Contextual Action Toolbar ── */}
+                <div className="p-8 border-t border-white/5 bg-white/2 flex gap-6 justify-end items-center shrink-0">
                   
                   {selected.type === "lead" && (
-                     <select
-                       value={selected.status}
-                       onChange={e => handleUpdateStatus(selected, e.target.value)}
-                       className="h-9 mr-auto items-center justify-between rounded-md border border-input bg-background px-3 py-1 text-xs shadow-sm transition-colors focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer font-semibold text-muted-foreground hover:bg-accent"
-                     >
-                       <option value="new">New</option>
-                       <option value="contacted">Contacted</option>
-                       <option value="qualified">Qualified</option>
-                       <option value="lost">Lost</option>
-                     </select>
+                    <div className="mr-auto">
+                       <label className="block text-[9px] font-black text-zinc-700 uppercase tracking-[0.3em] mb-2 ml-2 italic">LIFECYCLE STATUS</label>
+                       <select
+                         value={selected.status}
+                         onChange={e => handleUpdateStatus(selected, e.target.value)}
+                         className="h-12 w-[180px] bg-black/60 border border-white/10 rounded-2xl px-5 text-[10px] font-black uppercase tracking-widest text-white outline-none focus:ring-2 focus:ring-brand-primary/20 cursor-pointer hover:bg-black/80 transition-all shadow-2xl italic appearance-none"
+                       >
+                         <option value="new">CORE: NOVO LEAD</option>
+                         <option value="contacted">NODE: CONTATADO</option>
+                         <option value="qualified">PROTOCOL: QUALIFICADO</option>
+                         <option value="lost">VOID: PERDIDO</option>
+                       </select>
+                    </div>
                   )}
 
                   {selected.type === "form" && selected.status === "new" && (
                     <button 
-                      className="mr-auto inline-flex h-9 items-center justify-center rounded-md border border-input shadow-sm bg-background px-4 py-2 text-xs font-semibold hover:bg-accent"
+                      className="mr-auto h-12 px-10 rounded-2xl border border-white/10 bg-white/5 text-[10px] font-black uppercase tracking-widest text-white hover:bg-brand-primary/10 hover:border-brand-primary/20 transition-all shadow-2xl active:scale-95 italic"
                       onClick={() => handleUpdateStatus(selected, "read")} 
                     >
-                      Marcar como Lido
+                      Audit Entry
                     </button>
                   )}
 
                   <button 
-                    className="inline-flex h-9 items-center justify-center rounded-md border border-input shadow-sm bg-background px-4 py-2 text-xs font-semibold transition-colors hover:bg-red-500 hover:text-white disabled:opacity-50 text-red-500"
+                    className="h-12 px-10 rounded-2xl border border-red-500/20 bg-red-500/5 text-red-500 text-[10px] font-black uppercase tracking-widest hover:bg-red-500/20 transition-all shadow-2xl active:scale-95 italic"
                     onClick={() => handleDelete(selected)} 
                   >
-                    Excluir
+                    Purge Node
                   </button>
 
                   {selected.type !== "chat" && (
                     <button 
-                      className="inline-flex h-9 items-center justify-center rounded-md border border-input shadow-sm bg-primary text-primary-foreground px-4 py-2 text-xs font-semibold transition-colors hover:bg-primary/90 disabled:opacity-50"
+                      className="h-12 px-12 rounded-2xl bg-brand-primary text-white text-[11px] font-black uppercase tracking-widest shadow-[0_20px_40px_rgba(0,173,232,0.4)] hover:shadow-[0_30px_60px_rgba(0,173,232,0.6)] hover:scale-[1.05] active:scale-95 transition-all flex items-center gap-4 disabled:opacity-50 italic"
                       onClick={() => handleForward(selected)} 
                       disabled={forwarding}
                     >
-                      <svg className="mr-2" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4Z"/></svg>
-                      {forwarding ? "Executando..." : "Encaminhar"}
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                      {forwarding ? "ORCHESTRATING..." : "EXECUTE FORWARD"}
                     </button>
                   )}
                 </div>
               </div>
             );
           })()}
-        </Card>
+        </div>
       </div>
 
-      {/* Floating Notification */}
+      {/* ── Global Feedback Layer ── */}
       {notification && (
-        <div className={`fixed bottom-6 right-6 px-4 py-3 rounded-lg shadow-lg border animate-in slide-in-from-bottom flex items-center gap-3 z-50 transition-all ${
+        <div className={`fixed bottom-12 right-12 px-8 py-5 rounded-[24px] shadow-[0_40px_80px_rgba(0,0,0,0.6)] border backdrop-blur-3xl animate-in slide-in-from-right duration-500 flex items-center gap-5 z-100 transition-all ${
           notification.type === "success" 
-            ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400" 
-            : "bg-red-500/10 border-red-500/20 text-red-600 dark:text-red-400"
+            ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400" 
+            : "bg-red-500/10 border-red-500/30 text-red-400"
         }`}>
-          {notification.type === "success" ? (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
-          ) : (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          )}
-          <span className="font-semibold text-sm leading-none">{notification.message}</span>
+          <div className={`w-10 h-10 rounded-full flex items-center justify-center bg-current opacity-10`} />
+          <svg className="absolute left-10" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+            {notification.type === "success" ? <path d="m5 12 5 5L20 7"/> : <><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></>}
+          </svg>
+          <span className="text-[12px] font-black uppercase tracking-[0.2em] italic">{notification.message}</span>
         </div>
       )}
     </div>
   );
+
 }

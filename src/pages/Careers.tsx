@@ -4,23 +4,9 @@ import { motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
 import { CANAL_BASE } from '../config/api';
-import { 
-MapPin,
-  X,
-  Briefcase,
-  Clock,
-  Upload} from "lucide-react";
-
-
-interface Job {
-  id: string;
-  title: string;
-  vertical: string;
-  location: string;
-  type: string;
-  desc: string;
-  requirements: string[];
-}
+import { canalApi } from '../services/canal';
+import type { Job } from '../types/canal';
+import { MapPin, X, Briefcase, Clock, Upload } from "lucide-react";
 
 const Careers = () => {
   const { t, i18n } = useTranslation();
@@ -29,14 +15,14 @@ const Careers = () => {
   const [loading, setLoading] = useState(true);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [filter, setFilter] = useState("todos");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
 
   useEffect(() => {
     const fetchJobs = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`${CANAL_BASE}/api/jobs?lang=${i18n.language}`);
-        if (!response.ok) throw new Error("API error");
-        const data = await response.json();
+        const data = await canalApi.getJobs(i18n.language);
         setJobs(data);
       } catch {
         setJobs([]);
@@ -202,51 +188,50 @@ const Careers = () => {
                       className="space-y-4" 
                       onSubmit={async (e) => { 
                         e.preventDefault(); 
+                        setIsSubmitting(true);
+                        setSubmitStatus(null);
+
                         const formData = new FormData(e.currentTarget);
-                        const payload = {
-                          formType: "career",
-                          jobId: selectedJob.id,
-                          jobTitle: selectedJob.title,
-                          name: formData.get("name"),
-                          email: formData.get("email"),
-                          linkedin: formData.get("linkedin"),
-                          // Note: File upload handling would typically require multipart/form-data
-                          // For this proxy, we'll send the metadata and assume the backoffice handles the file separately or via a different flow
-                          hasAttachment: !!formData.get("cv")
-                        };
+                        const submitData = new FormData();
+                        submitData.append("name", formData.get("name") as string);
+                        submitData.append("email", formData.get("email") as string);
+                        submitData.append("linkedin_url", formData.get("linkedin") as string);
+                        
+                        const cvFile = formData.get("cv");
+                        if (cvFile) {
+                          submitData.append("resume", cvFile);
+                        }
+
                         try {
-                          const response = await fetch(`${CANAL_BASE}/api/submit-form`, {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(payload)
-                          });
-                          if (response.ok) {
-                            alert(t('careers.form.success')); 
-                            setSelectedJob(null); 
-                          } else {
-                            throw new Error("Failed to submit");
-                          }
+                          await canalApi.applyJob(selectedJob.id, submitData);
+                          setSubmitStatus('success');
+                          setTimeout(() => {
+                            setSelectedJob(null);
+                            setSubmitStatus(null);
+                          }, 3000);
                         } catch (error) {
-                          alert(t('careers.form.error'));
+                          setSubmitStatus('error');
+                        } finally {
+                          setIsSubmitting(false);
                         }
                       }}
                     >
                       <div className="space-y-2">
-                        <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.full_name')}</label>
-                        <input name="name" type="text" required placeholder="seu nome" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"  aria-label="Input field" />
+                        <label htmlFor="name-input" className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.full_name')}</label>
+                        <input id="name-input" name="name" type="text" required placeholder="seu nome" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('careers.form.full_name')} />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.email')}</label>
-                        <input name="email" type="email" required placeholder="email@exemplo.com" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"  aria-label="Input field" />
+                        <label htmlFor="email-input" className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.email')}</label>
+                        <input id="email-input" name="email" type="email" required placeholder="email@exemplo.com" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('contact.form.email')} />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.linkedin')}</label>
-                        <input name="linkedin" type="url" placeholder="https://linkedin.com/in/..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"  aria-label="Input field" />
+                        <label htmlFor="linkedin-input" className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.linkedin')}</label>
+                        <input id="linkedin-input" name="linkedin" type="url" placeholder="https://linkedin.com/in/..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('careers.form.linkedin')} />
                       </div>
                       <div className="space-y-2">
                         <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.attach_cv')}</label>
                         <div className="relative group/upload">
-                          <input name="cv" type="file" accept=".pdf" required className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"  aria-label="Input field" />
+                          <input id="cv-input" name="cv" type="file" accept=".pdf" required className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" aria-label={t('careers.form.attach_cv')} />
                           <div className="w-full bg-white/5 border border-dashed border-white/20 rounded-2xl px-6 py-8 text-center group-hover/upload:border-primary-container/50 transition-all">
                             <Upload className="mx-auto text-on-surface-variant/40 mb-2 group-hover/upload:text-primary-container transition-colors" size={24} />
                             <p className="text-xs text-on-surface-variant/60">{t('careers.form.drag_drop')}</p>
@@ -260,13 +245,29 @@ const Careers = () => {
                           type="checkbox" 
                           required
                           className="mt-1 w-4 h-4 bg-white/5 border border-white/10 rounded focus:ring-1 focus:ring-primary-container accent-primary-container cursor-pointer"
-                         aria-label="Input field" />
+                          aria-label={t('common.privacy_consent')} />
                         <label htmlFor="privacy-consent-careers" className="text-[11px] text-on-surface-variant font-light leading-relaxed cursor-pointer">
                           {t('common.privacy_consent')}
                         </label>
                       </div>
-                      <button className="w-full bg-primary-container text-on-primary py-3.5 rounded-2xl font-display font-semibold uppercase tracking-widest text-xs hover:brightness-110 transition-all shadow-lg shadow-primary-container/20 mt-4">
-                        {t('careers.form.send_button')}
+                      
+                      {submitStatus === 'success' && (
+                        <div className="bg-primary-container/10 border border-primary-container/20 text-primary-container px-6 py-4 rounded-2xl text-xs font-light mt-4">
+                          {t('careers.form.success')}
+                        </div>
+                      )}
+                      {submitStatus === 'error' && (
+                        <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-6 py-4 rounded-2xl text-xs font-light mt-4">
+                          {t('careers.form.error')}
+                        </div>
+                      )}
+
+                      <button 
+                        type="submit"
+                        disabled={isSubmitting || submitStatus === 'success'}
+                        className="w-full bg-primary-container text-on-primary py-3.5 rounded-2xl font-display font-semibold uppercase tracking-widest text-xs hover:brightness-110 transition-all shadow-lg shadow-primary-container/20 mt-4 disabled:opacity-50"
+                      >
+                        {isSubmitting ? t('common.sending', 'enviando...') : t('careers.form.send_button')}
                       </button>
                     </form>
                   </div>

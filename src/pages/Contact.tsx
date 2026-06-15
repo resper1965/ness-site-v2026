@@ -5,6 +5,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
 import { CANAL_BASE } from '../config/api';
+import { canalApi } from '../services/canal';
 import { BRAND } from '../config/brand';
 import { 
 Mail,
@@ -40,6 +41,8 @@ const Contact = () => {
   const ref = searchParams.get('ref') || '';
   const refInfo = REF_MAP[ref] || (BRAND !== 'ness' ? REF_MAP[BRAND] : null);
   const [selectedSubject, setSelectedSubject] = useState(refInfo?.subject || '');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
 
   return (
     <motion.div 
@@ -147,6 +150,8 @@ const Contact = () => {
               className="space-y-6"
               onSubmit={async (e) => {
                 e.preventDefault();
+                setIsSubmitting(true);
+                setSubmitStatus(null);
                 const formData = new FormData(e.currentTarget);
                 const payload = {
                   formType: "contact",
@@ -159,19 +164,15 @@ const Contact = () => {
                   referrerLabel: refInfo?.label || BRAND,
                 };
                 try {
-                  const response = await fetch(`${CANAL_BASE}/api/submit-form`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload)
-                  });
-                  if (response.ok) {
-                    alert(t('contact.form.success'));
-                    (e.target as HTMLFormElement).reset();
-                  } else {
-                    throw new Error("Failed to submit");
-                  }
+                  await canalApi.submitForm(payload);
+                  setSubmitStatus('success');
+                  (e.target as HTMLFormElement).reset();
+                  setSelectedSubject('');
+                  setTimeout(() => setSubmitStatus(null), 3000);
                 } catch (error) {
-                  alert(t('contact.form.error'));
+                  setSubmitStatus('error');
+                } finally {
+                  setIsSubmitting(false);
                 }
               }}
             >
@@ -184,7 +185,7 @@ const Contact = () => {
                     required
                     placeholder={t('contact.form.name_placeholder')} 
                     className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
-                   aria-label="Input field" />
+                    aria-label={t('contact.form.name')} />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.company')}</label>
@@ -194,7 +195,7 @@ const Contact = () => {
                     required
                     placeholder={t('contact.form.company_placeholder')} 
                     className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
-                   aria-label="Input field" />
+                    aria-label={t('contact.form.company')} />
                 </div>
               </div>
               <div className="space-y-2">
@@ -205,7 +206,7 @@ const Contact = () => {
                   required
                   placeholder={t('contact.form.email_placeholder')} 
                   className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
-                 aria-label="Input field" />
+                  aria-label={t('contact.form.email')} />
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.subject')}</label>
@@ -243,13 +244,33 @@ const Contact = () => {
                   type="checkbox" 
                   required
                   className="mt-1 w-4 h-4 bg-white/5 border border-white/10 rounded focus:ring-1 focus:ring-primary-container accent-primary-container cursor-pointer"
-                 aria-label="Input field" />
+                  aria-label={t('common.privacy_consent')} />
                 <label htmlFor="privacy-consent" className="text-[11px] text-on-surface-variant font-light leading-relaxed cursor-pointer">
                   {t('common.privacy_consent')}
                 </label>
               </div>
-              <button className="w-full bg-primary-container text-on-primary py-3.5 rounded-2xl font-display font-semibold uppercase tracking-widest text-xs hover:brightness-110 transition-all shadow-lg shadow-primary-container/20">
-                {t('contact.form.send')}
+
+              {submitStatus === 'success' && (
+                <div className="bg-primary-container/10 border border-primary-container/20 text-primary-container px-6 py-4 rounded-2xl text-xs font-light mt-4">
+                  {t('contact.form.success')}
+                </div>
+              )}
+              {submitStatus === 'error' && (
+                <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-6 py-4 rounded-2xl text-xs font-light mt-4 flex items-start gap-3">
+                  <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-bold mb-1">{t('contact.form.error', 'Erro ao enviar mensagem.')}</p>
+                    <p className="text-red-400/80">Por favor, verifique sua conexão ou tente novamente em alguns instantes. Se o problema persistir, contate-nos diretamente pelo e-mail contato@ness.com.br.</p>
+                  </div>
+                </div>
+              )}
+
+              <button 
+                type="submit"
+                disabled={isSubmitting || submitStatus === 'success'}
+                className="w-full bg-primary-container text-on-primary py-3.5 rounded-2xl font-display font-semibold uppercase tracking-widest text-xs hover:brightness-110 transition-all shadow-lg shadow-primary-container/20 disabled:opacity-50"
+              >
+                {isSubmitting ? t('common.sending', 'enviando...') : t('contact.form.send')}
               </button>
             </form>
           </div>

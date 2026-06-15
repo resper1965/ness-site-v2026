@@ -89,9 +89,43 @@ app.post('/submit-form', async (c) => {
     const data = await response.json();
     return c.json(data);
   } catch {
-    return c.json({ error: 'Failed to submit form' }, 500);
+    return c.json({ error: 'Failed to submit form' }, 500)
   }
-});
+})
+
+app.post('/whistleblower', async (c) => {
+  const canal = c.env.CANAL_WORKER_URL
+  try {
+    const body = await c.req.json()
+    const response = await fetch(`${canal}/api/whistleblower`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    })
+    if (!response.ok) return c.json({ error: 'Canal unavailable' }, 502)
+    const data = await response.json()
+    return c.json(data)
+  } catch {
+    return c.json({ error: 'Failed to submit whistleblower report' }, 500)
+  }
+})
+
+app.post('/automation/apply/:job_id', async (c) => {
+  const job_id = c.req.param('job_id')
+  const canal = c.env.CANAL_WORKER_URL
+  try {
+    const response = await fetch(`${canal}/api/automation/apply/${job_id}`, {
+      method: 'POST',
+      headers: c.req.raw.headers,
+      body: c.req.raw.body,
+    })
+    if (!response.ok) return c.json({ error: 'Canal unavailable' }, 502)
+    const data = await response.json()
+    return c.json(data)
+  } catch {
+    return c.json({ error: 'Failed to submit application' }, 500)
+  }
+})
 
 app.post('/chat', async (c) => {
   const canal = c.env.CANAL_WORKER_URL;

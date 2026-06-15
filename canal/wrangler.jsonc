@@ -21,6 +21,12 @@
 		"binding": "ASSETS",
 		"not_found_handling": "single-page-application"
 	},
+	"kv_namespaces": [
+		{
+			"binding": "CANAL_KV",
+			"id": "e2a3b4c5-6d7e-8f90-1a2b-3c4d5e6f7a8b"
+		}
+	],
 	"d1_databases": [
 		{
 			"binding": "DB",

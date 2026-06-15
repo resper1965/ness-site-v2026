@@ -34,6 +34,7 @@ export type Bindings = {
   BETTER_AUTH_SECRET: string
   BETTER_AUTH_URL: string
   ADMIN_SETUP_KEY: string
+  WHISTLEBLOWER_SECRET: string
   RESEND_API_KEY: string
   SLACK_WEBHOOK_URL?: string
   AGENT_DO: DurableObjectNamespace
@@ -93,9 +94,6 @@ app.use('/*', secureHeaders({
 }))
 app.use('/*', cors({
   origin: [
-    'http://localhost:3000',
-    'http://localhost:5173',
-    'http://localhost:8787',
     'https://canal.ness.com.br',
     'https://ness-site2026.pages.dev',
     'https://ness.com.br',
@@ -400,23 +398,28 @@ app.get('/api/chatbot-config', async (c) => {
   return c.json(config || { bot_name: 'Gabi.OS', welcome_message: 'Olá! Como posso ajudar?', theme_color: '#00E5A0', enabled: 1 })
 })
 
+// ── Mount: Admin Routes (modular, auth-protected) ────────────────
+app.use('/api/admin/*', requireSession)
+
 // Public compliance endpoints: DSAR, whistleblower, policies, consent
 app.route('/api', complianceRoutes)
 
 // Public and Protected Automation endpoints: Newsletter, Apply, Assets
 import automationRoutes from './routes/automation'
+app.use('/api/automation/social', requireSession)
+app.use('/api/automation/social/*', requireSession)
+app.use('/api/automation/comunicados', requireSession)
+app.use('/api/automation/social-draft', requireSession)
 app.route('/api/automation', automationRoutes)
 
 // SaaS Provisioning and Billing endpoints
 import { saasRoutes } from './routes/saas-onboarding'
 app.route('/api/saas', saasRoutes)
 
-// ── Mount: Admin Routes (modular, auth-protected) ────────────────
 import { admin } from './routes/admin'
 import { webhooksApi } from './routes/webhooks-api'
 import { brandRouter } from './routes/brand'
 
-app.use('/api/admin/*', requireSession)
 app.route('/api/admin', admin)
 app.route('/api/admin/webhooks', webhooksApi)
 app.route('/api/admin/brand', brandRouter)
@@ -506,16 +509,40 @@ const chatRateMap = new Map<string, { count: number; resetAt: number }>()
 const CHAT_RATE_LIMIT = 20
 const CHAT_RATE_WINDOW = 60_000
 
-function isChatRateLimited(ip: string): boolean {
+async function isChatRateLimited(kv: KVNamespace | undefined, ip: string): Promise<boolean> {
   const now = Date.now()
-  const entry = chatRateMap.get(ip)
-  if (!entry || now > entry.resetAt) {
-    chatRateMap.set(ip, { count: 1, resetAt: now + CHAT_RATE_WINDOW })
+  if (!kv) {
+    const entry = chatRateMap.get(ip)
+    if (!entry || now > entry.resetAt) {
+      chatRateMap.set(ip, { count: 1, resetAt: now + CHAT_RATE_WINDOW })
+      return false
+    }
+    if (entry.count >= CHAT_RATE_LIMIT) return true
+    entry.count++
     return false
   }
-  if (entry.count >= CHAT_RATE_LIMIT) return true
-  entry.count++
-  return false
+
+  const key = `chat_rate:${ip}`
+  try {
+    const entryStr = await kv.get(key)
+    if (!entryStr) {
+      await kv.put(key, JSON.stringify({ count: 1, resetAt: now + CHAT_RATE_WINDOW }), { expirationTtl: 60 })
+      return false
+    }
+    const entry = JSON.parse(entryStr) as { count: number; resetAt: number }
+    if (now > entry.resetAt) {
+      await kv.put(key, JSON.stringify({ count: 1, resetAt: now + CHAT_RATE_WINDOW }), { expirationTtl: 60 })
+      return false
+    }
+    if (entry.count >= CHAT_RATE_LIMIT) return true
+    entry.count++
+    const remainingSeconds = Math.max(1, Math.ceil((entry.resetAt - now) / 1000))
+    await kv.put(key, JSON.stringify(entry), { expirationTtl: remainingSeconds })
+    return false
+  } catch {
+    await kv.put(key, JSON.stringify({ count: 1, resetAt: now + CHAT_RATE_WINDOW }), { expirationTtl: 60 })
+    return false
+  }
 }
 
 const chatSchema = z.object({
@@ -529,7 +556,7 @@ const chatSchema = z.object({
 // ── Chat RAG (público) via AGENT_DO ─────────────────────────────
 app.post('/api/chat', async (c) => {
   const clientIp = c.req.header('cf-connecting-ip') || c.req.header('x-forwarded-for') || 'unknown'
-  if (isChatRateLimited(clientIp)) {
+  if (await isChatRateLimited(c.env.CANAL_KV, clientIp)) {
     return c.json({ error: 'Too many requests. Please wait.' }, 429)
   }
 
@@ -593,13 +620,26 @@ app.post('/api/chat', async (c) => {
 })
 
 // ── OPEN GRAPH GENERATOR ──────────────────────────────────────────
+function escapeHtml(str: string): string {
+  return str.replace(/[&<>"']/g, (m) => {
+    switch (m) {
+      case '&': return '&amp;';
+      case '<': return '&lt;';
+      case '>': return '&gt;';
+      case '"': return '&quot;';
+      case "'": return '&#039;';
+      default: return m;
+    }
+  });
+}
+
 app.get('/api/og', (c) => {
   const title = c.req.query('title') || 'Canal CMS'
   const svg = `
     <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
       <rect width="1200" height="630" fill="111" />
       <text x="600" y="315" fill="white" font-family="sans-serif" font-size="64" font-weight="900" text-anchor="middle" dominant-baseline="middle">
-        ${title}
+        ${escapeHtml(title)}
       </text>
     </svg>
   `

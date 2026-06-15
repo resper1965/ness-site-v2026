@@ -102,11 +102,6 @@ const I = {
       <line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" /><line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" />
     </svg>
   ),
-  arrowUpRight: (
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline>
-    </svg>
-  ),
 };
 
 /* ── Health services config ── */
@@ -152,9 +147,10 @@ export default function DashboardHome() {
 
   if (loading) {
     return (
-      <div className="flex justify-center py-32">
-        <div className="border border-border/80 p-5 rounded-xl shadow-sm text-center">
-          <p className="text-sm text-muted-foreground animate-pulse">Carregando métricas...</p>
+      <div className="flex justify-center py-48 animate-pulse text-center">
+        <div className="space-y-4">
+           <div className="w-16 h-16 border-4 border-brand-primary/20 border-t-brand-primary rounded-[24px] animate-spin mx-auto shadow-[0_0_40px_rgba(0,173,232,0.3)]" />
+           <p className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.4em] italic">Carregando métricas de infraestrutura...</p>
         </div>
       </div>
     );
@@ -162,90 +158,122 @@ export default function DashboardHome() {
 
   if (!stats) {
     return (
-      <div className="flex flex-col items-center justify-center py-32 text-center">
-        <h2 className="text-lg font-semibold text-foreground">Falha ao carregar métricas</h2>
-        <p className="text-sm text-muted-foreground mt-1">Verifique a conexão e tente recarregar.</p>
+      <div className="flex flex-col items-center justify-center py-48 text-center space-y-6">
+        <div className="w-20 h-20 rounded-[32px] bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-500 shadow-2xl">
+           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div className="space-y-2">
+           <h2 className="text-2xl font-black text-white italic tracking-tighter uppercase">Protocol Failure</h2>
+           <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest leading-relaxed">Falha crítica na sincronização de telemetria.</p>
+        </div>
       </div>
     );
   }
 
-  // Standard Grid Strategy
   const kpis = [
-    { label: "Total Leads", value: stats.totalLeads, delta: stats.newLeads, deltaLabel: "novos", icon: () => I.target },
-    { label: "Total Formulários", value: stats.totalForms, delta: stats.newForms, deltaLabel: "pendentes", icon: () => I.clipboard, urgent: true },
-    { label: "Usuários Ativos", value: stats.totalUsers, icon: () => I.key },
-    { label: "Cases Cadastrados", value: stats.totalCases, icon: () => I.briefcase },
-    { label: "Vagas Abertas", value: stats.totalJobs, icon: () => I.users },
-    { label: "Sessões de Chat", value: stats.totalChats, icon: () => I.chat },
-    { label: "Insights Publicados", value: stats.totalPosts, icon: () => I.file },
-    { label: "Artefatos Cloud", value: stats.publishedEntries, icon: () => I.cloud },
+    { label: "Total Leads Ledger", value: stats.totalLeads, delta: stats.newLeads, deltaLabel: "novos", icon: () => I.target },
+    { label: "Form Ingestion Logic", value: stats.totalForms, delta: stats.newForms, deltaLabel: "pendentes", icon: () => I.clipboard, urgent: true },
+    { label: "Identity Nodes", value: stats.totalUsers, icon: () => I.key },
+    { label: "Deployment Cases", value: stats.totalCases, icon: () => I.briefcase },
+    { label: "Market Protocols", value: stats.totalJobs, icon: () => I.users },
+    { label: "Synapse Chat Sessions", value: stats.totalChats, icon: () => I.chat },
+    { label: "Insight Matrix", value: stats.totalPosts, icon: () => I.file },
+    { label: "Cloud Core Assets", value: stats.publishedEntries, icon: () => I.cloud },
   ];
 
   const allOk = health && SERVICES.every((s) => health[s.key]?.status === "ok");
 
   return (
-    <div className="space-y-6">
-
-      {/* ── Top Bar Simulation (Shadcn Tabs) ── */}
-      <div className="flex items-center space-x-2 border-b border-border/50 pb-4">
-        <div className="bg-muted px-4 py-1.5 rounded-lg text-sm font-medium text-foreground cursor-pointer transition-colors shadow-sm border border-border/20">
-          Overview
-        </div>
-        <div className="px-4 py-1.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground cursor-pointer transition-colors">
-          Analytics
-        </div>
-        <div className="px-4 py-1.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground cursor-pointer transition-colors">
-          Reports
-        </div>
-      </div>
-
-      {/* ── Infrastructure Status Bar (Discreet) ── */}
-      <div className="flex items-center gap-2 flex-wrap text-[11px]">
-        <div className="flex items-center gap-1.5 font-medium text-muted-foreground mr-2">
-          <span className={`w-1.5 h-1.5 rounded-full ${allOk ? 'bg-emerald-500' : 'bg-amber-500'}`} />
-          Sistemas operacionais:
-        </div>
-
-        {SERVICES.map(({ key, label }) => {
-          const svc = health?.[key];
-          const isOk = svc?.status === "ok";
-          return (
-            <div key={key} className="flex items-center gap-1 text-muted-foreground/70" title={svc?.latency_ms ? `${svc.latency_ms}ms` : undefined}>
-              <span>{label}</span>
-              {svc?.latency_ms !== undefined && (
-                <span className="font-mono text-[9px] opacity-70">({svc.latency_ms}ms)</span>
-              )}
-              {isOk && <span className="text-emerald-500/70 ml-0.5">•</span>}
+    <div className="max-w-[1750px] w-full px-10 md:px-16 py-12 space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-1000 overflow-hidden flex flex-col">
+      
+      {/* ── Infrastructure Command Hub ── */}
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-10 shrink-0 relative">
+        <div className="inline-flex items-center gap-8 bg-black/40 backdrop-blur-3xl border border-white/5 shadow-[0_40px_80px_rgba(0,0,0,0.4)] rounded-[40px] px-10 py-6 radial-gradient-glass relative overflow-hidden group/health border-white/10">
+          <div className="absolute inset-0 bg-brand-primary/2 opacity-0 group-hover/health:opacity-100 transition-opacity duration-1000 pointer-events-none" />
+          
+          <div className="flex items-center gap-5 relative z-10">
+            <div className={`w-4 h-4 rounded-full shadow-[0_0_20px] ${allOk ? 'bg-emerald-500 shadow-emerald-500/60 animate-pulse' : 'bg-amber-500 shadow-amber-500/60 animate-pulse'}`} />
+            <div className="flex flex-col gap-1">
+               <span className="text-[11px] font-black uppercase tracking-[0.3em] text-white italic">Core Infrastructure</span>
+               <span className="text-[9px] font-black text-zinc-700 uppercase tracking-[0.4em] italic leading-none">{health?.checked_at ? `Ledger Sync: ${timeAgo(health.checked_at)}` : 'Scanning Cloud Nodes…'}</span>
             </div>
-          );
-        })}
+          </div>
 
-        {health?.checked_at && (
-          <span className="font-mono text-muted-foreground/40 ml-auto">
-            {timeAgo(health.checked_at)} ago
-          </span>
-        )}
+          <div className="h-10 w-px bg-white/5 mx-4" />
+
+          <div className="flex items-center gap-8 relative z-10">
+            {SERVICES.map(({ key, label }) => {
+              const svc = health?.[key];
+              const isOk = svc?.status === "ok";
+              return (
+                <div key={key} className="flex items-center gap-4 group/svc cursor-default">
+                  <div className="flex flex-col items-end gap-1">
+                     <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-600 group-hover:text-brand-primary transition-colors italic leading-none">{label}</span>
+                     {svc?.latency_ms !== undefined && (
+                       <span className="text-[9px] font-mono font-black text-emerald-500/40 transition-all leading-none">{svc.latency_ms}ms</span>
+                     )}
+                  </div>
+                  <div className={`w-2.5 h-2.5 rounded-full transition-all duration-500 group-hover:scale-125 ${isOk ? 'bg-emerald-500/30 border border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.2)]' : 'bg-amber-500/30 border border-amber-500/50 shadow-[0_0_10px_rgba(245,158,11,0.2)]'}`} />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="flex flex-col items-end gap-2 pr-6">
+           <h2 className="text-3xl font-black text-white italic tracking-tighter uppercase leading-none">Executive Command</h2>
+           <span className="text-[10px] font-black text-zinc-700 uppercase tracking-[0.5em] italic leading-none">Ness Operational Core Pro-Max</span>
+        </div>
       </div>
 
-      {/* ── Standard Grid ── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {kpis.map((kpi) => {
+      {/* ── Analytical Intelligence Matrix ── */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 overflow-y-auto custom-scrollbar pr-2 h-full pb-10">
+        {kpis.map((kpi, idx) => {
+          const isProminent = idx === 0 || idx === 1;
           const Icon = kpi.icon;
+
           return (
-            <div key={kpi.label} className="stat-card flex flex-col bg-card border border-border/50 rounded-xl p-5 shadow-sm">
-              <div className="flex justify-between items-start mb-4">
-                <span className="text-sm font-medium text-muted-foreground">{kpi.label}</span>
-                <span className="text-muted-foreground opacity-70"><Icon /></span>
+            <div 
+              key={kpi.label} 
+              className={`relative overflow-hidden flex flex-col justify-between bg-black/40 backdrop-blur-3xl border border-white/5 rounded-[56px] p-12 shadow-[0_50px_100px_rgba(0,0,0,0.5)] transition-all duration-1000 hover:border-brand-primary/30 hover:scale-[1.02] active:scale-[0.99] radial-gradient-glass group ${isProminent ? 'md:col-span-2 lg:col-span-2' : ''}`}
+            >
+              {/* Spatial Depth Infrastructure */}
+              <div className="absolute -right-32 -top-32 w-80 h-80 bg-brand-primary/5 rounded-full blur-[120px] pointer-events-none transition-all duration-1000 group-hover:bg-brand-primary/15 group-hover:scale-150" />
+              <div className="absolute -left-32 -bottom-32 w-64 h-64 bg-white/2 rounded-full blur-[100px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+
+              <div className="relative z-10 flex justify-between items-start mb-16">
+                <div className="space-y-4">
+                  <span className="block text-[11px] font-black text-zinc-600 tracking-[0.5em] uppercase group-hover:text-zinc-400 transition-colors italic leading-none">{kpi.label}</span>
+                  <div className="h-1.5 w-16 bg-white/5 overflow-hidden rounded-full">
+                     <div className="h-full w-1/4 bg-brand-primary group-hover:w-full transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)]" />
+                  </div>
+                </div>
+                <div className="w-14 h-14 rounded-2xl bg-brand-primary/10 flex items-center justify-center text-brand-primary group-hover:text-white group-hover:rotate-[360deg] group-hover:scale-110 transition-all duration-1000 shadow-2xl border border-brand-primary/20">
+                  <Icon />
+                </div>
               </div>
-              <div className="text-3xl font-bold tabular-nums tracking-tight">
-                {kpi.value.toLocaleString("pt-BR")}
-              </div>
-              <div className="mt-2 text-xs font-medium h-4">
-                {kpi.delta !== undefined ? (
-                  kpi.delta > 0 
-                  ? <span className="text-emerald-500">+{kpi.delta} {kpi.deltaLabel}</span>
-                  : <span className="text-muted-foreground/60">0 {kpi.deltaLabel}</span>
-                ) : null}
+
+              <div className="relative z-10 space-y-8">
+                <div className="text-7xl font-black tracking-tighter text-white leading-none italic group-hover:scale-[1.05] origin-left transition-transform duration-1000 group-hover:text-transparent bg-clip-text bg-linear-to-r from-white to-white group-hover:from-white group-hover:to-brand-primary/60">
+                  {kpi.value.toLocaleString("pt-BR")}
+                </div>
+                <div className="flex items-center gap-5">
+                  {kpi.delta !== undefined ? (
+                    <div className={`h-12 px-6 rounded-2xl border flex items-center gap-4 transition-all duration-500 ${kpi.delta > 0 ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500' : 'bg-white/5 border-white/10 text-zinc-700'} font-black text-[11px] tracking-[0.3em] uppercase shadow-2xl italic`}>
+                      <span className={`w-2.5 h-2.5 rounded-full ${kpi.delta > 0 ? 'bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-zinc-800'}`} />
+                      {kpi.delta} {kpi.deltaLabel} Protocol
+                    </div>
+                  ) : (
+                    <div className="h-12 px-6 rounded-2xl bg-white/2 border border-white/5 text-zinc-700 font-black text-[11px] tracking-[0.3em] uppercase flex items-center gap-4 shadow-2xl italic">
+                      <div className="w-2.5 h-2.5 rounded-full bg-zinc-900 border border-white/5" />
+                      Status: Active Node
+                    </div>
+                  )}
+                  
+                  <div className="ml-auto opacity-0 group-hover:opacity-100 -translate-x-6 group-hover:translate-x-0 transition-all duration-1000 text-zinc-700 group-hover:text-brand-primary">
+                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </div>
+                </div>
               </div>
             </div>
           );

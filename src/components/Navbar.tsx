@@ -26,6 +26,11 @@ const Navbar = () => {
   const location = useLocation();
   const isHome = location.pathname === "/";
 
+  const isActive = (path: string) => {
+    if (path === '/') return location.pathname === '/';
+    return location.pathname.startsWith(path);
+  };
+
   // Only solutions differ per brand — all other pages are shared
   const nessOnlyKeys = ['solutions'];
   const trustnessOnlyKeys = ['dpo'];
@@ -72,15 +77,20 @@ const Navbar = () => {
               <span className="text-[10px] font-bold text-primary-container uppercase tracking-widest">{CELEBRATION_CONFIG.label}</span>
             </div>
           )}
-          {menuItems.map((item) => (
-            <Link
-              key={item.key}
-              to={item.to}
-              className="text-on-surface-variant tracking-tight text-[10px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-bold"
-            >
-              {item.label}
-            </Link>
-          ))}
+          {menuItems.map((item) => {
+            const active = isActive(item.to);
+            return (
+              <Link
+                key={item.key}
+                to={item.to}
+                className={`tracking-tight text-[10px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-bold ${
+                  active ? "text-primary-container" : "text-on-surface-variant"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </div>
 
         <div className="flex items-center gap-2 md:gap-4">
@@ -148,22 +158,27 @@ const Navbar = () => {
                 ))}
               </div>
 
-              {menuItems.map((item, i) => (
-                <motion.div
-                  key={item.key}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  <Link
-                    to={item.to}
-                    onClick={() => setIsOpen(false)}
-                    className="text-3xl font-display font-semibold text-white lowercase-all tracking-tighter"
+              {menuItems.map((item, i) => {
+                const active = isActive(item.to);
+                return (
+                  <motion.div
+                    key={item.key}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 }}
                   >
-                    {item.label}<BlueDot />
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      to={item.to}
+                      onClick={() => setIsOpen(false)}
+                      className={`text-3xl font-display font-semibold lowercase-all tracking-tighter ${
+                        active ? "text-primary-container" : "text-white"
+                      }`}
+                    >
+                      {item.label}{active && <BlueDot />}
+                    </Link>
+                  </motion.div>
+                );
+              })}
               
               <motion.div
                 initial={{ opacity: 0, y: 20 }}

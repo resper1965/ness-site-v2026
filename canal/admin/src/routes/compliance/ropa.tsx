@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "../../components/ui/Table";
+
 
 export default function ROPADashboard() {
   const [items, setItems] = useState<any[]>([]);
@@ -37,42 +39,42 @@ export default function ROPADashboard() {
       ) : (
         <div className="bg-card rounded-[24px] border border-border/60 shadow-[0_2px_20px_-8px_rgba(0,0,0,0.05)] overflow-hidden">
           <div className="overflow-x-auto w-full">
-            <table className="w-full text-left border-collapse whitespace-nowrap">
-              <thead>
-                <tr className="bg-muted/30 border-b border-border/60">
-                  <th className="py-4 font-bold text-[11px] uppercase tracking-widest text-muted-foreground/80 pl-8 pr-4">Processo</th>
-                  <th className="py-4 font-bold text-[11px] uppercase tracking-widest text-muted-foreground/80 px-4">Propósito</th>
-                  <th className="py-4 font-bold text-[11px] uppercase tracking-widest text-muted-foreground/80 px-4">Base Legal</th>
-                  <th className="py-4 font-bold text-[11px] uppercase tracking-widest text-muted-foreground/80 px-4">Retenção</th>
-                  <th className="pr-8 pl-4 py-4 font-bold text-[11px] uppercase tracking-widest text-muted-foreground/80 text-right">Ajustes</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/40">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/30 border-b border-border/60">
+                  <TableHead className="py-4 font-bold text-[11px] uppercase tracking-widest text-muted-foreground/80 pl-8 pr-4">Processo</TableHead>
+                  <TableHead className="py-4 font-bold text-[11px] uppercase tracking-widest text-muted-foreground/80 px-4">Propósito</TableHead>
+                  <TableHead className="py-4 font-bold text-[11px] uppercase tracking-widest text-muted-foreground/80 px-4">Base Legal</TableHead>
+                  <TableHead className="py-4 font-bold text-[11px] uppercase tracking-widest text-muted-foreground/80 px-4">Retenção</TableHead>
+                  <TableHead className="pr-8 pl-4 py-4 font-bold text-[11px] uppercase tracking-widest text-muted-foreground/80 text-right">Ajustes</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {items.map((item) => (
-                  <tr key={item.id} className="group hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-150">
-                    <td className="py-5 pl-8 pr-4 text-[14px] font-bold text-foreground">
+                  <TableRow key={item.id} className="group hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-150">
+                    <TableCell className="py-5 pl-8 pr-4 text-[14px] font-bold text-foreground">
                       {item.process_name}
-                    </td>
-                    <td className="py-5 px-4 text-[14px] font-medium text-muted-foreground">
+                    </TableCell>
+                    <TableCell className="py-5 px-4 text-[14px] font-medium text-muted-foreground">
                       {item.purpose}
-                    </td>
-                    <td className="py-5 px-4 text-[14px] font-medium text-muted-foreground">
+                    </TableCell>
+                    <TableCell className="py-5 px-4 text-[14px] font-medium text-muted-foreground">
                       {item.legal_basis}
-                    </td>
-                    <td className="px-4 py-3 text-muted-foreground font-mono text-[12px] opacity-70">
+                    </TableCell>
+                    <TableCell className="px-4 py-3 text-muted-foreground font-mono text-[12px] opacity-70">
                       {item.retention_period}
-                    </td>
-                    <td className="pr-8 pl-4 py-3 text-right">
+                    </TableCell>
+                    <TableCell className="pr-8 pl-4 py-3 text-right">
                       <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                         <button className="p-2 rounded-lg bg-black/5 dark:bg-white/5 text-foreground hover:bg-primary/10 hover:text-primary transition-colors outline-none">
                           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                         </button>
                       </div>
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         </div>
       )}

@@ -10,6 +10,7 @@
       "DOM.Iterable"
     ],
     "skipLibCheck": true,
+    "strict": true,
     "moduleResolution": "bundler",
     "isolatedModules": true,
     "moduleDetection": "force",
@@ -26,6 +27,7 @@
   "exclude": [
     "node_modules",
     "canal",
+    "canal-saas",
     "site"
   ]
 }

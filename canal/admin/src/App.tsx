@@ -24,6 +24,7 @@ const KnowledgeBasePage = React.lazy(() => import("./routes/knowledge-base"));
 const ChatsHistoryPage = React.lazy(() => import("./routes/chats"));
 const ApplicantsPage = React.lazy(() => import("./routes/applicants"));
 const SocialCalendarPage = React.lazy(() => import("./routes/social-calendar"));
+const PublicationsPage = React.lazy(() => import("./routes/publications"));
 function GlobalErrorBoundary() {
   const error = useRouteError() as Error;
   
@@ -64,6 +65,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <DashboardHome /> },
       { path: "insights", element: <CollectionRoute slug="insights" /> },
+      { path: "publications", element: <PublicationsPage /> },
       { path: "cases", element: <CollectionRoute slug="cases" /> },
       { path: "jobs", element: <CollectionRoute slug="jobs" /> },
       { path: "applicants", element: <ApplicantsPage /> },

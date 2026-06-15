@@ -60,7 +60,7 @@ export const collections: CollectionDef[] = [
       { name: 'title', type: 'text', required: true, label: 'Título' },
       { name: 'tag', type: 'select', label: 'Tag', options: [
         'Segurança', 'IA', 'Cloud', 'Infraestrutura', 'Dados',
-        'Compliance', 'DevOps', 'Telecom', 'Tendências'
+        'Compliance', 'DevOps', 'Telecom', 'Tendências', 'Informação Corporativa'
       ]},
       { name: 'icon', type: 'text', label: 'Ícone', defaultValue: 'FileText' },
       { name: 'date', type: 'date', required: true, label: 'Data' },
@@ -282,6 +282,34 @@ export const collections: CollectionDef[] = [
       { name: 'bio', type: 'textarea', label: 'Bio Curtinha' },
       { name: 'avatar', type: 'image', label: 'Avatar' },
       { name: 'social_link', type: 'text', label: 'Link (LinkedIn)' }
+    ]
+  },
+  // ── Publicações & Resultados (RI / Transparência) ──────────────
+  {
+    slug: 'publications',
+    label: 'Publicação',
+    labelPlural: 'Publicações',
+    icon: 'BarChart3',
+    hasLocale: true,
+    hasSlug: true,
+    hasStatus: true,
+    governance: 'assisted',
+    fields: [
+      { name: 'title', type: 'text', required: true, label: 'Título' },
+      { name: 'category', type: 'select', label: 'Categoria', options: [
+        'resultado-financeiro', 'relatorio-anual', 'relatorio-sustentabilidade',
+        'governanca', 'ata-assembleia', 'fato-relevante',
+        'apresentacao-investidores', 'documento-institucional', 'outro'
+      ]},
+      { name: 'fiscal_year', type: 'text', label: 'Ano Fiscal' },
+      { name: 'fiscal_period', type: 'select', label: 'Período', options: [
+        '1T', '2T', '3T', '4T', '1S', '2S', 'Anual', 'N/A'
+      ]},
+      { name: 'date', type: 'date', required: true, label: 'Data de Publicação' },
+      { name: 'summary', type: 'textarea', label: 'Resumo Executivo' },
+      { name: 'file_url', type: 'text', label: 'URL do Documento (PDF/Excel)' },
+      { name: 'cover', type: 'image', label: 'Thumbnail/Capa' },
+      { name: 'featured', type: 'boolean', label: 'Destaque', defaultValue: false },
     ]
   },
 ]

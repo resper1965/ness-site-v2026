@@ -7,15 +7,7 @@ import { ShieldCheck, Cloud, Cpu, Brain, Lock, Workflow, FileText, ArrowUpRight 
 import EmptyState from '../components/EmptyState';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { CANAL_BASE } from '../config/api';
-interface Insight {
-  id?: string;
-  slug?: string;
-  tag: string;
-  date: string;
-  title: string;
-  desc: string;
-  icon: string;
-}
+import type { Insight } from '../types/canal';
 
 const Blog = () => {
   const { t, i18n } = useTranslation();

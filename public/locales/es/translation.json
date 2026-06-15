@@ -1,0 +1,697 @@
+{
+      "nav": {
+        "solutions": "soluciones",
+        "about": "nosotros",
+        "portfolio": "portafolio",
+        "blog": "blog",
+        "careers": "carreras",
+        "contact": "contacto",
+        "services": "servicios",
+        "cta": "empezar ahora",
+        "celebration": {
+          "label": "{{years}} Años",
+          "title": "Celebrando {{years}} Años",
+          "message": "Hace {{years}} años construyendo el futuro de la ingeniería y seguridad digital con precisión."
+        }
+      },
+      "hero": {
+        "tag": "ingeniería digital de precisión",
+        "title": "invisibles cuando todo funciona. <highlight>presentes</highlight> cuando más importa",
+        "subtitle": "elevamos la resiliencia digital de su empresa a través de operaciones precisas y arquitecturas de seguridad invisibles.",
+        "explore": "explorar soluciones",
+        "know_ness": "conozca a ness"
+      },
+      "presence": {
+        "global": "presencia global",
+        "locations": {
+          "brazil": "brasil",
+          "portugal": "portugal",
+          "chile": "chile",
+          "peru": "perú",
+          "colombia": "colombia",
+          "usa": "estados unidos"
+        }
+      },
+      "solutions": {
+        "title": "nuestras soluciones",
+        "subtitle": "tecnología de élite para empresas que no aceptan fallos.",
+        "technical_view_toggle": "visión de ingeniería",
+        "active_resilience": "resiliencia activa",
+        "intelligence_flow": "flujo de inteligencia",
+        "secops": {
+          "title": "n.secops",
+          "fullTitle": "resiliencia operativa & continuidad",
+          "desc": "silenciando alarmas y bloqueando incidentes en la fuente con IA y abstracción total.",
+          "longDesc": "n.secops no es solo tecnología; es la supervivencia de su negocio. protegemos su reputación y su operación a través de un centro de operaciones de seguridad (SOC) de élite que monitorea, detecta y neutraliza las amenazas antes de que causen impacto.",
+          "cta": "solicitar diagnóstico de seguridad"
+        },
+        "infraops": {
+          "title": "n.infraops",
+          "fullTitle": "infraestructura inteligente & soporte global",
+          "desc": "arquitectura finops: nube invisible, elástica y con un uptime tallado en piedra.",
+          "longDesc": "n.infraops redefine el soporte técnico tradicional. combinamos la robustez del marco ITIL con la agilidad de un sistema de IA aplicada que actúa como copiloto de nuestras operaciones.",
+          "cta": "optimizar mi infraestructura"
+        },
+        "devarch": {
+          "title": "n.devarch",
+          "fullTitle": "arquitectura orientada al desarrollador & escala segura",
+          "desc": "el fin de la deuda técnica: ingeniería hexagonal enfocada en la longevidad sin interrupciones.",
+          "longDesc": "en n.devarch, transformamos el desarrollo en una ventaja competitiva. creamos nuestras propias soluciones y capacitamos a las empresas para alcanzar una escala extrema.",
+          "cta": "escalar mi desarrollo"
+        },
+        "autoops": {
+          "title": "n.autoops",
+          "fullTitle": "eficiencia operativa & automatización estratégica",
+          "desc": "agentes neuro-digitales y LLMs privados triturando flujos corporativos manuales.",
+          "longDesc": "n.autoops es el brazo de inteligencia de ness. que pone a su empresa por delante de la competencia. desarrollamos asistentes personalizados (copilotos) que se encargan de tareas repetitivas.",
+          "cta": "programar demo de gabi.os"
+        },
+        "cirt": {
+          "title": "n.cirt",
+          "fullTitle": "respuesta estratégica a incidentes críticos",
+          "desc": "respuesta estratégica a incidentes críticos e inteligencia avanzada de amenazas.",
+          "longDesc": "n.cirt es la élite de la respuesta a incidentes. cuando ocurre lo impensable, nuestro equipo entra en acción para contener, remediar y reconstruir con precisión quirúrgica.",
+          "cta": "hablar con el equipo de respuesta"
+        },
+        "strategic_solutions": "soluciones estratégicas",
+        "use_cases": "casos de uso",
+        "business_value": "valor del negocio",
+        "technical_arsenal": "arsenal técnico",
+        "onboarding_journey": "jornada de activación",
+        "cta_title": "su empresa en un nuevo nivel",
+        "cta_desc": "descubra cómo ness transforma su operación con seguridad de élite.",
+        "tech_engine": "motor de resiliencia",
+        "tech_desc": "los cimientos técnicos detrás de nuestra entrega de valor.",
+        "impact_portfolio": "portafolio de impacto"
+      },
+      "services": {
+        "title": "servicios profesionales",
+        "subtitle": "experiencia técnica y estratégica para acelerar su viaje de transformación y seguridad.",
+        "items": [
+          {
+            "title": "Consultoría en IA & Datos",
+            "desc": "Estrategia para la implementación de copilotos y orquestación del conocimiento corporativo.",
+            "tags": [
+              "RAG",
+              "LLM Ops",
+              "Data Strategy"
+            ]
+          },
+          {
+            "title": "Respuesta a Incidentes (IR)",
+            "desc": "Respuesta táctica a cibercrisis, contención de daños y recuperación de entornos.",
+            "tags": [
+              "War Room",
+              "Forensics",
+              "Crisis Mgmt"
+            ]
+          },
+          {
+            "title": "Ingeniería de Plataforma",
+            "desc": "Diseño de arquitecturas escalables y pipelines de entrega continua de alto rendimiento.",
+            "tags": [
+              "Cloud Native",
+              "DevOps",
+              "Scalability"
+            ]
+          },
+          {
+            "title": "Gobernanza & Cumplimiento",
+            "desc": "Automatización de GRC y adaptación dinámica a normas globales y regulaciones.",
+            "tags": [
+              "ISO 27001",
+              "GDPR",
+              "Risk Audit"
+            ]
+          }
+        ]
+      },
+      "verticals": {
+        "title": "unidades de negocio verticales",
+        "subtitle": "ecosistemas dedicados que potencian la inteligencia y la confianza digital.",
+        "forense": {
+          "desc": "líder en investigación digital y respuesta a incidentes complejos. combinamos tecnología propia y experiencia humana para descubrir lo invisible."
+        },
+        "trustness": {
+          "desc": "consultoría estratégica en gobernanza, riesgos y cumplimiento. creando bases sólidas para que su empresa crezca con seguridad y ética."
+        },
+        "cta": "explorar unidad"
+      },
+      "blog": {
+        "title": "conocimiento técnico",
+        "subtitle": "exploramos las fronteras de la tecnología, seguridad e inteligencia para mantener su operación resiliente e innovadora.",
+        "badge": "blog — ness. insights",
+        "empty_title": "no se encontraron insights.",
+        "empty_subtitle": "nuevo contenido pronto. manténgase atento.",
+        "read_article": "leer artículo completo",
+        "back": "blog",
+        "all_insights": "todos los insights",
+        "talk_expert": "hablar con experto"
+      },
+      "portfolio": {
+        "title": "casos de éxito",
+        "subtitle": "demostramos nuestra autoridad a través de resultados mensurables. cada proyecto es un compromiso con la excelencia técnica y la resiliencia del negocio.",
+        "cta_title": "¿quieres resultados como estos?",
+        "cta_desc": "estamos listos para aplicar nuestra ingeniería de precisión en su próximo gran desafío.",
+        "badge": "portafolio de impacto — ness. precision",
+        "empty": {
+          "title": "no se hallaron casos.",
+          "subtitle": "nuestro equipo prepara nuevos casos."
+        },
+        "confidentiality": "100% de confidencialidad",
+        "case": {
+          "back": "portafolio",
+          "all": "todos los casos",
+          "talk": "hablar con experto"
+        }
+      },
+      "careers": {
+        "title": "carreras",
+        "subtitle": "construye el futuro con nosotros",
+        "desc": "buscamos mentes brillantes e ingenieros de precisión para elevar el nivel de la tecnología y seguridad global.",
+        "apply_title": "postularse a la vacante",
+        "requirements": "requisitos",
+        "benefits": "beneficios ness.",
+        "form": {
+          "full_name": "nombre completo",
+          "linkedin": "linkedin / portafolio",
+          "attach_cv": "adjuntar cv (pdf)",
+          "drag_drop": "haga clic ou arrastre su currículum aquí",
+          "send_button": "enviar candidatura",
+          "success": "¡Candidatura enviada con éxito!",
+          "error": "Error al enviar la candidatura. Por favor, inténtelo de nuevo."
+        },
+        "benefits_list": {
+          "health": "plan de salud premium",
+          "bonus": "bono por desempeño",
+          "education": "ayuda para educación",
+          "setup": "equipo de alto rendimiento"
+        }
+      },
+      "about": {
+        "title": "nosotros",
+        "subtitle": "invisibles cuando todo funciona. <highlight>presentes</highlight> cuando más importa",
+        "desc": "somos una empresa de tecnología especializada en seguridad e ingeniería, que opera y evoluciona entornos de TI de extremo a extremo.",
+        "mission": "misión",
+        "mission_desc": "ser el socio de confianza que garantiza que su infraestructura funcione perfectamente, permitiéndole concentrarse en lo que realmente importa: su negocio.",
+        "vision": "visión",
+        "vision_desc": "ser la plataforma modular líder para la transformación digital confiable, reconocida globalmente por la excelencia técnica y la innovación constante.",
+        "values": "valores",
+        "history": "nuestra historia y legado",
+        "history_title": "nuestra historia y legado",
+        "timeline": {
+          "1991": "ness. se funda como externalización del área técnica de un gran grupo económico.",
+          "1992": "Inicio de infraestructura crítica, procesamiento de datos y BPO a gran escala.",
+          "2004": "Expansión global: infraestructura en grandes eventos por Europa, América, África y Asia.",
+          "2012": "Pioneros en servicios especializados de privacidad y seguridad digital avanzada.",
+          "2015": "Lanzamiento de división de software, enfocada en ingeniería de alto rendimiento.",
+          "2016": "Incubación de NESS Technology Healthcare (que después sería IONIC Health).",
+          "2017": "Incubación de Trustness como unidad de negocios estratégica para GRC.",
+          "2022": "Incubación de forense.io como unidad de negocios líder en investigación digital.",
+          "2024": "Establecida como una plataforma modular para una transformación digital segura.",
+          "2026": "Inicio de operaciones de IA y Agentes, consolidando a ness. como líder en inteligencia."
+        },
+        "values_desc": "Excelencia técnica innegociable, innovación constante, alianza verdadera y resultados medibles.",
+        "cred": {
+          "global": "Presencia global",
+          "security": "Seg. y Privacidad",
+          "ai": "IA y Agentes"
+        },
+        "years_label": "años de excelencia",
+        "metrics": {
+          "legacy": "años en operación",
+          "countries": "países servidos",
+          "projects": "proyectos globales",
+          "uptime": "sla / uptime"
+        },
+        "history_sub": "años construyendo la base tecnológica de grandes corporaciones y eventos globales."
+      },
+      "contact": {
+        "title": "construyamos el futuro juntos",
+        "subtitle": "contacte a nuestro equipo de expertos para transformar su operación digital.",
+        "form": {
+          "name": "nombre",
+          "name_placeholder": "su nombre o dejar en blanco",
+          "company": "empresa",
+          "company_placeholder": "su empresa",
+          "email": "correo corporativo",
+          "email_placeholder": "email o teléfono de retorno",
+          "subject": "asunto",
+          "subject_select": "seleccione un asunto",
+          "message": "mensaje",
+          "message_placeholder": "¿cómo podemos ayudar?",
+          "send": "enviar mensaje",
+          "success": "¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.",
+          "error": "Error al enviar el mensaje. Por favor, inténtelo de nuevo.",
+          "name_optional": "nombre (opcional)",
+          "contact_optional": "contacto (opcional)"
+        },
+        "whistleblower": {
+          "title": "canal de denuncias",
+          "desc": "para informar conductas poco éticas o violaciones de cumplimiento de forma totalmente anónima y segura.",
+          "cta": "acceder al canal ético",
+          "occurrence_type": "tipo de ocurrencia",
+          "category_select": "seleccione una categoría",
+          "description": "descripción de los hechos",
+          "last_update": "última actualización: 14 de abril de 2024. para dudas adicionales, contacte a nuestro DPO en dpo@ness.com.br",
+          "categories": {
+            "ethics": "violación ética",
+            "harassment": "acoso / discriminación",
+            "fraud": "fraude / corrupción",
+            "security": "fuga de datos / seguridad",
+            "others": "otros"
+          },
+          "form": {
+            "name_placeholder": "su nombre o déjelo en blanco",
+            "contact_placeholder": "email o teléfono para respuesta",
+            "message_placeholder": "detalle lo ocurrido con la mayor cantidad de información posible (fechas, lugares, involucrados)...",
+            "send_button": "enviar denuncia segura",
+            "error": "Error al enviar la denuncia. Por favor, inténtelo de nuevo."
+          },
+          "desc_placeholder": "detalle la ocurrencia con tanta información como sea posible..."
+        },
+        "badge": "get in touch — ness. precision",
+        "info": {
+          "email": "email",
+          "phone": "teléfono",
+          "office": "oficina"
+        }
+      },
+      "cta": {
+        "title": "¿listo para el siguiente nivel?",
+        "subtitle": "hable con nuestros expertos y descubra cómo ness puede elevar el nivel de inteligencia, seguridad y eficiencia de su operación.",
+        "button": "programar consultoría",
+        "support": "soporte especializado inmediato."
+      },
+      "chatbot": {
+        "welcome": "¡hola! soy Gabi, la inteligencia de ness. ¿cómo puedo ayudar a su operation hoy?",
+        "status": "ia da ness.",
+        "error": "lo siento, tuve un problema al conectarme con el backoffice. por favor, inténtelo de nuevo en unos momentos.",
+        "placeholder": "escriba su mensaje...",
+        "quick_specialist": "Hablar con Especialista",
+        "quick_incident": "Incidente (n.cirt)",
+        "quick_dpo": "Defensoría DPO",
+        "preview": {
+          "msg1_user": "Gabi, necesito un resumen de los contratos que vencen este mes.",
+          "msg1_bot": "Por supuesto. He identificado 12 contratos que vencen en abril. Los 3 principales son: Cliente Alpha (día 15), Tech Solutions (día 22) y Global Corp (día 28). ¿Desea que prepare los términos de renovación?",
+          "msg2_user": "Sí, por favor. Use el modelo estándar de 2024.",
+          "msg2_bot": "Entendido. Procesando borradores... ¡Listo! Los 3 borradores han sido generados y enviados a su carpeta de borradores en Teams. ¿Algo más?"
+        }
+      },
+      "common": {
+        "see_all": "ver todo",
+        "view_all": "ver todo",
+        "start_now": "empezar ahora",
+        "learn_more": "saber más",
+        "contact_expert": "hablar con un experto",
+        "loading": "cargando...",
+        "result": "resultado",
+        "date": "fecha",
+        "tag": "etiqueta",
+        "back": "volver",
+        "all": "todos",
+        "privacy_consent": "He leído e acepto la política de privacidad y los términos de uso."
+      },
+      "compliance": {
+        "eyebrow": "compliance — ness. precision",
+        "terms": {
+          "title": "términos de uso",
+          "desc": "reglas y pautas para el uso de nuestras plataformas y servicios.",
+          "sec1": {
+            "h": "1. aceptación",
+            "p": "al acceder a nuestras soluciones, usted acepta cumplir con estos términos y leyes aplicables."
+          },
+          "sec2": {
+            "h": "2. propiedad intelectual",
+            "p": "todo  el contenido y software están protegidos y no pueden reproducirse sin autorización."
+          },
+          "sec3": {
+            "h": "3. responsabilidad",
+            "p": "ness. se compromete con la máxima seguridad, pero no es responsable del mal uso por parte de los usuarios."
+          }
+        },
+        "privacy": {
+          "title": "política de privacidad",
+          "desc": "cómo tratamos sus datos con seguridad.",
+          "sec1": {
+            "h": "1. recopilación de datos",
+            "p": "recopilamos la info necesaria para dar servicios, contactos y registros de seguridad."
+          },
+          "sec2": {
+            "h": "2. propósito",
+            "p": "sus datos solo se usan para contratos, soporte, mejoras y cumplimiento legal (LGPD/GDPR)."
+          },
+          "sec3": {
+            "h": "3. seguridad",
+            "p": "implementamos medidas técnicas de última generación, como cifrado, para proteger datos."
+          },
+          "sec4": {
+            "h": "4. sus derechos",
+            "p": "tiene derecho a acceder, corregir o eliminar datos en cualquier momento a través de nuestro canal."
+          }
+        },
+        "ethics": {
+          "title": "compliance y ética",
+          "desc": "nuestro compromiso con la integridad global.",
+          "sec1": {
+            "h": "1. código de conducta",
+            "p": "operamos bajo los más altos estándares éticos, luchando contra la corrupción y discriminación."
+          },
+          "sec2": {
+            "h": "2. canal de denuncias",
+            "p": "mantenemos un canal anónimo y seguro para informar violaciones de leyes o códigos de conducta."
+          },
+          "sec3": {
+            "h": "3. certificaciones",
+            "p": "nuestras operaciones están auditadas por frameworks globales como ISO 27001 y SOC2."
+          }
+        }
+      },
+      "footer": {
+        "company": "empresa",
+        "legal": "legal",
+        "terms": "términos de uso",
+        "privacy": "privacidad",
+        "compliance": "cumplimiento y ética",
+        "newsletter": "información sobre seguridad digital.",
+        "rights": "todos los derechos reservados.",
+        "updates": "actualizaciones",
+        "status": "system live status: optimal",
+        "ecosystem": "ecosistema",
+        "email_placeholder": "su correo",
+        "locations": [
+          "brasil",
+          "portugal",
+          "chile",
+          "perú",
+          "colombia",
+          "estados unidos"
+        ]
+      },
+      "a11y": {
+        "close": "cerrar",
+        "subscribe": "suscribir",
+        "send": "enviar"
+      },
+      "forense": {
+        "title": "forense.io",
+        "tabTitle": "análisis forense digital & respuesta a incidentes",
+        "hero": {
+          "tag": "cadena de custodia",
+          "tag2": "preservada",
+          "subtitle": "especialización en auditoría forense digital bajo la norma ISO 27037/27042 — peritaje judicial, investigación corporativa y respuesta a incidentes.",
+          "cta1": "solicitar peritaje",
+          "cta2": "ver recursos forenses"
+        },
+        "why": {
+          "title": "por qué importa",
+          "desc": "La evidencia digital es volátil y puede destruirse en minutos. El análisis forense es vital para el cumplimiento, juicios o investigaciones corporativas. forense.io sigue marcos internacionales meticulosamente para preservar la evidencia legal.",
+          "items": {
+            "ransomware": {
+              "title": "ransomware",
+              "subtitle": "Determinar punto de entrada y alcance de brecha",
+              "desc": "Análisis forense de RAM y clonación de disco (bit a bit) para mapear el alcance."
+            },
+            "datalen": {
+              "title": "fuga de datos",
+              "subtitle": "Rastrear extracción de datos",
+              "desc": "Análisis de accesos a BD, red y e-mails para identificar la fuente de exfiltración material."
+            },
+            "judicial": {
+              "title": "proceso judicial",
+              "subtitle": "Peritaje de dispositivos confiscados (laptops, smartphones)",
+              "desc": "Apoyo a investigadores generando dictámenes técnicos verificados para cortes legales."
+            },
+            "corp": {
+              "title": "investigación corporativa",
+              "subtitle": "Fraude interno",
+              "desc": "Trazabilidad completa con privacidad a través de revisiones e-mail/endpoints."
+            }
+          }
+        },
+        "resources": {
+          "title": "recursos principales",
+          "desc": "peritaje forense completo bajo estándares internacionales",
+          "items": {
+            "disk": {
+              "title": "Análisis de Discos",
+              "desc": "Clonación bit a bit, recuperación de archivos, sistemas (NTFS, ext4, APFS)."
+            },
+            "ram": {
+              "title": "Forense de Memoria (RAM)",
+              "desc": "Análisis de procesos, red, malware residente en memoria y credenciales."
+            },
+            "mobile": {
+              "title": "Mobile Forensics",
+              "desc": "Extracción lógica/física de iOS/Android, análisis SMS, WhatsApp, Telegram."
+            },
+            "network": {
+              "title": "Network Forensics",
+              "desc": "Análisis PCAP, logs de cortafuegos, IDS, reconstrucción web HTTP."
+            },
+            "timeline": {
+              "title": "Timeline Analysis",
+              "desc": "Reconstrucción cronológica de sistemas de archivo y registros de la máquina."
+            },
+            "custodian": {
+              "title": "Cadena de Custodia",
+              "desc": "Documentación validada de la custodia legal desde recolección (ISO 27037)."
+            },
+            "report": {
+              "title": "Dictámenes Periciales",
+              "desc": "Laudos estructurados aptos para la defensa legal."
+            },
+            "testimony": {
+              "title": "Testimonio Especializado",
+              "desc": "Apoyo y exposición oral validada por expertos del sector."
+            },
+            "counter": {
+              "title": "Contraprueba",
+              "desc": "Reevaluación meticulosa para hallar falencias en análisis ajenos."
+            },
+            "preservation": {
+              "title": "Preservación Legal",
+              "desc": "Criptografía y aseguramiento pericial en toma de datos física/remota."
+            }
+          }
+        },
+        "metrics": {
+          "title": "métricas forenses",
+          "checks": [
+            "Casos verificados mundialmente",
+            "Preservación certificada ISO",
+            "Meticuloso reporte defensible judicialmente",
+            "Tiempos de acción de élite"
+          ],
+          "stats": {
+            "pericias": {
+              "label": "peritajes",
+              "value": "450+"
+            },
+            "laudos": {
+              "label": "aceptos judicialmente",
+              "value": "100%"
+            },
+            "iso": {
+              "label": "preservación",
+              "value": "ISO"
+            },
+            "assitencia": {
+              "label": "asistencia",
+              "value": "24/7"
+            }
+          }
+        },
+        "process": {
+          "title": "proceso pericial",
+          "desc": "Atención técnica especializada completada y reporte en 2 a 4 semanas.",
+          "steps": {
+            "s1": {
+              "step": "01",
+              "title": "Triaje",
+              "desc": "Visión y recolección analítica."
+            },
+            "s2": {
+              "step": "02",
+              "title": "Recolecta",
+              "desc": "Asegurar integridad de datos forense."
+            },
+            "s3": {
+              "step": "03",
+              "title": "Análisis",
+              "desc": "Rastrear bajo normativas NIST, ISO."
+            },
+            "s4": {
+              "step": "04",
+              "title": "Laudo",
+              "desc": "Firma del informe de pruebas digitales."
+            },
+            "s5": {
+              "step": "05",
+              "title": "Defensa",
+              "desc": "Soporte de evidencias final en mesa corporativa/legal."
+            }
+          }
+        },
+        "cta": {
+          "title": "¿necesita investigación pericial?",
+          "desc": "solicite análisis forense especializado o apoyo en incidentes corporativos y penales.",
+          "btn": "hablar con perito"
+        }
+      },
+      "trustness": {
+        "title": "trustness",
+        "tabTitle": "auditoría y cumplimiento",
+        "hero": {
+          "tag": "auditoría y cumplimiento",
+          "subtitle": "auditorías independientes, assessments de seguridad y consultoría en conformidad (ISO 27001, GDPR, SOC 2) — informes ejecutivos.",
+          "cta1": "solicitar assessment",
+          "cta2": "hablar con especialista"
+        },
+        "why": {
+          "title": "por qué importa",
+          "desc": "¿Busca confianza demostrable? ISO y acreditaciones reguladoras son exigidas para cierres empresariales B2B y gubernamentales. trustness. audita independientemente el estado de su plataforma frente a marcos top globales.",
+          "items": {
+            "sgsi": {
+              "title": "marco ISO 27001",
+              "subtitle": "SGSI estructurado en despliegue",
+              "desc": "Diseñamos un mapa SGSI global de controles y roles para auditorías de éxito."
+            },
+            "lgpd": {
+              "title": "adequación LGPD/GDPR",
+              "subtitle": "Cumplimiento normativo transfronterizo",
+              "desc": "Brechas resueltas con diseño de privacidad: PIA, ROPA y flujos protegidos."
+            },
+            "exec": {
+              "title": "gobernanza ejecutiva",
+              "subtitle": "Roadmap de seguridad corporativa para C-Levels",
+              "desc": "Informes estratégicos sin tecnicismos en la comprensión de los presupuestos y la rentabilidad (ROI)."
+            },
+            "gap": {
+              "title": "evaluación y remediación",
+              "subtitle": "Soporte tras hallazgos externos",
+              "desc": "Consultoría continua para revertir no-conformidades y sellarlas a futuro."
+            },
+            "dpo": {
+              "title": "DPOaaS",
+              "subtitle": "Gestión continua unificada de privacidad",
+              "desc": "Soporte Data Protection Officer bajo demanda avalado corporativamente."
+            }
+          }
+        },
+        "resources": {
+          "title": "recursos principales",
+          "desc": "plataforma auditora para su madurez estructural y tecnológica",
+          "items": {
+            "ass": {
+              "title": "Asesorías",
+              "desc": "Maturity assessments y brechas comparadas base ISO/NIST."
+            },
+            "audit": {
+              "title": "Auditorías de Conformidad",
+              "desc": "Auditoría formal como contraparte independiente."
+            },
+            "iso": {
+              "title": "ISO 27001 Readiness",
+              "desc": "Preparación proactiva y estructuración SGSI de primer nivel."
+            },
+            "pen": {
+              "title": "Pentesting Validado",
+              "desc": "Evaluación web, red perimetral, ingeniería y caja negra (Blackbox)."
+            },
+            "vuln": {
+              "title": "Gestión de Vulnerabilidades",
+              "desc": "Detección recurrente con CVSS enfocado en impacto comercial crítico."
+            },
+            "gov": {
+              "title": "Risk & Governance",
+              "desc": "Creación de comités operacionales de Ciberseguridad."
+            },
+            "due": {
+              "title": "Due Diligence Externa",
+              "desc": "Evaluación de cadena de suministros y sus normativas."
+            },
+            "train": {
+              "title": "Entrenamiento Interno",
+              "desc": "Educación corporativa anti-phishing con test en vivo."
+            },
+            "reg": {
+              "title": "Asistencia Reguladora Regional",
+              "desc": "Atender normativos locales BACEN, finanzas, entre otros."
+            }
+          }
+        },
+        "metrics": {
+          "title": "métricas de excelencia",
+          "checks": [
+            "Track record internacional validado",
+            "Roadmaps priorizados según criticidad de negocio",
+            "Mapeo con reportes visuales al directorio",
+            "Garantía de confianza entre proveedores globales"
+          ],
+          "stats": {
+            "fw": {
+              "label": "frameworks",
+              "value": "15+"
+            },
+            "cert": {
+              "label": "certificaciones",
+              "value": "100%"
+            },
+            "comp": {
+              "label": "compliance score",
+              "value": "A+"
+            },
+            "stake": {
+              "label": "stakeholders",
+              "value": "800+"
+            }
+          }
+        },
+        "process": {
+          "title": "proceso de auditoría",
+          "desc": "Mapeo a validación en tan solo 4-8 semanas.",
+          "steps": {
+            "s1": {
+              "step": "01",
+              "title": "Visión Inicial",
+              "desc": "Cronograma y metas integrales."
+            },
+            "s2": {
+              "step": "02",
+              "title": "Evidencias",
+              "desc": "Investigación, documentaciones e IA validada."
+            },
+            "s3": {
+              "step": "03",
+              "title": "Brechas de Seguridad",
+              "desc": "Detección de irregularidades de control."
+            },
+            "s4": {
+              "step": "04",
+              "title": "Recomendaciones Técnicas",
+              "desc": "Cierre detallado propuesto operativamente."
+            },
+            "s5": {
+              "step": "05",
+              "title": "Certificación Asistida",
+              "desc": "Acompañamiento a logro incesante."
+            }
+          }
+        },
+        "cta": {
+          "title": "¿necesita una re-auditoría o certificación?",
+          "desc": "hable con nuestros CISO y auditores especializados en certificaciones tecnológicas de élite.",
+          "btn1": "solicitar assessment",
+          "btn2": "hablar con consultor"
+        }
+      },
+      "celebration": {
+        "continue_btn": "continuar navegando"
+      },
+      "notfound": {
+        "title": "página no encontrada",
+        "desc": "la ruta que busca no existe o fue eliminada.",
+        "cta": "volver al inicio"
+      }
+    }

@@ -3,15 +3,32 @@ import { drizzle } from 'drizzle-orm/d1'
 import { eq, desc, and, sql, count } from 'drizzle-orm'
 import { dsar_requests, whistleblower_cases, policies, consent_logs, audit_logs } from '../db/schema'
 
+type Variables = {
+  tenantId?: string;
+  session?: any;
+}
+
 type Env = {
   Bindings: {
     DB: D1Database
     MEDIA: R2Bucket
     RESEND_API_KEY: string
+    BETTER_AUTH_SECRET: string
+    WHISTLEBLOWER_SECRET: string
   }
+  Variables: Variables
 }
 
 const app = new Hono<Env>()
+
+// Middleware: requer role admin para todas as rotas administrativas do modulo de conformidade
+app.use('/admin/*', async (c, next) => {
+  const session = c.get('session')
+  if (session?.user?.role !== 'admin') {
+    return c.json({ error: 'Forbidden' }, 403)
+  }
+  await next()
+})
 
 // ── DSAR (Data Subject Access Requests) ─────────────────────────
 
@@ -73,9 +90,16 @@ app.post('/dsar', async (c) => {
 // GET /api/admin/dsar — List all requests
 app.get('/admin/dsar', async (c) => {
   const db = drizzle(c.env.DB)
-  const tenantId = c.req.query('tenant_id') || 'ness'
+  const session = c.get('session')
+  const requestedTenant = c.req.query('tenant_id') || 'ness'
+  
+  // Validate tenant_id against session
+  if (session?.user?.role !== 'superadmin' && session?.user?.tenantId && session.user.tenantId !== requestedTenant) {
+    return c.json({ error: 'Tenant access denied' }, 403)
+  }
+
   const requests = await db.select().from(dsar_requests)
-    .where(eq(dsar_requests.tenant_id, tenantId))
+    .where(eq(dsar_requests.tenant_id, requestedTenant))
     .orderBy(desc(dsar_requests.created_at))
   return c.json(requests)
 })
@@ -151,20 +175,36 @@ app.post('/whistleblower', async (c) => {
   const id = crypto.randomUUID()
   const caseCode = generateCaseCode()
 
-  // Encrypt payload using AES-GCM
+  // Encrypt payload using AES-GCM with key derived via HKDF
   const encoder = new TextEncoder()
   const iv = crypto.getRandomValues(new Uint8Array(12))
-  const keyMaterial = await crypto.subtle.importKey(
+
+  // Master key material from WHISTLEBLOWER_SECRET
+  const masterKey = await crypto.subtle.importKey(
     'raw',
-    encoder.encode((body.tenant_id || 'ness').padEnd(32, '0').substring(0, 32)),
-    { name: 'AES-GCM' },
+    encoder.encode(c.env.WHISTLEBLOWER_SECRET || 'fallback-local-dev-secret-key-12345'),
+    'HKDF',
+    false,
+    ['deriveKey']
+  )
+
+  // Derive AES-GCM 256-bit key using HKDF
+  const derivedKey = await crypto.subtle.deriveKey(
+    {
+      name: 'HKDF',
+      hash: 'SHA-256',
+      salt: encoder.encode(caseCode),
+      info: encoder.encode(body.tenant_id || 'ness'),
+    },
+    masterKey,
+    { name: 'AES-GCM', length: 256 },
     false,
     ['encrypt']
   )
 
   const encrypted = await crypto.subtle.encrypt(
     { name: 'AES-GCM', iv },
-    keyMaterial,
+    derivedKey,
     encoder.encode(JSON.stringify({
       description: body.description,
       category: body.category,

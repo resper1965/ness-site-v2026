@@ -58,59 +58,60 @@ export function OrgSwitcher({ userEmail, isSuperAdmin }: { userEmail: string; is
   return (
     <div className="org-switcher" ref={ref}>
       <button
-        className={`org-switcher-btn${open ? " open" : ""}`}
+        className={`w-full flex h-11 items-center justify-between gap-3 px-4 rounded-xl border transition-all duration-300 group ${open ? 'bg-white/10 border-white/20 shadow-xl' : 'bg-black/20 border-white/5 hover:bg-white/5 hover:border-white/10'}`}
         onClick={() => setOpen(!open)}
       >
-        <div>
-          <div style={{ lineHeight: 1.2 }}>{orgName}</div>
-          {orgSlug && <div className="org-switcher-slug">{orgSlug}</div>}
+        <div className="flex flex-col items-start overflow-hidden">
+          <div className="text-[13px] font-bold text-white tracking-tight truncate leading-tight">{orgName}</div>
+          {orgSlug && <div className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest truncate">{orgSlug}</div>}
         </div>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={`shrink-0 text-zinc-500 transition-transform duration-300 ${open ? 'rotate-180 text-white' : 'group-hover:text-zinc-300'}`}>
           <polyline points="6 9 12 15 18 9"/>
         </svg>
       </button>
 
       {open && (
-        <div className="org-dropdown">
+        <div className="absolute top-[calc(100%+12px)] left-0 right-0 z-100 rounded-2xl border border-white/10 bg-black/80 backdrop-blur-3xl shadow-[0_30px_60px_rgba(0,0,0,0.5)] overflow-hidden radial-gradient-glass animate-in fade-in slide-in-from-top-2 duration-200 p-1.5 space-y-1">
           {orgs?.map((o: any) => (
             <button
               key={o.id}
-              className={`org-dropdown-item${activeOrg?.id === o.id ? " active" : ""}`}
+              className={`w-full flex h-11 items-center justify-between px-4 rounded-xl text-[11px] font-bold uppercase tracking-widest transition-all ${activeOrg?.id === o.id ? "bg-brand-primary/10 text-brand-primary border border-brand-primary/20 shadow-lg" : "text-zinc-400 hover:bg-white/5 hover:text-white"}`}
               onClick={() => handleSwitch(o.id)}
             >
-              <span>{o.name}</span>
+              <span className="truncate">{o.name}</span>
               {activeOrg?.id === o.id && (
-                <svg className="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg className="shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="20 6 9 17 4 12"/>
                 </svg>
               )}
             </button>
           ))}
-          <div className="org-dropdown-divider" />
+          <div className="h-px bg-white/10 mx-2" />
 
           {isSuperAdmin && (
             creating ? (
-              <div className="org-create-inline">
+              <div className="p-3 space-y-3 bg-white/2 rounded-xl border border-white/5 mx-1">
                 <input
                   autoFocus
                   placeholder="Nome da organização"
                   value={newName}
+                  className="w-full h-11 px-4 bg-black/40 border border-white/10 rounded-xl text-[11px] font-bold uppercase tracking-widest text-white outline-none focus:border-brand-primary/50 transition-all"
                   aria-label="Nome da organização"
                   onChange={(e) => setNewName(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleCreate()}
                 />
-                <div className="org-create-actions">
-                  <button className="btn btn-sm btn-ghost" onClick={() => { setCreating(false); setNewName(""); }}>
+                <div className="flex gap-2">
+                  <button className="flex-1 h-11 rounded-xl text-[10px] font-bold uppercase tracking-widest text-zinc-500 hover:bg-white/5 transition-all" onClick={() => { setCreating(false); setNewName(""); }}>
                     Cancelar
                   </button>
-                  <button className="btn btn-sm btn-primary" onClick={handleCreate} disabled={loading || !newName.trim()}>
+                  <button className="flex-1 h-11 rounded-xl bg-brand-primary text-white text-[10px] font-bold uppercase tracking-widest shadow-lg hover:brightness-110 transition-all disabled:opacity-50" onClick={handleCreate} disabled={loading || !newName.trim()}>
                     {loading ? "..." : "Criar"}
                   </button>
                 </div>
               </div>
             ) : (
-              <button className="org-dropdown-create" onClick={() => setCreating(true)}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <button className="w-full flex h-11 items-center gap-3 px-4 rounded-xl text-[11px] font-bold uppercase tracking-widest text-brand-primary hover:bg-brand-primary/10 transition-all" onClick={() => setCreating(true)}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
                   <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
                 </svg>
                 Nova Organização

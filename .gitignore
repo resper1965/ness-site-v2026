@@ -6,3 +6,6 @@ coverage/
 *.log
 .env*
 !.env.example
+canal-saas/
+playwright-report/
+test-results/

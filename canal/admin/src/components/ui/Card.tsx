@@ -4,7 +4,7 @@ import type { ReactNode, HTMLAttributes } from "react";
 export function Card({ children, className = "", ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`rounded-xl border border-border/60 bg-card text-card-foreground flex flex-col shadow-sm hover:border-border/80 transition-colors ${className}`}
+      className={`rounded-2xl glass-panel text-card-foreground flex flex-col transition-all duration-300 hover:border-brand-primary/20 ${className}`}
       {...props}
     >
       {children}
@@ -16,7 +16,7 @@ export function Card({ children, className = "", ...props }: HTMLAttributes<HTML
 export function CardHeader({ children, className = "", ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`bg-muted/30 px-5 py-3 border-b border-border/40 flex items-center justify-between ${className}`}
+      className={`bg-white/3 px-6 py-4 border-b border-white/5 flex items-center justify-between rounded-t-2xl ${className}`}
       {...props}
     >
       {children}
@@ -46,7 +46,7 @@ export function CardAction({ children, className = "", ...props }: HTMLAttribute
 /* ── CardContent ── */
 export function CardContent({ children, className = "", ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={`px-5 py-4 ${className}`} {...props}>
+    <div className={`px-6 py-5 ${className}`} {...props}>
       {children}
     </div>
   );
@@ -55,7 +55,7 @@ export function CardContent({ children, className = "", ...props }: HTMLAttribut
 /* ── CardFooter ── */
 export function CardFooter({ children, className = "", ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={`px-5 py-3 border-t border-border/40 flex items-center ${className}`} {...props}>
+    <div className={`px-6 py-4 border-t border-white/5 flex items-center ${className}`} {...props}>
       {children}
     </div>
   );

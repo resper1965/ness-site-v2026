@@ -129,201 +129,213 @@ export default function BrandbookHub() {
   const BRANDS = brandData?.complete_book ? Object.keys(brandData.complete_book) : ["ness"];
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+    <div className="max-w-[1750px] w-full px-10 md:px-12 py-10 space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-1000 overflow-hidden flex flex-col">
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
 
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border/50 pb-6">
-        <div>
-           <h2 className="text-lg font-semibold tracking-tight text-foreground flex items-center gap-3">
-             <svg className="text-muted-foreground" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M10 12l2 2 4-4"/></svg>
-             Identidade <span className="text-muted-foreground font-light">::</span> Brandbook
-          </h2>
-          <p className="text-sm font-medium text-muted-foreground tracking-wide mt-1 uppercase">
-             Acesso Unificado aos Ativos de Marca e Assinaturas
-          </p>
-        </div>
+      {/* ── System Segmented Controls ── */}
+      <div className="flex p-1.5 bg-black/40 backdrop-blur-3xl rounded-[24px] border border-white/5 radial-gradient-glass w-fit h-14 shrink-0 shadow-2xl relative overflow-hidden group">
+        <div className="absolute -inset-10 bg-brand-primary/5 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+        {[
+          { id: 'generator', label: 'Identity Render Engine', icon: <><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></> },
+          { id: 'assets', label: 'Ecosystem Assets Hub', icon: <><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></> }
+        ].map(item => (
+          <button
+            key={item.id}
+            onClick={() => setActiveTab(item.id)}
+            className={`flex items-center gap-4 px-8 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all italic z-10 ${
+              activeTab === item.id 
+                ? 'bg-brand-primary text-white shadow-2xl scale-[1.05]' 
+                : 'text-zinc-600 hover:text-zinc-300'
+            }`}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">{item.icon}</svg>
+            <span className="hidden md:block">{item.label}</span>
+          </button>
+        ))}
       </div>
 
-      <TabGroup 
-        active={activeTab} 
-        onChange={setActiveTab} 
-        tabs={[
-          { id: "generator", label: "Gerador de Assinatura" },
-          { id: "assets", label: "Brand Assets" }
-        ]} 
-      />
+      <div className="flex-1 min-h-0">
+        {activeTab === 'generator' ? (
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-10 items-start overflow-y-auto custom-scrollbar pr-2 h-full">
+            {/* ── Configuration Node ── */}
+            <div className="xl:col-span-4 bg-black/40 backdrop-blur-3xl border border-white/5 rounded-[48px] radial-gradient-glass shadow-2xl p-10 space-y-10">
+               <div className="space-y-2">
+                 <h2 className="text-3xl font-black text-white italic tracking-tighter uppercase leading-none">Identity Proxy</h2>
+                 <span className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.4em] italic leading-none">Ness Security Identity Protocol</span>
+               </div>
 
-      <TabPanel id="generator" active={activeTab}>
-        <div className="grid grid-cols-1 xl:grid-cols-[1.2fr_1.8fr] gap-6 items-start mt-6">
-          {/* Form Node */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Seus Detalhes</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-5">
-              <div className="grid gap-6">
-                {([
-                  ["Nome Completo", "name", "Ex: Ana Souza", "text"],
-                  ["Cargo", "role", "Ex: CPO", "text"],
-                  ["E-mail corporativo", "email", "nome@ness.com.br", "email"],
-                  ["Celular / Ramal", "phone", "+55 11 99999-9999", "text"],
-                  ["URI do LinkedIn", "linkedin", "https://linkedin.com/…", "text"],
-                ] as [string, string, string, string][]).map(([label, key, placeholder, type]) => (
-                  <div key={key} className="space-y-2.5">
-                    <label className="text-xs font-bold tracking-wide uppercase text-muted-foreground">{label}</label>
-                    <input 
-                      type={type} 
-                      className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-4 py-2 text-sm font-medium text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary"
-                      value={form[key as keyof typeof form] as string}
-                      placeholder={placeholder}
-                      onChange={e => setForm({ ...form, [key]: e.target.value })} 
-                    />
-                  </div>
-                ))}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2.5">
-                    <label className="text-xs font-bold tracking-wide uppercase text-muted-foreground">Entidade</label>
-                    <select 
-                      className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-3 py-2 text-xs font-semibold uppercase text-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                      value={form.brand}
-                      onChange={e => setForm({ ...form, brand: e.target.value })}
-                    >
-                      {BRANDS.map(b => <option key={b} value={b}>{b}</option>)}
-                    </select>
-                  </div>
-                  <div className="space-y-2.5">
-                    <label className="text-xs font-bold tracking-wide uppercase text-muted-foreground">Vínculo O.G.</label>
-                    <select 
-                      className="flex h-11 w-full rounded-lg border border-input bg-background/50 px-3 py-2 text-xs font-semibold uppercase text-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                      value={form.department}
-                      onChange={e => setForm({ ...form, department: e.target.value })}
-                    >
-                      {DEPARTMENTS.map(d => <option key={d} value={d}>{d}</option>)}
-                    </select>
-                  </div>
-                </div>
-                
-                <div className="mt-2 pt-4 border-t border-border/50">
-                  <label className="flex items-center gap-3 cursor-pointer">
-                    <div className="relative flex items-center">
-                      <input 
-                        type="checkbox" 
-                        checked={form.disclaimer}
-                        onChange={e => setForm({ ...form, disclaimer: e.target.checked })}
-                        className="w-4 h-4 rounded border-input bg-background focus:ring-primary text-primary shadow-sm" 
+               <div className="space-y-8">
+                  {([
+                    ["Portador Core", "name", "Ex: Thomas Anderson", "text"],
+                    ["Rank / Designação", "role", "Ex: Security Specialist", "text"],
+                    ["Communication Pipeline", "email", "ident@ness.com.br", "email"],
+                    ["Terminal Mobile", "phone", "+55 11 00000-0000", "text"],
+                    ["Ness LinkedIn Hub", "linkedin", "https://linkedin.com/…", "text"],
+                  ] as [string, string, string, string][]).map(([label, key, placeholder, type]) => (
+                    <div key={key} className="space-y-3">
+                       <label className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.3em] px-1 italic">{label}</label>
+                       <input 
+                        type={type} 
+                        value={form[key as keyof typeof form] as string}
+                        placeholder={placeholder}
+                        onChange={e => setForm({ ...form, [key]: e.target.value })}
+                        className="h-12 w-full bg-black/40 border border-white/5 rounded-2xl px-5 text-sm font-black text-white italic placeholder:text-zinc-800 focus:ring-2 focus:ring-brand-primary/40 outline-none transition-all tracking-tighter uppercase"
                       />
                     </div>
-                    <span className="text-xs font-bold tracking-wide uppercase text-muted-foreground">Afixar Disclaimer LGPD</span>
-                  </label>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                  ))}
 
-          {/* Preview Engine Node */}
-          <div className="flex flex-col gap-6 sticky top-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Render Engine</CardTitle>
-                <CardAction>
-                  <button 
-                    onClick={copyHTML} 
-                    className={`inline-flex px-3 py-1.5 items-center justify-center rounded border ${copied ? "bg-emerald-500 border-emerald-600 text-white" : "bg-card border-border text-foreground hover:bg-muted/50"} text-xs font-semibold transition-colors mr-2`}
-                  >
-                    {copied ? "Copiado!" : "Clonar HTML"}
-                  </button>
-                  <button 
-                    onClick={handleDownload}
-                    disabled={downloading}
-                    className="inline-flex px-4 py-1.5 rounded bg-primary text-primary-foreground font-bold text-xs uppercase tracking-wider hover:bg-primary/90 transition-colors disabled:opacity-50"
-                  >
-                    {downloading ? "Gerando..." : "Download .html"}
-                  </button>
-                </CardAction>
-              </CardHeader>
-              
-              <div className="p-8 md:p-12 bg-slate-100 flex items-center justify-center min-h-[300px] overflow-auto min-w-0 max-w-full custom-scrollbar">
-                  <div className="inline-block bg-white p-6 rounded border shadow-sm" style={{ boxShadow: '0 2px 20px rgba(0,0,0,0.05)' }}>
-                    <SignaturePreview form={form} />
+                  <div className="grid grid-cols-2 gap-8">
+                    <div className="space-y-3">
+                       <label className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.3em] px-1 italic">Entidade Node</label>
+                       <div className="relative group/sel">
+                          <select 
+                            value={form.brand}
+                            onChange={e => setForm({ ...form, brand: e.target.value })}
+                            className="h-12 w-full bg-black/40 border border-white/5 rounded-2xl px-5 text-[10px] font-black uppercase tracking-[0.2em] italic text-zinc-600 focus:text-white focus:ring-2 focus:ring-brand-primary/40 outline-none transition-all cursor-pointer appearance-none shadow-2xl"
+                          >
+                            {BRANDS.map(b => <option key={b} value={b}>{b}</option>)}
+                          </select>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" className="absolute right-5 top-1/2 -translate-y-1/2 text-zinc-800 pointer-events-none group-hover/sel:text-brand-primary transition-colors"><path d="m6 9 6 6 6-6"/></svg>
+                       </div>
+                    </div>
+                    <div className="space-y-3">
+                       <label className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.3em] px-1 italic">Unidade O.G.</label>
+                       <div className="relative group/sel">
+                          <select 
+                            value={form.department}
+                            onChange={e => setForm({ ...form, department: e.target.value })}
+                            className="h-12 w-full bg-black/40 border border-white/5 rounded-2xl px-5 text-[10px] font-black uppercase tracking-[0.2em] italic text-zinc-600 focus:text-white focus:ring-2 focus:ring-brand-primary/40 outline-none transition-all cursor-pointer appearance-none shadow-2xl"
+                          >
+                            {DEPARTMENTS.map(d => <option key={d} value={d}>{d}</option>)}
+                          </select>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" className="absolute right-5 top-1/2 -translate-y-1/2 text-zinc-800 pointer-events-none group-hover/sel:text-brand-primary transition-colors"><path d="m6 9 6 6 6-6"/></svg>
+                       </div>
+                    </div>
                   </div>
-              </div>
-            </Card>
 
-            <div className="flex items-center gap-4 p-4 rounded-xl bg-accent/5 border border-accent/20">
-                <div className="h-10 w-10 shrink-0 rounded-full bg-accent/10 flex items-center justify-center text-accent">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">Distribuição Oficial</p>
-                  <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
-                    Opere o download para obter o arquivo estruturado. Para injetar, abra o cliente de e-mail e arraste o arquivo ou cole o conteúdo cru.
-                  </p>
-                </div>
+                  <div className="pt-8 border-t border-white/5">
+                    <label className="flex items-center gap-5 cursor-pointer group/chk w-fit">
+                        <div className={`w-6 h-6 rounded-lg border text-white flex items-center justify-center transition-all ${form.disclaimer ? 'bg-brand-primary border-brand-primary shadow-[0_0_20px_rgba(0,173,232,0.4)] scale-110' : 'bg-black/40 border-white/10 group-hover/chk:border-white/30'}`}>
+                           {form.disclaimer && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4"><polyline points="20 6 9 17 4 12"/></svg>}
+                        </div>
+                        <input 
+                          type="checkbox" 
+                          checked={form.disclaimer}
+                          onChange={e => setForm({ ...form, disclaimer: e.target.checked })}
+                          className="hidden"
+                        />
+                        <span className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em] group-hover/chk:text-white transition-colors italic">Afixar Protocolo Legal LGPD v4</span>
+                    </label>
+                  </div>
+               </div>
+            </div>
+
+            {/* ── Render Engine ── */}
+            <div className="xl:col-span-8 space-y-10">
+               <div className="bg-black/40 backdrop-blur-3xl border border-white/5 rounded-[56px] radial-gradient-glass shadow-2xl overflow-hidden p-12 flex flex-col items-center justify-center min-h-[600px]">
+                  <div className="w-full flex items-center justify-between mb-12 shrink-0">
+                     <div className="flex flex-col">
+                        <h2 className="text-3xl font-black text-white italic tracking-tighter uppercase leading-none">Render Preview</h2>
+                        <span className="text-[10px] font-black text-zinc-700 uppercase tracking-[0.4em] italic leading-none mt-2">Live Signature Engine v4.2 Pro-Max</span>
+                     </div>
+                     <div className="flex gap-6">
+                        <button 
+                          onClick={copyHTML} 
+                          className={`h-14 px-8 rounded-2xl border text-[11px] font-black uppercase tracking-[0.3em] transition-all duration-500 italic ${copied ? "bg-emerald-500 border-emerald-400 text-white shadow-[0_0_30px_rgba(16,185,129,0.4)] scale-105" : "bg-white/2 border-white/10 text-white hover:bg-white/5 hover:border-white/20 active:scale-95 shadow-2xl"}`}
+                        >
+                          {copied ? "SNAPSHOT CLONADO" : "Clonar Snapshot HTML"}
+                        </button>
+                        <button 
+                          onClick={handleDownload}
+                          disabled={downloading}
+                          className="relative group h-14 px-10 rounded-2xl bg-brand-primary text-white text-[11px] font-black uppercase tracking-[0.4em] shadow-[0_20px_40px_rgba(0,173,232,0.4)] hover:scale-[1.05] active:scale-95 transition-all overflow-hidden disabled:opacity-50 italic"
+                        >
+                          <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                          {downloading ? "Gerando Payload..." : "Download Binário HTML"}
+                        </button>
+                     </div>
+                  </div>
+
+                   <div className="p-16 bg-white/2 rounded-[64px] border border-white/5 shadow-inner scale-[1.02] relative group/sig overflow-hidden">
+                      <div className="absolute -inset-10 bg-brand-primary/5 blur-2xl opacity-0 group-hover/sig:opacity-100 transition-opacity duration-1000 pointer-events-none" />
+                      <div className="relative bg-white p-14 rounded-[32px] shadow-2xl animate-in zoom-in-95 duration-1000" id="sig-preview" style={{ boxShadow: '0 60px 120px rgba(0,0,0,0.5)' }}>
+                         <SignaturePreview form={form} />
+                      </div>
+                   </div>
+               </div>
+
+               <div className="p-10 bg-brand-primary/5 border border-brand-primary/10 rounded-[48px] flex items-start gap-8 shadow-2xl">
+                  <div className="w-16 h-16 rounded-[24px] bg-brand-primary/10 flex items-center justify-center text-brand-primary shrink-0 border border-brand-primary/20">
+                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                  </div>
+                  <div className="space-y-3">
+                     <h3 className="text-xl font-black text-white italic tracking-tighter uppercase leading-none">Manual de Distribuição Node</h3>
+                     <p className="text-xs font-bold text-zinc-600 leading-relaxed max-w-2xl italic tracking-wide">
+                        Opere o download para obter o artefato estruturado Ness. Para sincronização no Outlook/Gmail, abra o cliente e arraste o arquivo ou utilize o snapshot HTML para injeção via editor avançado. O disclaimer LGPD v4 está embutido no payload final.
+                     </p>
+                  </div>
+               </div>
             </div>
           </div>
-        </div>
-      </TabPanel>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 overflow-y-auto custom-scrollbar h-full pr-2">
+            {brandData?.complete_book && Object.entries(brandData.complete_book).map(([key, brand]: [string, any]) => (
+              <div key={key} className="group relative bg-black/40 backdrop-blur-3xl border border-white/5 rounded-[48px] radial-gradient-glass shadow-[0_40px_80px_rgba(0,0,0,0.3)] p-10 space-y-10 hover:scale-[1.02] transition-all duration-700 overflow-hidden">
+                 <div className="absolute -right-16 -top-16 w-56 h-56 bg-white/2 rounded-full blur-3xl transition-transform group-hover:scale-150 duration-1000 pointer-events-none" />
+                 
+                 <div className="flex items-center justify-between relative z-10">
+                    <div className="space-y-2">
+                       <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase leading-none group-hover:text-brand-primary transition-colors">{key}</h3>
+                       <span className="text-[10px] font-mono text-zinc-700 tracking-[0.2em] uppercase italic">{brand.websiteDisplay}</span>
+                    </div>
+                    <div className="w-16 h-16 rounded-[22px] flex items-center justify-center text-white text-2xl font-black shadow-2xl border border-white/10 group-hover:scale-110 transition-transform duration-700" style={{ backgroundColor: brand.colors.primary }}>
+                       <span className="italic">{brand.logoWordmark.charAt(0)}</span>
+                    </div>
+                 </div>
 
-      <TabPanel id="assets" active={activeTab}>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-6">
-          {brandData?.complete_book && Object.entries(brandData.complete_book).map(([key, brand]: [string, any]) => (
-            <Card key={key}>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="capitalize">{key}</CardTitle>
-                    <p className="text-xs font-mono text-muted-foreground mt-1">{brand.websiteDisplay}</p>
-                  </div>
-                  <div className="h-10 w-10 shrink-0 rounded-full flex items-center justify-center text-white" style={{ backgroundColor: brand.colors.primary }}>
-                    <span className="font-bold uppercase text-xs">{brand.logoWordmark.charAt(0)}</span>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">Color Palette</p>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="group rounded-lg border border-border p-3 flex flex-col gap-2 hover:border-primary transition-colors cursor-copy" onClick={() => navigator.clipboard.writeText(brand.colors.primary)}>
-                      <div className="h-10 rounded shadow-inner" style={{ backgroundColor: brand.colors.primary }}></div>
-                      <div className="flex justify-between items-center text-xs">
-                        <span className="font-semibold text-foreground">Primary</span>
-                        <span className="font-mono text-muted-foreground uppercase">{brand.colors.primary}</span>
-                      </div>
+                 <div className="space-y-4 relative z-10">
+                    <span className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em] px-1 italic">Paleta Cromática (HEX)</span>
+                    <div className="grid grid-cols-2 gap-6">
+                       <button onClick={() => { navigator.clipboard.writeText(brand.colors.primary); setToast({ message: "HEX Master Copiado", type: "success" }); }} className="group/hex bg-white/2 border border-white/5 rounded-[24px] p-5 flex flex-col gap-4 hover:bg-white/5 transition-all text-left active:scale-95 shadow-2xl">
+                          <div className="h-12 w-full rounded-xl shadow-inner group-hover:scale-105 transition-transform" style={{ backgroundColor: brand.colors.primary }} />
+                          <div className="flex justify-between items-center px-1">
+                             <span className="text-[9px] font-black text-zinc-700 uppercase italic tracking-widest leading-none">Primary</span>
+                             <span className="text-[11px] font-mono font-black text-white tracking-widest">{brand.colors.primary}</span>
+                          </div>
+                       </button>
+                       <button onClick={() => { navigator.clipboard.writeText(brand.colors.bg); setToast({ message: "HEX Surface Copiado", type: "success" }); }} className="group/hex bg-white/2 border border-white/5 rounded-[24px] p-5 flex flex-col gap-4 hover:bg-white/5 transition-all text-left active:scale-95 shadow-2xl">
+                          <div className="h-12 w-full rounded-xl shadow-inner border border-white/10 group-hover:scale-105 transition-transform" style={{ backgroundColor: brand.colors.bg }} />
+                          <div className="flex justify-between items-center px-1">
+                             <span className="text-[9px] font-black text-zinc-700 uppercase italic tracking-widest leading-none">Surface</span>
+                             <span className="text-[11px] font-mono font-black text-white tracking-widest">{brand.colors.bg}</span>
+                          </div>
+                       </button>
                     </div>
-                    <div className="group rounded-lg border border-border p-3 flex flex-col gap-2 hover:border-primary transition-colors cursor-copy" onClick={() => navigator.clipboard.writeText(brand.colors.bg)}>
-                      <div className="h-10 rounded shadow-inner border border-border/50" style={{ backgroundColor: brand.colors.bg }}></div>
-                      <div className="flex justify-between items-center text-xs">
-                        <span className="font-semibold text-foreground">Background</span>
-                        <span className="font-mono text-muted-foreground uppercase">{brand.colors.bg}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                 </div>
 
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">Logo Assets (R2 Stubs)</p>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between p-3 rounded-md bg-muted/30 border border-border/50">
-                      <span className="text-sm font-semibold text-foreground flex items-center gap-2">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                        Logotipo (Claro)
-                      </span>
-                      <span className="text-xs font-mono text-muted-foreground px-2 py-0.5 bg-background rounded border border-border">.SVG</span>
+                 <div className="space-y-4 relative z-10">
+                    <span className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.3em] px-1 italic">Depósito de Artefatos Vetoriais</span>
+                    <div className="space-y-4">
+                       {['SVG Logotipo Core', 'EPS Símbolo Master'].map((asset, i) => (
+                          <div key={i} className="flex items-center justify-between p-5 rounded-2xl bg-white/2 border border-white/5 hover:bg-white/5 transition-all group/asset cursor-pointer shadow-2xl hover:border-brand-primary/20">
+                             <div className="flex items-center gap-5">
+                                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-zinc-800 group-hover/asset:text-brand-primary transition-colors group-hover/asset:scale-110 duration-500">
+                                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                </div>
+                                <span className="text-[11px] font-black text-white uppercase tracking-widest italic opacity-40 group-hover/asset:opacity-100 transition-opacity leading-none">{asset}</span>
+                             </div>
+                             <span className="text-[10px] font-mono font-black text-zinc-800 uppercase px-3 py-1.5 bg-black/60 border border-white/5 rounded-lg italic tracking-widest group-hover:text-brand-primary transition-colors">.{i===0?'SVG':'EPS'}</span>
+                          </div>
+                       ))}
                     </div>
-                    <div className="flex items-center justify-between p-3 rounded-md bg-muted/30 border border-border/50">
-                      <span className="text-sm font-semibold text-foreground flex items-center gap-2">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                        Símbolo Vector
-                      </span>
-                      <span className="text-xs font-mono text-muted-foreground px-2 py-0.5 bg-background rounded border border-border">.EPS</span>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </TabPanel>
+                 </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
+
+
   );
 }
