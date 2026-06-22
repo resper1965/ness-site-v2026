@@ -20,7 +20,7 @@ const CelebrationPopup = () => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const hasSeen = localStorage.getItem("ness_35_celebration_seen");
+    const hasSeen = localStorage.getItem("ness_35_celebration_seen_v2");
     if (CELEBRATION_CONFIG.active && !hasSeen) {
       const timer = setTimeout(() => setShow(true), 1500);
       return () => clearTimeout(timer);
@@ -29,13 +29,13 @@ const CelebrationPopup = () => {
 
   const closePopup = () => {
     setShow(false);
-    localStorage.setItem("ness_35_celebration_seen", "true");
+    localStorage.setItem("ness_35_celebration_seen_v2", "true");
   };
 
   return (
     <AnimatePresence>
       {show && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

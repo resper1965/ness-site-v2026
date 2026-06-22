@@ -13,19 +13,7 @@ Sentry.init({
   // dataCollection: { userInfo: false }
 });
 
-// Add this button component to your app to test Sentry's error tracking
-function ErrorButton() {
-  return (
-    <button
-      style={{ position: 'fixed', bottom: '20px', left: '20px', zIndex: 9999, background: 'red', color: 'white', padding: '10px' }}
-      onClick={() => {
-        throw new Error('This is your first error!');
-      }}
-    >
-      Break the world
-    </button>
-  );
-}
+
 
 // Sync document lang attribute with i18n language for SEO and a11y
 const syncLang = (lang: string) => {
@@ -38,7 +26,6 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <App />
-      <ErrorButton />
     </BrowserRouter>
   </StrictMode>,
 );
