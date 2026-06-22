@@ -64,7 +64,7 @@ export default function App() {
         <SchemaOrg type="organization" />
         <ScrollToTop />
         <Navbar />
-        <CelebrationPopup />
+        {BRAND === 'ness' && <CelebrationPopup />}
         <ChatbotWidget />
         <AnimatePresence mode="wait">
           <Suspense fallback={<PageLoader />}>
