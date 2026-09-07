@@ -72,7 +72,7 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-6 lg:gap-8">
           {CELEBRATION_CONFIG.active && (
-            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary-container/10 border border-primary-container/20 animate-pulse">
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary-container/10 border border-primary-container/30">
               <Sparkles size={12} className="text-primary-container" />
               <span className="text-[10px] font-bold text-primary-container uppercase tracking-widest">{CELEBRATION_CONFIG.label}</span>
             </div>
@@ -83,7 +83,7 @@ const Navbar = () => {
               <Link
                 key={item.key}
                 to={item.to}
-                className={`tracking-tight text-[10px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-bold ${
+                className={`tracking-tight text-[10px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-bold focus-visible:ring-2 focus-visible:ring-primary-container rounded-sm ${
                   active ? "text-primary-container" : "text-on-surface-variant"
                 }`}
               >
@@ -100,7 +100,8 @@ const Navbar = () => {
               <button
                 key={lng}
                 onClick={() => changeLanguage(lng)}
-                className={`px-2 py-1 rounded-full text-[9px] uppercase font-bold transition-all ${
+                aria-label={`Alterar idioma para ${lng.toUpperCase()}`}
+                className={`px-2 py-1 rounded-full text-[9px] uppercase font-bold transition-all focus-visible:ring-2 focus-visible:ring-primary-container ${
                   i18n.language.startsWith(lng) 
                     ? "bg-primary-container text-on-primary" 
                     : "text-on-surface-variant hover:text-white"
@@ -113,7 +114,7 @@ const Navbar = () => {
 
           <Link
             to="/contato"
-            className="hidden sm:flex bg-primary-container text-on-primary px-6 py-2 rounded-full font-display font-bold text-xs uppercase scale-95 active:scale-90 transition-all hover:brightness-110"
+            className="hidden sm:flex bg-primary-container text-on-primary px-6 py-2 rounded-full font-display font-bold text-xs uppercase scale-95 active:scale-90 transition-all hover:brightness-110 focus-visible:ring-2 focus-visible:ring-primary-container"
           >
             {t('nav.contact')}
           </Link>
@@ -121,7 +122,9 @@ const Navbar = () => {
           {/* Hamburger Button */}
           <button 
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-white p-2 hover:bg-white/5 rounded-full transition-colors"
+            aria-label={isOpen ? "Fechar menu de navegação" : "Abrir menu de navegação"}
+            aria-expanded={isOpen}
+            className="md:hidden text-white p-2 hover:bg-white/5 rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-primary-container"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -147,7 +150,8 @@ const Navbar = () => {
                       changeLanguage(lng);
                       setIsOpen(false);
                     }}
-                    className={`px-4 py-2 rounded-full text-xs uppercase font-bold transition-all ${
+                    aria-label={`Alterar idioma para ${lng.toUpperCase()}`}
+                    className={`px-4 py-2 rounded-full text-xs uppercase font-bold transition-all focus-visible:ring-2 focus-visible:ring-primary-container ${
                       i18n.language.startsWith(lng) 
                         ? "bg-primary-container text-on-primary" 
                         : "bg-white/5 text-on-surface-variant"

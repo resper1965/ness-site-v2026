@@ -2,8 +2,7 @@ import BlueDot from '../components/BlueDot';
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "motion/react";
-import { 
-PartyPopper} from "lucide-react";
+import { PartyPopper, X } from "lucide-react";
 
 import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
@@ -53,6 +52,14 @@ const CelebrationPopup = () => {
             <div className="absolute -top-12 -left-12 w-32 h-32 bg-primary-container/20 rounded-full blur-3xl animate-pulse"></div>
             <div className="absolute -bottom-12 -right-12 w-32 h-32 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
             
+            <button
+              onClick={closePopup}
+              aria-label="Fechar mensagem de celebração"
+              className="absolute top-6 right-6 text-on-surface-variant hover:text-white p-2 rounded-full hover:bg-white/5 transition-colors focus-visible:ring-2 focus-visible:ring-primary-container"
+            >
+              <X size={20} />
+            </button>
+
             <div className="relative z-10">
               <div className="w-20 h-20 rounded-3xl bg-primary-container/10 border border-primary-container/20 flex items-center justify-center mx-auto mb-8">
                 <PartyPopper className="text-primary-container" size={40} />
@@ -72,7 +79,7 @@ const CelebrationPopup = () => {
               
               <button 
                 onClick={closePopup}
-                className="bg-primary-container text-on-primary px-12 py-4 rounded-full font-display font-bold uppercase tracking-widest text-xs hover:brightness-110 transition-all shadow-xl shadow-primary-container/20"
+                className="bg-primary-container text-on-primary px-12 py-4 rounded-full font-display font-bold uppercase tracking-widest text-xs hover:brightness-110 transition-all shadow-xl shadow-primary-container/20 focus-visible:ring-2 focus-visible:ring-primary-container"
               >
                 {t('celebration.continue_btn', 'continuar navegando')}
               </button>
