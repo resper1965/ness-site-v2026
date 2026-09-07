@@ -16,7 +16,7 @@
   --color-primary-container: #00ade8;
   
   --color-on-surface: #dae2fd;
-  --color-on-surface-variant: #87929a;
+  --color-on-surface-variant: #9db0c0;
   --color-on-primary: #003549;
 
   --radius-default: 0.25rem;
@@ -31,6 +31,10 @@
 
   h1, h2, h3, h4 {
     @apply font-display tracking-tight;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary-container ring-offset-2 ring-offset-surface;
   }
 }
 
@@ -63,4 +67,14 @@
 
 ::-webkit-scrollbar-thumb {
   @apply bg-surface-container-high rounded-full hover:bg-surface-container-highest transition-colors;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -2,12 +2,9 @@ import BlueDot from '../components/BlueDot';
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { CANAL_BASE } from '../config/api';
 import { Send, X, MessageSquare, Bot, ThumbsUp, ThumbsDown } from "lucide-react";
-
-
-
 
 import type { ChatbotConfig } from '../types/canal';
 
@@ -17,6 +14,7 @@ type ApiMessage = { role: 'user' | 'assistant'; content: string };
 const ChatbotWidget = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<DisplayMessage[]>([]);
   const [botConfig, setBotConfig] = useState<ChatbotConfig | null>(null);
@@ -27,12 +25,56 @@ const ChatbotWidget = () => {
   const [sessionId] = useState(`gabi-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`);
   const [csatGiven, setCsatGiven] = useState<number | null>(null);
 
+  // ── Rastreamento Cognitivo de Páginas Visitadas (Opção A) ──────
+  useEffect(() => {
+    try {
+      const currentPath = location.pathname;
+      const raw = sessionStorage.getItem("ness_pages_visited");
+      let visited: string[] = [];
+      if (raw) visited = JSON.parse(raw);
+      
+      if (visited[visited.length - 1] !== currentPath) {
+        visited.push(currentPath);
+        if (visited.length > 10) visited.shift(); // limitar a 10 páginas para contexto
+        sessionStorage.setItem("ness_pages_visited", JSON.stringify(visited));
+      }
+    } catch (e) {
+      console.error("[cognitive] Error tracking page:", e);
+    }
+  }, [location]);
+
+  // ── Abertura Proativa / Gatilhos baseados em páginas ───────────
+  useEffect(() => {
+    const criticalPages = ["/forense", "/compliance", "/solucoes", "/dpo-as-a-service"];
+    const isCritical = criticalPages.some(page => location.pathname.startsWith(page));
+
+    if (!isOpen) {
+      const timeout = setTimeout(() => {
+        setIsOpen(true);
+        setMessages(prev => {
+          if (prev.length <= 1) { // Apenas se for o estado de boas-vindas inicial
+            let msg = botConfig?.welcome_message || t('chatbot.welcome', "Olá! Como posso ajudar?");
+            if (location.pathname.startsWith("/forense")) {
+              msg = "Detectamos que você está na área de resiliência cibernética. Se sua empresa estiver sofrendo um incidente de segurança agora, clique no botão de Incidente Crítico ou me informe aqui para acionar o time n.cirt de imediato.";
+            } else if (location.pathname.startsWith("/dpo-as-a-service") || location.pathname.startsWith("/compliance")) {
+              msg = "Olá! Deseja entender como estruturar o compliance LGPD ou contratar um DPO as a Service na sua organização? Posso te apoiar com as dúvidas iniciais.";
+            }
+            return [{ role: 'bot', content: msg }];
+          }
+          return prev;
+        });
+      }, isCritical ? 8000 : 25000); // 8s para páginas críticas de alta conversão, 25s para o resto
+
+      return () => clearTimeout(timeout);
+    }
+  }, [location.pathname, isOpen, botConfig, t]);
+
   useEffect(() => {
     fetch(`${CANAL_BASE}/api/chatbot-config?tenant=ness`)
       .then(res => res.json())
       .then(config => {
         setBotConfig(config);
-        if (config.enabled === false) return; // Se quiser desligar o widget
+        if (config.enabled === false) return;
         setMessages([
           { role: 'bot', content: config.welcome_message || t('chatbot.welcome', "Olá! Como posso ajudar?") }
         ]);
@@ -66,6 +108,12 @@ const ChatbotWidget = () => {
     // Add empty bot message placeholder for streaming
     setMessages(prev => [...prev, { role: 'bot', content: '' }]);
 
+    let pagesVisited: string[] = [];
+    try {
+      const raw = sessionStorage.getItem("ness_pages_visited");
+      if (raw) pagesVisited = JSON.parse(raw);
+    } catch {}
+
     try {
       const response = await fetch(`${CANAL_BASE}/api/chat`, {
         method: 'POST',
@@ -76,6 +124,7 @@ const ChatbotWidget = () => {
         body: JSON.stringify({
           messages: [...apiHistory, { role: 'user', content: userMsg }],
           locale: i18n.language,
+          pagesVisited,
         }),
       });
 

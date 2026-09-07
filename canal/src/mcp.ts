@@ -325,6 +325,139 @@ server.tool(
   }
 )
 
+// ── Ferramenta 7: Consultar Cérebro (RAG com Guardrails) ──────────
+server.tool(
+  "query_brain",
+  "Busca conhecimento no Cérebro ness. com filtro de visibilidade (public, internal, restricted)",
+  {
+    query: z.string().describe("Pergunta ou termo de busca semântica no conhecimento corporativo"),
+    visibility_scope: z.enum(["public", "internal", "restricted"]).optional().default("public")
+      .describe("Nível máximo de visibilidade permitido para a consulta (default: public)")
+  },
+  async (args) => {
+    const db = globalThis.__MCP_DB
+    const env = globalThis.__MCP_ENV
+    if (!db || !env || !env.VECTORIZE || !env.AI) {
+      return { content: [{ type: "text", text: "Ambiente RAG/Vectorize não conectado" }] }
+    }
+
+    try {
+      let allowed = ["public"]
+      if (args.visibility_scope === "internal") allowed = ["public", "internal"]
+      if (args.visibility_scope === "restricted") allowed = ["public", "internal", "restricted"]
+
+      const queryEmbedding = (await env.AI.run('@cf/baai/bge-base-en-v1.5', {
+        text: [args.query]
+      })) as { data: number[][] }
+
+      const vectorResults = await env.VECTORIZE.query(queryEmbedding.data[0], {
+        topK: 5,
+        returnMetadata: 'all'
+      })
+
+      const filteredMatches = vectorResults.matches.filter((m: any) => {
+        const vis = m.metadata?.visibility || 'public'
+        return allowed.includes(vis)
+      })
+
+      const chunks = filteredMatches.map((m: any) => ({
+        title: m.metadata?.title || 'Sem título',
+        visibility: m.metadata?.visibility || 'public',
+        content: m.metadata?.content || ''
+      }))
+
+      return {
+        content: [{ type: "text", text: JSON.stringify({
+          query: args.query,
+          visibility_applied: allowed,
+          results_count: chunks.length,
+          results: chunks
+        }, null, 2) }]
+      }
+    } catch (err: any) {
+      return { content: [{ type: "text", text: `Erro na busca RAG: ${err.message}` }] }
+    }
+  }
+)
+
+// ── Ferramenta 8: Ingerir Conhecimento no Cérebro ───────────────
+server.tool(
+  "ingest_knowledge",
+  "Ingere novo conhecimento no Cérebro ness. Conteúdos 'internal' ou 'restricted' entram para fila de aprovação humana no admin.",
+  {
+    title: z.string().describe("Título claro do documento/conhecimento"),
+    content: z.string().describe("Conteúdo completo em texto puro ou markdown"),
+    visibility: z.enum(["public", "internal", "restricted"]).default("public")
+      .describe("Classificação de segurança do conteúdo (public, internal ou restricted)")
+  },
+  async (args) => {
+    const db = globalThis.__MCP_DB
+    const env = globalThis.__MCP_ENV
+    if (!db) return { content: [{ type: "text", text: "BD não conectado" }] }
+
+    try {
+      const drizzleDb = drizzle(db, { schema: dbSchema })
+      const id = crypto.randomUUID()
+      const now = new Date().toISOString()
+
+      const isAutoApproved = args.visibility === 'public'
+      const approvalStatus = isAutoApproved ? 'approved' : 'pending_approval'
+      const indexStatus = isAutoApproved ? 'indexed' : 'pending'
+      const r2Key = `brain/mcp/${id}.txt`
+
+      if (env?.MEDIA) {
+        await env.MEDIA.put(r2Key, args.content, {
+          customMetadata: { title: args.title, visibility: args.visibility }
+        })
+      }
+
+      await drizzleDb.insert(dbSchema.knowledge_base).values({
+        id,
+        tenant_id: globalThis.__MCP_TENANT || 'ness',
+        title: args.title,
+        r2_key: r2Key,
+        status: indexStatus,
+        visibility: args.visibility,
+        approval_status: approvalStatus,
+        content_preview: args.content.slice(0, 300),
+        source: 'mcp_agent',
+        chunk_count: 1,
+        created_by: 'mcp_agent',
+        created_at: now,
+        updated_at: now
+      })
+
+      if (isAutoApproved && env?.AI && env?.VECTORIZE) {
+        const textToEmbed = `[${args.title}] (${args.visibility})\n${args.content}`.slice(0, 4000)
+        const embedding = (await env.AI.run('@cf/baai/bge-base-en-v1.5', {
+          text: [textToEmbed]
+        })) as { data: number[][] }
+
+        await env.VECTORIZE.upsert([{
+          id: `kb-${id}`,
+          values: embedding.data[0],
+          metadata: {
+            title: args.title,
+            collection: 'knowledge_base',
+            visibility: args.visibility,
+            content: textToEmbed.slice(0, 1000)
+          }
+        }])
+      }
+
+      const msg = isAutoApproved
+        ? `✅ Conhecimento ingerido e indexado diretamente (${args.visibility}).`
+        : `⏳ Conhecimento salvo com visibilidade "${args.visibility}". Enviado para a fila de aprovação humana no Backoffice Admin.`
+
+      return {
+        content: [{ type: "text", text: msg }]
+      }
+    } catch (err: any) {
+      return { content: [{ type: "text", text: `Erro ao ingerir conhecimento: ${err.message}` }] }
+    }
+  }
+)
+
 // ── Transport & Connection ──────────────────────────────────────
 const transport = new WebStandardStreamableHTTPServerTransport({
   sessionIdGenerator: () => crypto.randomUUID()

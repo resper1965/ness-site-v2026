@@ -62,19 +62,31 @@ Este é o documento de planejamento central. Contém:
 | [`docs/PLAN-epics-roadmap.md`](docs/PLAN-epics-roadmap.md) | **Roadmap Master** (contexto obrigatório) |
 | [`docs/PLAN-canal-tech-debt.md`](docs/PLAN-canal-tech-debt.md) | Débitos técnicos pendentes |
 | [`docs/PLAN-next-steps.md`](docs/PLAN-next-steps.md) | Próximos passos pós-estabilização |
-| [`docs/DESIGN.md`](docs/DESIGN.md) | Design system reference |
+| [`docs/DESIGN-SYSTEM.md`](docs/DESIGN-SYSTEM.md) | **Design System Universal** (regras visuais estritas) |
+| [`docs/DESIGN.md`](docs/DESIGN.md) | Referência legada do Design System (foco web) |
+| [`.specify/memory/constitution.md`](.specify/memory/constitution.md) | **Constituição do Projeto** (regras do Spec Kit e SDD) |
 | [`canal/README.md`](canal/README.md) | Documentação do Canal CMS backend |
 
 ## Documentos arquivados
 
 Planos concluídos ou supersedidos pelo roadmap master estão em [`docs/archive/`](docs/archive/). Consulte-os apenas para contexto histórico — **não os siga para implementação.**
 
+## Spec-Driven Development (Spec Kit)
+
+Este repositório adota o **GitHub Spec Kit** para guiar o ciclo de desenvolvimento de novas features e refatorações complexas.
+- A **Constituição** ([`constitution.md`](.specify/memory/constitution.md)) define os princípios inalteráveis do projeto.
+- Todo ciclo de feature deve gerar as especificações e planos correspondentes:
+  - `/speckit-specify` ou `/speckit-plan` para criar especificações e planejamento técnico.
+  - `/speckit-tasks` para decompor em tarefas discretas e rastreáveis.
+  - `/speckit-implement` para executar o código guiado pelo plano.
+
 ## Regras para agentes
 
-1. **Leia o roadmap** (`PLAN-epics-roadmap.md`) antes de qualquer implementação
-2. **Siga a fase correta** — não pule fases (ex: não inicie Fase 5 se Fase 1 não está concluída)
-3. **Atualize o roadmap** — marque `[x]` quando concluir tasks, `[/]` quando em progresso
-4. **Respeite a arquitetura** — o projeto é Cloudflare-native, não introduza infra externa
-5. **Commits semânticos** — `feat:`, `fix:`, `refactor:`, `docs:`, `chore:`
-6. **Type-safety** — `npx tsc --noEmit` deve retornar 0 erros
-7. **Teste antes de declarar pronto** — verificação obrigatória antes de marcar tasks
+1. **Leia a Constituição** (`.specify/memory/constitution.md`) e o **Roadmap** (`PLAN-epics-roadmap.md`) antes de qualquer implementação.
+2. **Siga a fase correta** — não pule fases (ex: não inicie Fase 5 se Fase 1 não está concluída).
+3. **Atualize o roadmap** — marque `[x]` quando concluir tasks, `[/]` quando em progresso.
+4. **Respeite a arquitetura** — o projeto é Cloudflare-native, não introduza infra externa.
+5. **Commits semânticos** — `feat:`, `fix:`, `refactor:`, `docs:`, `chore:`.
+6. **Type-safety** — `npx tsc --noEmit` deve retornar 0 erros.
+7. **Teste antes de declarar pronto** — verificação obrigatória usando os scripts de auditoria (`checklist.py`/`verify_all.py`).
+

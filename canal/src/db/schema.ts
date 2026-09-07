@@ -178,12 +178,29 @@ export const chatbot_config = sqliteTable('chatbot_config', {
   updated_at: text('updated_at'),
 });
 
+export const agent_api_keys = sqliteTable('agent_api_keys', {
+  id: text('id').primaryKey(),
+  tenant_id: text('tenant_id').notNull().default('ness'),
+  name: text('name').notNull(),
+  key_prefix: text('key_prefix').notNull(),
+  key_hash: text('key_hash').notNull(),
+  scope: text('scope').notNull().default('public_only'), // public_only, internal_access, full_admin
+  status: text('status').notNull().default('active'), // active, revoked
+  created_by: text('created_by'),
+  created_at: text('created_at'),
+  expires_at: text('expires_at'),
+});
+
 export const knowledge_base = sqliteTable('knowledge_base', {
   id: text('id').primaryKey(),
   tenant_id: text('tenant_id').notNull(),
   title: text('title').notNull(),
   r2_key: text('r2_key').notNull(),
   status: text('status').default('pending'), // pending, indexed, error
+  visibility: text('visibility').default('public'), // public, internal, restricted
+  approval_status: text('approval_status').default('approved'), // approved, pending_approval, rejected
+  content_preview: text('content_preview'),
+  source: text('source').default('manual'), // manual, mcp_agent, api
   chunk_count: integer('chunk_count').default(0),
   created_by: text('created_by'),
   created_at: text('created_at'),

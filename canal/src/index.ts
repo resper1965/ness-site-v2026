@@ -22,6 +22,7 @@ import { media } from './routes/media'
 import { marketing } from './routes/marketing'
 import { legacy } from './routes/legacy'
 import { aiWriter } from './routes/ai-writer'
+import { brainRoutes } from './routes/brain'
 import { handleMcpRequest } from './mcp'
 import { MODEL_HEAVY } from './ai/models'
 
@@ -424,6 +425,7 @@ app.route('/api/admin', admin)
 app.route('/api/admin/webhooks', webhooksApi)
 app.route('/api/admin/brand', brandRouter)
 app.route('/api/admin', contentRoutes)
+app.route('/api', brainRoutes)
 
 // ── Integração Edge Image Delivery (Mapeada via Explorer) ────────
 app.get('/media/:filename', async (c) => {

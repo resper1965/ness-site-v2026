@@ -19,7 +19,7 @@ A integração server-side ocorre injetando o Token API (gerado ao lado) nos **C
 const response = await fetch("https://canal.ness.com.br/api/v1/collections/insights/entries", {
   method: "GET",
   headers: {
-    "Authorization": "Bearer sk_suachave_aqui",
+    "Authorization": "Bearer <YOUR_KEY>",
     "Content-Type": "application/json"
   }
 });

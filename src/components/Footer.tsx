@@ -46,7 +46,7 @@ const Footer = () => {
              BRAND === 'forense'   ? <>forense<BlueDot />io</> :
                                      <>ness<BlueDot /></>}
           </div>
-          <p className="text-sm text-on-surface-variant/60 leading-relaxed font-light">
+          <p className="text-sm text-on-surface-variant/85 leading-relaxed font-normal">
             {t('hero.subtitle')}
           </p>
           <div className="flex gap-4">
@@ -56,7 +56,7 @@ const Footer = () => {
               { Icon: Facebook,  url: "https://www.facebook.com/nesstecnologia" },
             ].map((social, i) => (
               <a key={i} href={social.url} target="_blank" rel="noopener noreferrer"
-                className="text-on-surface-variant/50 hover:text-primary transition-all">
+                className="text-on-surface-variant/80 hover:text-primary transition-colors">
                 <social.Icon size={20} />
               </a>
             ))}
@@ -66,34 +66,34 @@ const Footer = () => {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 md:gap-24">
           <div className="space-y-4">
             <h4 className="text-[10px] uppercase tracking-widest text-white font-bold">{t('footer.company')}</h4>
-            <ul className="space-y-3 text-sm text-on-surface-variant/60 font-light">
-              <li><Link className="hover:text-white transition-all" to="/sobre">{t('nav.about')}</Link></li>
-              <li><Link className="hover:text-white transition-all" to="/portfolio">{t('nav.portfolio')}</Link></li>
-              <li><Link className="hover:text-white transition-all" to="/blog">{t('nav.blog')}</Link></li>
-              <li><Link className="hover:text-white transition-all" to="/carreiras">{t('nav.careers')}</Link></li>
-              <li><Link className="hover:text-white transition-all" to="/contato">{t('nav.contact')}</Link></li>
+            <ul className="space-y-3 text-sm text-on-surface-variant/85 font-normal">
+              <li><Link className="hover:text-white transition-colors" to="/sobre">{t('nav.about')}</Link></li>
+              <li><Link className="hover:text-white transition-colors" to="/portfolio">{t('nav.portfolio')}</Link></li>
+              <li><Link className="hover:text-white transition-colors" to="/blog">{t('nav.blog')}</Link></li>
+              <li><Link className="hover:text-white transition-colors" to="/carreiras">{t('nav.careers')}</Link></li>
+              <li><Link className="hover:text-white transition-colors" to="/contato">{t('nav.contact')}</Link></li>
             </ul>
           </div>
 
           <div className="space-y-4">
             <h4 className="text-[10px] uppercase tracking-widest text-white font-bold">{t('footer.legal')}</h4>
-            <ul className="space-y-3 text-sm text-on-surface-variant/60 font-light">
-              <li><Link className="hover:text-white transition-all" to="/compliance/termos">{t('footer.terms')}</Link></li>
-              <li><Link className="hover:text-white transition-all" to="/compliance/privacidade">{t('footer.privacy')}</Link></li>
-              <li><Link className="hover:text-white transition-all" to="/compliance/etica">{t('footer.compliance')}</Link></li>
-              <li><Link className="hover:text-white transition-all text-primary-container font-medium" to="/compliance/etica">{t('contact.whistleblower.title')}</Link></li>
+            <ul className="space-y-3 text-sm text-on-surface-variant/85 font-normal">
+              <li><Link className="hover:text-white transition-colors" to="/compliance/termos">{t('footer.terms')}</Link></li>
+              <li><Link className="hover:text-white transition-colors" to="/compliance/privacidade">{t('footer.privacy')}</Link></li>
+              <li><Link className="hover:text-white transition-colors" to="/compliance/etica">{t('footer.compliance')}</Link></li>
+              <li><Link className="hover:text-white text-primary-container font-semibold transition-colors" to="/compliance/etica">{t('contact.whistleblower.title')}</Link></li>
             </ul>
           </div>
 
           <div className="space-y-4">
             <h4 className="text-[10px] uppercase tracking-widest text-white font-bold">{t('footer.ecosystem')}</h4>
-            <ul className="space-y-3 text-sm text-on-surface-variant/60 font-light">
+            <ul className="space-y-3 text-sm text-on-surface-variant/85 font-normal">
               {ECOSYSTEM_LINKS
                 .filter(l => l.brand !== BRAND)
                 .map(l => (
                   <li key={l.brand}>
                     <a href={l.href} target="_blank" rel="noopener noreferrer"
-                      className="hover:text-white transition-all">
+                      className="hover:text-white transition-colors">
                       {l.label}
                     </a>
                   </li>
@@ -103,7 +103,7 @@ const Footer = () => {
 
           <div className="hidden lg:block space-y-4">
             <h4 className="text-[10px] uppercase tracking-widest text-white font-bold">{t('footer.updates')}</h4>
-            <p className="text-sm text-on-surface-variant/60 font-light">{t('footer.newsletter')}</p>
+            <p className="text-sm text-on-surface-variant/85 font-normal">{t('footer.newsletter')}</p>
             {newsletterStatus === 'ok' ? (
               <p className="text-xs text-primary-container font-bold uppercase tracking-widest">✓ inscrito.</p>
             ) : (
@@ -135,7 +135,7 @@ const Footer = () => {
       </div>
 
       <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-white/5">
-        <div className="flex flex-wrap gap-4 text-[10px] uppercase tracking-widest text-on-surface-variant/40 font-bold">
+        <div className="flex flex-wrap gap-4 text-[10px] uppercase tracking-widest text-on-surface-variant/70 font-semibold">
           {(t('footer.locations', { returnObjects: true }) as string[]).map((loc, i, arr) => (
             <span key={loc}>
               {loc}
@@ -146,20 +146,20 @@ const Footer = () => {
       </div>
 
       <div className="max-w-7xl mx-auto mt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="text-sm text-on-surface-variant/40 font-light">
+        <p className="text-sm text-on-surface-variant/70 font-normal">
           © {FOUNDATION_YEAR}–{CURRENT_YEAR} {brandLabel} precision digital engineering. {t('footer.rights')}
         </p>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse" />
-            <span className="text-[10px] uppercase tracking-tighter text-on-surface-variant/40 font-bold">{t('footer.status')}</span>
+            <div className="w-1.5 h-1.5 rounded-full bg-primary-container" />
+            <span className="text-[10px] uppercase tracking-tighter text-on-surface-variant/70 font-semibold">{t('footer.status')}</span>
           </div>
           <a
             href="https://canal.ness.com.br"
             target="_blank"
             rel="noopener noreferrer"
             title="canal"
-            className="text-on-surface-variant/20 hover:text-on-surface-variant/60 transition-all duration-300"
+            className="text-on-surface-variant/50 hover:text-on-surface-variant transition-all duration-300"
           >
             <Lock size={12} />
           </a>
