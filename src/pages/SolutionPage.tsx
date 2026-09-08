@@ -1,5 +1,4 @@
 import BlueDot from '../components/BlueDot';
-import Breadcrumbs from '../components/Breadcrumbs';
 import ChatPreview from '../components/ChatPreview';
 import EmergencyChatModal from '../components/EmergencyChatModal';
 import SolutionHeroBackground from '../components/solutions/SolutionHeroBackground';
@@ -12,6 +11,7 @@ import { m as motion, AnimatePresence } from "motion/react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { routeMeta } from '../utils/meta';
+import Breadcrumbs from '../components/Breadcrumbs';
 import { solutionsData } from "../data/solutionsData";
 import SchemaOrg from '../components/SchemaOrg';
 import { useBrand, BRAND_DOMAINS } from '../config/brand';
@@ -62,10 +62,8 @@ const SolutionPage = () => {
       <SolutionHeroBackground slug={slug!} />
 
       <div className="relative z-20 max-w-7xl mx-auto">
-        <Breadcrumbs items={[
-          { label: t('nav.solutions'), to: '/solucoes' },
-          { label: t(`solutions.${slug}.title`) }
-        ]} />
+        {/* O schema já sai do shell; aqui é só a trilha visível. */}
+        <Breadcrumbs semSchema />
 
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
           <motion.div 

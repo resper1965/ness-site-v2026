@@ -73,6 +73,47 @@ test.describe('metadados por rota', () => {
   });
 });
 
+test.describe('navegação', () => {
+  test('soluções abre o mapa dos cinco produtos e fecha no Esc', async ({ page, isMobile }) => {
+    test.skip(!!isMobile, 'o mega-menu é do desktop; no mobile os produtos ficam listados');
+    await page.goto('/');
+    const botao = page.getByRole('button', { name: /soluções/i });
+    await expect(botao).toHaveAttribute('aria-expanded', 'false');
+
+    await botao.click();
+    await expect(botao).toHaveAttribute('aria-expanded', 'true');
+    // Cinco produtos e o diagnóstico: quem chega por "segurança" não sabe
+    // que o produto se chama n.secops.
+    await expect(page.locator('#menu-solucoes a')).toHaveCount(6);
+
+    await page.keyboard.press('Escape');
+    await expect(botao).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  test('toda página interna declara a hierarquia para o buscador', async ({ request }) => {
+    for (const path of ['/blog', '/contato', '/solucoes/secops', '/sobre']) {
+      const html = await (await request.get(path)).text();
+      expect(html, path).toContain('BreadcrumbList');
+      // Uma só: schema duplicado é pior que schema nenhum.
+      expect(html.match(/BreadcrumbList/g)!.length, path).toBe(1);
+    }
+  });
+
+  test('no mobile os cinco produtos ficam listados sob soluções', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'somente mobile');
+    await page.goto('/');
+    await page.getByRole('button', { name: /abrir menu/i }).click();
+    await expect(page.locator('#solucoes-mobile a')).toHaveCount(5);
+  });
+
+  test('a página de solução mostra a trilha; a de blog, não', async ({ page }) => {
+    await page.goto('/solucoes/secops');
+    await expect(page.getByRole('navigation', { name: /trilha/i })).toBeVisible();
+    await page.goto('/blog');
+    await expect(page.getByRole('navigation', { name: /trilha/i })).toHaveCount(0);
+  });
+});
+
 test.describe('formulário de contato', () => {
   test('quatro campos, sem select de assunto', async ({ page }) => {
     await page.goto('/contato');
