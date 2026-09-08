@@ -3,7 +3,7 @@ import React, {  } from "react";
 import { m as motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { usePageTitle } from '../hooks/usePageTitle';
+import { routeMeta } from '../utils/meta';
 import { 
 /**
  * @license
@@ -26,9 +26,8 @@ import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/bra
 
 
 
-const Solutions = ({ standalone = false }: { standalone?: boolean }) => {
+const Solutions = () => {
   const { t } = useTranslation();
-  usePageTitle('solutions.meta_title', 'soluções — ness.', { enabled: standalone });
   const solutions = [
     {
       slug: "secops",
@@ -108,3 +107,11 @@ const Solutions = ({ standalone = false }: { standalone?: boolean }) => {
 
 
 export default Solutions;
+
+
+export function meta(args: Parameters<typeof routeMeta>[0]) {
+  return routeMeta(args, {
+    title: 'soluções',
+    description: 'As cinco soluções da ness.: SOC 24×7, infraestrutura e cloud, engenharia de software, automação de operações e resposta a incidentes.',
+  });
+}

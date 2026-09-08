@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import { m as motion, AnimatePresence } from "motion/react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { usePageTitle } from '../hooks/usePageTitle';
+import { routeMeta } from '../utils/meta';
 import { solutionsData } from "../data/solutionsData";
 import SchemaOrg from '../components/SchemaOrg';
 import { useBrand, BRAND_DOMAINS } from '../config/brand';
@@ -31,10 +31,6 @@ const SolutionPage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const solution = slug ? solutionsData[slug] : null;
-  usePageTitle({
-    title: solution?.metaTitle || 'soluções',
-    description: solution?.metaDescription || solution?.overview || '',
-  }, undefined, { enabled: !!solution });
   const PageIcon = (solution?.icon || CheckCircle2) as React.ComponentType<{ className?: string; size?: number }>;
   const [showTech, setShowTech] = useState(false);
   const [isEmergencyChatOpen, setIsEmergencyChatOpen] = useState(false);
@@ -398,3 +394,15 @@ const SolutionPage = () => {
 
 
 export default SolutionPage;
+
+// Slug inválido não é página: sai noindex, e o componente já renderiza o 404.
+export function meta(args: Parameters<typeof routeMeta>[0] & { params: { slug?: string } }) {
+  const solution = args.params.slug ? solutionsData[args.params.slug] : null;
+  if (!solution) {
+    return routeMeta(args, { title: 'página não encontrada', noindex: true });
+  }
+  return routeMeta(args, {
+    title: solution.metaTitle,
+    description: solution.metaDescription || solution.overview,
+  });
+}

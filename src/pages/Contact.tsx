@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import { m as motion } from "motion/react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { usePageTitle } from '../hooks/usePageTitle';
+import i18n from '../i18n';
+import { routeMeta } from '../utils/meta';
 import { CANAL_BASE } from '../config/api';
 import { canalApi } from '../services/canal';
 import { useBrand } from '../config/brand';
@@ -43,10 +44,6 @@ const Contact = () => {
   const [selectedSubject, setSelectedSubject] = useState(refInfo?.subject || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
-  usePageTitle({
-    title: t('contact.meta_title', 'contato — fale com um especialista'),
-    description: t('contact.meta_description', 'Fale com a ness.: diagnóstico de segurança, infraestrutura, engenharia de software, LGPD e perícia digital. Resposta em até 1 dia útil. +55 (11) 2504-7650.'),
-  });
 
   return (
     <motion.div 
@@ -312,3 +309,15 @@ const Contact = () => {
 
 
 export default Contact;
+
+// O `meta` roda fora da árvore React, onde não há useTranslation: usa a
+// instância do i18n direto. No servidor o idioma é sempre pt até a Onda 2.5.
+export function meta(args: Parameters<typeof routeMeta>[0]) {
+  return routeMeta(args, {
+    title: i18n.t('contact.meta_title', 'contato — fale com um especialista'),
+    description: i18n.t(
+      'contact.meta_description',
+      'Fale com a ness.: diagnóstico de segurança, infraestrutura, engenharia de software, LGPD e perícia digital. Resposta em até 1 dia útil. +55 (11) 2504-7650.',
+    ),
+  });
+}

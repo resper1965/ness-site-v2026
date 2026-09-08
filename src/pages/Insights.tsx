@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { m as motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { usePageTitle } from '../hooks/usePageTitle';
 import { CANAL_BASE } from '../config/api';
 import { ShieldCheck, Cloud, Cpu, Brain, Lock, Workflow, FileText, ChevronRight } from "lucide-react";
 
@@ -21,7 +20,6 @@ interface Insight {
 
 const Insights = () => {
   const { t, i18n } = useTranslation();
-  usePageTitle('insights.meta_title', 'insights — ness.', { enabled: false });
   const [articles, setArticles] = useState<Insight[]>([]);
   const [loading, setLoading] = useState(true);
 

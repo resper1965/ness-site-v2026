@@ -4,16 +4,12 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Fingerprint, Lock, FileCheck, ShieldCheck, Target, GraduationCap, Scale, Activity, PieChart, Users, ShieldAlert, CheckCircle2 } from "lucide-react";
 import BlueDot from "../../components/BlueDot";
 import HeroPicture from "../../components/HeroPicture";
-import { usePageTitle } from "../../hooks/usePageTitle";
+import { HOME_META, routeMeta } from '../../utils/meta';
 import { useTranslation } from "react-i18next";
 import LeadMagnet from "../../components/LeadMagnet";
 
 export default function TrustnessHome() {
   const { t } = useTranslation();
-  usePageTitle({
-    title: 'governança, risco e compliance',
-    description: 'trustness. é a vertical de GRC da ness. Consultoria em LGPD, ISO 27001, gestão de riscos, auditoria de segurança, pentest e DPO as a Service para corporações nacionais.',
-  });
   
   return (
     <main>
@@ -295,4 +291,8 @@ export default function TrustnessHome() {
       </section>
     </main>
   );
+}
+
+export function meta(args: Parameters<typeof routeMeta>[0]) {
+  return routeMeta(args, HOME_META.trustness);
 }

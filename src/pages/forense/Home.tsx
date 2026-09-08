@@ -4,15 +4,11 @@ import { Link } from "react-router-dom";
 import { ArrowRight, ShieldAlert, Fingerprint, HardDrive, Smartphone, Network, Clock, FileCheck, Scale, Activity, ShieldCheck, MessageSquare, Search, Lock, CheckCircle2 } from "lucide-react";
 import BlueDot from "../../components/BlueDot";
 import HeroPicture from "../../components/HeroPicture";
-import { usePageTitle } from "../../hooks/usePageTitle";
+import { HOME_META, routeMeta } from '../../utils/meta';
 import { useTranslation } from "react-i18next";
 
 export default function ForenseHome() {
   const { t } = useTranslation();
-  usePageTitle({
-    title: 'perícia digital e investigação forense',
-    description: 'forense.io — Perícia digital, resposta a incidentes, análise de ransomware, preservação de evidências e assistência técnica judicial. Laudos com validade processual e cadeia de custódia ISO 27037.',
-  });
   
   return (
     <main>
@@ -228,4 +224,8 @@ export default function ForenseHome() {
       </section>
     </main>
   );
+}
+
+export function meta(args: Parameters<typeof routeMeta>[0]) {
+  return routeMeta(args, HOME_META.forense);
 }

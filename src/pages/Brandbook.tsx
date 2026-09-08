@@ -1,14 +1,13 @@
 import React from "react";
 import { m as motion } from "motion/react";
 import { useTranslation } from "react-i18next";
-import { usePageTitle } from "../hooks/usePageTitle";
+import { routeMeta } from '../utils/meta';
 import CTA from "../components/CTA";
 import BlueDot from "../components/BlueDot";
 import { Copy, Download, Component, Monitor, ShieldCheck, Sun, Moon } from "lucide-react";
 
 export default function Brandbook() {
   const { t } = useTranslation();
-  usePageTitle('brandbook.meta_title', 'brandbook — ness.');
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -213,4 +212,13 @@ export default function Brandbook() {
       </div>
     </motion.div>
   );
+}
+
+
+export function meta(args: Parameters<typeof routeMeta>[0]) {
+  return routeMeta(args, {
+    title: 'brandbook',
+    description: 'A identidade visual da ness. e das marcas do grupo: tipografia, cores, uso do ponto e dos logos.',
+    noindex: true,
+  });
 }

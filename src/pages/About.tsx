@@ -4,14 +4,13 @@ import AnimatedCounter from '../components/AnimatedCounter';
 import React from "react";
 import { m as motion } from "motion/react";
 import { useTranslation, Trans } from "react-i18next";
-import { usePageTitle } from '../hooks/usePageTitle';
+import { routeMeta } from '../utils/meta';
 import { Target, Eye, Heart, Shield, Globe, Cpu } from "lucide-react";
 
 import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
 const About = () => {
   const { t } = useTranslation();
-  usePageTitle({ title: 'sobre a ness.', description: 'Desde 1991, a ness. entrega engenharia de software, operações de segurança 24×7, infraestrutura crítica, LGPD e perícia digital para empresas no Brasil, Portugal, Chile, Peru, Colômbia e EUA.' });
 
   const timeline = [
     { year: "1991", desc: t('about.timeline.1991', "ness. é fundada como terceirização da área de tecnologia de um grande grupo econômico.") },
@@ -180,3 +179,11 @@ const About = () => {
 };
 
 export default About;
+
+
+export function meta(args: Parameters<typeof routeMeta>[0]) {
+  return routeMeta(args, {
+    title: 'sobre a ness.',
+    description: 'Desde 1991, a ness. entrega engenharia de software, operações de segurança 24×7, infraestrutura crítica, LGPD e perícia digital para empresas no Brasil, Portugal, Chile, Peru, Colômbia e EUA.',
+  });
+}

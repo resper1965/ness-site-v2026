@@ -1,4 +1,5 @@
 import { useBrand } from '../config/brand';
+import { HOME_META, routeMeta } from '../utils/meta';
 import NessHome from '../pages/Home';
 import TrustnessHome from '../pages/trustness/Home';
 import ForenseHome from '../pages/forense/Home';
@@ -17,4 +18,8 @@ export default function Home() {
   if (brand === 'trustness') return <TrustnessHome />;
   if (brand === 'forense') return <ForenseHome />;
   return <NessHome />;
+}
+
+export function meta(args: Parameters<typeof routeMeta>[0]) {
+  return routeMeta(args, (brand) => HOME_META[brand]);
 }

@@ -2,7 +2,7 @@ import BlueDot from '../components/BlueDot';
 import React, { useState, useEffect } from "react";
 import { m as motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
-import { usePageTitle } from '../hooks/usePageTitle';
+import { routeMeta } from '../utils/meta';
 import { CANAL_BASE } from '../config/api';
 import { canalApi } from '../services/canal';
 import type { Job } from '../types/canal';
@@ -10,7 +10,6 @@ import { MapPin, X, Briefcase, Clock, Upload } from "lucide-react";
 
 const Careers = () => {
   const { t, i18n } = useTranslation();
-  usePageTitle('careers.meta_title', 'carreiras — ness.');
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
@@ -283,3 +282,11 @@ const Careers = () => {
 
 
 export default Careers;
+
+
+export function meta(args: Parameters<typeof routeMeta>[0]) {
+  return routeMeta(args, {
+    title: 'carreiras',
+    description: 'Vagas abertas na ness. Engenharia, operações de segurança, infraestrutura e privacidade.',
+  });
+}

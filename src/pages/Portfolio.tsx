@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { LayoutGrid } from "lucide-react";
 import EmptyState from '../components/EmptyState';
-import { usePageTitle } from '../hooks/usePageTitle';
+import { routeMeta } from '../utils/meta';
 import { CANAL_BASE } from '../config/api';
 import type { Case } from '../types/canal';
 
@@ -13,7 +13,6 @@ const Portfolio = () => {
   const { t, i18n } = useTranslation();
   const [filter, setFilter] = useState("todos");
   const [cases, setCases] = useState<Case[]>([]);
-  usePageTitle('portfolio.meta_title', 'portfólio — ness.');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -266,3 +265,11 @@ const Portfolio = () => {
 
 
 export default Portfolio;
+
+
+export function meta(args: Parameters<typeof routeMeta>[0]) {
+  return routeMeta(args, {
+    title: 'portfólio',
+    description: 'Casos de infraestrutura crítica, segurança, engenharia de software e privacidade entregues pela ness.',
+  });
+}
