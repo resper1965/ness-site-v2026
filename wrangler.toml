@@ -21,12 +21,26 @@ compatibility_flags = ["nodejs_compat"]
 pattern = "forense.io/*"
 zone_name = "forense.io"
 
+# www precisa de rota própria, senão continua servindo o Pages: o Worker é
+# quem devolve o 301 para o domínio raiz.
+[[routes]]
+pattern = "www.forense.io/*"
+zone_name = "forense.io"
+
 [[routes]]
 pattern = "trustness.com.br/*"
 zone_name = "trustness.com.br"
 
 [[routes]]
+pattern = "www.trustness.com.br/*"
+zone_name = "trustness.com.br"
+
+[[routes]]
 pattern = "ness.com.br/*"
+zone_name = "ness.com.br"
+
+[[routes]]
+pattern = "www.ness.com.br/*"
 zone_name = "ness.com.br"
 
 [vars]

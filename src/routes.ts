@@ -29,18 +29,16 @@ function siteRoutes(lang = ''): RouteConfig {
     route('dpo-as-a-service', 'pages/trustness/DpoService.tsx', { id: id('dpo') }),
     route('forense', 'pages/forense/Home.tsx', { id: id('forense') }),
 
-    // Comuns às três marcas.
+    // Comuns às três marcas. /contact, /about e /portfólio não estão aqui:
+    // o Worker as redireciona com 301 para a grafia canônica.
     route('brandbook', 'pages/Brandbook.tsx', { id: id('brandbook') }),
     route('sobre', 'pages/About.tsx', { id: id('sobre') }),
-    route('about', 'pages/About.tsx', { id: id('sobre-en') }),
     route('portfolio', 'pages/Portfolio.tsx', { id: id('portfolio') }),
-    route('portfólio', 'pages/Portfolio.tsx', { id: id('portfolio-acentuado') }),
     route('portfolio/:slug', 'pages/PortfolioCase.tsx', { id: id('portfolio-case') }),
     route('blog', 'pages/Blog.tsx', { id: id('blog') }),
     route('blog/:slug', 'pages/BlogPost.tsx', { id: id('blog-post') }),
     route('carreiras', 'pages/Careers.tsx', { id: id('carreiras') }),
     route('contato', 'pages/Contact.tsx', { id: id('contato') }),
-    route('contact', 'pages/Contact.tsx', { id: id('contato-en') }),
     route('compliance/:type', 'pages/Compliance.tsx', { id: id('compliance') }),
     route('assessment/:type', 'pages/Assessment.tsx', { id: id('assessment') }),
 

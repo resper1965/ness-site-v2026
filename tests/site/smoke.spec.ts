@@ -63,6 +63,28 @@ test.describe('metadados por rota', () => {
   });
 });
 
+test.describe('rotas espelho e www', () => {
+  const espelhos: [string, string][] = [
+    ['/contact', '/contato'],
+    ['/about', '/sobre'],
+    ['/portf%C3%B3lio', '/portfolio'],
+  ];
+
+  for (const [de, para] of espelhos) {
+    test(`${de} redireciona 301 para ${para}`, async ({ request }) => {
+      const resposta = await request.get(de, { maxRedirects: 0 });
+      expect(resposta.status()).toBe(301);
+      expect(resposta.headers()['location']).toContain(para);
+    });
+  }
+
+  test('a grafia canônica continua respondendo', async ({ request }) => {
+    for (const path of ['/contato', '/sobre', '/portfolio']) {
+      expect((await request.get(path)).status(), path).toBe(200);
+    }
+  });
+});
+
 test.describe('conteúdo do CMS no HTML', () => {
   // O D1 local (miniflare) está vazio; estas asserções só valem contra um
   // ambiente com o banco de verdade, que é o preview do PR.
