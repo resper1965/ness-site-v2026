@@ -73,6 +73,56 @@ test.describe('metadados por rota', () => {
   });
 });
 
+test.describe('formulário de contato', () => {
+  test('quatro campos, sem select de assunto', async ({ page }) => {
+    await page.goto('/contato');
+    await expect(page.locator('#contact-name')).toBeVisible();
+    await expect(page.locator('#contact-company')).toBeVisible();
+    await expect(page.locator('#contact-email')).toBeVisible();
+    await expect(page.locator('#contact-message')).toBeVisible();
+    // O assunto passou a sair do `ref` da URL: um campo a menos para o visitante.
+    await expect(page.locator('#contact-subject')).toHaveCount(0);
+  });
+
+  // Fora da tela, não `display:none`: robô ingênuo preenche campo escondido
+  // por CSS de display, e é justamente ele que a armadilha pega.
+  test('honeypot está fora da tela e fora do teclado', async ({ page }) => {
+    await page.goto('/contato');
+    const armadilha = page.locator('input[name="website"]');
+    await expect(armadilha).toHaveCount(1);
+    await expect(armadilha).toHaveAttribute('tabindex', '-1');
+
+    await expect(armadilha, 'honeypot dentro da tela').not.toBeInViewport();
+
+    const display = await armadilha.evaluate((el) => getComputedStyle(el).display);
+    expect(display, 'honeypot virou display:none — robô ingênuo preenche assim mesmo').not.toBe('none');
+
+    const escondidoDeLeitorDeTela = await armadilha.evaluate(
+      (el) => !!el.closest('[aria-hidden="true"]'),
+    );
+    expect(escondidoDeLeitorDeTela, 'honeypot visível para leitor de tela').toBe(true);
+  });
+
+  test('e-mail inválido avisa na hora, sem esperar o envio', async ({ page }) => {
+    await page.goto('/contato');
+    // O aviso depende do onBlur, que só existe depois da hidratação. Repetir
+    // o ciclo inteiro é honesto; esperar um tempo fixo é torcer.
+    await expect(async () => {
+      await page.locator('#contact-email').fill('nao-e-email');
+      await page.locator('#contact-name').click();
+      await expect(page.locator('#contact-email-erro')).toContainText('inválido');
+    }).toPass({ timeout: 15_000 });
+  });
+
+  test('a confirmação é página própria e não é indexável', async ({ request }) => {
+    const resposta = await request.get('/obrigado');
+    expect(resposta.status()).toBe(200);
+    const html = await resposta.text();
+    expect(html).toContain('content="noindex, nofollow"');
+    expect(html).toContain('recebemos sua mensagem');
+  });
+});
+
 test.describe('idioma na URL', () => {
   test('cada idioma tem endereço próprio, com conteúdo e lang corretos', async ({ request }) => {
     const casos = [
