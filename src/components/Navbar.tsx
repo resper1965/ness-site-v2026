@@ -2,11 +2,18 @@ import BlueDot from '../components/BlueDot';
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, Sparkles, ChevronDown } from "lucide-react";
 
 import { YEARS_OF_LEGACY } from '../constants/brand';
 import { useBrand } from '../config/brand';
 import { rotaNoIdioma, type Idioma } from '../utils/lang';
+import { solutionsData } from '../data/solutionsData';
+
+/** Os cinco produtos, lidos de solutionsData: uma fonte da verdade só. */
+const SOLUCOES = Object.entries(solutionsData).map(([slug, dados]) => {
+  const [nome, resumo] = (dados.metaTitle ?? slug).split(' — ');
+  return { slug, nome: nome ?? slug, resumo: resumo ?? '' };
+});
 
 const Navbar = () => {
   const BRAND = useBrand();
@@ -45,6 +52,18 @@ const Navbar = () => {
 
   // O idioma vive na URL: trocar de idioma é navegar. Assim a escolha é
   // compartilhável, indexável e sobrevive a um recarregamento.
+  const [menuSolucoes, setMenuSolucoes] = useState(false);
+
+  // O menu de soluções fecha ao navegar e no Esc — abrir é fácil, sair tem
+  // que ser mais fácil ainda.
+  useEffect(() => { setMenuSolucoes(false); }, [location.pathname]);
+  useEffect(() => {
+    if (!menuSolucoes) return;
+    const aoTeclar = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenuSolucoes(false); };
+    document.addEventListener('keydown', aoTeclar);
+    return () => document.removeEventListener('keydown', aoTeclar);
+  }, [menuSolucoes]);
+
   const changeLanguage = (lng: string) => {
     navigate(rotaNoIdioma(location.pathname, lng as Idioma) + location.search);
   };
@@ -84,6 +103,56 @@ const Navbar = () => {
           </div>
           {menuItems.map((item) => {
             const active = isActive(item.to);
+
+            // Soluções abre o mapa das cinco: o visitante que chega por
+            // "segurança" não sabe que o produto se chama n.secops.
+            if (item.key === 'solutions') {
+              return (
+                <div key={item.key} className="relative">
+                  <button
+                    type="button"
+                    aria-expanded={menuSolucoes}
+                    aria-controls="menu-solucoes"
+                    /* Só clique: abrir no hover e fechar no clique é o padrão
+                       que confunde no mouse e não existe no toque. */
+                    onClick={() => setMenuSolucoes((aberto) => !aberto)}
+                    className={`flex items-center gap-1 tracking-wide text-[11px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-bold focus-visible:ring-2 focus-visible:ring-primary-container rounded-sm ${
+                      active ? 'text-primary-container' : 'text-on-surface-variant'
+                    }`}
+                  >
+                    {item.label}
+                    <ChevronDown size={12} aria-hidden="true" className={menuSolucoes ? 'rotate-180 transition-transform' : 'transition-transform'} />
+                  </button>
+
+                  {menuSolucoes && (
+                    <div
+                      id="menu-solucoes"
+                      className="absolute left-1/2 -translate-x-1/2 top-full pt-4 w-[320px]"
+                    >
+                      <div className="bg-surface-container-low/98 backdrop-blur-xl rounded-3xl border border-white/10 p-3 nebula-shadow">
+                        {SOLUCOES.map((solucao) => (
+                          <Link
+                            key={solucao.slug}
+                            to={`/solucoes/${solucao.slug}`}
+                            className="block px-4 py-2.5 rounded-2xl hover:bg-white/5 transition-colors"
+                          >
+                            <span className="block text-xs font-bold text-white lowercase-all">{solucao.nome}</span>
+                            <span className="block text-[11px] text-on-surface-variant leading-snug">{solucao.resumo}</span>
+                          </Link>
+                        ))}
+                        <Link
+                          to="/assessment/cyber"
+                          className="block mt-1 px-4 py-2.5 rounded-2xl bg-primary-container/10 text-primary-container text-[11px] font-bold uppercase tracking-widest text-center hover:bg-primary-container hover:text-on-primary transition-colors"
+                        >
+                          {t('nav.assessment', 'diagnóstico gratuito')}
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
             return (
               <Link
                 key={item.key}
@@ -179,6 +248,23 @@ const Navbar = () => {
                   >
                     {item.label}{active && <BlueDot />}
                   </Link>
+
+                  {/* No mobile não há hover: os cinco produtos ficam listados
+                      sob Soluções, em vez de escondidos atrás de um toque. */}
+                  {item.key === 'solutions' && (
+                    <div id="solucoes-mobile" className="mt-3 ml-1 flex flex-col gap-2 border-l border-white/10 pl-4">
+                      {SOLUCOES.map((solucao) => (
+                        <Link
+                          key={solucao.slug}
+                          to={`/solucoes/${solucao.slug}`}
+                          onClick={() => setIsOpen(false)}
+                          className="text-sm text-on-surface-variant hover:text-primary-container transition-colors lowercase-all"
+                        >
+                          {solucao.nome}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </div>
               );
             })}

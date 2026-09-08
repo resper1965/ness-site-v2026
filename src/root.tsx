@@ -14,6 +14,7 @@ import Analytics from './components/Analytics';
 import SchemaOrg from './components/SchemaOrg';
 import { ErrorBoundary as RenderErrorBoundary } from './components/ErrorBoundary';
 import NotFound from './pages/NotFound';
+import Breadcrumbs from './components/Breadcrumbs';
 import { BrandProvider, BRAND_DOMAINS, resolveBrand, type Brand } from './config/brand';
 import { BRAND_DEFAULT_META, pageMeta } from './utils/meta';
 import { IDIOMA_PADRAO, idiomaDaRota, rotaSemIdioma, type Idioma } from './utils/lang';
@@ -140,6 +141,7 @@ function Shell({ brand, children }: { brand: Brand; children: ReactNode }) {
               <Navbar />
               <ChatLauncher />
               <main id="main-content" tabIndex={-1} className="outline-none">
+                <Breadcrumbs semTrilhaVisivel />
                 {children}
               </main>
               <Footer />
