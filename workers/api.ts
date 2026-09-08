@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import { buscarCase, buscarInsight, listarCases, listarInsights } from './content';
+import { avisarTime, corpoDoLead } from './email';
 
 type Env = {
   Bindings: Bindings;
@@ -17,6 +18,10 @@ export type Bindings = {
   WHISTLEBLOWER_SECRET?: string;
   /** Criado no painel do Turnstile. Ausente = verificação desligada. */
   TURNSTILE_SECRET_KEY?: string;
+  /** Chave do Resend. Ausente = nenhum e-mail sai, o lead ainda é gravado. */
+  RESEND_API_KEY?: string;
+  LEAD_EMAIL_FROM?: string;
+  LEAD_EMAIL_TO?: string;
 };
 
 const app = new Hono<Env>().basePath('/api');
@@ -173,6 +178,17 @@ app.post('/submit-form', async (c) => {
     await c.env.DB.prepare(
       "INSERT INTO forms (payload, source, status) VALUES (?, ?, 'new')"
     ).bind(JSON.stringify(payload), type || 'contact').run();
+
+    // O aviso sai depois da resposta: o lead já está gravado, e o visitante
+    // não deve esperar o Resend para ver a página de obrigado.
+    c.executionCtx.waitUntil(
+      avisarTime(c.env, {
+        assunto: `lead: ${payload.company || payload.name || 'sem identificação'}`,
+        texto: corpoDoLead(payload),
+        responderPara: typeof payload.email === 'string' ? payload.email : undefined,
+      }),
+    );
+
     return c.json({ success: true, message: 'Formulário registrado.' });
   } catch {
     return c.json({ error: 'Failed to submit form' }, 500);
