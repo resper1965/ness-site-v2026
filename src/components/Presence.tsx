@@ -21,14 +21,14 @@ const Presence = () => {
   return (
     <section className="py-12 bg-surface border-y border-white/5 overflow-hidden">
       <div className="max-w-7xl mx-auto px-8">
-        <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-60">
+        <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-85">
           <div className="flex items-center gap-2">
             <Globe className="text-primary-container" size={20} />
             <span className="text-on-surface-variant text-xs tracking-widest uppercase font-bold">{t('presence.global')}</span>
           </div>
           {locations.map((loc) => (
             <div key={loc} className="flex items-center gap-2">
-              <Network className="text-on-surface-variant/50" size={14} />
+              <Network className="text-on-surface-variant/70" size={14} />
               <span className="text-on-surface-variant text-sm lowercase-all">{loc}</span>
             </div>
           ))}

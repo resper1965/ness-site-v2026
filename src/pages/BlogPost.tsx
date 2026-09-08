@@ -1,6 +1,6 @@
 import BlueDot from '../components/BlueDot';
 import React, { useState, useEffect } from "react";
-import { motion } from "motion/react";
+import { m as motion } from "motion/react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, Calendar, Tag, FileText } from "lucide-react";
@@ -87,12 +87,12 @@ const BlogPost = () => {
         <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="space-y-6 mb-12">
           <div className="flex items-center gap-4 flex-wrap">
             {post.tag && (
-              <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container text-[10px] uppercase tracking-widest font-bold">
+              <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container text-[11px] uppercase tracking-widest font-bold">
                 <Tag size={10} /> {post.tag}
               </span>
             )}
             {post.date && (
-              <span className="flex items-center gap-1 text-on-surface-variant/40 text-xs font-mono">
+              <span className="flex items-center gap-1 text-on-surface-variant/60 text-xs font-mono">
                 <Calendar size={12} /> {post.date}
               </span>
             )}
@@ -119,8 +119,8 @@ const BlogPost = () => {
             const rawBody = post.body ?? post.content ?? '';
             if (!rawBody) return (
               <div className="flex flex-col items-center py-16 text-center">
-                <FileText size={40} className="text-on-surface-variant/20 mb-4" />
-                <p className="text-on-surface-variant/40 text-sm">{t('blog.comingSoon', 'conteúdo em breve.')}</p>
+                <FileText size={40} className="text-on-surface-variant/70 mb-4" />
+                <p className="text-on-surface-variant/60 text-sm">{t('blog.comingSoon', 'conteúdo em breve.')}</p>
               </div>
             );
             return (

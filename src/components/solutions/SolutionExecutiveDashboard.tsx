@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { m as motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import ChatPreview from '../ChatPreview';
 
@@ -25,7 +25,7 @@ const SolutionExecutiveDashboard: React.FC<SolutionDashboardProps> = ({ slug, da
       <div className="absolute top-0 right-0 p-6">
         <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
           <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
-          <span className="text-[10px] text-green-500 font-bold uppercase tracking-widest">
+          <span className="text-[11px] text-green-500 font-bold uppercase tracking-widest">
             {t('solutions.active_resilience')}
           </span>
         </div>
@@ -40,7 +40,7 @@ const SolutionExecutiveDashboard: React.FC<SolutionDashboardProps> = ({ slug, da
             <div className="text-3xl font-display font-bold text-white tracking-tighter">
               {dashboard?.mainStat.value || '99.9%'}
             </div>
-            <div className="text-[10px] text-on-surface-variant uppercase tracking-widest">
+            <div className="text-[11px] text-on-surface-variant uppercase tracking-widest">
               {dashboard?.mainStat.label || 'uptime operacional'}
             </div>
           </div>
@@ -57,7 +57,7 @@ const SolutionExecutiveDashboard: React.FC<SolutionDashboardProps> = ({ slug, da
               >
                 {metric.value}
               </motion.div>
-              <div className="text-[10px] text-on-surface-variant uppercase tracking-widest">
+              <div className="text-[11px] text-on-surface-variant uppercase tracking-widest">
                 {metric.label}
               </div>
             </div>
@@ -66,10 +66,10 @@ const SolutionExecutiveDashboard: React.FC<SolutionDashboardProps> = ({ slug, da
 
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <h4 className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">
+            <h4 className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold">
               {dashboard?.progress.label}
             </h4>
-            <span className="text-[10px] text-primary font-mono">
+            <span className="text-[11px] text-primary font-mono">
               {dashboard?.progress.value} {dashboard?.progress.subLabel}
             </span>
           </div>

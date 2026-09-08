@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { m as motion, AnimatePresence } from "motion/react";
 import { X, Download, CheckCircle2, FileText } from "lucide-react";
 import { CANAL_BASE } from "../config/api";
 import BlueDot from "./BlueDot";
@@ -22,6 +22,7 @@ export default function LeadMagnet({
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,15 +36,17 @@ export default function LeadMagnet({
       company: formData.get("company"),
     };
 
+    setError(null);
     try {
-      await fetch(`${CANAL_BASE}/api/submit-form`, {
+      const res = await fetch(`${CANAL_BASE}/api/submit-form`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setIsSubmitted(true);
     } catch {
-      setIsSubmitted(true); // Still show success — material is free
+      setError("não conseguimos registrar seu pedido agora. tente novamente ou escreva para contato@ness.com.br.");
     } finally {
       setIsLoading(false);
     }
@@ -56,7 +59,7 @@ export default function LeadMagnet({
         <div className="flex-1 space-y-3">
           <div className="flex items-center gap-3">
             <FileText className="text-primary-container" size={24} />
-            <span className="text-[10px] text-primary-container font-bold uppercase tracking-widest">
+            <span className="text-[11px] text-primary-container font-bold uppercase tracking-widest">
               material gratuito
             </span>
           </div>
@@ -96,6 +99,8 @@ export default function LeadMagnet({
               className="relative w-full max-w-md bg-surface-container border border-white/10 rounded-3xl p-8 space-y-6"
             >
               <button
+                type="button"
+                aria-label="fechar"
                 onClick={() => setIsOpen(false)}
                 className="absolute top-4 right-4 text-on-surface-variant hover:text-white transition-colors"
               >
@@ -105,7 +110,7 @@ export default function LeadMagnet({
               {!isSubmitted ? (
                 <>
                   <div>
-                    <span className="text-[10px] text-primary-container font-bold uppercase tracking-widest block mb-2">
+                    <span className="text-[11px] text-primary-container font-bold uppercase tracking-widest block mb-2">
                       download gratuito
                     </span>
                     <h3 className="text-2xl font-display text-white tracking-tight lowercase mb-2">
@@ -168,7 +173,10 @@ export default function LeadMagnet({
                     >
                       {isLoading ? "enviando..." : "receber material"}
                     </button>
-                    <p className="text-[10px] text-on-surface-variant/60 text-center">
+                    {error && (
+                      <p role="alert" className="text-xs text-red-400 text-center">{error}</p>
+                    )}
+                    <p className="text-[11px] text-on-surface-variant/60 text-center">
                       Não compartilhamos seus dados. Política de privacidade
                       LGPD.
                     </p>

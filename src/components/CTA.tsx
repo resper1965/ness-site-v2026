@@ -25,7 +25,7 @@ const CTA = () => {
             <Link to="/contato" className="bg-white text-surface px-8 py-3 rounded-full font-display font-semibold text-sm hover:bg-primary-container hover:text-on-primary transition-all shadow-lg shadow-primary-container/20 text-center">
               {t('cta.button')}
             </Link>
-            <p className="text-on-surface-variant/50 text-center text-xs font-light">{t('cta.support')}</p>
+            <p className="text-on-surface-variant/70 text-center text-xs font-light">{t('cta.support')}</p>
           </div>
         </div>
       </div>

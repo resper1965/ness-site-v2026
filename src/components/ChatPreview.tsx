@@ -1,5 +1,5 @@
 import React, {  } from "react";
-import { motion } from "motion/react";
+import { m as motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { 
 Brain, 
@@ -27,7 +27,7 @@ const ChatPreview = () => {
           </div>
           <div>
             <div className="text-white font-bold text-sm">Gabi</div>
-            <div className="text-[10px] text-green-500 uppercase tracking-widest font-bold flex items-center gap-1">
+            <div className="text-[11px] text-green-500 uppercase tracking-widest font-bold flex items-center gap-1">
               <div className="w-1 h-1 rounded-full bg-green-500 animate-pulse"></div>
               online
             </div>
@@ -62,7 +62,7 @@ const ChatPreview = () => {
 
       <div className="mt-6 pt-4 border-t border-white/5">
         <div className="bg-white/5 rounded-full px-4 py-3 flex items-center justify-between border border-white/10">
-          <span className="text-on-surface-variant/40 text-xs">{t('chatbot.placeholder')}</span>
+          <span className="text-on-surface-variant/60 text-xs">{t('chatbot.placeholder')}</span>
           <Send size={16} className="text-primary-container" />
         </div>
       </div>

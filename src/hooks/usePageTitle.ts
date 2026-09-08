@@ -10,16 +10,28 @@ interface PageMeta {
   noindex?: boolean;
 }
 
+interface PageMetaOptions {
+  /**
+   * Quando `false`, o hook não toca no <head>. Usado por componentes que são
+   * ao mesmo tempo rota própria e seção da home (Solutions, Services, ...):
+   * como seção, eles não podem sobrescrever o título da página que os contém.
+   */
+  enabled?: boolean;
+}
+
 /**
- * Sets document title, meta description, Open Graph, Twitter Card, and canonical URL.
+ * Sets document title, meta description, Open Graph, Twitter Card, canonical URL and robots.
  * Backwards compatible: usePageMeta('key', 'fallback') works like old usePageTitle.
  */
-export function usePageMeta(titleKeyOrMeta: string | PageMeta, fallback?: string) {
+export function usePageMeta(titleKeyOrMeta: string | PageMeta, fallback?: string, options: PageMetaOptions = {}) {
   const { t, i18n } = useTranslation();
   const brandLabel = BRAND_LABELS[BRAND];
   const domain = BRAND_DOMAINS[BRAND];
+  const enabled = options.enabled !== false;
 
   useEffect(() => {
+    if (!enabled) return;
+
     let title: string;
     let description: string | undefined;
     let image: string | undefined;
@@ -61,13 +73,13 @@ export function usePageMeta(titleKeyOrMeta: string | PageMeta, fallback?: string
     }
 
     // Open Graph
+    const url = `${domain}${window.location.pathname}`;
     setMeta('property', 'og:title', fullTitle);
     setMeta('property', 'og:type', type);
-    setMeta('property', 'og:url', `${domain}${window.location.pathname}`);
-    if (image) {
-      setMeta('property', 'og:image', image);
-      setMeta('name', 'twitter:image', image);
-    }
+    setMeta('property', 'og:url', url);
+    const ogImage = image || `${domain}/og-image.jpg`;
+    setMeta('property', 'og:image', ogImage);
+    setMeta('name', 'twitter:image', ogImage);
 
     // Twitter Card
     setMeta('name', 'twitter:card', 'summary_large_image');
@@ -80,14 +92,12 @@ export function usePageMeta(titleKeyOrMeta: string | PageMeta, fallback?: string
       canonical.setAttribute('rel', 'canonical');
       document.head.appendChild(canonical);
     }
-    canonical.setAttribute('href', `${domain}${window.location.pathname}`);
+    canonical.setAttribute('href', url);
 
-    // Robots
-    if (noindex) {
-      setMeta('name', 'robots', 'noindex, nofollow');
-    }
+    // Robots — sempre redefinido, para uma página noindex não "vazar" para a próxima
+    setMeta('name', 'robots', noindex ? 'noindex, nofollow' : 'index, follow');
 
-  }, [titleKeyOrMeta, fallback, t, i18n.language, brandLabel, domain]);
+  }, [titleKeyOrMeta, fallback, t, i18n.language, brandLabel, domain, enabled]);
 }
 
 // Backwards compatibility alias

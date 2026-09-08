@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "motion/react";
+import { m as motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
@@ -22,6 +22,7 @@ import {
 import BlueDot from "../../components/BlueDot";
 import SchemaOrg from "../../components/SchemaOrg";
 import { usePageTitle } from "../../hooks/usePageTitle";
+import HeroPicture from "../../components/HeroPicture";
 
 export default function DpoService() {
   const { t } = useTranslation();
@@ -140,21 +141,9 @@ export default function DpoService() {
       {/* Hero */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-surface-container-lowest">
         <div className="absolute inset-0 z-0">
-          <motion.img
-            initial={{ scale: 1.2, opacity: 0 }}
-            animate={{ scale: 1, opacity: 0.15 }}
-            transition={{ duration: 2, ease: "easeOut" }}
-            src="https://images.unsplash.com/photo-1563986768609-322da13575f2?auto=format&fit=crop&q=80&w=2000"
-            alt="Privacy & Data Protection"
-            className="w-full h-full object-cover grayscale"
-            referrerPolicy="no-referrer"
-          />
+          <HeroPicture brand="trustness" opacity={0.15} grayscale />
           <div className="absolute inset-0 bg-linear-to-b from-surface-container-lowest/40 via-surface-container-lowest/90 to-surface-container-lowest z-10" />
-          <motion.div
-            animate={{ y: [0, -20, 0], opacity: [0.1, 0.3, 0.1] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary-container/15 blur-[120px] rounded-full z-10"
-          />
+          <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary-container/15 blur-[120px] rounded-full z-10" />
         </div>
 
         <div className="relative z-20 max-w-7xl mx-auto px-8 w-full">
@@ -247,7 +236,7 @@ export default function DpoService() {
                   {phase.step}
                 </span>
                 <phase.icon className="text-primary-container mb-6 group-hover:scale-110 transition-transform" size={32} />
-                <span className="text-[10px] text-primary-container font-bold uppercase tracking-widest block mb-2">
+                <span className="text-[11px] text-primary-container font-bold uppercase tracking-widest block mb-2">
                   fase {phase.step}
                 </span>
                 <h3 className="text-xl font-display text-white mb-2 tracking-tight">{phase.title}</h3>
@@ -299,7 +288,7 @@ export default function DpoService() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <span className="inline-block px-4 py-1.5 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container font-display text-[10px] tracking-[0.3em] uppercase mb-6">
+              <span className="inline-block px-4 py-1.5 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container font-display text-[11px] tracking-[0.3em] uppercase mb-6">
                 tecnologia proprietária
               </span>
               <h2 className="text-3xl md:text-5xl font-display font-medium text-white lowercase-all tracking-tighter mb-6">

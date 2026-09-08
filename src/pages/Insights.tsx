@@ -1,6 +1,6 @@
 import BlueDot from '../components/BlueDot';
 import React, { useState, useEffect } from "react";
-import { motion } from "motion/react";
+import { m as motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -21,7 +21,7 @@ interface Insight {
 
 const Insights = () => {
   const { t, i18n } = useTranslation();
-  usePageTitle('insights.meta_title', 'insights — ness.');
+  usePageTitle('insights.meta_title', 'insights — ness.', { enabled: false });
   const [articles, setArticles] = useState<Insight[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -59,16 +59,7 @@ const Insights = () => {
   return (
     <section id="insights" className="py-24 bg-surface px-8 border-t border-white/5 relative overflow-hidden">
       {/* Immersive Background for Insights */}
-      <div className="absolute inset-0 z-0">
-        <motion.img 
-          initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.1 }}
-          transition={{ duration: 1.5 }}
-          src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=2000"
-          alt="Digital Insights Background"
-          className="w-full h-full object-cover"
-          referrerPolicy="no-referrer"
-        />
+      <div className="absolute inset-0 z-0 bg-nebula" aria-hidden="true">
         <div className="absolute inset-0 bg-linear-to-b from-surface/40 via-surface/90 to-surface z-10"></div>
       </div>
 
@@ -101,7 +92,7 @@ const Insights = () => {
                     <div className="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center mb-6">
                       <Icon className="text-primary-container" size={24} />
                     </div>
-                    <span className="text-primary-container text-[10px] uppercase tracking-widest font-bold">{art.tag}</span>
+                    <span className="text-primary-container text-[11px] uppercase tracking-widest font-bold">{art.tag}</span>
                     <h3 className="text-xl mt-2 mb-4 text-white group-hover:text-primary transition-colors lowercase-all">
                       {art.title}
                     </h3>

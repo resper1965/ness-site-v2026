@@ -1,6 +1,6 @@
 import BlueDot from '../components/BlueDot';
 import React, {  } from "react";
-import { motion } from "motion/react";
+import { m as motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -26,9 +26,9 @@ import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/bra
 
 
 
-const Solutions = () => {
+const Solutions = ({ standalone = false }: { standalone?: boolean }) => {
   const { t } = useTranslation();
-  usePageTitle('solutions.meta_title', 'soluções — ness.');
+  usePageTitle('solutions.meta_title', 'soluções — ness.', { enabled: standalone });
   const solutions = [
     {
       slug: "secops",
@@ -94,7 +94,7 @@ const Solutions = () => {
                 <p className="text-on-surface-variant text-sm leading-relaxed font-light">
                   {s.desc}
                 </p>
-                <div className="mt-8 flex items-center gap-2 text-[10px] text-primary-container uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="mt-8 flex items-center gap-2 text-[11px] text-primary-container uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity">
                   ver detalhes <ArrowRight size={14} />
                 </div>
               </motion.div>

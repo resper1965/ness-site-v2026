@@ -3,4 +3,4 @@ Contact: https://ness.com.br/compliance
 Preferred-Languages: pt, en, es
 Expires: 2027-04-20T00:00:00.000Z
 Policy: https://ness.com.br/compliance
-Hiring: https://ness.com.br/careers
+Hiring: https://ness.com.br/carreiras

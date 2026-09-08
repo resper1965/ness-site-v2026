@@ -19,7 +19,8 @@ interface PortfolioEntry { client: string; project: string; result: string }
 
 export interface SolutionData {
   icon: LucideIcon;
-  bgImage: string;
+  metaTitle?: string;
+  metaDescription?: string;
   overview?: string;
   dashboard: DashboardData;
   workflow: WorkflowStep[];
@@ -37,7 +38,8 @@ export const solutionsData: Record<string, SolutionData> = {
 
   "secops": {
     icon: ShieldCheck,
-    bgImage: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2000",
+    metaTitle: "n.secops — SOC 24×7, resposta a incidentes e GRC",
+    metaDescription: "Centro de operações de segurança 24×7 com detecção, resposta imediata e gestão de riscos em um único contrato. Defesa contínua sem inflar sua equipe interna.",
     dashboard: {
       title: "n.secops dashboard",
       mainStat: { value: "100%", label: "postura atualizada" },
@@ -95,7 +97,8 @@ export const solutionsData: Record<string, SolutionData> = {
   },
   "infraops": {
     icon: Cloud,
-    bgImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000",
+    metaTitle: "n.infraops — operações de infraestrutura e cloud com FinOps",
+    metaDescription: "Suporte técnico e operação de infraestrutura híbrida com ITIL, automação e IA aplicada. Nuvem elástica, custos previsíveis e uptime garantido.",
     dashboard: {
       title: "n.infraops tickets",
       mainStat: { value: "L1/L2/L3", label: "service desk itil" },
@@ -151,7 +154,8 @@ export const solutionsData: Record<string, SolutionData> = {
   },
   "devarch": {
     icon: Cpu,
-    bgImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000",
+    metaTitle: "n.devarch — engenharia e arquitetura de software sob medida",
+    metaDescription: "Squads de engenharia de software de alta performance: arquitetura, desenvolvimento seguro (DevSecOps) e modernização de sistemas críticos.",
     dashboard: {
       title: "n.devarch throughput",
       mainStat: { value: "24/7", label: "secure deployments" },
@@ -207,7 +211,8 @@ export const solutionsData: Record<string, SolutionData> = {
   },
   "autoops": {
     icon: Brain,
-    bgImage: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=2000",
+    metaTitle: "n.autoops — automação de infraestrutura e processos",
+    metaDescription: "Automação de infraestrutura, pipelines e processos operacionais com IA. Menos tarefas manuais, mais previsibilidade e escala.",
     dashboard: {
       title: "n.autoops intelligence",
       mainStat: { value: "A.I.", label: "agents active" },
@@ -244,7 +249,8 @@ export const solutionsData: Record<string, SolutionData> = {
   },
   "cirt": {
     icon: Gavel,
-    bgImage: "https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80&w=2000",
+    metaTitle: "n.cirt — resposta a incidentes cibernéticos com SLA de 15 minutos",
+    metaDescription: "Time de resposta a incidentes para ransomware, vazamento de dados e indisponibilidade crítica. Contenção, forense e comunicação com SLA de acionamento de 15 minutos.",
     dashboard: {
       title: "n.cirt response",
       mainStat: { value: "< 15m", label: "war room SLA" },

@@ -1,6 +1,6 @@
 import BlueDot from '../components/BlueDot';
 import React, { useState, useEffect, useMemo } from "react";
-import { motion } from "motion/react";
+import { m as motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ShieldCheck, Cloud, Cpu, Brain, Lock, Workflow, FileText, ArrowUpRight } from "lucide-react";
@@ -84,7 +84,7 @@ const Blog = () => {
               <button
                 key={tag}
                 onClick={() => setActiveTag(tag)}
-                className={`px-5 py-2 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all ${
+                className={`px-5 py-2 rounded-full text-[11px] uppercase tracking-widest font-bold transition-all ${
                   activeTag === tag
                     ? 'bg-primary-container text-on-primary shadow-lg shadow-primary-container/20'
                     : 'bg-white/5 text-on-surface-variant hover:bg-white/10'
@@ -125,8 +125,8 @@ const Blog = () => {
                     <Icon className="text-primary-container" size={24} />
                   </div>
                   <div className="flex justify-between items-center mb-4">
-                    <span className="text-primary-container text-[10px] uppercase tracking-widest font-bold">{art.tag}</span>
-                    <span className="text-on-surface-variant/40 text-[10px] font-mono">{art.date}</span>
+                    <span className="text-primary-container text-[11px] uppercase tracking-widest font-bold">{art.tag}</span>
+                    <span className="text-on-surface-variant/60 text-[11px] font-mono">{art.date}</span>
                   </div>
                   <h3 className="text-2xl mb-4 text-white group-hover:text-primary transition-colors lowercase-all leading-tight">
                     {art.title}
@@ -136,7 +136,7 @@ const Blog = () => {
                   </p>
                   <Link
                     to={`/blog/${slug}`}
-                    className="flex items-center gap-2 text-[10px] text-primary-container uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="flex items-center gap-2 text-[11px] text-primary-container uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity"
                   >
                     {t('blog.read_article', 'ler artigo completo')} <ArrowUpRight size={14} />
                   </Link>

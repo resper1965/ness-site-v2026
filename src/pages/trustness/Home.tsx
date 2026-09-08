@@ -1,8 +1,9 @@
 import React from "react";
-import { motion } from "motion/react";
+import { m as motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Fingerprint, Lock, FileCheck, ShieldCheck, Target, GraduationCap, Scale, Activity, PieChart, Users, ShieldAlert, CheckCircle2 } from "lucide-react";
 import BlueDot from "../../components/BlueDot";
+import HeroPicture from "../../components/HeroPicture";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import { useTranslation } from "react-i18next";
 import LeadMagnet from "../../components/LeadMagnet";
@@ -16,39 +17,10 @@ export default function TrustnessHome() {
   
   return (
     <main>
-      {/* Back to ness. */}
-      <div style={{ position: 'fixed', top: 16, left: 20, zIndex: 100 }}>
-        <a
-          href="https://ness.com.br"
-          style={{
-            display: 'inline-flex', alignItems: 'center', gap: 6,
-            padding: '6px 14px', borderRadius: 99,
-            background: 'rgba(11,19,38,0.8)', backdropFilter: 'blur(8px)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            color: 'rgba(255,255,255,0.55)', fontSize: 12, fontWeight: 500,
-            textDecoration: 'none', transition: 'color 0.15s',
-            fontFamily: 'Inter, system-ui, sans-serif',
-          }}
-          onMouseEnter={e => (e.currentTarget.style.color = '#7bd0ff')}
-          onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
-        >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="15 18 9 12 15 6"/>
-          </svg>
-          ness.
-        </a>
-      </div>
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-surface-container-lowest">
         <div className="absolute inset-0 z-0">
-          <motion.img 
-            initial={{ scale: 1.2, opacity: 0 }}
-            animate={{ scale: 1, opacity: 0.3 }}
-            transition={{ duration: 2, ease: "easeOut" }}
-            src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=2000"
-            alt="Trustness Background"
-            className="w-full h-full object-cover grayscale"
-          />
+          <HeroPicture brand="trustness" opacity={0.3} priority grayscale />
           <div className="absolute inset-0 bg-linear-to-b from-surface-container-lowest/50 via-surface-container-lowest/90 to-surface-container-lowest z-10"></div>
           {/* Intense blue glow to distinguish trustness */}
           <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary-container/10 blur-[120px] rounded-full z-10" />
@@ -62,7 +34,7 @@ export default function TrustnessHome() {
             className="max-w-5xl space-y-10"
           >
             <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-display font-medium text-white leading-[1.05] tracking-tighter lowercase-all">
-              {t("trustness.title")}<BlueDot /><br />
+              {t("trustness.title")}<BlueDot />{" "}<br />
               <span className="text-white/90 drop-shadow-[0_0_20px_rgba(0,173,232,0.4)]">{t("trustness.hero.tag")}</span>
             </h1>
             <p className="text-lg md:text-2xl text-on-surface-variant max-w-3xl leading-relaxed font-light">
@@ -135,7 +107,7 @@ export default function TrustnessHome() {
             ].map((feature, i) => (
               <div key={i} className={`p-8 rounded-3xl border transition-colors group ${feature.highlight ? 'bg-primary-container/5 border-primary-container/20' : 'bg-surface-container border-white/5 hover:border-primary-container/30'}`}>
                 <feature.icon className="text-primary-container mb-6 group-hover:scale-110 transition-transform" size={32} />
-                <span className="text-[10px] text-primary-container font-bold uppercase tracking-widest block mb-2">{feature.title}</span>
+                <span className="text-[11px] text-primary-container font-bold uppercase tracking-widest block mb-2">{feature.title}</span>
                 <h3 className="text-lg font-display text-white mb-3 tracking-tight leading-tight">{feature.subtitle}</h3>
                 <p className="text-sm text-on-surface-variant font-light leading-relaxed">{feature.description}</p>
               </div>
@@ -145,7 +117,7 @@ export default function TrustnessHome() {
           {/* DPO as a Service — Featured Banner */}
           <div className="mt-8 p-8 md:p-12 rounded-3xl bg-primary-container/5 border border-primary-container/20 flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="flex-1">
-              <span className="text-[10px] text-primary-container font-bold uppercase tracking-widest block mb-3">serviço principal</span>
+              <span className="text-[11px] text-primary-container font-bold uppercase tracking-widest block mb-3">serviço principal</span>
               <h3 className="text-2xl md:text-3xl font-display text-white mb-3 tracking-tight lowercase">
                 dpo as a service<BlueDot />
               </h3>
@@ -213,7 +185,7 @@ export default function TrustnessHome() {
           {/* Assessment CTA */}
           <div className="p-8 md:p-10 rounded-3xl bg-surface-container border border-white/10 flex flex-col md:flex-row items-center gap-8">
             <div className="flex-1 space-y-3">
-              <span className="text-[10px] text-primary-container font-bold uppercase tracking-widest block">assessment interativo</span>
+              <span className="text-[11px] text-primary-container font-bold uppercase tracking-widest block">assessment interativo</span>
               <h3 className="text-xl md:text-2xl font-display text-white tracking-tight lowercase">
                 descubra sua maturidade lgpd em 3 minutos<BlueDot />
               </h3>
@@ -258,7 +230,7 @@ export default function TrustnessHome() {
               ].map((m, i) => (
                 <div key={i} className="p-8 rounded-3xl bg-surface-container-lowest border border-white/5 text-center">
                   <div className="text-3xl font-display text-white mb-2">{m.value}</div>
-                  <div className="text-[10px] text-primary-container font-bold uppercase tracking-widest">{m.label}</div>
+                  <div className="text-[11px] text-primary-container font-bold uppercase tracking-widest">{m.label}</div>
                 </div>
               ))}
             </div>

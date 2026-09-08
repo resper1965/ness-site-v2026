@@ -20,7 +20,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
   return (
     <nav
       aria-label="Breadcrumb"
-      className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-bold"
+      className="flex items-center gap-1.5 text-[11px] uppercase tracking-widest font-bold"
     >
       {crumbs.map((crumb, i) => {
         const isLast = i === crumbs.length - 1;
@@ -29,7 +29,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
             {i > 0 && (
               <ChevronRight
                 size={10}
-                className="text-on-surface-variant/30 shrink-0"
+                className="text-on-surface-variant/70 shrink-0"
               />
             )}
             {isLast || !crumb.to ? (
@@ -39,7 +39,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
             ) : (
               <Link
                 to={crumb.to}
-                className="text-on-surface-variant/50 hover:text-on-surface-variant transition-colors truncate max-w-[120px]"
+                className="text-on-surface-variant/70 hover:text-on-surface-variant transition-colors truncate max-w-[120px]"
               >
                 {crumb.label}
               </Link>

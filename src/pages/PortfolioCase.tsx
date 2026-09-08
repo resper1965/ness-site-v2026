@@ -1,6 +1,6 @@
 import BlueDot from '../components/BlueDot';
 import React, { useState, useEffect } from "react";
-import { motion } from "motion/react";
+import { m as motion } from "motion/react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, ExternalLink } from "lucide-react";
@@ -93,10 +93,10 @@ const PortfolioCase = () => {
         <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}>
           <div className="flex items-center gap-3 mb-4">
             {item.client && (
-              <span className="text-[10px] uppercase tracking-widest text-primary font-bold">{item.client}</span>
+              <span className="text-[11px] uppercase tracking-widest text-primary font-bold">{item.client}</span>
             )}
             {item.stats && (
-              <span className="px-3 py-1 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container text-[10px] font-bold uppercase tracking-widest">
+              <span className="px-3 py-1 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container text-[11px] font-bold uppercase tracking-widest">
                 {(() => {
                   try {
                     if (item.stats.startsWith('{')) {
@@ -126,7 +126,7 @@ const PortfolioCase = () => {
             transition={{ delay: 0.2 }}
             className="p-8 rounded-4xl bg-surface-container-low border border-white/5 mb-12"
           >
-            <div className="text-[10px] uppercase tracking-widest text-on-surface-variant/60 font-bold mb-2">{t('portfolio.result')}</div>
+            <div className="text-[11px] uppercase tracking-widest text-on-surface-variant/60 font-bold mb-2">{t('portfolio.result')}</div>
             <div className="text-white text-lg font-display font-semibold">{item.result}</div>
           </motion.div>
         )}

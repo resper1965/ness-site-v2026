@@ -1,8 +1,9 @@
 import React from "react";
-import { motion } from "motion/react";
+import { m as motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ShieldAlert, Fingerprint, HardDrive, Smartphone, Network, Clock, FileCheck, Scale, Activity, ShieldCheck, MessageSquare, Search, Lock, CheckCircle2 } from "lucide-react";
 import BlueDot from "../../components/BlueDot";
+import HeroPicture from "../../components/HeroPicture";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import { useTranslation } from "react-i18next";
 
@@ -15,39 +16,10 @@ export default function ForenseHome() {
   
   return (
     <main>
-      {/* Back to ness. */}
-      <div style={{ position: 'fixed', top: 16, left: 20, zIndex: 100 }}>
-        <a
-          href="https://ness.com.br"
-          style={{
-            display: 'inline-flex', alignItems: 'center', gap: 6,
-            padding: '6px 14px', borderRadius: 99,
-            background: 'rgba(11,19,38,0.8)', backdropFilter: 'blur(8px)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            color: 'rgba(255,255,255,0.55)', fontSize: 12, fontWeight: 500,
-            textDecoration: 'none', transition: 'color 0.15s',
-            fontFamily: 'Inter, system-ui, sans-serif',
-          }}
-          onMouseEnter={e => (e.currentTarget.style.color = '#7bd0ff')}
-          onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
-        >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="15 18 9 12 15 6"/>
-          </svg>
-          ness.
-        </a>
-      </div>
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-surface-container-lowest">
         <div className="absolute inset-0 z-0">
-          <motion.img 
-            initial={{ scale: 1.2, opacity: 0 }}
-            animate={{ scale: 1, opacity: 0.4 }}
-            transition={{ duration: 2, ease: "easeOut" }}
-            src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=2000"
-            alt="Forense Background"
-            className="w-full h-full object-cover grayscale"
-          />
+          <HeroPicture brand="forense" opacity={0.4} priority grayscale />
           <div className="absolute inset-0 bg-linear-to-b from-surface-container-lowest/50 via-surface-container-lowest/90 to-surface-container-lowest z-10"></div>
           {/* Intense blue glow to contrast with blue dot */}
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-container/10 blur-[120px] rounded-full z-10" />
@@ -129,7 +101,7 @@ export default function ForenseHome() {
             ].map((feature, i) => (
               <div key={i} className={`p-8 rounded-3xl bg-surface-container border border-white/5 hover:border-primary-container/30 transition-colors group ${feature.className}`}>
                 <feature.icon className="text-primary-container mb-6 group-hover:scale-110 transition-transform" size={32} />
-                <span className="text-[10px] text-primary-container font-bold uppercase tracking-widest block mb-2">{feature.title}</span>
+                <span className="text-[11px] text-primary-container font-bold uppercase tracking-widest block mb-2">{feature.title}</span>
                 <h3 className="text-lg font-display text-white mb-3 tracking-tight leading-tight">{feature.subtitle}</h3>
                 <p className="text-sm text-on-surface-variant font-light leading-relaxed">{feature.description}</p>
               </div>
@@ -197,7 +169,7 @@ export default function ForenseHome() {
               ].map((m, i) => (
                 <div key={i} className="p-8 rounded-3xl bg-surface-container-lowest border border-white/5 text-center">
                   <div className="text-3xl font-display text-white mb-2">{m.value}</div>
-                  <div className="text-[10px] text-primary-container font-bold uppercase tracking-widest">{m.label}</div>
+                  <div className="text-[11px] text-primary-container font-bold uppercase tracking-widest">{m.label}</div>
                 </div>
               ))}
             </div>

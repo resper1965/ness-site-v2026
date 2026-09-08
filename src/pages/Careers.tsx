@@ -1,6 +1,6 @@
 import BlueDot from '../components/BlueDot';
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { m as motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
 import { CANAL_BASE } from '../config/api';
@@ -66,7 +66,7 @@ const Careers = () => {
             <button
               key={cat}
               onClick={() => setFilter(cat)}
-              className={`px-8 py-3 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all ${
+              className={`px-8 py-3 rounded-full text-[11px] uppercase tracking-widest font-bold transition-all ${
                 filter === cat 
                   ? "bg-primary-container text-on-primary shadow-lg shadow-primary-container/20" 
                   : "bg-white/5 text-on-surface-variant hover:bg-white/10"
@@ -96,7 +96,7 @@ const Careers = () => {
                   <div className="w-12 h-12 rounded-2xl bg-primary-container/10 border border-primary-container/20 flex items-center justify-center">
                     <Briefcase className="text-primary-container" size={24} />
                   </div>
-                  <span className="text-primary-container text-[10px] uppercase tracking-widest font-bold px-4 py-1 rounded-full bg-primary-container/5 border border-primary-container/10">
+                  <span className="text-primary-container text-[11px] uppercase tracking-widest font-bold px-4 py-1 rounded-full bg-primary-container/5 border border-primary-container/10">
                     {job.vertical}
                   </span>
                 </div>
@@ -155,7 +155,7 @@ const Careers = () => {
                 <div className="grid lg:grid-cols-2 gap-12">
                   <div className="space-y-8">
                     <div>
-                      <span className="text-primary-container text-[10px] uppercase tracking-widest font-bold">{selectedJob.vertical}</span>
+                      <span className="text-primary-container text-[11px] uppercase tracking-widest font-bold">{selectedJob.vertical}</span>
                       <h2 className="text-2xl md:text-3xl font-display font-bold text-white mt-2 lowercase">{selectedJob.title}<BlueDot /></h2>
                     </div>
 
@@ -173,7 +173,7 @@ const Careers = () => {
 
                     <div className="p-6 rounded-2xl bg-white/5 border border-white/5 space-y-4">
                       <h4 className="text-white font-bold text-xs uppercase tracking-widest">{t('careers.benefits')}</h4>
-                      <div className="grid grid-cols-2 gap-4 text-[10px] text-on-surface-variant/60 uppercase tracking-widest font-bold">
+                      <div className="grid grid-cols-2 gap-4 text-[11px] text-on-surface-variant/60 uppercase tracking-widest font-bold">
                         <div>• {t('careers.benefits_list.health')}</div>
                         <div>• {t('careers.benefits_list.bonus')}</div>
                         <div>• {t('careers.benefits_list.education')}</div>
@@ -217,23 +217,23 @@ const Careers = () => {
                       }}
                     >
                       <div className="space-y-2">
-                        <label htmlFor="name-input" className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.full_name')}</label>
+                        <label htmlFor="name-input" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.full_name')}</label>
                         <input id="name-input" name="name" type="text" required placeholder="seu nome" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('careers.form.full_name')} />
                       </div>
                       <div className="space-y-2">
-                        <label htmlFor="email-input" className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.email')}</label>
+                        <label htmlFor="email-input" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.email')}</label>
                         <input id="email-input" name="email" type="email" required placeholder="email@exemplo.com" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('contact.form.email')} />
                       </div>
                       <div className="space-y-2">
-                        <label htmlFor="linkedin-input" className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.linkedin')}</label>
+                        <label htmlFor="linkedin-input" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.linkedin')}</label>
                         <input id="linkedin-input" name="linkedin" type="url" placeholder="https://linkedin.com/in/..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('careers.form.linkedin')} />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.attach_cv')}</label>
+                        <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.attach_cv')}</label>
                         <div className="relative group/upload">
                           <input id="cv-input" name="cv" type="file" accept=".pdf" required className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" aria-label={t('careers.form.attach_cv')} />
                           <div className="w-full bg-white/5 border border-dashed border-white/20 rounded-2xl px-6 py-8 text-center group-hover/upload:border-primary-container/50 transition-all">
-                            <Upload className="mx-auto text-on-surface-variant/40 mb-2 group-hover/upload:text-primary-container transition-colors" size={24} />
+                            <Upload className="mx-auto text-on-surface-variant/60 mb-2 group-hover/upload:text-primary-container transition-colors" size={24} />
                             <p className="text-xs text-on-surface-variant/60">{t('careers.form.drag_drop')}</p>
                           </div>
                         </div>

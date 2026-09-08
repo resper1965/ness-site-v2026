@@ -1,6 +1,6 @@
 import BlueDot from '../components/BlueDot';
 import React, { useState } from "react";
-import { motion } from "motion/react";
+import { m as motion } from "motion/react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -119,7 +119,7 @@ const Compliance = () => {
             <Link
               key={key}
               to={`/compliance/${key}`}
-              className={`text-[10px] uppercase tracking-widest font-bold px-6 py-2 rounded-full transition-all whitespace-nowrap ${
+              className={`text-[11px] uppercase tracking-widest font-bold px-6 py-2 rounded-full transition-all whitespace-nowrap ${
                 type === key ? "bg-primary-container text-on-primary" : "text-on-surface-variant hover:text-white"
               }`}
             >
@@ -195,16 +195,16 @@ const Compliance = () => {
               >
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.name_optional')}</label>
+                    <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.name_optional')}</label>
                     <input name="name" type="text" placeholder={t('contact.form.name_placeholder', 'seu nome ou deixe em branco')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('contact.form.name_optional')} />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.contact_optional')}</label>
+                    <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.contact_optional')}</label>
                     <input name="email" type="text" placeholder={t('contact.form.email_placeholder', 'email ou telefone para retorno')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('contact.form.contact_optional')} />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.whistleblower.occurrence_type')}</label>
+                  <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.whistleblower.occurrence_type')}</label>
                   <select name="subject" required className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all appearance-none" aria-label={t('contact.whistleblower.occurrence_type')}>
                     <option value="" className="bg-surface">{t('contact.whistleblower.category_select')}</option>
                     <option value="etica" className="bg-surface">{t('contact.whistleblower.categories.ethics')}</option>
@@ -215,7 +215,7 @@ const Compliance = () => {
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.whistleblower.description')}</label>
+                  <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.whistleblower.description')}</label>
                   <textarea name="message" required rows={6} placeholder={t('contact.whistleblower.desc_placeholder', 'detalhe o ocorrido com o máximo de informações possíveis (datas, locais, envolvidos)...')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all resize-none" aria-label={t('contact.whistleblower.description')}></textarea>
                 </div>
 

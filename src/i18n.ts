@@ -1,7 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import HttpBackend from 'i18next-http-backend';
 
 const ptResources = {
   "pt": {
@@ -19,14 +18,26 @@ const ptResources = {
           "label": "{{years}} Anos",
           "title": "Celebrando {{years}} Anos",
           "message": "Há {{years}} anos construindo o futuro da tecnologia e segurança digital com precisão."
-        }
+        },
+        "home": "início"
       },
       "hero": {
         "tag": "tecnologia digital de precisão",
         "title": "invisíveis quando tudo funciona. <highlight>presentes</highlight> quando mais importa",
         "subtitle": "elevamos a resiliência digital da sua empresa através de operações precisas e arquiteturas de segurança invisíveis.",
         "explore": "explorar soluções",
-        "know_ness": "conheça a ness"
+        "know_ness": "conheça a ness",
+        "since": "desde {{year}}",
+        "subtitle_clear": "operações de segurança 24×7, infraestrutura, engenharia de software, LGPD e perícia digital para empresas que não podem parar. {{years}} anos entregando com precisão.",
+        "cta_primary": "falar com um especialista",
+        "pillars": {
+          "label": "frentes de atuação",
+          "secops": "segurança 24×7",
+          "infra": "infraestrutura & cloud",
+          "software": "engenharia de software",
+          "privacy": "LGPD & compliance",
+          "forensics": "perícia digital"
+        }
       },
       "presence": {
         "global": "presença global",
@@ -256,7 +267,9 @@ const ptResources = {
           "message_placeholder": "como podemos ajudar?",
           "send": "enviar mensagem",
           "success": "Mensagem enviada com sucesso! Entraremos em contato em breve.",
-          "error": "Erro ao enviar mensagem. Por favor, tente novamente."
+          "error": "Erro ao enviar mensagem. Por favor, tente novamente.",
+          "email_placeholder_v2": "nome@empresa.com.br",
+          "sla": "respondemos em até 1 dia útil. incidente em andamento? ligue +55 (11) 2504-7650."
         },
         "whistleblower": {
           "title": "canal de denúncia",
@@ -282,7 +295,9 @@ const ptResources = {
           },
           "desc_placeholder": "detalhe o ocorrido com o máximo de informações possíveis (datas, locais, envolvidos)..."
         },
-        "badge": "get in touch — ness. precision"
+        "badge": "get in touch — ness. precision",
+        "meta_title": "contato — fale com um especialista",
+        "meta_description": "Fale com a ness.: diagnóstico de segurança, infraestrutura, engenharia de software, LGPD e perícia digital. Resposta em até 1 dia útil. +55 (11) 2504-7650."
       },
       "cta": {
         "title": "pronto para o próximo nível?",
@@ -303,7 +318,8 @@ const ptResources = {
           "msg1_bot": "Com certeza. Identifiquei 12 contratos com vencimento em abril. Os 3 principais são: Cliente Alpha (dia 15), Tech Solutions (dia 22) e Global Corp (dia 28). Deseja que eu prepare os termos de renovação?",
           "msg2_user": "Sim, por favor. Use o modelo padrão de 2024.",
           "msg2_bot": "Entendido. Processando minutas... Pronto! As 3 minutas foram geradas e enviadas para sua pasta de rascunhos no Teams. Algo mais?"
-        }
+        },
+        "open": "abrir chat com a Gabi"
       },
       "common": {
         "see_all": "ver tudo",
@@ -398,7 +414,8 @@ const ptResources = {
       "a11y": {
         "close": "fechar",
         "subscribe": "inscrever",
-        "send": "enviar"
+        "send": "enviar",
+        "language": "idioma"
       },
       "forense": {
         "title": "forense.io",
@@ -700,13 +717,35 @@ const ptResources = {
         "title": "página não encontrada",
         "desc": "a rota que você buscou não existe ou foi removida.",
         "cta": "voltar ao início"
+      },
+      "clients": {
+        "eyebrow": "quem confia na ness.",
+        "title": "empresas que transformamos"
       }
     }
   }
 };
 
+/**
+ * en/es são carregados sob demanda por `import()` (chunk próprio, com hash e
+ * cache imutável). O pt vem inline: é o idioma padrão e não deve esperar rede.
+ */
+const loaders: Record<string, () => Promise<{ default: Record<string, unknown> }>> = {
+  en: () => import('./locales/en.json'),
+  es: () => import('./locales/es.json'),
+};
+
+async function ensureLanguage(lng: string) {
+  const base = lng.split('-')[0];
+  const load = loaders[base];
+  if (!load || i18n.hasResourceBundle(base, 'translation')) return;
+  const mod = await load();
+  i18n.addResourceBundle(base, 'translation', mod.default, true, true);
+}
+
+const storedLng = (typeof localStorage !== 'undefined' && localStorage.getItem('ness_lang')) || 'pt';
+
 i18n
-  .use(HttpBackend)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
@@ -721,14 +760,21 @@ i18n
       lookupLocalStorage: 'ness_lang',
     },
     // Default to PT if no stored preference exists
-    lng: localStorage.getItem('ness_lang') || 'pt',
+    lng: storedLng,
     interpolation: {
       escapeValue: false
     },
-    backend: {
-      loadPath: '/locales/{{lng}}/translation.json',
-    },
   });
 
-export default i18n;
+// Carrega o bundle do idioma antes de trocar, para não piscar chaves cruas.
+const originalChangeLanguage = i18n.changeLanguage.bind(i18n);
+i18n.changeLanguage = ((lng?: string, cb?: Parameters<typeof originalChangeLanguage>[1]) => {
+  if (!lng) return originalChangeLanguage(lng, cb);
+  return ensureLanguage(lng).then(() => originalChangeLanguage(lng, cb));
+}) as typeof i18n.changeLanguage;
 
+if (storedLng !== 'pt') {
+  ensureLanguage(storedLng).then(() => originalChangeLanguage(storedLng));
+}
+
+export default i18n;

@@ -4,27 +4,18 @@
  */
 import BlueDot from '../components/BlueDot';
 import React from "react";
-import { motion } from "motion/react";
+import { m as motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
 import { ShieldCheck, Fingerprint, ArrowUpRight } from "lucide-react";
 
-const Verticals = () => {
+const Verticals = ({ standalone = false }: { standalone?: boolean }) => {
   const { t } = useTranslation();
-  usePageTitle('verticals.meta_title', 'verticais — ness.');
+  usePageTitle('verticals.meta_title', 'verticais — ness.', { enabled: standalone });
   return (
     <section className="py-24 bg-surface px-8 border-t border-white/5 relative overflow-hidden">
       {/* Immersive Background for Verticals */}
-      <div className="absolute inset-0 z-0">
-        <motion.img 
-          initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.1 }}
-          transition={{ duration: 1.5 }}
-          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2000"
-          alt="Corporate Verticals Background"
-          className="w-full h-full object-cover"
-          referrerPolicy="no-referrer"
-        />
+      <div className="absolute inset-0 z-0 bg-nebula" aria-hidden="true">
         <div className="absolute inset-0 bg-linear-to-b from-surface/40 via-surface/90 to-surface z-10"></div>
       </div>
 
@@ -55,7 +46,7 @@ const Verticals = () => {
             <p className="text-on-surface-variant leading-relaxed font-light">
               {t('verticals.forense.desc')}
             </p>
-            <div className="mt-8 flex items-center gap-2 text-[10px] text-primary-container uppercase tracking-widest font-bold">
+            <div className="mt-8 flex items-center gap-2 text-[11px] text-primary-container uppercase tracking-widest font-bold">
               {t('verticals.cta')} <ArrowUpRight size={14} />
             </div>
           </motion.a>
@@ -74,7 +65,7 @@ const Verticals = () => {
             <p className="text-on-surface-variant leading-relaxed font-light">
               {t('verticals.trustness.desc')}
             </p>
-            <div className="mt-8 flex items-center gap-2 text-[10px] text-primary-container uppercase tracking-widest font-bold">
+            <div className="mt-8 flex items-center gap-2 text-[11px] text-primary-container uppercase tracking-widest font-bold">
               {t('verticals.cta')} <ArrowUpRight size={14} />
             </div>
           </motion.a>

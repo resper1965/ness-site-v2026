@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
-import { motion, AnimatePresence } from "motion/react";
+import { m as motion, AnimatePresence } from "motion/react";
 import { ArrowRight, ArrowLeft, BarChart3, Send, CheckCircle2, AlertTriangle } from "lucide-react";
 import { assessments, AssessmentConfig } from "../data/assessments";
 import { CANAL_BASE } from "../config/api";
@@ -120,7 +120,7 @@ export default function Assessment() {
             animate={{ opacity: 1, y: 0 }}
             className="mb-12"
           >
-            <span className="text-[10px] text-primary-container font-bold uppercase tracking-widest block mb-3">
+            <span className="text-[11px] text-primary-container font-bold uppercase tracking-widest block mb-3">
               assessment gratuito
             </span>
             <h1 className="text-3xl md:text-4xl font-display text-white tracking-tight lowercase mb-2">
@@ -134,10 +134,10 @@ export default function Assessment() {
           {/* Progress Bar */}
           <div className="mb-10">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">
+              <span className="text-[11px] text-on-surface-variant font-bold uppercase tracking-widest">
                 {showResult ? "resultado" : `pergunta ${currentStep + 1} de ${totalQuestions}`}
               </span>
-              <span className="text-[10px] text-primary-container font-bold">
+              <span className="text-[11px] text-primary-container font-bold">
                 {Math.round(progress)}%
               </span>
             </div>
@@ -162,7 +162,7 @@ export default function Assessment() {
                 className="space-y-6"
               >
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="text-[10px] text-primary-container/60 font-bold uppercase tracking-widest">
+                  <span className="text-[11px] text-primary-container/60 font-bold uppercase tracking-widest">
                     {question.category}
                   </span>
                 </div>
@@ -222,7 +222,7 @@ export default function Assessment() {
                       <span className="text-4xl font-display font-bold text-white">
                         {scorePercent}
                       </span>
-                      <span className="text-[10px] text-on-surface-variant uppercase tracking-widest">
+                      <span className="text-[11px] text-on-surface-variant uppercase tracking-widest">
                         pontos
                       </span>
                     </div>

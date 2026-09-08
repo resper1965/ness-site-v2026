@@ -32,7 +32,7 @@ Este é o documento de planejamento central. Contém:
 | Dimensão | Status |
 |----------|--------|
 | Branch | `main` — sincronizada com [github.com/resper1965/ness-site-v2026](https://github.com/resper1965/ness-site-v2026) |
-| Site | ✅ Build OK, 17 páginas, 3 marcas, acessibilidade WCAG 2.1 AA+ e foco executivo CISO/DPO |
+| Site | ✅ Build OK, 17 páginas, 3 marcas. Ondas 0–1 do plano de performance aplicadas (fontes/imagens self-host, sem overlays automáticos, meta por rota, Lighthouse a11y 100). Próximo: HTML na edge (Onda 2) |
 | Canal CMS | ✅ Funcional, MCP Server integrado, validação defensiva e rate-limiting em rotas de IA |
 | Admin | ⚠️ Em expansão (18 rotas, ~5 novos componentes) |
 | Deploy | 🚀 Pronto para deploy via Cloudflare Pages / Workers (Fase 1 do roadmap) |
@@ -60,6 +60,7 @@ Este é o documento de planejamento central. Contém:
 |-----------|-----------|
 | [`README.md`](README.md) | Visão geral, quick start, API reference |
 | [`docs/PLAN-epics-roadmap.md`](docs/PLAN-epics-roadmap.md) | **Roadmap Master** (contexto obrigatório) |
+| [`docs/PLAN-performance-ux-comercial.md`](docs/PLAN-performance-ux-comercial.md) | **Plano de performance** (técnica, UX/UI, comercial) — ondas 0–4, KPIs e inventário de achados |
 | [`docs/PLAN-canal-tech-debt.md`](docs/PLAN-canal-tech-debt.md) | Débitos técnicos pendentes |
 | [`docs/PLAN-next-steps.md`](docs/PLAN-next-steps.md) | Próximos passos pós-estabilização |
 | [`docs/DESIGN-SYSTEM.md`](docs/DESIGN-SYSTEM.md) | **Design System Universal** (regras visuais estritas) |

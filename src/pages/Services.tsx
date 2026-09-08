@@ -4,17 +4,17 @@
  */
 import BlueDot from '../components/BlueDot';
 import React from "react";
-import { motion } from "motion/react";
+import { m as motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
 import { ShieldCheck, Brain, Scale, Network } from "lucide-react";
 
 const ICONS = [Brain, ShieldCheck, Network, Scale];
 
-const Services = () => {
+const Services = ({ standalone = false }: { standalone?: boolean }) => {
   const { t } = useTranslation();
 
-  usePageTitle('services.meta_title', 'serviços — ness.');
+  usePageTitle('services.meta_title', 'serviços — ness.', { enabled: standalone });
   const services = [0, 1, 2, 3].map((i) => ({
     title: t(`services.items.${i}.title`),
     desc: t(`services.items.${i}.desc`),
@@ -25,16 +25,7 @@ const Services = () => {
   return (
     <section id="serviços" className="py-24 bg-surface-container-lowest px-8 border-t border-white/5 relative overflow-hidden">
       {/* Immersive Background for Services */}
-      <div className="absolute inset-0 z-0">
-        <motion.img 
-          initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.15 }}
-          transition={{ duration: 1.5 }}
-          src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80&w=2000"
-          alt="Professional Services Background"
-          className="w-full h-full object-cover"
-          referrerPolicy="no-referrer"
-        />
+      <div className="absolute inset-0 z-0 bg-nebula" aria-hidden="true">
         <div className="absolute inset-0 bg-linear-to-b from-surface-container-lowest/40 via-surface-container-lowest/90 to-surface-container-lowest z-10"></div>
       </div>
 
@@ -70,7 +61,7 @@ const Services = () => {
               </p>
               <div className="flex flex-wrap gap-2">
                 {service.tags.map((tag) => (
-                  <span key={tag} className="text-[10px] uppercase tracking-widest text-primary-container/60 font-bold px-3 py-1 rounded-full bg-primary-container/5 border border-primary-container/10">
+                  <span key={tag} className="text-[11px] uppercase tracking-widest text-primary-container/60 font-bold px-3 py-1 rounded-full bg-primary-container/5 border border-primary-container/10">
                     {tag}
                   </span>
                 ))}

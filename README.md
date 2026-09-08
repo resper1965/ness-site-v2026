@@ -62,6 +62,7 @@ cd canal/admin && npm run dev
 
 ```bash
 npm run build          # Site → dist/
+npm run test:e2e:site  # Smoke do site público contra o build local (vite preview)
 cd canal/admin && npm run build  # Admin → canal/admin/dist/
 cd canal && npx wrangler deploy  # Worker → Cloudflare
 ```
@@ -224,6 +225,7 @@ ness-site2026/
 | Documento | Descrição |
 |-----------|-----------|
 | [`docs/PLAN-epics-roadmap.md`](docs/PLAN-epics-roadmap.md) | **Roadmap Master** — 6 fases, 26 entregas, 114 tasks |
+| [`docs/PLAN-performance-ux-comercial.md`](docs/PLAN-performance-ux-comercial.md) | **Análise e plano de performance** — técnica, UX/UI e comercial (3 marcas) |
 | [`docs/PLAN-canal-tech-debt.md`](docs/PLAN-canal-tech-debt.md) | Débitos técnicos do Canal CMS |
 | [`docs/PLAN-next-steps.md`](docs/PLAN-next-steps.md) | Próximos passos pós-estabilização |
 | [`docs/DESIGN.md`](docs/DESIGN.md) | Design system (cores, tipografia, componentes) |
