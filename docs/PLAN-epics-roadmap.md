@@ -149,7 +149,7 @@ Este roadmap consolida **todos os processos** do ecossistema ness. em 6 fases (�
 |------|-----------|--------|
 | T2.1.1 | Agrupar mudanças por domínio (admin routes, backend routes, components, DB) | `[x]` |
 | T2.1.2 | Criar commits semânticos (`feat(admin):`, `feat(canal):`, `refactor:`) | `[x]` |
-| T2.1.3 | Remover arquivos de script avulsos da raiz (`fix-imports.ts`, `refactor.js`, etc.) | `[ ]` |
+| T2.1.3 | Remover arquivos de script avulsos da raiz (`fix-imports.ts`, `refactor.js`, etc.) | `[x]` |
 
 ### E2.2 — Raw SQL → Drizzle ORM (Type-Safety)
 - **Agent:** `database-architect`
