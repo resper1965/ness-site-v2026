@@ -2,11 +2,13 @@ import BlueDot from '../components/BlueDot';
 import React, { useState, useRef, useEffect } from "react";
 import { m as motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router";
 import { CANAL_BASE } from '../config/api';
 import { Send, X, MessageSquare, Bot, ThumbsUp, ThumbsDown } from "lucide-react";
 
 import type { ChatbotConfig } from '../types/canal';
+import ChatLeadForm from './ChatLeadForm';
+import { useBrand } from '../config/brand';
 
 type DisplayMessage = { role: 'bot' | 'user'; content: string };
 type ApiMessage = { role: 'user' | 'assistant'; content: string };
@@ -29,6 +31,9 @@ const ChatbotWidget = ({ initialOpen = false }: ChatbotWidgetProps) => {
   
   const [sessionId] = useState(`gabi-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`);
   const [csatGiven, setCsatGiven] = useState<number | null>(null);
+  const BRAND = useBrand();
+  /** 'conversa' | 'qualificando' — a captura substitui o campo de mensagem. */
+  const [modo, setModo] = useState<'conversa' | 'qualificando'>('conversa');
 
   // ── Rastreamento Cognitivo de Páginas Visitadas (Opção A) ──────
   useEffect(() => {
@@ -288,23 +293,47 @@ const ChatbotWidget = ({ initialOpen = false }: ChatbotWidgetProps) => {
               <div ref={scrollRef} />
             </div>
 
-            {/* Quick Replies */}
-            <div className="px-4 pb-4 pt-2 flex gap-2 overflow-x-auto scrollbar-hide shrink-0 snap-x">
-              <button 
-                type="button"
-                onClick={() => { setIsOpen(false); navigate('/contato'); }}
-                className="whitespace-nowrap px-4 py-2 bg-primary-container/10 border border-primary-container/30 text-primary-container text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-primary-container hover:text-on-primary transition-all snap-start shadow-xl shadow-primary-container/5">
-                {t('chatbot.quick_specialist', 'Falar com Especialista')}
-              </button>
-              <button 
-                type="button"
-                onClick={() => { setIsOpen(false); navigate('/solucoes/cirt'); }}
-                className="whitespace-nowrap px-4 py-2 bg-red-500/10 border border-red-500/30 text-red-400 text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-red-500 hover:text-white transition-all snap-start shadow-xl shadow-red-500/5">
-                {t('chatbot.quick_incident', 'Incidente (n.cirt)')}
-              </button>
-            </div>
+            {/* Quick Replies — só caminhos comerciais. Falar com especialista
+                qualifica aqui dentro, em vez de mandar o visitante recomeçar
+                num formulário: quem é mandado embora raramente volta. */}
+            {modo === 'conversa' && (
+              <div className="px-4 pb-4 pt-2 flex gap-2 overflow-x-auto scrollbar-hide shrink-0 snap-x">
+                <button
+                  type="button"
+                  onClick={() => setModo('qualificando')}
+                  className="whitespace-nowrap px-4 py-2 bg-primary-container/10 border border-primary-container/30 text-primary-container text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-primary-container hover:text-on-primary transition-all snap-start shadow-xl shadow-primary-container/5">
+                  {t('chatbot.quick_specialist', 'falar com especialista')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setIsOpen(false); navigate(BRAND === 'trustness' ? '/assessment/lgpd' : '/assessment/cyber'); }}
+                  className="whitespace-nowrap px-4 py-2 bg-white/5 border border-white/10 text-on-surface-variant text-[11px] font-bold uppercase tracking-widest rounded-full hover:text-white transition-all snap-start">
+                  {t('chatbot.quick_assessment', 'diagnóstico gratuito')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setIsOpen(false); navigate('/solucoes/cirt'); }}
+                  className="whitespace-nowrap px-4 py-2 bg-red-500/10 border border-red-500/30 text-red-400 text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-red-500 hover:text-white transition-all snap-start shadow-xl shadow-red-500/5">
+                  {t('chatbot.quick_incident', 'incidente 24×7')}
+                </button>
+              </div>
+            )}
+
+            {modo === 'qualificando' && (
+              <ChatLeadForm
+                assunto={BRAND === 'ness' ? 'n.secops' : BRAND}
+                onPronto={() => {
+                  setModo('conversa');
+                  setMessages((anteriores) => [
+                    ...anteriores,
+                    { role: 'bot', content: t('chatbot.lead_ok', 'recebi seus dados — um especialista responde em até 1 dia útil. se for incidente em andamento, ligue +55 (11) 2504-7650.') },
+                  ]);
+                }}
+              />
+            )}
 
             {/* Input */}
+            {modo === 'conversa' && (
             <form onSubmit={handleSend} className="p-4 bg-surface-container-high/50 border-t border-white/5 flex gap-2">
               <input
                 value={input}
@@ -323,6 +352,7 @@ const ChatbotWidget = ({ initialOpen = false }: ChatbotWidgetProps) => {
                 <Send size={18} />
               </button>
             </form>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
