@@ -32,7 +32,7 @@ test.describe('metadados por rota', () => {
       { path: '/', titulo: 'tecnologia digital de precisão', canonical: 'https://ness.com.br/' },
       { path: '/contato', titulo: 'contato — fale com um especialista', canonical: 'https://ness.com.br/contato' },
       { path: '/solucoes/secops', titulo: 'n.secops', canonical: 'https://ness.com.br/solucoes/secops' },
-      { path: '/sobre', titulo: 'sobre a ness.', canonical: 'https://ness.com.br/sobre' },
+      { path: '/sobre', titulo: 'sobre — ness. IT Company', canonical: 'https://ness.com.br/sobre' },
     ];
 
     for (const c of casos) {
@@ -48,11 +48,21 @@ test.describe('metadados por rota', () => {
   // O sufixo da marca é acrescentado por pageMeta. Repeti-lo no título da
   // própria página produz "… — ness. IT Company — ness. IT Company", que já
   // aconteceu com o fallback da raiz.
-  test('nenhuma rota repete o sufixo da marca no título', async ({ request }) => {
-    for (const path of ['/', '/assessment/cyber', '/contato', '/blog']) {
+  // O título é "<página> — <marca>". O defeito que já apareceu duas vezes é a
+  // página trazer a marca no próprio título, e o sufixo acrescentar de novo:
+  // "DPO as a Service — trustness. — trustness.". Um travessão dentro do
+  // título da página é legítimo ("contato — fale com um especialista"), então
+  // o que se checa é a parte da página não terminar com nome de marca.
+  test('nenhuma rota repete a marca no título', async ({ request }) => {
+    const SUFIXO = ' — ness. IT Company';
+    const paths = ['/', '/assessment/cyber', '/contato', '/blog', '/sobre', '/carreiras',
+                   '/trustness', '/dpo-as-a-service', '/forense', '/portfolio', '/en', '/es'];
+    for (const path of paths) {
       const html = await (await request.get(path)).text();
       const titulo = html.match(/<title>([^<]*)<\/title>/)?.[1] ?? '';
-      expect(titulo.match(/IT Company/g)?.length ?? 0, `${path}: ${titulo}`).toBeLessThan(2);
+      expect(titulo, path).toContain(SUFIXO);
+      const daPagina = titulo.slice(0, -SUFIXO.length);
+      expect(daPagina, `${path}: ${titulo}`).not.toMatch(/(trustness\.|forense\.io|ness\.)$/);
     }
   });
 

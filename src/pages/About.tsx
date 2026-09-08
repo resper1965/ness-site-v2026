@@ -184,7 +184,9 @@ export default About;
 export function meta(args: Parameters<typeof routeMeta>[0]) {
   return routeMeta(args, (_brand, lang) => {
     return {
-    title: { pt: 'sobre a ness.', en: 'about ness.', es: 'sobre ness.' }[lang],
+    // Sem a marca no título: ela vem do sufixo, e esta página é servida
+    // pelos três domínios.
+    title: { pt: 'sobre', en: 'about', es: 'sobre' }[lang],
     description: {
       pt: 'Desde 1991, a ness. entrega engenharia de software, operações de segurança 24×7, infraestrutura crítica, LGPD e perícia digital para empresas no Brasil, Portugal, Chile, Peru, Colômbia e EUA.',
       en: 'Since 1991, ness. has delivered software engineering, 24×7 security operations, critical infrastructure, privacy compliance and digital forensics for companies in Brazil, Portugal, Chile, Peru, Colombia and the US.',
