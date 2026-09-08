@@ -2,13 +2,13 @@ import BlueDot from '../components/BlueDot';
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
-import { Menu, X, Sparkles, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 
-import { YEARS_OF_LEGACY } from '../constants/brand';
 import { useBrand } from '../config/brand';
 import { rotaNoIdioma, type Idioma } from '../utils/lang';
 import { solutionsData } from '../data/solutionsData';
 import { evento } from '../utils/eventos';
+import EcosystemSwitcher from './EcosystemSwitcher';
 
 /** Os cinco produtos, lidos de solutionsData: uma fonte da verdade só. */
 const SOLUCOES = Object.entries(solutionsData).map(([slug, dados]) => {
@@ -23,7 +23,6 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const legacyLabel = t('nav.celebration.label', { years: YEARS_OF_LEGACY, defaultValue: `${YEARS_OF_LEGACY} Anos` });
 
   const isActive = (path: string) => {
     if (path === '/') return location.pathname === '/';
@@ -98,9 +97,10 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-6 lg:gap-8">
-          <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full bg-primary-container/10 border border-primary-container/30" title={`${YEARS_OF_LEGACY} anos de tecnologia de precisão`}>
-            <Sparkles size={12} className="text-primary-container" aria-hidden="true" />
-            <span className="text-[11px] font-bold text-primary-container uppercase tracking-widest">{legacyLabel}</span>
+          {/* No lugar do selo de longevidade: ele dizia uma coisa só e não
+              levava a lugar nenhum. O tempo de casa segue no hero e no sobre. */}
+          <div className="hidden lg:block">
+            <EcosystemSwitcher />
           </div>
           {menuItems.map((item) => {
             const active = isActive(item.to);
