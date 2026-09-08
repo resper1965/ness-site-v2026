@@ -11,24 +11,37 @@ Duração: ~15 min, com uma janela de segundos sem resposta por domínio.
 ## Antes de começar
 
 1. O merge na `main` roda `wrangler deploy` e publica o Worker
-   `ness-site2026` em `workers.dev`. Confirme que ele responde:
+   `ness-site2026` em `workers.dev`.
+
+   **Já validado em 08/09/2026**, no Worker publicado: HTML com conteúdo,
+   `robots.txt` da ness, 404 real em rota inexistente, `/api/chatbot-config`
+   respondendo do D1 e CSP no cabeçalho.
 
    ```bash
-   curl -sI https://ness-site2026.ness.workers.dev/ | head -3
+   U=https://ness-site2026.ness.workers.dev
+   curl -s $U/ | grep -o '<title>[^<]*</title>'      # ness. IT Company — ...
+   curl -so /dev/null -w '%{http_code}\n' $U/nao-existe  # 404
    ```
 
-2. Confirme as três marcas no Worker publicado, antes de qualquer DNS:
+2. As outras duas marcas **não dá para conferir com `-H "Host:"`**: o edge da
+   Cloudflare devolve 403 quando o `Host` não bate com o hostname pedido.
+   Esse truque só funciona no preview local.
+
+   Para provar a detecção de marca no edge antes de mexer em DNS, publique
+   um Worker descartável cujo hostname contenha o nome da marca — é o mesmo
+   `Host` que o código lê:
 
    ```bash
-   for h in ness.com.br trustness.com.br forense.io; do
-     echo "== $h"
-     curl -s -H "Host: $h" https://ness-site2026.ness.workers.dev/ \
-       | grep -o '<title>[^<]*</title>'
+   npm run build
+   for marca in trustness forense; do
+     npx wrangler deploy -c dist/server/wrangler.json --name $marca-preflight
+     curl -s https://$marca-preflight.ness.workers.dev/ | grep -o '<title>[^<]*</title>'
+     npx wrangler delete --name $marca-preflight --force
    done
    ```
 
-   Cada um precisa devolver o título da própria marca. Se devolver ness nos
-   três, **pare**: a marca não está saindo do `Host`.
+   Cada um precisa devolver o título da própria marca. Se devolver ness,
+   **pare**: a marca não está saindo do `Host`.
 
 ## A virada, um domínio por vez
 
