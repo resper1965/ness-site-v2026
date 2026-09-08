@@ -18,6 +18,8 @@ export type Bindings = {
   WHISTLEBLOWER_SECRET?: string;
   /** Criado no painel do Turnstile. Ausente = verificação desligada. */
   TURNSTILE_SECRET_KEY?: string;
+  /** Hostnames aceitos no siteverify, separados por vírgula. Nunca localhost. */
+  TURNSTILE_HOSTNAMES?: string;
   /** Chave do Resend. Ausente = nenhum e-mail sai, o lead ainda é gravado. */
   RESEND_API_KEY?: string;
   LEAD_EMAIL_FROM?: string;
@@ -142,25 +144,58 @@ app.get('/jobs', async (c) => {
 
 // ── public form submissions ────────────────────────────────────────
 /**
- * Verifica o token do Turnstile. Só exige quando o segredo existe: enquanto o
- * widget não estiver criado no painel, o formulário continua funcionando —
- * com honeypot, que não depende de configuração nenhuma.
+ * Verificação canônica do Turnstile: não basta o token ser válido.
+ *
+ * `success` sozinho aceita qualquer token emitido por este widget — inclusive
+ * um colhido em outra superfície ou em outro host coberto pelo mesmo widget.
+ * Por isso confere também a ação (a superfície que pediu) e o hostname que
+ * emitiu, contra a lista da implantação.
+ *
+ * Só exige quando o segredo existe: enquanto a chave não estiver instalada, o
+ * formulário continua funcionando com honeypot, que não depende de configuração.
  */
-async function turnstileOk(secret: string | undefined, token: unknown, ip: string | null): Promise<boolean> {
-  if (!secret) return true;
-  if (typeof token !== 'string' || !token) return false;
-  const corpo = new FormData();
-  corpo.append('secret', secret);
-  corpo.append('response', token);
+type ResultadoSiteverify = { success?: boolean; action?: string; hostname?: string; 'error-codes'?: string[] };
+
+async function turnstileOk(
+  env: Bindings,
+  token: unknown,
+  acaoEsperada: string,
+  ip: string | null,
+): Promise<boolean> {
+  if (!env.TURNSTILE_SECRET_KEY) return true;
+  if (typeof token !== 'string' || !token || token.length > 2048) return false;
+
+  const hostnames = new Set(
+    (env.TURNSTILE_HOSTNAMES ?? '').split(',').map((h) => h.trim()).filter(Boolean),
+  );
+  if (hostnames.size === 0) return false;
+
+  const corpo = new URLSearchParams({ secret: env.TURNSTILE_SECRET_KEY, response: token });
   if (ip) corpo.append('remoteip', ip);
+
+  let resultado: ResultadoSiteverify;
   try {
-    const r = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: corpo });
-    const dados = (await r.json()) as { success?: boolean };
-    return dados.success === true;
-  } catch {
-    // Verificador fora do ar não pode derrubar o canal de lead.
-    return true;
+    const r = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      signal: AbortSignal.timeout(10_000),
+      body: corpo,
+    });
+    if (!r.ok) throw new Error(`siteverify ${r.status}`);
+    resultado = (await r.json()) as ResultadoSiteverify;
+  } catch (erro) {
+    // Falha fechada: um verificador inacessível não é motivo para aceitar
+    // qualquer coisa. É a orientação canônica da Cloudflare.
+    console.error('[turnstile] siteverify indisponível', erro);
+    return false;
   }
+
+  return (
+    resultado.success === true &&
+    resultado.action === acaoEsperada &&
+    !!resultado.hostname &&
+    hostnames.has(resultado.hostname)
+  );
 }
 
 app.post('/submit-form', async (c) => {
@@ -172,7 +207,9 @@ app.post('/submit-form', async (c) => {
     // robô a contornar, e não grava nada.
     if (website) return c.json({ success: true, message: 'Formulário registrado.' });
 
-    if (!(await turnstileOk(c.env.TURNSTILE_SECRET_KEY, turnstileToken, c.req.header('CF-Connecting-IP') ?? null))) {
+    // A ação vem da superfície que enviou: contato ou chat.
+    const acao = type === 'chat' ? 'chat' : 'contato';
+    if (!(await turnstileOk(c.env, turnstileToken, acao, c.req.header('CF-Connecting-IP') ?? null))) {
       return c.json({ error: 'Verificação antirrobô falhou. Recarregue a página e tente novamente.' }, 400);
     }
     await c.env.DB.prepare(

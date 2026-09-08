@@ -55,6 +55,11 @@ CLOUDFLARE_AI_GATEWAY_ID = "ness-gateway"
 LEAD_EMAIL_FROM = "site@ness.com.br"
 LEAD_EMAIL_TO = "contato@ness.com.br"
 
+# Hostnames aceitos na verificação do Turnstile. Só os de produção: o widget
+# cobre também o preview em workers.dev, e um token emitido lá não deve valer
+# aqui. Por isso envio de formulário no preview é recusado — de propósito.
+TURNSTILE_HOSTNAMES = "ness.com.br,trustness.com.br,forense.io"
+
 [[kv_namespaces]]
 binding = "CANAL_KV"
 id = "b28950f237884a4aa47d103723dd09bf"
