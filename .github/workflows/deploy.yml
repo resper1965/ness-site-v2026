@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy-frontend:
-    name: Deploy ness-site2026 (Cloudflare Pages)
+    name: Deploy ness-site2026 (Cloudflare Workers)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -25,12 +25,15 @@ jobs:
       - name: Build Main Site
         run: npm run build
 
-      - name: Deploy to Cloudflare Pages
+      # O build gera dist/server/wrangler.json — a configuração com os
+      # caminhos dos artefatos. Publicar com a wrangler.toml da raiz faria o
+      # wrangler tentar empacotar o Worker de novo, sem o build do framework.
+      - name: Deploy do Worker
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=ness-site2026 --branch=main
+          command: deploy -c dist/server/wrangler.json
 
   deploy-backend:
     name: Deploy Canal CMS (Cloudflare Workers)

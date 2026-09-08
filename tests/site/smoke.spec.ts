@@ -57,26 +57,46 @@ test.describe('primeira visita sem interrupções', () => {
 });
 
 test.describe('orçamento de performance', () => {
-  test('home não carrega terceiros no caminho crítico e pesa menos de 450 kB', async ({ page }) => {
+  test('home não carrega terceiros no caminho crítico e cabe no orçamento', async ({ page }) => {
     const external: string[] = [];
     let bytes = 0;
+    let comprimidas = 0;
     page.on('response', async (res) => {
       const url = res.url();
       if (!url.startsWith('http://127.0.0.1') && !url.includes(process.env.SITE_BASE_URL || '127.0.0.1')) external.push(url);
-      const len = Number(res.headers()['content-length'] || 0);
-      bytes += len;
+      if (res.headers()['content-encoding']) comprimidas += 1;
+      bytes += Number(res.headers()['content-length'] || 0);
     });
     await page.goto('/', { waitUntil: 'load' });
+
     const critical = external.filter((u) => /unsplash|fonts\.googleapis|fonts\.gstatic|clearbit/.test(u));
     expect(critical, `terceiros no caminho crítico: ${critical.join(', ')}`).toHaveLength(0);
-    expect(bytes).toBeLessThan(450 * 1024);
+
+    // O preview local do Worker entrega tudo sem compressão; a Cloudflare
+    // comprime em produção e no preview do PR. O orçamento segue o que foi
+    // de fato transferido, senão a mesma página reprova em uma máquina e
+    // passa na outra.
+    const orcamentoKB = comprimidas > 0 ? 450 : 950;
+    expect(bytes / 1024, `${comprimidas > 0 ? 'comprimido' : 'sem compressão'}`).toBeLessThan(orcamentoKB);
   });
 
-  test('index.html não usa scripts inline (CSP sem unsafe-inline) e carrega /boot.js', async ({ page }) => {
+  // O HTML da edge traz os dados de hidratação num script inline. O que não
+  // pode existir é 'unsafe-inline': cada script inline carrega o nonce da
+  // resposta, e o mesmo nonce está no cabeçalho.
+  test('todo script inline tem o nonce da CSP da resposta', async ({ page }) => {
     const res = await page.goto('/');
     const html = (await res?.text()) || '';
-    const inline = html.match(/<script(?![^>]*\ssrc=)[^>]*>/g) || [];
-    expect(inline, `scripts inline: ${inline.join(' ')}`).toHaveLength(0);
+    const csp = res?.headers()['content-security-policy'] || '';
+
+    const scriptSrc = csp.match(/script-src ([^;]*)/)?.[1] ?? '';
+    expect(scriptSrc, `script-src: ${scriptSrc}`).not.toContain("'unsafe-inline'");
+    expect(scriptSrc).toMatch(/'nonce-[a-f0-9]+'/);
+    const nonce = scriptSrc.match(/'nonce-([a-f0-9]+)'/)?.[1];
+
+    const semNonce = (html.match(/<script(?![^>]*\ssrc=)[^>]*>/g) || [])
+      .filter((tag) => !tag.includes(`nonce="${nonce}"`));
+    expect(semNonce, `scripts inline sem nonce: ${semNonce.join(' ')}`).toHaveLength(0);
+
     expect(html).toContain('src="/boot.js"');
     const boot = await page.request.get('/boot.js');
     expect(boot.ok()).toBeTruthy();

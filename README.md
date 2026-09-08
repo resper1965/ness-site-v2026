@@ -48,7 +48,7 @@ cd canal/admin && npm install
 ### Desenvolvimento
 
 ```bash
-# Site (frontend + proxy para canal)
+# Site (Vite + Worker no workerd, respostas de /api vindas de fixtures)
 npm run dev
 
 # Canal Worker (separado — requer wrangler login)
@@ -61,8 +61,10 @@ cd canal/admin && npm run dev
 ### Build de Produção
 
 ```bash
-npm run build          # Site → dist/
-npm run test:e2e:site  # Smoke do site público contra o build local (vite preview)
+npm run build          # Site → dist/client (assets) + dist/server (Worker)
+npm run preview        # Roda o build no workerd, como em produção
+npm run deploy         # Publica o Worker (usa dist/server/wrangler.json)
+npm run test:e2e:site  # Smoke do site público contra o build local (npm run preview)
 cd canal/admin && npm run build  # Admin → canal/admin/dist/
 cd canal && npx wrangler deploy  # Worker → Cloudflare
 ```
@@ -124,7 +126,7 @@ ness-site2026/
 │   │   └── src/components/ # Componentes admin
 │   ├── migrations/         # SQL migrations
 │   └── wrangler.jsonc      # Cloudflare config
-├── functions/              # CF Pages Functions (proxy)
+├── workers/                # Worker do site: HTML na edge, API, robots, sitemap
 ├── public/                 # Assets estáticos
 ├── docs/                   # Documentação do projeto
 │   ├── PLAN-epics-roadmap.md  # 📋 ROADMAP MASTER (contexto obrigatório)

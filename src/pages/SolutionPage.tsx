@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
 import { solutionsData } from "../data/solutionsData";
 import SchemaOrg from '../components/SchemaOrg';
-import { BRAND, BRAND_DOMAINS } from '../config/brand';
+import { useBrand, BRAND_DOMAINS } from '../config/brand';
 import { 
   ChevronLeft,
   CheckCircle2,
@@ -26,6 +26,7 @@ import {
 
 
 const SolutionPage = () => {
+  const BRAND = useBrand();
   const { t } = useTranslation();
   const { slug } = useParams();
   const navigate = useNavigate();

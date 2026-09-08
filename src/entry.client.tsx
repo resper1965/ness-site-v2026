@@ -1,24 +1,22 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import App from './App.tsx';
-import './index.css';
+import { StrictMode, startTransition } from 'react';
+import { hydrateRoot } from 'react-dom/client';
+import { HydratedRouter } from 'react-router/dom';
 import i18n from './i18n';
 
-// Sync document lang attribute with i18n language for SEO and a11y
+// O <html lang> sai do servidor como pt-BR; o cliente acompanha a troca.
 const syncLang = (lang: string) => {
   document.documentElement.lang = lang.split('-')[0];
 };
-syncLang(i18n.language);
 i18n.on('languageChanged', syncLang);
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </StrictMode>,
-);
+startTransition(() => {
+  hydrateRoot(
+    document,
+    <StrictMode>
+      <HydratedRouter />
+    </StrictMode>,
+  );
+});
 
 // ── Observabilidade fora do caminho crítico ───────────────────────────
 // O SDK do Sentry (~70 kB gz) só é carregado depois do `load`, em idle,

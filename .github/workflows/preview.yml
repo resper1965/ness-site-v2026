@@ -1,12 +1,13 @@
 name: Preview por PR
 
-# Publica cada PR numa URL de preview do Cloudflare Pages e roda
-# smoke e2e + Lighthouse contra ela. Produção não é tocada: preview
-# deployments do Pages são isolados do branch de produção.
+# Publica cada PR num Worker próprio (ness-site2026-pr-N) e roda smoke e2e
+# + Lighthouse contra ele. Produção não é tocada: é outro Worker, sem
+# domínio, e ele é apagado quando o PR fecha.
 
 on:
   pull_request:
     branches: [ main ]
+    types: [ opened, synchronize, reopened, closed ]
 
 # Necessário para comentar a URL do preview no PR.
 permissions:
@@ -22,7 +23,7 @@ jobs:
     name: Publicar preview e validar
     runs-on: ubuntu-latest
     # PRs vindos de fork não recebem secrets — o job falharia no deploy.
-    if: github.event.pull_request.head.repo.full_name == github.repository
+    if: github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository
     steps:
       - uses: actions/checkout@v4
 
@@ -37,13 +38,13 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Publicar preview no Cloudflare Pages
+      - name: Publicar preview num Worker do PR
         id: deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=ness-site2026 --branch=pr-${{ github.event.pull_request.number }}
+          command: deploy -c dist/server/wrangler.json --name ness-site2026-pr-${{ github.event.pull_request.number }}
 
       # Sem esta trava, uma URL vazia faria o Playwright cair no fallback
       # de localhost do playwright.site.config.ts — CI verde testando o
@@ -112,3 +113,19 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
+  limpar:
+    name: Apagar o Worker do PR
+    runs-on: ubuntu-latest
+    if: github.event.action == 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - uses: actions/checkout@v4
+
+      # Sem isto cada PR deixaria um Worker para trás na conta.
+      - name: Apagar
+        uses: cloudflare/wrangler-action@v3
+        continue-on-error: true
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: delete --name ness-site2026-pr-${{ github.event.pull_request.number }} --force

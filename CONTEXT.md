@@ -35,7 +35,7 @@ Este é o documento de planejamento central. Contém:
 | Site | ✅ Build OK, 17 páginas, 3 marcas. Ondas 0–1 do plano de performance aplicadas (fontes/imagens self-host, sem overlays automáticos, meta por rota, Lighthouse a11y 100). Próximo: HTML na edge (Onda 2) |
 | Canal CMS | ✅ Funcional, MCP Server integrado, validação defensiva e rate-limiting em rotas de IA |
 | Admin | ⚠️ Em expansão (18 rotas, ~5 novos componentes) |
-| Deploy | 🚀 Pronto para deploy via Cloudflare Pages / Workers (Fase 1 do roadmap) |
+| Deploy | 🚀 Site em Worker único (HTML na edge para as 3 marcas); virada de domínios pendente (Fase 1 do roadmap) |
 
 ## Tech Stack
 

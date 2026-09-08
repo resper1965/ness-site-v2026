@@ -1,17 +1,19 @@
 import { Hono } from 'hono';
-import { handle } from 'hono/cloudflare-pages';
 
 type Env = {
-  Bindings: {
-    CANAL_WORKER_URL: string;
-    DB: any;
-    VECTORIZE: any;
-    AI: any;
-    CANAL_KV: any;
-    CLOUDFLARE_ACCOUNT_ID?: string;
-    CLOUDFLARE_AI_GATEWAY_ID?: string;
-    WHISTLEBLOWER_SECRET?: string;
-  };
+  Bindings: Bindings;
+};
+
+/** Bindings do Worker — declarados aqui porque é aqui que são consumidos. */
+export type Bindings = {
+  CANAL_WORKER_URL: string;
+  DB: any;
+  VECTORIZE: any;
+  AI: any;
+  CANAL_KV: any;
+  CLOUDFLARE_ACCOUNT_ID?: string;
+  CLOUDFLARE_AI_GATEWAY_ID?: string;
+  WHISTLEBLOWER_SECRET?: string;
 };
 
 const app = new Hono<Env>().basePath('/api');
@@ -597,4 +599,4 @@ ${ragContext}
   }
 });
 
-export const onRequest = handle(app);
+export default app;

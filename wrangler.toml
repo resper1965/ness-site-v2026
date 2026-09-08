@@ -1,6 +1,16 @@
 name = "ness-site2026"
-compatibility_date = "2025-01-01"
-pages_build_output_dir = "dist"
+main = "./workers/app.ts"
+compatibility_date = "2025-04-01"
+compatibility_flags = ["nodejs_compat"]
+
+# O diretório dos assets é preenchido pelo plugin do Vite no build, apontando
+# para a saída do cliente. Requisição que casa com um arquivo é servida pelo
+# runtime antes de o Worker rodar; o resto vira HTML renderizado na edge.
+
+# Os domínios de produção continuam no Cloudflare Pages até a virada, que é
+# manual: apontar ness.com.br, trustness.com.br e forense.io para este Worker
+# como Custom Domains. Sem `routes` aqui, `wrangler deploy` publica só em
+# workers.dev e não toca produção.
 
 [vars]
 ENVIRONMENT = "production"
@@ -23,4 +33,3 @@ index_name = "canal-vectors"
 
 [ai]
 binding = "AI"
-

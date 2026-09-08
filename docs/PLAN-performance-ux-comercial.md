@@ -380,7 +380,7 @@ Esforço em dias-pessoa (dp) de um dev sênior front/edge. Cada tarefa tem crit�
 
 ## Status de execução (2026-09-08, mesma sessão da análise)
 
-**Ondas 0 e 1 implementadas** neste PR, mais um subconjunto das Ondas 2.7 e 3. A migração para HTML na edge (Onda 2.1–2.6) e a instrumentação completa de conversão (3.5–3.7) permanecem como próximos passos.
+**Ondas 0 e 1 implementadas** neste PR, mais um subconjunto das Ondas 2.7 e 3. A migração para HTML na edge saiu depois, no PR #6 (tasks 2.1 e 2.6 — ver abaixo). A instrumentação completa de conversão (3.5–3.7) permanece como próximo passo.
 
 | Métrica (Lighthouse 12, mobile throttled, `vite preview`, mesma máquina) | Antes | Depois |
 |---|---|---|
@@ -426,9 +426,29 @@ Esforço em dias-pessoa (dp) de um dev sênior front/edge. Cada tarefa tem crit�
 | 3.4 (parcial) / A-28, A-47, A-48 | CTA visível no mobile; menu mobile em CSS com Esc e trava de scroll; links de marca na mesma aba; scroll preservado no "voltar" |
 | A-33 (parcial) | gtag só após `load` e sem `page_view` automático (consentimento via Zaraz fica para a Onda 3.6) |
 
+### Onda 2 — HTML na edge (PR #6, 2026-09-08)
+
+Tasks **2.1 e 2.6 entregues juntas**: são a mesma virada, porque ao sair do
+Cloudflare Pages a pasta `functions/` deixa de existir e precisa nascer dentro
+do Worker no mesmo commit.
+
+| Entregue | O quê |
+|---|---|
+| 2.1 | React Router 7 em modo framework + Worker com Static Assets; `src/routes.ts` (com `lang` preparado para a 2.5); marca resolvida pelo `Host` no loader da raiz; meta/og/canonical por marca no servidor (fecha B-11) |
+| 2.6 | `server.ts`, `functions/` e o proxy de dev substituídos por `workers/app.ts`; `express`, `@hono/node-server` e `dotenv` fora das dependências |
+| extra | 404 real (sem rota coringa; rotas só-ness devolvem 404 nos outros domínios); CSP com nonce por requisição em vez de `unsafe-inline`; deploy e preview por PR migrados para `wrangler deploy` |
+
+LCP do preview (Lighthouse mobile, 3 rodadas): **2,76 s** — ainda acima da meta
+de 2,5 s, que depende das ondas 2.2 (loaders no servidor) e de imagens.
+
+**Virada de produção pendente e manual:** apontar ness.com.br,
+trustness.com.br e forense.io para o Worker. Sem `routes` na `wrangler.toml`,
+o deploy publica só em workers.dev e os domínios seguem no Pages.
+
 ### Próximos passos (ordem recomendada)
 
-1. Onda 2.1–2.6: HTML na edge (React Router 7 framework mode + Worker), i18n por URL, redirects das rotas espelho.
+1. Onda 2.2–2.5: loaders lendo D1 com Cache API, meta por página no servidor,
+   sitemaps e redirects no Worker, i18n por URL (`/en`, `/es`).
 2. Onda 3.5–3.7: Turnstile, UTM, `/obrigado`, Zaraz + consentimento, eventos e Measurement Protocol; chat como canal de lead.
 3. Onda 0.9: ligar Cloudflare Web Analytics (token no painel) e Early Hints.
 4. Onda 3.8–3.9: prova social, casos com números, assessments no menu.

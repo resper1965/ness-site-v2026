@@ -743,6 +743,12 @@ async function ensureLanguage(lng: string) {
   i18n.addResourceBundle(base, 'translation', mod.default, true, true);
 }
 
+/**
+ * Preferência salva pelo usuário. No servidor não existe `localStorage`: o
+ * HTML da edge sai sempre em pt, e a troca acontece depois da hidratação
+ * (abaixo). Iniciar o i18n direto em `storedLng` faria o primeiro render do
+ * cliente divergir do HTML do servidor.
+ */
 const storedLng = (typeof localStorage !== 'undefined' && localStorage.getItem('ness_lang')) || 'pt';
 
 i18n
@@ -759,8 +765,8 @@ i18n
       caches: ['localStorage'],
       lookupLocalStorage: 'ness_lang',
     },
-    // Default to PT if no stored preference exists
-    lng: storedLng,
+    // pt é o idioma do primeiro render, no servidor e no cliente
+    lng: 'pt',
     interpolation: {
       escapeValue: false
     },
