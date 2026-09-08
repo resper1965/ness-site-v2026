@@ -92,6 +92,8 @@ function PreloadDoHero({ brand, pathname }: { brand: Brand; pathname: string }) 
   );
 }
 
+const BEACON_TOKEN = import.meta.env.VITE_CF_BEACON_TOKEN as string | undefined;
+
 export function Layout({ children }: { children: ReactNode }) {
   const dados = useRouteLoaderData('root') as RootData | undefined;
   const lang = dados?.lang ?? IDIOMA_PADRAO;
@@ -108,6 +110,17 @@ export function Layout({ children }: { children: ReactNode }) {
         {/* Só a fila do gtag: o preload do hero saiu daqui para o HTML acima.
             Sem preload a carregar, o script deixa de bloquear a análise. */}
         <script src="/boot.js" nonce={nonce} defer />
+
+        {/* Medição de campo do Cloudflare. Sem o token, nada é carregado —
+            e sem dado de campo, ajuste de performance é chute. */}
+        {BEACON_TOKEN && (
+          <script
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon={`{"token":"${BEACON_TOKEN}"}`}
+            nonce={nonce}
+            defer
+          />
+        )}
       </head>
       <body>
         {children}

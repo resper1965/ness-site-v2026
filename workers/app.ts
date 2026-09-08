@@ -34,7 +34,7 @@ const SECURITY_HEADERS: Record<string, string> = {
  * valor vai no cabeçalho e nas tags que o servidor emitiu.
  */
 const csp = (nonce: string) =>
-  `default-src 'self'; script-src 'self' 'nonce-${nonce}' https://www.googletagmanager.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://*.ness.com.br https://*.r2.dev https://images.unsplash.com https://ui-avatars.com https://www.googletagmanager.com https://*.google-analytics.com; connect-src 'self' https://canal.ness.com.br https://*.cloudflare.com https://*.google-analytics.com https://*.analytics.google.com https://*.ingest.us.sentry.io; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests`;
+  `default-src 'self'; script-src 'self' 'nonce-${nonce}' https://www.googletagmanager.com https://challenges.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://*.ness.com.br https://*.r2.dev https://images.unsplash.com https://ui-avatars.com https://www.googletagmanager.com https://*.google-analytics.com; connect-src 'self' https://canal.ness.com.br https://cloudflareinsights.com https://*.cloudflare.com https://*.google-analytics.com https://*.analytics.google.com https://*.ingest.us.sentry.io; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests`;
 
 /**
  * Rotas espelho: as duas grafias existiam e respondiam 200, servindo o mesmo
