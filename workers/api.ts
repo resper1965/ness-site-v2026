@@ -237,8 +237,10 @@ app.post('/submit-form', async (c) => {
     // robô a contornar, e não grava nada.
     if (website) return c.json({ success: true, message: 'Formulário registrado.' });
 
-    // A ação vem da superfície que enviou: contato ou chat.
-    const acao = type === 'chat' ? 'chat' : 'contato';
+    // Cada superfície tem a sua ação. O mapa é explícito porque acrescentar
+    // um formulário sem widget foi o que quebrou o chat e o assessment.
+    const ACOES: Record<string, string> = { chat: 'chat', assessment: 'assessment' };
+    const acao = ACOES[String(type)] ?? 'contato';
     if (!(await turnstileOk(c.env, turnstileToken, acao, c.req.header('CF-Connecting-IP') ?? null))) {
       return c.json({ error: 'Verificação antirrobô falhou. Recarregue a página e tente novamente.' }, 400);
     }

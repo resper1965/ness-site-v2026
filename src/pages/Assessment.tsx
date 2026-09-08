@@ -8,6 +8,9 @@ import { canalApi } from "../services/canal";
 import BlueDot from "../components/BlueDot";
 import SchemaOrg from "../components/SchemaOrg";
 import { routeMeta } from '../utils/meta';
+import Turnstile from '../components/Turnstile';
+import { evento, eventoUnico } from '../utils/eventos';
+import { origemDaVisita } from '../utils/origem';
 
 // Os questionários vivem em `src/data/assessments.ts`, só em português: a
 // página não existe sob /en e /es, então não anuncia alternates.
@@ -71,11 +74,18 @@ export default function Assessment() {
   }, [answers, config]);
 
   const handleAnswer = (score: number) => {
+    // A primeira resposta é o começo real: abrir a página não é começar.
+    if (currentStep === 0) {
+      eventoUnico(`assessment:${config.slug}`, 'assessment_start', { assessment: config.slug });
+    }
     setAnswers((prev) => ({ ...prev, [question.id]: score }));
     if (currentStep < totalQuestions - 1) {
       setCurrentStep((prev) => prev + 1);
     } else {
       setShowResult(true);
+      // `scorePercent` ainda não contabilizou esta resposta: soma na hora.
+      const pontuacaoFinal = Math.round(((totalScore + score) / maxScore) * 100);
+      evento('assessment_complete', { assessment: config.slug, score: pontuacaoFinal });
     }
   };
 
@@ -98,7 +108,11 @@ export default function Assessment() {
         name: formData.get("name"),
         email: formData.get("email"),
         company: formData.get("company"),
+        website: formData.get("website"),
+        turnstileToken: formData.get("cf-turnstile-response"),
+        ...origemDaVisita(),
       });
+      evento('generate_lead', { form_type: 'assessment', assessment: config.slug, score: scorePercent });
       setEmailSent(true);
     } catch (err) {
       console.error("Form error:", err);
@@ -308,6 +322,12 @@ export default function Assessment() {
                     <h3 className="text-xs text-primary-container font-bold uppercase tracking-widest mb-2">
                       receba o relatório completo
                     </h3>
+
+                    {/* Armadilha: fora da tela e fora do teclado. */}
+                    <div aria-hidden="true" className="absolute w-px h-px overflow-hidden -left-[9999px]">
+                      <label htmlFor="assessment-website">não preencha</label>
+                      <input id="assessment-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                    </div>
                     <input
                       name="name"
                       type="text"
@@ -329,6 +349,8 @@ export default function Assessment() {
                       placeholder="Empresa"
                       className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary-container"
                     />
+                    <Turnstile action="assessment" />
+
                     {submitError && (
                       <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-5 py-3 rounded-xl text-xs font-light flex items-start gap-3">
                         <AlertTriangle size={16} className="shrink-0 mt-0.5" />

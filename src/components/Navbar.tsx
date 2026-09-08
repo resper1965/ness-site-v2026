@@ -8,6 +8,7 @@ import { YEARS_OF_LEGACY } from '../constants/brand';
 import { useBrand } from '../config/brand';
 import { rotaNoIdioma, type Idioma } from '../utils/lang';
 import { solutionsData } from '../data/solutionsData';
+import { evento } from '../utils/eventos';
 
 /** Os cinco produtos, lidos de solutionsData: uma fonte da verdade só. */
 const SOLUCOES = Object.entries(solutionsData).map(([slug, dados]) => {
@@ -142,6 +143,7 @@ const Navbar = () => {
                         ))}
                         <Link
                           to="/assessment/cyber"
+                          onClick={() => evento('cta_click', { cta: 'megamenu_diagnostico', destino: '/assessment/cyber' })}
                           className="block mt-1 px-4 py-2.5 rounded-2xl bg-primary-container/10 text-primary-container text-[11px] font-bold uppercase tracking-widest text-center hover:bg-primary-container hover:text-on-primary transition-colors"
                         >
                           {t('nav.assessment', 'diagnóstico gratuito')}
@@ -191,6 +193,7 @@ const Navbar = () => {
 
           {/* CTA — visível também no mobile */}
           <Link
+            onClick={() => evento('cta_click', { cta: 'navbar', destino: '/contato' })}
             to="/contato"
             className="bg-primary-container text-on-primary px-4 md:px-6 py-2 rounded-full font-display font-bold text-[11px] md:text-xs uppercase tracking-wide transition-all hover:brightness-110 active:scale-95 focus-visible:ring-2 focus-visible:ring-primary-container whitespace-nowrap"
           >
@@ -271,8 +274,8 @@ const Navbar = () => {
 
             <div className="pt-8 border-t border-white/5 anim-fade-up anim-delay-4">
               <Link
+                onClick={() => { setIsOpen(false); evento('cta_click', { cta: 'menu_mobile', destino: '/contato' }); }}
                 to="/contato"
-                onClick={() => setIsOpen(false)}
                 className="w-full block text-center bg-primary-container text-on-primary py-4 rounded-2xl font-display font-bold uppercase tracking-widest text-sm"
               >
                 {t('nav.cta')}
