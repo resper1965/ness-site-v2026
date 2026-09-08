@@ -143,6 +143,23 @@ test.describe('navegação', () => {
     await expect(botao).toHaveAttribute('aria-expanded', 'false');
   });
 
+  test('o switcher leva às três marcas, cada uma no seu domínio', async ({ page, isMobile }) => {
+    test.skip(!!isMobile, 'o switcher é do desktop');
+    await page.goto('/');
+    const botao = page.getByRole('button', { name: /trocar de marca/i });
+    await botao.click();
+
+    const links = page.locator('#ecossistema a');
+    await expect(links).toHaveCount(3);
+    // Domínio próprio por marca: trocar é sair do site, então são âncoras.
+    await expect(links.nth(0)).toHaveAttribute('href', 'https://ness.com.br');
+    await expect(links.nth(1)).toHaveAttribute('href', 'https://trustness.com.br');
+    await expect(links.nth(2)).toHaveAttribute('href', 'https://forense.io');
+
+    await page.keyboard.press('Escape');
+    await expect(botao).toHaveAttribute('aria-expanded', 'false');
+  });
+
   test('toda página interna declara a hierarquia para o buscador', async ({ request }) => {
     for (const path of ['/blog', '/contato', '/solucoes/secops', '/sobre']) {
       const html = await (await request.get(path)).text();
