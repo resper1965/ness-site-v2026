@@ -15,6 +15,8 @@ export type Bindings = {
   CLOUDFLARE_ACCOUNT_ID?: string;
   CLOUDFLARE_AI_GATEWAY_ID?: string;
   WHISTLEBLOWER_SECRET?: string;
+  /** Criado no painel do Turnstile. Ausente = verificação desligada. */
+  TURNSTILE_SECRET_KEY?: string;
 };
 
 const app = new Hono<Env>().basePath('/api');
@@ -134,10 +136,40 @@ app.get('/jobs', async (c) => {
 });
 
 // ── public form submissions ────────────────────────────────────────
+/**
+ * Verifica o token do Turnstile. Só exige quando o segredo existe: enquanto o
+ * widget não estiver criado no painel, o formulário continua funcionando —
+ * com honeypot, que não depende de configuração nenhuma.
+ */
+async function turnstileOk(secret: string | undefined, token: unknown, ip: string | null): Promise<boolean> {
+  if (!secret) return true;
+  if (typeof token !== 'string' || !token) return false;
+  const corpo = new FormData();
+  corpo.append('secret', secret);
+  corpo.append('response', token);
+  if (ip) corpo.append('remoteip', ip);
+  try {
+    const r = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: corpo });
+    const dados = (await r.json()) as { success?: boolean };
+    return dados.success === true;
+  } catch {
+    // Verificador fora do ar não pode derrubar o canal de lead.
+    return true;
+  }
+}
+
 app.post('/submit-form', async (c) => {
   try {
     const body = await c.req.json();
-    const { type, ...payload } = body;
+    const { type, website, turnstileToken, ...payload } = body;
+
+    // Campo invisível preenchido: robô. Devolve sucesso para não ensinar o
+    // robô a contornar, e não grava nada.
+    if (website) return c.json({ success: true, message: 'Formulário registrado.' });
+
+    if (!(await turnstileOk(c.env.TURNSTILE_SECRET_KEY, turnstileToken, c.req.header('CF-Connecting-IP') ?? null))) {
+      return c.json({ error: 'Verificação antirrobô falhou. Recarregue a página e tente novamente.' }, 400);
+    }
     await c.env.DB.prepare(
       "INSERT INTO forms (payload, source, status) VALUES (?, ?, 'new')"
     ).bind(JSON.stringify(payload), type || 'contact').run();

@@ -44,6 +44,7 @@ function siteRoutes(lang = ''): RouteConfigEntry[] {
     route('blog/:slug', 'pages/BlogPost.tsx', { id: id('blog-post') }),
     route('carreiras', 'pages/Careers.tsx', { id: id('carreiras') }),
     route('contato', 'pages/Contact.tsx', { id: id('contato') }),
+    route('obrigado', 'pages/Obrigado.tsx', { id: id('obrigado') }),
     route('compliance/:type', 'pages/Compliance.tsx', { id: id('compliance') }),
     ...(traduzido ? [route('assessment/:type', 'pages/Assessment.tsx', { id: id('assessment') })] : []),
 

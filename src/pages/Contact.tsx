@@ -1,9 +1,13 @@
 import BlueDot from '../components/BlueDot';
 import React, { useEffect, useState } from "react";
 import { m as motion } from "motion/react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router";
 import { useTranslation } from "react-i18next";
 import { routeMeta, traduzir } from '../utils/meta';
+import { idiomaDaRota, rotaNoIdioma } from '../utils/lang';
+import { origemDaVisita } from '../utils/origem';
+import { validarEmail } from '../utils/formulario';
+import Turnstile from '../components/Turnstile';
 import { CANAL_BASE } from '../config/api';
 import { canalApi } from '../services/canal';
 import { useBrand } from '../config/brand';
@@ -40,9 +44,15 @@ const Contact = () => {
   const [searchParams] = useSearchParams();
   const ref = searchParams.get('ref') || '';
   const refInfo = REF_MAP[ref] || (BRAND !== 'ness' ? REF_MAP[BRAND] : null);
-  const [selectedSubject, setSelectedSubject] = useState(refInfo?.subject || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
+  const [submitStatus, setSubmitStatus] = useState<'error' | null>(null);
+  const [erroEmail, setErroEmail] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  // O assunto sai da origem da visita, não de um select que o visitante
+  // preenche por obrigação: um campo a menos e um dado mais confiável.
+  const assunto = refInfo?.subject || (BRAND === 'ness' ? 'outros' : BRAND);
 
   return (
     <motion.div 
@@ -149,16 +159,25 @@ const Contact = () => {
                   name: formData.get("name"),
                   company: formData.get("company"),
                   email: formData.get("email"),
-                  subject: formData.get("subject"),
+                  subject: assunto,
                   message: formData.get("message"),
                   referrer: ref || BRAND,
                   referrerLabel: refInfo?.label || BRAND,
+                  // Origem da visita: sem isso não dá para saber qual canal
+                  // traz lead, só quantos leads chegaram.
+                  ...origemDaVisita(),
+                  // Armadilha: humano não vê o campo, robô preenche.
+                  website: formData.get("website"),
+                  turnstileToken: formData.get("cf-turnstile-response"),
                 };
                 try {
                   await canalApi.submitForm(payload);
-                  setSubmitStatus('success');
-                  (e.target as HTMLFormElement).reset();
-                  setSelectedSubject('');
+                  window.gtag?.('event', 'generate_lead', {
+                    form_type: 'contact',
+                    subject: assunto,
+                    brand: BRAND,
+                  });
+                  navigate(rotaNoIdioma(pathname, idiomaDaRota(pathname)).replace('/contato', '/obrigado'));
                 } catch (error) {
                   setSubmitStatus('error');
                 } finally {
@@ -198,31 +217,23 @@ const Contact = () => {
                   type="email" 
                   required
                   placeholder={t('contact.form.email_placeholder_v2', 'nome@empresa.com.br')}
-                  autoComplete="email" 
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
+                  autoComplete="email"
+                  aria-invalid={!!erroEmail}
+                  aria-describedby={erroEmail ? 'contact-email-erro' : undefined}
+                  onBlur={(e) => setErroEmail(validarEmail(e.target.value))}
+                  onChange={() => erroEmail && setErroEmail(null)}
+                  className={`w-full bg-white/5 border rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all ${erroEmail ? 'border-red-500/60' : 'border-white/10'}`}
                   aria-label={t('contact.form.email')} />
+                {erroEmail && (
+                  <p id="contact-email-erro" role="alert" className="text-[11px] text-red-400 ml-4">{erroEmail}</p>
+                )}
               </div>
-              <div className="space-y-2">
-                <label htmlFor="contact-subject" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.subject')}</label>
-                <select 
-                  id="contact-subject"
-                  name="subject" 
-                  required 
-                  value={selectedSubject}
-                  onChange={(e) => setSelectedSubject(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all appearance-none"
-                >
-                  <option value="" className="bg-surface">{t('contact.form.subject_select')}</option>
-                  <option value="n.secops" className="bg-surface">n.secops — Segurança Cibernética</option>
-                  <option value="n.autoops" className="bg-surface">n.autoops — Automação de Infraestrutura</option>
-                  <option value="n.infraops" className="bg-surface">n.infraops — Operações de Infraestrutura</option>
-                  <option value="n.devarch" className="bg-surface">n.devarch — Engenharia de Software</option>
-                  <option value="n.cirt" className="bg-surface">n.cirt — Resposta a Incidentes</option>
-                  <option value="trustness" className="bg-surface">trustness. — GRC & Compliance</option>
-                  <option value="forense" className="bg-surface">forense.io — Perícia Digital</option>
-                  <option value="outros" className="bg-surface">{t('contact.form.other', 'Outros')}</option>
-                </select>
+              {/* Honeypot: fora do fluxo de teclado e invisível para leitor de tela. */}
+              <div aria-hidden="true" className="absolute w-px h-px overflow-hidden -left-[9999px]">
+                <label htmlFor="website">não preencha</label>
+                <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
               </div>
+
               <div className="space-y-2">
                 <label htmlFor="contact-message" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.message')}</label>
                 <textarea 
@@ -247,11 +258,6 @@ const Contact = () => {
                 </label>
               </div>
 
-              {submitStatus === 'success' && (
-                <div className="bg-primary-container/10 border border-primary-container/20 text-primary-container px-6 py-4 rounded-2xl text-xs font-light mt-4">
-                  {t('contact.form.success')}
-                </div>
-              )}
               {submitStatus === 'error' && (
                 <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-6 py-4 rounded-2xl text-xs font-light mt-4 flex items-start gap-3">
                   <AlertTriangle size={16} className="shrink-0 mt-0.5" />
@@ -262,9 +268,11 @@ const Contact = () => {
                 </div>
               )}
 
+              <Turnstile />
+
               <button 
                 type="submit"
-                disabled={isSubmitting || submitStatus === 'success'}
+                disabled={isSubmitting}
                 className="w-full bg-primary-container text-on-primary py-3.5 rounded-2xl font-display font-semibold uppercase tracking-widest text-xs hover:brightness-110 transition-all shadow-lg shadow-primary-container/20 disabled:opacity-50"
               >
                 {isSubmitting ? t('common.sending', 'enviando...') : t('contact.form.send')}

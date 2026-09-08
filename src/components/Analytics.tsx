@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
+import { registrarOrigem } from "../utils/origem";
 
 declare global {
   interface Window {
@@ -15,6 +16,9 @@ declare global {
 export default function Analytics() {
   const { pathname, search } = useLocation();
   const first = useRef(true);
+
+  // A campanha aparece na primeira URL; o formulário é preenchido depois.
+  useEffect(() => { registrarOrigem(); }, []);
 
   useEffect(() => {
     if (first.current) { first.current = false; return; }
