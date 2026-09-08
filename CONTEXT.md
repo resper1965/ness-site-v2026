@@ -60,6 +60,7 @@ Este é o documento de planejamento central. Contém:
 |-----------|-----------|
 | [`README.md`](README.md) | Visão geral, quick start, API reference |
 | [`docs/PLAN-epics-roadmap.md`](docs/PLAN-epics-roadmap.md) | **Roadmap Master** (contexto obrigatório) |
+| [`docs/PLAN-performance-ux-comercial.md`](docs/PLAN-performance-ux-comercial.md) | **Plano de performance** (técnica, UX/UI, comercial) — ondas 0–4, KPIs e inventário de achados |
 | [`docs/PLAN-canal-tech-debt.md`](docs/PLAN-canal-tech-debt.md) | Débitos técnicos pendentes |
 | [`docs/PLAN-next-steps.md`](docs/PLAN-next-steps.md) | Próximos passos pós-estabilização |
 | [`docs/DESIGN-SYSTEM.md`](docs/DESIGN-SYSTEM.md) | **Design System Universal** (regras visuais estritas) |
