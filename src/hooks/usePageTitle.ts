@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { BRAND, BRAND_DOMAINS, BRAND_LABELS } from '../config/brand';
+import { useBrand, BRAND_DOMAINS, BRAND_LABELS } from '../config/brand';
 
 interface PageMeta {
   title?: string;
@@ -24,6 +24,7 @@ interface PageMetaOptions {
  * Backwards compatible: usePageMeta('key', 'fallback') works like old usePageTitle.
  */
 export function usePageMeta(titleKeyOrMeta: string | PageMeta, fallback?: string, options: PageMetaOptions = {}) {
+  const BRAND = useBrand();
   const { t, i18n } = useTranslation();
   const brandLabel = BRAND_LABELS[BRAND];
   const domain = BRAND_DOMAINS[BRAND];

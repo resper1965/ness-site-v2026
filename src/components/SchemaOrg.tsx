@@ -1,5 +1,5 @@
 import React from 'react';
-import { BRAND, BRAND_DOMAINS } from '../config/brand';
+import { useBrand, BRAND_DOMAINS, type Brand } from '../config/brand';
 import { FOUNDATION_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
 interface SchemaOrgProps {
@@ -66,7 +66,7 @@ function getOrganizationSchema() {
   };
 }
 
-function getWebSiteSchema() {
+function getWebSiteSchema(BRAND: Brand) {
   const domain = BRAND_DOMAINS[BRAND];
   return {
     '@context': 'https://schema.org',
@@ -142,14 +142,15 @@ function getArticleSchema(article: { title: string; description: string; url: st
 }
 
 export default function SchemaOrg({ type = 'organization', data }: SchemaOrgProps) {
+  const BRAND = useBrand();
   let schema: unknown;
 
   switch (type) {
     case 'organization':
-      schema = [getOrganizationSchema(), getWebSiteSchema()];
+      schema = [getOrganizationSchema(), getWebSiteSchema(BRAND)];
       break;
     case 'website':
-      schema = getWebSiteSchema();
+      schema = getWebSiteSchema(BRAND);
       break;
     case 'breadcrumb':
       schema = getBreadcrumbSchema(data?.items as { name: string; url: string }[] || []);

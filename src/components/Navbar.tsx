@@ -5,9 +5,10 @@ import { useTranslation } from "react-i18next";
 import { Menu, X, Sparkles } from "lucide-react";
 
 import { YEARS_OF_LEGACY } from '../constants/brand';
-import { BRAND } from '../config/brand';
+import { useBrand } from '../config/brand';
 
 const Navbar = () => {
+  const BRAND = useBrand();
   const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();

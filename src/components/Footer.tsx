@@ -6,7 +6,7 @@ import { Send, Linkedin, Instagram, Facebook, Lock } from "lucide-react";
 
 import { FOUNDATION_YEAR, CURRENT_YEAR } from '../constants/brand';
 import { CANAL_BASE } from '../config/api';
-import { BRAND, BRAND_LABELS, BRAND_DOMAINS } from '../config/brand';
+import { useBrand, BRAND_LABELS, BRAND_DOMAINS } from '../config/brand';
 
 const ECOSYSTEM_LINKS = [
   { brand: 'ness',      label: 'ness.',       href: BRAND_DOMAINS.ness },
@@ -15,6 +15,7 @@ const ECOSYSTEM_LINKS = [
 ] as const;
 
 const Footer = () => {
+  const BRAND = useBrand();
   const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'sending' | 'ok' | 'error'>('idle');

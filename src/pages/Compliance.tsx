@@ -7,7 +7,7 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import { encryptZeroTrustPayload } from '../utils/crypto';
 import { CANAL_BASE } from '../config/api';
 import { canalApi } from '../services/canal';
-import { BRAND } from '../config/brand';
+import { useBrand } from '../config/brand';
 import { 
 AlertTriangle} from "lucide-react";
 
@@ -15,6 +15,7 @@ AlertTriangle} from "lucide-react";
 
 
 const Compliance = () => {
+  const BRAND = useBrand();
   const { t } = useTranslation();
   usePageTitle('compliance.meta_title', 'compliance — ness.');
   const { type } = useParams();

@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import './index.css';
 import i18n from './i18n';
+import { BrandProvider, detectBrand } from './config/brand';
 
 // Sync document lang attribute with i18n language for SEO and a11y
 const syncLang = (lang: string) => {
@@ -14,9 +15,11 @@ i18n.on('languageChanged', syncLang);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <BrandProvider value={detectBrand()}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </BrandProvider>
   </StrictMode>,
 );
 

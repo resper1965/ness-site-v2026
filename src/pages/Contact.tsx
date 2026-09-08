@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
 import { CANAL_BASE } from '../config/api';
 import { canalApi } from '../services/canal';
-import { BRAND } from '../config/brand';
+import { useBrand } from '../config/brand';
 import { 
 Mail,
   Phone,
@@ -35,6 +35,7 @@ const REF_MAP: Record<string, { label: string; subject: string }> = {
 };
 
 const Contact = () => {
+  const BRAND = useBrand();
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const ref = searchParams.get('ref') || '';
