@@ -198,6 +198,36 @@ async function turnstileOk(
   );
 }
 
+/**
+ * A guarda das superfícies públicas, num lugar só.
+ *
+ * Devolve `null` quando o envio pode seguir, ou a resposta que deve ser
+ * devolvida. O honeypot devolve sucesso de mentira: dizer "recusado" ensina o
+ * robô a contornar.
+ */
+async function guardar(
+  c: { env: Bindings; req: { header: (n: string) => string | undefined } },
+  corpo: { website?: unknown; turnstileToken?: unknown },
+  acao: string,
+): Promise<{ ok: true } | { ok: false; corpo: unknown; status: 200 | 400 }> {
+  if (corpo.website) return { ok: false, corpo: { success: true }, status: 200 };
+
+  const passou = await turnstileOk(
+    c.env,
+    corpo.turnstileToken,
+    acao,
+    c.req.header('CF-Connecting-IP') ?? null,
+  );
+  if (!passou) {
+    return {
+      ok: false,
+      corpo: { error: 'Verificação antirrobô falhou. Recarregue a página e tente novamente.' },
+      status: 400,
+    };
+  }
+  return { ok: true };
+}
+
 app.post('/submit-form', async (c) => {
   try {
     const body = await c.req.json();
@@ -234,7 +264,11 @@ app.post('/submit-form', async (c) => {
 
 app.post('/newsletter', async (c) => {
   try {
-    const { email } = await c.req.json();
+    const { email, website, turnstileToken } = await c.req.json();
+
+    const guarda = await guardar(c, { website, turnstileToken }, 'newsletter');
+    if (!guarda.ok) return c.json(guarda.corpo as Record<string, unknown>, guarda.status);
+
     if (!email || !email.includes('@')) return c.json({ error: 'Invalid email' }, 400);
 
     const existing = await c.env.DB.prepare("SELECT id FROM newsletter WHERE email = ? LIMIT 1").bind(email).first();
@@ -251,6 +285,11 @@ app.post('/newsletter', async (c) => {
 app.post('/whistleblower', async (c) => {
   try {
     const body = await c.req.json();
+
+    // Só honeypot por enquanto. O Turnstile faria uma chamada a
+    // challenges.cloudflare.com no momento em que alguém denuncia — mais um
+    // rastro no caminho de quem já está em risco. Decisão pendente.
+    if (body.website) return c.json({ case_code: generateCaseCode(), message: 'Denúncia registrada.' });
     const now = new Date().toISOString();
     const id = crypto.randomUUID();
     const caseCode = generateCaseCode();

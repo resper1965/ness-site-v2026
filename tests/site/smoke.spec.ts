@@ -73,6 +73,33 @@ test.describe('metadados por rota', () => {
   });
 });
 
+test.describe('superfícies públicas protegidas', () => {
+  // Fechar só o formulário de contato deixa as portas laterais abertas: um
+  // robô que quiser inundar vai pela newsletter ou pela ouvidoria.
+  const superficies: [string, string][] = [
+    ['/', 'newsletter-website'],
+    ['/compliance/etica', 'denuncia-website'],
+  ];
+
+  for (const [path, id] of superficies) {
+    test(`${path} tem armadilha fora da tela`, async ({ page }) => {
+      await page.goto(path);
+      const armadilha = page.locator(`#${id}`);
+      await expect(armadilha).toHaveCount(1);
+      await expect(armadilha).not.toBeInViewport();
+      await expect(armadilha).toHaveAttribute('tabindex', '-1');
+    });
+  }
+
+  test('newsletter recusa envio de robô sem revelar o motivo', async ({ request }) => {
+    const r = await request.post('/api/newsletter', {
+      data: { email: 'robo@exemplo.com', website: 'preenchido por robo' },
+    });
+    // Sucesso de mentira: dizer "recusado" ensina o robô a contornar.
+    expect(r.status()).toBe(200);
+  });
+});
+
 test.describe('navegação', () => {
   test('soluções abre o mapa dos cinco produtos e fecha no Esc', async ({ page, isMobile }) => {
     test.skip(!!isMobile, 'o mega-menu é do desktop; no mobile os produtos ficam listados');
@@ -129,7 +156,8 @@ test.describe('formulário de contato', () => {
   // por CSS de display, e é justamente ele que a armadilha pega.
   test('honeypot está fora da tela e fora do teclado', async ({ page }) => {
     await page.goto('/contato');
-    const armadilha = page.locator('input[name="website"]');
+    // Por id: o rodapé tem a sua própria armadilha, com o mesmo `name`.
+    const armadilha = page.locator('#website');
     await expect(armadilha).toHaveCount(1);
     await expect(armadilha).toHaveAttribute('tabindex', '-1');
 
