@@ -24,6 +24,7 @@ const ChatbotWidget = () => {
   
   const [sessionId] = useState(`gabi-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`);
   const [csatGiven, setCsatGiven] = useState<number | null>(null);
+  const [hasUserDismissed, setHasUserDismissed] = useState(false);
 
   // ── Rastreamento Cognitivo de Páginas Visitadas (Opção A) ──────
   useEffect(() => {
@@ -45,29 +46,29 @@ const ChatbotWidget = () => {
 
   // ── Abertura Proativa / Gatilhos baseados em páginas ───────────
   useEffect(() => {
+    if (hasUserDismissed || isOpen) return;
+
     const criticalPages = ["/forense", "/compliance", "/solucoes", "/dpo-as-a-service"];
     const isCritical = criticalPages.some(page => location.pathname.startsWith(page));
 
-    if (!isOpen) {
-      const timeout = setTimeout(() => {
-        setIsOpen(true);
-        setMessages(prev => {
-          if (prev.length <= 1) { // Apenas se for o estado de boas-vindas inicial
-            let msg = botConfig?.welcome_message || t('chatbot.welcome', "Olá! Como posso ajudar?");
-            if (location.pathname.startsWith("/forense")) {
-              msg = "Detectamos que você está na área de resiliência cibernética. Se sua empresa estiver sofrendo um incidente de segurança agora, clique no botão de Incidente Crítico ou me informe aqui para acionar o time n.cirt de imediato.";
-            } else if (location.pathname.startsWith("/dpo-as-a-service") || location.pathname.startsWith("/compliance")) {
-              msg = "Olá! Deseja entender como estruturar o compliance LGPD ou contratar um DPO as a Service na sua organização? Posso te apoiar com as dúvidas iniciais.";
-            }
-            return [{ role: 'bot', content: msg }];
+    const timeout = setTimeout(() => {
+      setIsOpen(true);
+      setMessages(prev => {
+        if (prev.length <= 1) { // Apenas se for o estado de boas-vindas inicial
+          let msg = botConfig?.welcome_message || t('chatbot.welcome', "Olá! Como posso ajudar?");
+          if (location.pathname.startsWith("/forense")) {
+            msg = "Detectamos que você está na área de resiliência cibernética. Se sua empresa estiver sofrendo um incidente de segurança agora, clique no botão de Incidente Crítico ou me informe aqui para acionar o time n.cirt de imediato.";
+          } else if (location.pathname.startsWith("/dpo-as-a-service") || location.pathname.startsWith("/compliance")) {
+            msg = "Olá! Deseja entender como estruturar o compliance LGPD ou contratar um DPO as a Service na sua organização? Posso te apoiar com as dúvidas iniciais.";
           }
-          return prev;
-        });
-      }, isCritical ? 8000 : 25000); // 8s para páginas críticas de alta conversão, 25s para o resto
+          return [{ role: 'bot', content: msg }];
+        }
+        return prev;
+      });
+    }, isCritical ? 8000 : 25000); // 8s para páginas críticas de alta conversão, 25s para o resto
 
-      return () => clearTimeout(timeout);
-    }
-  }, [location.pathname, isOpen, botConfig, t]);
+    return () => clearTimeout(timeout);
+  }, [location.pathname, isOpen, hasUserDismissed, botConfig, t]);
 
   useEffect(() => {
     fetch(`${CANAL_BASE}/api/chatbot-config?tenant=ness`)
@@ -248,9 +249,12 @@ const ChatbotWidget = () => {
                 </div>
               </div>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  setIsOpen(false);
+                  setHasUserDismissed(true);
+                }}
                 aria-label={t('a11y.close')}
-                className="text-on-surface-variant hover:text-white transition-colors"
+                className="text-on-surface-variant hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-primary-container rounded-lg p-1"
               >
                 <X size={20} />
               </button>

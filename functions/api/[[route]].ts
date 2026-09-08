@@ -331,7 +331,21 @@ app.post('/chat', async (c) => {
     await c.env.CANAL_KV.put(limitKey, val.toString(), { expirationTtl: 60 });
   } catch {}
 
-  const { messages, locale, pagesVisited } = await c.req.json();
+  let body: any = {};
+  try {
+    body = await c.req.json();
+  } catch {
+    return c.json({ error: 'Payload JSON inválido' }, 400);
+  }
+
+  const messages = Array.isArray(body?.messages) ? body.messages : [];
+  const locale = typeof body?.locale === 'string' ? body.locale : 'pt';
+  const pagesVisited = Array.isArray(body?.pagesVisited) ? body.pagesVisited : [];
+
+  if (messages.length === 0) {
+    return c.json({ error: 'Mensagem não fornecida' }, 400);
+  }
+
   const lastMessage = messages[messages.length - 1]?.content || '';
   const lang = locale === 'en' ? 'English' : locale === 'es' ? 'Spanish' : 'Portuguese';
 
