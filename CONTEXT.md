@@ -32,7 +32,7 @@ Este é o documento de planejamento central. Contém:
 | Dimensão | Status |
 |----------|--------|
 | Branch | `main` — sincronizada com [github.com/resper1965/ness-site-v2026](https://github.com/resper1965/ness-site-v2026) |
-| Site | ✅ Build OK, 17 páginas, 3 marcas, acessibilidade WCAG 2.1 AA+ e foco executivo CISO/DPO |
+| Site | ✅ Build OK, 17 páginas, 3 marcas. Ondas 0–1 do plano de performance aplicadas (fontes/imagens self-host, sem overlays automáticos, meta por rota, Lighthouse a11y 100). Próximo: HTML na edge (Onda 2) |
 | Canal CMS | ✅ Funcional, MCP Server integrado, validação defensiva e rate-limiting em rotas de IA |
 | Admin | ⚠️ Em expansão (18 rotas, ~5 novos componentes) |
 | Deploy | 🚀 Pronto para deploy via Cloudflare Pages / Workers (Fase 1 do roadmap) |

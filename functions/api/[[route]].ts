@@ -16,6 +16,26 @@ type Env = {
 
 const app = new Hono<Env>().basePath('/api');
 
+// ── Cache na edge para leituras públicas ───────────────────────────
+// Evita uma consulta ao D1 por visitante: a resposta fica 5 min na edge e
+// pode ser servida obsoleta por até 1 h enquanto revalida em background.
+const PUBLIC_CACHE = 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600';
+
+async function withEdgeCache(c: { req: { raw: Request } }, produce: () => Promise<Response>): Promise<Response> {
+  const cache = (caches as unknown as { default: Cache }).default;
+  const key = new Request(c.req.raw.url, { method: 'GET' });
+  const hit = await cache.match(key);
+  if (hit) return hit;
+  const res = await produce();
+  if (res.ok) {
+    const out = new Response(res.body, res);
+    out.headers.set('Cache-Control', PUBLIC_CACHE);
+    await cache.put(key, out.clone());
+    return out;
+  }
+  return res;
+}
+
 // ── Helper: Gerador de Códigos de Caso (Compliance) ────────────────
 function generateCaseCode(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -39,14 +59,14 @@ app.get('/chatbot-config', async (c) => {
        LIMIT 1`
     ).bind(tenantId).first();
     c.header('Cache-Control', 'public, max-age=60');
-    return c.json(config || { bot_name: 'Gabi.OS', welcome_message: 'Olá! Como posso ajudar?', theme_color: '#00E5A0', enabled: 1 });
+    return c.json(config || { bot_name: 'Gabi.OS', welcome_message: 'Olá! Como posso ajudar?', theme_color: '#00ade8', enabled: 1 });
   } catch {
-    return c.json({ bot_name: 'Gabi.OS', welcome_message: 'Olá! Como posso ajudar?', theme_color: '#00E5A0', enabled: 1 });
+    return c.json({ bot_name: 'Gabi.OS', welcome_message: 'Olá! Como posso ajudar?', theme_color: '#00ade8', enabled: 1 });
   }
 });
 
 // ── public insights (blog) ─────────────────────────────────────────
-app.get('/insights', async (c) => {
+app.get('/insights', (c) => withEdgeCache(c, async () => {
   const lang = c.req.query('lang') || 'pt';
   try {
     const { results } = await c.env.DB.prepare(
@@ -66,9 +86,9 @@ app.get('/insights', async (c) => {
   } catch {
     return c.json({ error: 'Failed to fetch insights' }, 500);
   }
-});
+}));
 
-app.get('/insights/:slug', async (c) => {
+app.get('/insights/:slug', (c) => withEdgeCache(c, async () => {
   const lang = c.req.query('lang') || 'pt';
   const slug = c.req.param('slug');
   try {
@@ -91,10 +111,10 @@ app.get('/insights/:slug', async (c) => {
   } catch {
     return c.json({ error: 'Failed to fetch insight' }, 500);
   }
-});
+}));
 
 // ── public cases (portfolio) ───────────────────────────────────────
-app.get('/cases', async (c) => {
+app.get('/cases', (c) => withEdgeCache(c, async () => {
   const lang = c.req.query('lang') || 'pt';
   try {
     const { results } = await c.env.DB.prepare(
@@ -116,9 +136,9 @@ app.get('/cases', async (c) => {
   } catch {
     return c.json({ error: 'Failed to fetch cases' }, 500);
   }
-});
+}));
 
-app.get('/cases/:slug', async (c) => {
+app.get('/cases/:slug', (c) => withEdgeCache(c, async () => {
   const lang = c.req.query('lang') || 'pt';
   const slug = c.req.param('slug');
   try {
@@ -142,7 +162,7 @@ app.get('/cases/:slug', async (c) => {
   } catch {
     return c.json({ error: 'Failed to fetch case' }, 500);
   }
-});
+}));
 
 // ── public jobs (ATS) ──────────────────────────────────────────────
 app.get('/jobs', async (c) => {

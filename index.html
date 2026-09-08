@@ -4,42 +4,69 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Performance Hints -->
-    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="image" type="image/webp" href="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=60&w=2000&fm=webp" />
+    <!-- Fontes críticas (self-host, variáveis, subset latin) -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/manrope-latin.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin.woff2" crossorigin />
 
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H181SG5HQT"></script>
-    <script defer src="/ga.js"></script>
+    <!-- Preload da imagem do hero (candidata a LCP) apenas na home, por marca -->
+    <script>
+      (function () {
+        if (location.pathname !== '/') return;
+        var h = location.hostname, b = h.indexOf('trustness') > -1 ? 'trustness' : h.indexOf('forense') > -1 ? 'forense' : 'ness';
+        var l = document.createElement('link');
+        l.rel = 'preload'; l.as = 'image'; l.type = 'image/avif'; l.fetchPriority = 'high';
+        l.imageSrcset = '/img/hero-' + b + '-640.avif 640w, /img/hero-' + b + '-1024.avif 1024w, /img/hero-' + b + '-1600.avif 1600w';
+        l.imageSizes = '100vw';
+        document.head.appendChild(l);
+      })();
+    </script>
 
-    <!-- Primary Meta -->
+    <!-- Primary Meta (sobrescrito por marca/rota via usePageMeta) -->
     <title>ness. IT Company</title>
     <meta name="description" content="ness. é uma plataforma modular de transformação digital corporativa B2B. Especialistas em infraestrutura crítica, segurança cibernética (DevSecOps), LGPD, investigação forense (Forense.io) e engenharia de software de alta performance." />
-    <meta name="keywords" content="DevSecOps, LGPD, Cybersecurity, Infraestrutura Crítica, Desenvolvimento de Software B2B, Forense Computacional, Trustness, Cibersegurança" />
     <meta name="robots" content="index, follow" />
     <meta name="author" content="NESS Tecnologia" />
-    <meta name="theme-color" content="#0a0a0f" />
+    <meta name="theme-color" content="#060e20" />
+    <meta name="color-scheme" content="dark" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://ness.com.br/" />
     <meta property="og:title" content="ness. IT Company — tecnologia de precisão desde 1991" />
     <meta property="og:description" content="Plataforma modular de transformação digital — infraestrutura crítica, segurança, privacidade, IA e engenharia de software." />
-    <meta property="og:image" content="https://ness.com.br/og-image.png" />
+    <meta property="og:image" content="https://ness.com.br/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="pt_BR" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="ness. IT Company — tecnologia de precisão desde 1991" />
     <meta name="twitter:description" content="Plataforma modular de transformação digital — infraestrutura crítica, segurança, privacidade, IA e engenharia de software." />
-    <meta name="twitter:image" content="https://ness.com.br/og-image.png" />
+    <meta name="twitter:image" content="https://ness.com.br/og-image.jpg" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <!-- Canonical (dynamic updates via usePageMeta) -->
     <link rel="canonical" href="https://ness.com.br/" />
+
+    <!-- Google Analytics 4: carregado fora do caminho crítico, após o load -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      addEventListener('load', function () {
+        var run = function () {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-H181SG5HQT';
+          document.head.appendChild(s);
+          gtag('js', new Date());
+          gtag('config', 'G-H181SG5HQT', { send_page_view: false });
+        };
+        'requestIdleCallback' in window ? requestIdleCallback(run, { timeout: 4000 }) : setTimeout(run, 1500);
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -6,13 +6,15 @@ import SolutionHeroBackground from '../components/solutions/SolutionHeroBackgrou
 import SolutionExecutiveDashboard from '../components/solutions/SolutionExecutiveDashboard';
 import SolutionServicesGrid from '../components/solutions/SolutionServicesGrid';
 import LeadMagnet from '../components/LeadMagnet';
+import NotFound from './NotFound';
 import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { m as motion, AnimatePresence } from "motion/react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
 import { solutionsData } from "../data/solutionsData";
 import SchemaOrg from '../components/SchemaOrg';
+import { BRAND, BRAND_DOMAINS } from '../config/brand';
 import { 
   ChevronLeft,
   CheckCircle2,
@@ -25,10 +27,13 @@ import {
 
 const SolutionPage = () => {
   const { t } = useTranslation();
-  usePageTitle('solution.meta_title', 'solução — ness.');
   const { slug } = useParams();
   const navigate = useNavigate();
   const solution = slug ? solutionsData[slug] : null;
+  usePageTitle({
+    title: solution?.metaTitle || 'soluções',
+    description: solution?.metaDescription || solution?.overview || '',
+  }, undefined, { enabled: !!solution });
   const PageIcon = (solution?.icon || CheckCircle2) as React.ComponentType<{ className?: string; size?: number }>;
   const [showTech, setShowTech] = useState(false);
   const [isEmergencyChatOpen, setIsEmergencyChatOpen] = useState(false);
@@ -38,7 +43,7 @@ const SolutionPage = () => {
     setShowTech(false);
   }, [slug]);
 
-  if (!solution) return <div className="min-h-screen flex items-center justify-center text-white">{t('common.loading')}</div>;
+  if (!solution) return <NotFound />;
 
   return (
     <>
@@ -47,7 +52,7 @@ const SolutionPage = () => {
         data={{ 
           name: solution.dashboard?.title || 'Solution', 
           description: solution.overview || '', 
-          url: window.location.href 
+          url: `${BRAND_DOMAINS[BRAND]}/solucoes/${slug}` 
         }} 
       />
       <motion.div 
@@ -57,7 +62,7 @@ const SolutionPage = () => {
       className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen overflow-hidden"
     >
       {/* Immersive Background for Solution Page */}
-      <SolutionHeroBackground bgImage={solution.bgImage} slug={slug!} />
+      <SolutionHeroBackground slug={slug!} />
 
       <div className="relative z-20 max-w-7xl mx-auto">
         <Breadcrumbs items={[
@@ -238,7 +243,7 @@ const SolutionPage = () => {
                 >
                   <div className="w-1.5 h-1.5 rounded-full bg-primary-container shadow-[0_0_8px_rgba(var(--primary-container-rgb),0.8)] group-hover:scale-150 transition-transform"></div>
                   <span className="text-white text-sm font-medium">{feat.name}</span>
-                  <span className="text-on-surface-variant text-[10px] uppercase tracking-widest ml-2 hidden md:inline-block border-l border-white/10 pl-2">{feat.category}</span>
+                  <span className="text-on-surface-variant text-[11px] uppercase tracking-widest ml-2 hidden md:inline-block border-l border-white/10 pl-2">{feat.category}</span>
                 </motion.div>
               ))}
             </motion.div>
@@ -367,10 +372,10 @@ const SolutionPage = () => {
               <div key={i} className="p-8 rounded-4xl border border-white/5 bg-linear-to-br from-surface-container-low to-surface-container-lowest">
                 <div className="flex justify-between items-start mb-6">
                   <div>
-                    <span className="text-[10px] uppercase tracking-widest text-primary font-bold">{item.client}</span>
+                    <span className="text-[11px] uppercase tracking-widest text-primary font-bold">{item.client}</span>
                     <h4 className="text-xl text-white mt-1 font-medium">{item.project}</h4>
                   </div>
-                  <ExternalLink className="text-on-surface-variant/40" size={20} />
+                  <ExternalLink className="text-on-surface-variant/60" size={20} />
                 </div>
                 <div className="p-4 rounded-xl bg-primary-container/5 border border-primary-container/10">
                   <p className="text-primary-container text-sm font-medium">{t('common.result')}: {item.result}</p>

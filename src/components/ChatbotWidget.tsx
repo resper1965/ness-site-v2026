@@ -1,6 +1,6 @@
 import BlueDot from '../components/BlueDot';
 import React, { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { m as motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CANAL_BASE } from '../config/api';
@@ -11,11 +11,16 @@ import type { ChatbotConfig } from '../types/canal';
 type DisplayMessage = { role: 'bot' | 'user'; content: string };
 type ApiMessage = { role: 'user' | 'assistant'; content: string };
 
-const ChatbotWidget = () => {
+interface ChatbotWidgetProps {
+  /** Abre o painel imediatamente (usado pelo ChatLauncher após o clique). */
+  initialOpen?: boolean;
+}
+
+const ChatbotWidget = ({ initialOpen = false }: ChatbotWidgetProps) => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(initialOpen);
   const [messages, setMessages] = useState<DisplayMessage[]>([]);
   const [botConfig, setBotConfig] = useState<ChatbotConfig | null>(null);
   const [input, setInput] = useState('');
@@ -24,7 +29,6 @@ const ChatbotWidget = () => {
   
   const [sessionId] = useState(`gabi-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`);
   const [csatGiven, setCsatGiven] = useState<number | null>(null);
-  const [hasUserDismissed, setHasUserDismissed] = useState(false);
 
   // ── Rastreamento Cognitivo de Páginas Visitadas (Opção A) ──────
   useEffect(() => {
@@ -44,31 +48,7 @@ const ChatbotWidget = () => {
     }
   }, [location]);
 
-  // ── Abertura Proativa / Gatilhos baseados em páginas ───────────
-  useEffect(() => {
-    if (hasUserDismissed || isOpen) return;
-
-    const criticalPages = ["/forense", "/compliance", "/solucoes", "/dpo-as-a-service"];
-    const isCritical = criticalPages.some(page => location.pathname.startsWith(page));
-
-    const timeout = setTimeout(() => {
-      setIsOpen(true);
-      setMessages(prev => {
-        if (prev.length <= 1) { // Apenas se for o estado de boas-vindas inicial
-          let msg = botConfig?.welcome_message || t('chatbot.welcome', "Olá! Como posso ajudar?");
-          if (location.pathname.startsWith("/forense")) {
-            msg = "Detectamos que você está na área de resiliência cibernética. Se sua empresa estiver sofrendo um incidente de segurança agora, clique no botão de Incidente Crítico ou me informe aqui para acionar o time n.cirt de imediato.";
-          } else if (location.pathname.startsWith("/dpo-as-a-service") || location.pathname.startsWith("/compliance")) {
-            msg = "Olá! Deseja entender como estruturar o compliance LGPD ou contratar um DPO as a Service na sua organização? Posso te apoiar com as dúvidas iniciais.";
-          }
-          return [{ role: 'bot', content: msg }];
-        }
-        return prev;
-      });
-    }, isCritical ? 8000 : 25000); // 8s para páginas críticas de alta conversão, 25s para o resto
-
-    return () => clearTimeout(timeout);
-  }, [location.pathname, isOpen, hasUserDismissed, botConfig, t]);
+  // Abertura proativa removida: o chat só abre por ação do usuário (ver ChatLauncher).
 
   useEffect(() => {
     fetch(`${CANAL_BASE}/api/chatbot-config?tenant=ness`)
@@ -220,12 +200,12 @@ const ChatbotWidget = () => {
       return null;
     }
 
-    const primaryColor = botConfig?.theme_color || '#00E5A0';
-    const avatarUrl = botConfig?.avatar_url || '/gabi-avatar.png';
+    const primaryColor = botConfig?.theme_color || '#00ade8';
+    const avatarUrl = botConfig?.avatar_url || '/img/gabi-avatar.webp';
     const botName = botConfig?.bot_name || 'Gabi';
 
   return (
-    <div className="fixed bottom-8 right-8 z-60" style={{ '--chat-primary': primaryColor } as React.CSSProperties}>
+    <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-40" style={{ '--chat-primary': primaryColor } as React.CSSProperties}>
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -238,20 +218,19 @@ const ChatbotWidget = () => {
             <div className="p-6 bg-primary-container/10 border-b border-white/5 flex items-center justify-between" style={{ backgroundColor: `${primaryColor}20` }}>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl overflow-hidden border-2 border-primary-container/40" style={{ borderColor: `${primaryColor}66` }}>
-                  <img src={avatarUrl} alt={botName} className="w-full h-full object-cover" />
+                  <img src={avatarUrl} alt="" width={128} height={128} className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <h4 className="text-white font-display font-bold text-sm lowercase-all flex items-center gap-1">
                     {botName}
                     <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: primaryColor }} />
                   </h4>
-                  <p className="text-[10px] text-primary-container uppercase tracking-widest font-bold" style={{ color: primaryColor }}>{t('chatbot.status')}</p>
+                  <p className="text-[11px] text-primary-container uppercase tracking-widest font-bold" style={{ color: primaryColor }}>{t('chatbot.status')}</p>
                 </div>
               </div>
               <button
                 onClick={() => {
                   setIsOpen(false);
-                  setHasUserDismissed(true);
                 }}
                 aria-label={t('a11y.close')}
                 className="text-on-surface-variant hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-primary-container rounded-lg p-1"
@@ -284,7 +263,7 @@ const ChatbotWidget = () => {
                     {/* CSAT Rating buttons for the last bot message when stream finishes */}
                     {!loading && i === messages.length - 1 && msg.role === 'bot' && msg.content.length > 5 && i > 0 && (
                       <div className="flex items-center gap-3 mt-3 pt-3 border-t border-white/10">
-                        <p className="text-[10px] text-white/40 uppercase tracking-wider font-bold">Foi Útil?</p>
+                        <p className="text-[11px] text-white/40 uppercase tracking-wider font-bold">Foi Útil?</p>
                         <div className="flex gap-1.5">
                           <button
                             onClick={() => handleCsat(1)}
@@ -314,20 +293,14 @@ const ChatbotWidget = () => {
               <button 
                 type="button"
                 onClick={() => { setIsOpen(false); navigate('/contato'); }}
-                className="whitespace-nowrap px-4 py-2 bg-primary-container/10 border border-primary-container/30 text-primary-container text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-primary-container hover:text-on-primary transition-all snap-start shadow-xl shadow-primary-container/5">
+                className="whitespace-nowrap px-4 py-2 bg-primary-container/10 border border-primary-container/30 text-primary-container text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-primary-container hover:text-on-primary transition-all snap-start shadow-xl shadow-primary-container/5">
                 {t('chatbot.quick_specialist', 'Falar com Especialista')}
               </button>
               <button 
                 type="button"
                 onClick={() => { setIsOpen(false); navigate('/solucoes/cirt'); }}
-                className="whitespace-nowrap px-4 py-2 bg-red-500/10 border border-red-500/30 text-red-400 text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-red-500 hover:text-white transition-all snap-start shadow-xl shadow-red-500/5">
+                className="whitespace-nowrap px-4 py-2 bg-red-500/10 border border-red-500/30 text-red-400 text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-red-500 hover:text-white transition-all snap-start shadow-xl shadow-red-500/5">
                 {t('chatbot.quick_incident', 'Incidente (n.cirt)')}
-              </button>
-              <button 
-                type="button"
-                onClick={() => { setIsOpen(false); navigate('/compliance/etica'); }}
-                className="whitespace-nowrap px-4 py-2 bg-primary-container/10 border border-primary-container/30 text-primary-container text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-primary-container hover:text-on-primary transition-all snap-start shadow-xl shadow-primary-container/5">
-                {t('chatbot.quick_dpo', 'Ouvidoria DPO')}
               </button>
             </div>
 
@@ -360,13 +333,13 @@ const ChatbotWidget = () => {
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? t('a11y.close') : botName}
         aria-expanded={isOpen}
-        className="w-16 h-16 rounded-2xl overflow-hidden shadow-2xl relative group border-2"
+        className="w-14 h-14 md:w-16 md:h-16 rounded-2xl overflow-hidden shadow-2xl relative group border-2 focus-visible:ring-2 focus-visible:ring-primary-container"
         style={{ borderColor: primaryColor, boxShadow: `0 25px 50px -12px ${primaryColor}40` }}
       >
         <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 border-2 border-surface rounded-full z-10"></div>
         {isOpen
           ? <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: primaryColor }}><X className="text-[#0a0a0a]" size={24} /></div>
-          : <img src={avatarUrl} alt={botName} className="w-full h-full object-cover" />
+          : <img src={avatarUrl} alt="" width={128} height={128} className="w-full h-full object-cover" />
         }
       </motion.button>
     </div>

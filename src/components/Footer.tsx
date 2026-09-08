@@ -51,11 +51,11 @@ const Footer = () => {
           </p>
           <div className="flex gap-4">
             {[
-              { Icon: Linkedin, url: "https://www.linkedin.com/company/nesstec" },
-              { Icon: Instagram, url: "https://www.instagram.com/ness.tecnologia/" },
-              { Icon: Facebook,  url: "https://www.facebook.com/nesstecnologia" },
-            ].map((social, i) => (
-              <a key={i} href={social.url} target="_blank" rel="noopener noreferrer"
+              { Icon: Linkedin, url: "https://www.linkedin.com/company/nesstec", label: "LinkedIn" },
+              { Icon: Instagram, url: "https://www.instagram.com/ness.tecnologia/", label: "Instagram" },
+              { Icon: Facebook,  url: "https://www.facebook.com/nesstecnologia", label: "Facebook" },
+            ].map((social) => (
+              <a key={social.label} href={social.url} target="_blank" rel="noopener noreferrer" aria-label={social.label}
                 className="text-on-surface-variant/80 hover:text-primary transition-colors">
                 <social.Icon size={20} />
               </a>
@@ -65,7 +65,7 @@ const Footer = () => {
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 md:gap-24">
           <div className="space-y-4">
-            <h4 className="text-[10px] uppercase tracking-widest text-white font-bold">{t('footer.company')}</h4>
+            <h2 className="text-[11px] uppercase tracking-widest text-white font-bold">{t('footer.company')}</h2>
             <ul className="space-y-3 text-sm text-on-surface-variant/85 font-normal">
               <li><Link className="hover:text-white transition-colors" to="/sobre">{t('nav.about')}</Link></li>
               <li><Link className="hover:text-white transition-colors" to="/portfolio">{t('nav.portfolio')}</Link></li>
@@ -76,7 +76,7 @@ const Footer = () => {
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-[10px] uppercase tracking-widest text-white font-bold">{t('footer.legal')}</h4>
+            <h2 className="text-[11px] uppercase tracking-widest text-white font-bold">{t('footer.legal')}</h2>
             <ul className="space-y-3 text-sm text-on-surface-variant/85 font-normal">
               <li><Link className="hover:text-white transition-colors" to="/compliance/termos">{t('footer.terms')}</Link></li>
               <li><Link className="hover:text-white transition-colors" to="/compliance/privacidade">{t('footer.privacy')}</Link></li>
@@ -86,14 +86,13 @@ const Footer = () => {
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-[10px] uppercase tracking-widest text-white font-bold">{t('footer.ecosystem')}</h4>
+            <h2 className="text-[11px] uppercase tracking-widest text-white font-bold">{t('footer.ecosystem')}</h2>
             <ul className="space-y-3 text-sm text-on-surface-variant/85 font-normal">
               {ECOSYSTEM_LINKS
                 .filter(l => l.brand !== BRAND)
                 .map(l => (
                   <li key={l.brand}>
-                    <a href={l.href} target="_blank" rel="noopener noreferrer"
-                      className="hover:text-white transition-colors">
+                    <a href={l.href} className="hover:text-white transition-colors">
                       {l.label}
                     </a>
                   </li>
@@ -101,8 +100,8 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="hidden lg:block space-y-4">
-            <h4 className="text-[10px] uppercase tracking-widest text-white font-bold">{t('footer.updates')}</h4>
+          <div className="space-y-4 col-span-2 lg:col-span-1">
+            <h2 className="text-[11px] uppercase tracking-widest text-white font-bold">{t('footer.updates')}</h2>
             <p className="text-sm text-on-surface-variant/85 font-normal">{t('footer.newsletter')}</p>
             {newsletterStatus === 'ok' ? (
               <p className="text-xs text-primary-container font-bold uppercase tracking-widest">✓ inscrito.</p>
@@ -135,7 +134,7 @@ const Footer = () => {
       </div>
 
       <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-white/5">
-        <div className="flex flex-wrap gap-4 text-[10px] uppercase tracking-widest text-on-surface-variant/70 font-semibold">
+        <div className="flex flex-wrap gap-4 text-[11px] uppercase tracking-widest text-on-surface-variant/70 font-semibold">
           {(t('footer.locations', { returnObjects: true }) as string[]).map((loc, i, arr) => (
             <span key={loc}>
               {loc}
@@ -152,14 +151,15 @@ const Footer = () => {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-primary-container" />
-            <span className="text-[10px] uppercase tracking-tighter text-on-surface-variant/70 font-semibold">{t('footer.status')}</span>
+            <span className="text-[11px] uppercase tracking-tighter text-on-surface-variant/70 font-semibold">{t('footer.status')}</span>
           </div>
           <a
             href="https://canal.ness.com.br"
             target="_blank"
             rel="noopener noreferrer"
-            title="canal"
-            className="text-on-surface-variant/50 hover:text-on-surface-variant transition-all duration-300"
+            title="canal (acesso restrito)"
+            aria-label="Canal CMS — acesso restrito"
+            className="text-on-surface-variant/70 hover:text-on-surface-variant transition-all duration-300"
           >
             <Lock size={12} />
           </a>

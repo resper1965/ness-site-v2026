@@ -62,6 +62,7 @@ cd canal/admin && npm run dev
 
 ```bash
 npm run build          # Site → dist/
+npm run test:e2e:site  # Smoke do site público contra o build local (vite preview)
 cd canal/admin && npm run build  # Admin → canal/admin/dist/
 cd canal && npx wrangler deploy  # Worker → Cloudflare
 ```

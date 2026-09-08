@@ -378,6 +378,64 @@ Esforço em dias-pessoa (dp) de um dev sênior front/edge. Cada tarefa tem crit�
 
 ---
 
+## Status de execução (2026-09-08, mesma sessão da análise)
+
+**Ondas 0 e 1 implementadas** neste PR, mais um subconjunto das Ondas 2.7 e 3. A migração para HTML na edge (Onda 2.1–2.6) e a instrumentação completa de conversão (3.5–3.7) permanecem como próximos passos.
+
+| Métrica (Lighthouse 12, mobile throttled, `vite preview`, mesma máquina) | Antes | Depois |
+|---|---|---|
+| Performance home / solução / contato | 79 / 77 / 77 | **85 / 84 / 91** |
+| Acessibilidade home / solução / contato | 89 / 96 / 90 | **100 / 100 / 100** |
+| Speed Index (home) | 22,3 s | **2,2 s** |
+| FCP (home) | 2,7 s | **2,2 s** |
+| LCP (home) | 3,2 s (sem fontes nem imagens carregadas) | 3,9 s (com fontes e hero reais; teto da SPA — cai com SSR) |
+| TBT (home) | 80 ms | **50 ms** |
+| Peso da home (local, sem terceiros) | 564 kB | **378 kB** (antes, em produção com Unsplash + Google Fonts + gtag: ~1,2 MB) |
+| JS antes do 1º pixel (gz) | 196 kB | **122 kB** (Sentry 29 kB e Motion 46 kB agora fora do caminho crítico) |
+| Requisições a terceiros no caminho crítico | Unsplash, Google Fonts, Clearbit, gtag | **0** (gtag após `load`, em idle) |
+| Overlays não solicitados na 1ª visita | 2 (popup + chat) | **0** |
+| Título da home | `insights — ness.` | `tecnologia digital de precisão — ness.` |
+| Páginas de solução com meta própria | 0 de 5 | **5 de 5** |
+
+> Os números "antes" locais subestimam o ganho real: no ambiente de medição as fontes e imagens externas estavam bloqueadas, então a versão antiga foi medida *sem* pagar por elas.
+
+### Entregue
+
+| Item do plano | O que foi feito |
+|---|---|
+| 0.1 / B-01 | `CelebrationPopup` removido do app (badge "35 anos" permanece na navbar) |
+| 0.2 / B-02 | Chat sem auto-open; `ChatLauncher` estático carrega o widget só no clique; z-index abaixo de modais; "Ouvidoria" saiu dos quick replies; cor padrão `#00ade8` |
+| 0.3 / B-03, B-04, B-05 | `usePageMeta` ganhou `enabled`; seções da home não sobrescrevem o título; meta única por solução (`metaTitle`/`metaDescription` em `solutionsData`); `/contato`, `/sobre` e 404 com meta próprios; robots sempre redefinido |
+| 0.4 / B-06, B-10, B-11 | `functions/sitemap.xml.ts` e `functions/robots.txt.ts` por marca (Host), com blog/cases do D1 e `lastmod`; sem URLs fantasmas; sem hreflang inválido; `og:image` 1200×630 |
+| 0.5 / B-07 | Slug inválido renderiza `NotFound` com `noindex` |
+| 0.6 / B-08, B-09, B-13 | h1 da trustness; pill "‹ ness." removido; `theme-color`; `security.txt` |
+| 0.7 / A-11, A-17, A-18, A-22 | Avatar 334 kB → 2,7 kB WebP; OG 429 kB → 33 kB JPEG (1200×630); portfólio 3,6 MB → 74–130 kB por imagem (+ WebP/AVIF); `_headers` com cache para `/img`, `/fonts`, `/portfolio` |
+| 0.8 / B-14, B-15, B-16, A-46 | Preload global removido; `tel:`/`mailto:`; sucesso do formulário persistente com SLA; `LeadMagnet` trata erro |
+| 0.10 / A-19 | Cache API + `s-maxage=300, stale-while-revalidate=3600` em `/api/insights` e `/api/cases` |
+| 1.1 / A-14 | Fontes self-host (Inter e Manrope variáveis, subsets latin/latin-ext) com `preload` e fallback métrico; Google Fonts e Montserrat removidos |
+| 1.2 / A-15, A-36 | Heroes das 3 marcas em AVIF/WebP com `srcset` (`HeroPicture`), preload por marca só na home; fundos decorativos em CSS (`.bg-nebula`); Unsplash removido |
+| 1.3 / A-12 | Sentry carregado após `load` em idle, tree-shaken (476 → 85 kB raw) com amostragem |
+| 1.4 / A-20 | i18n sem `HttpBackend`; en/es por `import()` em chunks próprios; `public/locales` removido |
+| 1.5 / A-13, A-16, A-26, A-39 | `LazyMotion` + `m` com features assíncronas; Navbar/Chat/Hero em CSS; animações infinitas removidas; `MotionConfig reducedMotion="user"` |
+| 1.7 | Chunking por uso (vendor estável, Sentry isolado), `target es2022`, sem polyfill de modulepreload |
+| 1.8 / A-32 | Logos via Clearbit substituídos por wordmarks locais (setor por cliente) |
+| 1.9 / A-37, A-38 | CSP sem `cdn.jsdelivr.net`, sem `img-src https:` curinga, sem Google Fonts; `X-XSS-Protection` removido |
+| 2.7 (parcial) / A-41, A-42 | `npm ci` + cache no deploy; e2e do site (`tests/site/smoke.spec.ts`) contra preview local em cada PR; e2e do canal só em `workflow_dispatch` |
+| 3.1 (parcial) | Hero com subtítulo concreto (o que + para quem), CTA primário "falar com um especialista", 5 pilares visíveis antes da rolagem |
+| 3.3 / A-23, A-24, A-25 | Tamanho mínimo 11 px; opacidades `/40–/50` elevadas; `label for` em todos os campos; `aria-label` em ícones; ordem de headings; Lighthouse a11y 100 |
+| 3.4 (parcial) / A-28, A-47, A-48 | CTA visível no mobile; menu mobile em CSS com Esc e trava de scroll; links de marca na mesma aba; scroll preservado no "voltar" |
+| A-33 (parcial) | gtag só após `load` e sem `page_view` automático (consentimento via Zaraz fica para a Onda 3.6) |
+
+### Próximos passos (ordem recomendada)
+
+1. Onda 2.1–2.6: HTML na edge (React Router 7 framework mode + Worker), i18n por URL, redirects das rotas espelho.
+2. Onda 3.5–3.7: Turnstile, UTM, `/obrigado`, Zaraz + consentimento, eventos e Measurement Protocol; chat como canal de lead.
+3. Onda 0.9: ligar Cloudflare Web Analytics (token no painel) e Early Hints.
+4. Onda 3.8–3.9: prova social, casos com números, assessments no menu.
+5. Lighthouse CI com asserções no PR (Onda 2.7 restante).
+
+---
+
 ## Apêndice A — Inventário de achados
 
 Severidade: **P0** bloqueia conversão/SEO; **P1** custo alto de performance/UX; **P2** melhoria.

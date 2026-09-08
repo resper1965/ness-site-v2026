@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { m as motion, AnimatePresence } from 'motion/react';
 import { ShieldAlert, Send, X, AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { CANAL_BASE } from '../config/api';
@@ -129,7 +129,7 @@ export default function EmergencyChatModal({ isOpen, onClose }: EmergencyChatMod
                     n.cirt <span className="text-red-500 font-bold tracking-tight">emergência</span> 
                     <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse ml-1 shadow-[0_0_10px_rgba(239,68,68,0.8)]" />
                   </h3>
-                  <p className="text-red-400/80 text-[10px] font-mono uppercase tracking-[0.2em] mt-1 hidden sm:block">War Room Activation Protocol</p>
+                  <p className="text-red-400/80 text-[11px] font-mono uppercase tracking-[0.2em] mt-1 hidden sm:block">War Room Activation Protocol</p>
                 </div>
               </div>
               <button 

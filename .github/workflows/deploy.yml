@@ -17,9 +17,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: npm
 
       - name: Install Root Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build Main Site
         run: npm run build

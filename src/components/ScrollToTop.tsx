@@ -1,19 +1,20 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigationType } from "react-router-dom";
 
-import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
-
-
-
+/**
+ * Sobe ao topo em navegações novas (PUSH/REPLACE). No "voltar" do navegador
+ * (POP) preserva a posição, como o usuário espera numa lista de blog/portfólio.
+ */
 const ScrollToTop = () => {
   const { pathname } = useLocation();
+  const navigationType = useNavigationType();
 
   useEffect(() => {
+    if (navigationType === 'POP') return;
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [pathname, navigationType]);
 
   return null;
 };
-
 
 export default ScrollToTop;

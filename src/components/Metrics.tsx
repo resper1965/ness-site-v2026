@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "motion/react";
+import { m as motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import BlueDot from "./BlueDot";
 import { YEARS_OF_LEGACY } from "../constants/brand";
@@ -30,7 +30,7 @@ export default function Metrics() {
               <div className="text-4xl md:text-5xl font-display font-bold text-white mb-2 tracking-tighter">
                 {m.value}
               </div>
-              <div className="text-[10px] text-primary-container font-bold uppercase tracking-widest">
+              <div className="text-[11px] text-primary-container font-bold uppercase tracking-widest">
                 {t(`metrics.${m.key}`, m.label)}
               </div>
             </motion.div>

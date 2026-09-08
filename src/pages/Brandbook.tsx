@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "motion/react";
+import { m as motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from "../hooks/usePageTitle";
 import CTA from "../components/CTA";
@@ -55,7 +55,7 @@ export default function Brandbook() {
            <motion.p
              initial={{ y: 10, opacity: 0 }}
              animate={{ y: 0, opacity: 1 }}
-             className="text-primary-container font-mono text-[10px] uppercase tracking-[0.3em] mb-5"
+             className="text-primary-container font-mono text-[11px] uppercase tracking-[0.3em] mb-5"
            >
              official guidelines
            </motion.p>

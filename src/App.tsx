@@ -1,11 +1,10 @@
 import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-import { AnimatePresence } from "motion/react";
+import { LazyMotion, MotionConfig } from "motion/react";
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import ChatbotWidget from './components/ChatbotWidget';
-import CelebrationPopup from './components/CelebrationPopup';
+import ChatLauncher from './components/ChatLauncher';
 import ScrollToTop from './components/ScrollToTop';
 import SchemaOrg from './components/SchemaOrg';
 import { BRAND } from './config/brand';
@@ -30,6 +29,13 @@ const Compliance = lazy(() => import('./pages/Compliance'));
 const Assessment = lazy(() => import('./pages/Assessment'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const Brandbook = lazy(() => import('./pages/Brandbook'));
+
+/**
+ * Framer Motion é carregado sob demanda: o shell (navbar, footer, chat) usa
+ * CSS puro, e as features de animação (`domMax`, necessário pelo `layout`
+ * do portfólio) chegam num chunk separado depois do primeiro render.
+ */
+const loadMotionFeatures = () => import('motion/react').then((mod) => mod.domMax);
 
 function PageLoader() {
   return (
@@ -57,58 +63,59 @@ function PageLoader() {
 export default function App() {
   return (
     <ErrorBoundary>
-      <div className="min-h-screen">
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary-container text-on-primary-container px-4 py-2 z-50 rounded-lg font-bold">
-          Pular para o conteúdo principal
-        </a>
-        <SchemaOrg type="organization" />
-        <ScrollToTop />
-        <Navbar />
-        {BRAND === 'ness' && <CelebrationPopup />}
-        <ChatbotWidget />
-        <AnimatePresence mode="wait">
-          <Suspense fallback={<PageLoader />}>
-            <main id="main-content" tabIndex={-1} className="outline-none">
-              <Routes>
-                {/* Home page — determined by detected domain/brand */}
-                {BRAND === 'trustness' && <Route path="/" element={<TrustnessHome />} />}
-                {BRAND === 'forense'   && <Route path="/" element={<ForenseHome />} />}
-                {BRAND === 'ness'      && (
-                  <>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/solucoes" element={<Solutions />} />
-                    <Route path="/solucoes/:slug" element={<SolutionPage />} />
-                    <Route path="/servicos" element={<Services />} />
-                    <Route path="/verticais" element={<Verticals />} />
-                  </>
-                )}
+      <LazyMotion features={loadMotionFeatures}>
+        <MotionConfig reducedMotion="user">
+          <div className="min-h-screen">
+            <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary-container text-on-primary-container px-4 py-2 z-50 rounded-lg font-bold">
+              Pular para o conteúdo principal
+            </a>
+            <SchemaOrg type="organization" />
+            <ScrollToTop />
+            <Navbar />
+            <ChatLauncher />
+            <Suspense fallback={<PageLoader />}>
+              <main id="main-content" tabIndex={-1} className="outline-none">
+                <Routes>
+                  {/* Home page — determined by detected domain/brand */}
+                  {BRAND === 'trustness' && <Route path="/" element={<TrustnessHome />} />}
+                  {BRAND === 'forense' && <Route path="/" element={<ForenseHome />} />}
+                  {BRAND === 'ness' && (
+                    <>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/solucoes" element={<Solutions standalone />} />
+                      <Route path="/solucoes/:slug" element={<SolutionPage />} />
+                      <Route path="/servicos" element={<Services standalone />} />
+                      <Route path="/verticais" element={<Verticals standalone />} />
+                    </>
+                  )}
 
-                {/* Sub-brand pages — accessible from any domain */}
-                <Route path="/trustness" element={<TrustnessHome />} />
-                <Route path="/dpo-as-a-service" element={<DpoService />} />
-                <Route path="/forense"   element={<ForenseHome />} />
+                  {/* Sub-brand pages — accessible from any domain */}
+                  <Route path="/trustness" element={<TrustnessHome />} />
+                  <Route path="/dpo-as-a-service" element={<DpoService />} />
+                  <Route path="/forense" element={<ForenseHome />} />
 
-                {/* Universal shared routes */}
-                <Route path="/brandbook"       element={<Brandbook />} />
-                <Route path="/sobre"           element={<About />} />
-                <Route path="/portfolio"       element={<Portfolio />} />
-                <Route path="/portfólio"       element={<Portfolio />} />
-                <Route path="/portfolio/:slug" element={<PortfolioCase />} />
-                <Route path="/blog"            element={<Blog />} />
-                <Route path="/blog/:slug"      element={<BlogPost />} />
-                <Route path="/carreiras"       element={<Careers />} />
-                <Route path="/contato"         element={<Contact />} />
-                <Route path="/contact"         element={<Contact />} />
-                <Route path="/about"           element={<About />} />
-                <Route path="/compliance/:type" element={<Compliance />} />
-                <Route path="/assessment/:type" element={<Assessment />} />
-                <Route path="*"               element={<NotFound />} />
-              </Routes>
-            </main>
-          </Suspense>
-        </AnimatePresence>
-        <Footer />
-      </div>
+                  {/* Universal shared routes */}
+                  <Route path="/brandbook" element={<Brandbook />} />
+                  <Route path="/sobre" element={<About />} />
+                  <Route path="/portfolio" element={<Portfolio />} />
+                  <Route path="/portfólio" element={<Portfolio />} />
+                  <Route path="/portfolio/:slug" element={<PortfolioCase />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:slug" element={<BlogPost />} />
+                  <Route path="/carreiras" element={<Careers />} />
+                  <Route path="/contato" element={<Contact />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/compliance/:type" element={<Compliance />} />
+                  <Route path="/assessment/:type" element={<Assessment />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </main>
+            </Suspense>
+            <Footer />
+          </div>
+        </MotionConfig>
+      </LazyMotion>
     </ErrorBoundary>
   );
 }

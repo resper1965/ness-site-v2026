@@ -1,6 +1,6 @@
 import BlueDot from '../components/BlueDot';
 import React, { useEffect, useState } from "react";
-import { motion } from "motion/react";
+import { m as motion } from "motion/react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -22,11 +22,10 @@ import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/bra
 
 /** Maps referrer slugs to display labels and subject values */
 const REF_MAP: Record<string, { label: string; subject: string }> = {
-  devsecops: { label: 'n.devsecops', subject: 'n.secops' },
   secops: { label: 'n.secops', subject: 'n.secops' },
   infraops: { label: 'n.infraops', subject: 'n.infraops' },
   autoops: { label: 'n.autoops', subject: 'n.autoops' },
-  aiops: { label: 'n.aiops', subject: 'n.aiops' },
+  cirt: { label: 'n.cirt', subject: 'n.secops' },
   devarch: { label: 'n.devarch', subject: 'n.secops' },
   dpo: { label: 'DPO as a Service', subject: 'trustness' },
   trustness: { label: 'trustness. GRC', subject: 'trustness' },
@@ -43,6 +42,10 @@ const Contact = () => {
   const [selectedSubject, setSelectedSubject] = useState(refInfo?.subject || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
+  usePageTitle({
+    title: t('contact.meta_title', 'contato — fale com um especialista'),
+    description: t('contact.meta_description', 'Fale com a ness.: diagnóstico de segurança, infraestrutura, engenharia de software, LGPD e perícia digital. Resposta em até 1 dia útil. +55 (11) 2504-7650.'),
+  });
 
   return (
     <motion.div 
@@ -52,16 +55,7 @@ const Contact = () => {
       className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen"
     >
       {/* Immersive Background for Contact Page */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <motion.img 
-          initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.15 }}
-          transition={{ duration: 1.5 }}
-          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2000"
-          alt="Contact Background"
-          className="w-full h-full object-cover"
-          referrerPolicy="no-referrer"
-        />
+      <div className="absolute inset-0 z-0 overflow-hidden bg-nebula" aria-hidden="true">
         <div className="absolute inset-0 bg-linear-to-b from-surface-container-lowest/40 via-surface-container-lowest/90 to-surface-container-lowest z-10"></div>
       </div>
 
@@ -92,8 +86,8 @@ const Contact = () => {
                   <Mail className="text-primary-container" size={24} />
                 </div>
                 <div>
-                  <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-1">{t('contact.info.email')}</h4>
-                  <p className="text-on-surface-variant font-light">contato@ness.com.br</p>
+                  <p className="text-white font-bold text-xs uppercase tracking-widest mb-1">{t('contact.info.email')}</p>
+                  <a href="mailto:contato@ness.com.br" className="text-on-surface-variant hover:text-primary transition-colors">contato@ness.com.br</a>
                 </div>
               </div>
 
@@ -102,8 +96,8 @@ const Contact = () => {
                   <Phone className="text-primary-container" size={24} />
                 </div>
                 <div>
-                  <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-1">{t('contact.info.phone')}</h4>
-                  <p className="text-on-surface-variant font-light">+55 (11) 2504-7650</p>
+                  <p className="text-white font-bold text-xs uppercase tracking-widest mb-1">{t('contact.info.phone')}</p>
+                  <a href="tel:+551125047650" className="text-on-surface-variant hover:text-primary transition-colors">+55 (11) 2504-7650</a>
                 </div>
               </div>
 
@@ -112,7 +106,7 @@ const Contact = () => {
                   <MapPin className="text-primary-container" size={24} />
                 </div>
                 <div>
-                  <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-1">{t('contact.info.office')}</h4>
+                  <p className="text-white font-bold text-xs uppercase tracking-widest mb-1">{t('contact.info.office')}</p>
                   <p className="text-on-surface-variant font-light leading-relaxed">
                     Rua George Ohm 230 Torre A Cj 82<br />
                     Brooklin Paulista - São Paulo/SP<br />
@@ -124,11 +118,11 @@ const Contact = () => {
 
             <div className="pt-8 flex gap-4">
               {[
-                { Icon: Linkedin, url: "https://www.linkedin.com/company/nesstec" },
-                { Icon: Instagram, url: "https://www.instagram.com/ness.tecnologia/" },
-                { Icon: Facebook, url: "https://www.facebook.com/nesstecnologia" }
-              ].map((social, i) => (
-                <a key={i} href={social.url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-on-surface-variant hover:text-primary-container hover:border-primary-container transition-all">
+                { Icon: Linkedin, url: "https://www.linkedin.com/company/nesstec", label: "LinkedIn" },
+                { Icon: Instagram, url: "https://www.instagram.com/ness.tecnologia/", label: "Instagram" },
+                { Icon: Facebook, url: "https://www.facebook.com/nesstecnologia", label: "Facebook" }
+              ].map((social) => (
+                <a key={social.label} href={social.url} target="_blank" rel="noopener noreferrer" aria-label={social.label} className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-on-surface-variant hover:text-primary-container hover:border-primary-container transition-all">
                   <social.Icon size={20} />
                 </a>
               ))}
@@ -168,7 +162,6 @@ const Contact = () => {
                   setSubmitStatus('success');
                   (e.target as HTMLFormElement).reset();
                   setSelectedSubject('');
-                  setTimeout(() => setSubmitStatus(null), 3000);
                 } catch (error) {
                   setSubmitStatus('error');
                 } finally {
@@ -178,8 +171,9 @@ const Contact = () => {
             >
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.name')}</label>
+                  <label htmlFor="contact-name" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.name')}</label>
                   <input 
+                    id="contact-name"
                     name="name"
                     type="text" 
                     required
@@ -188,8 +182,9 @@ const Contact = () => {
                     aria-label={t('contact.form.name')} />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.company')}</label>
+                  <label htmlFor="contact-company" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.company')}</label>
                   <input 
+                    id="contact-company"
                     name="company"
                     type="text" 
                     required
@@ -199,18 +194,21 @@ const Contact = () => {
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.email')}</label>
+                <label htmlFor="contact-email" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.email')}</label>
                 <input 
+                  id="contact-email"
                   name="email"
                   type="email" 
                   required
-                  placeholder={t('contact.form.email_placeholder')} 
+                  placeholder={t('contact.form.email_placeholder_v2', 'nome@empresa.com.br')}
+                  autoComplete="email" 
                   className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
                   aria-label={t('contact.form.email')} />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.subject')}</label>
+                <label htmlFor="contact-subject" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.subject')}</label>
                 <select 
+                  id="contact-subject"
                   name="subject" 
                   required 
                   value={selectedSubject}
@@ -221,15 +219,17 @@ const Contact = () => {
                   <option value="n.secops" className="bg-surface">n.secops — Segurança Cibernética</option>
                   <option value="n.autoops" className="bg-surface">n.autoops — Automação de Infraestrutura</option>
                   <option value="n.infraops" className="bg-surface">n.infraops — Operações de Infraestrutura</option>
-                  <option value="n.aiops" className="bg-surface">n.aiops — Inteligência Artificial</option>
+                  <option value="n.devarch" className="bg-surface">n.devarch — Engenharia de Software</option>
+                  <option value="n.cirt" className="bg-surface">n.cirt — Resposta a Incidentes</option>
                   <option value="trustness" className="bg-surface">trustness. — GRC & Compliance</option>
                   <option value="forense" className="bg-surface">forense.io — Perícia Digital</option>
                   <option value="outros" className="bg-surface">{t('contact.form.other', 'Outros')}</option>
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.message')}</label>
+                <label htmlFor="contact-message" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.message')}</label>
                 <textarea 
+                  id="contact-message"
                   name="message"
                   rows={4}
                   required
@@ -272,6 +272,9 @@ const Contact = () => {
               >
                 {isSubmitting ? t('common.sending', 'enviando...') : t('contact.form.send')}
               </button>
+              <p className="text-xs text-on-surface-variant/70 text-center">
+                {t('contact.form.sla', 'respondemos em até 1 dia útil. incidente em andamento? ligue +55 (11) 2504-7650.')}
+              </p>
             </form>
           </div>
         </div>
@@ -288,7 +291,7 @@ const Contact = () => {
               <AlertTriangle className="text-primary-container" size={32} />
             </div>
             <div>
-              <h3 className="text-xl font-display font-bold text-white mb-2 lowercase-all">{t('contact.whistleblower.title')}<BlueDot /></h3>
+              <h2 className="text-xl font-display font-bold text-white mb-2 lowercase-all">{t('contact.whistleblower.title')}<BlueDot /></h2>
               <p className="text-on-surface-variant font-light text-sm max-w-md">
                 {t('contact.whistleblower.desc')}
               </p>

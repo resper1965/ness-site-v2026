@@ -2,7 +2,7 @@ import BlueDot from '../components/BlueDot';
 import CTA from '../components/CTA';
 import AnimatedCounter from '../components/AnimatedCounter';
 import React from "react";
-import { motion } from "motion/react";
+import { m as motion } from "motion/react";
 import { useTranslation, Trans } from "react-i18next";
 import { usePageTitle } from '../hooks/usePageTitle';
 import { Target, Eye, Heart, Shield, Globe, Cpu } from "lucide-react";
@@ -11,7 +11,7 @@ import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/bra
 
 const About = () => {
   const { t } = useTranslation();
-  usePageTitle('about.meta_title', 'sobre — ness.');
+  usePageTitle({ title: 'sobre a ness.', description: 'Desde 1991, a ness. entrega engenharia de software, operações de segurança 24×7, infraestrutura crítica, LGPD e perícia digital para empresas no Brasil, Portugal, Chile, Peru, Colômbia e EUA.' });
 
   const timeline = [
     { year: "1991", desc: t('about.timeline.1991', "ness. é fundada como terceirização da área de tecnologia de um grande grupo econômico.") },
@@ -46,17 +46,7 @@ const About = () => {
       className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen"
     >
       {/* Background image — subtle */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <motion.img
-          initial={{ scale: 1.06, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.12 }}
-          transition={{ duration: 1.8 }}
-          src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=60&w=1600"
-          alt=""
-          aria-hidden="true"
-          className="w-full h-full object-cover"
-          referrerPolicy="no-referrer"
-        />
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none bg-nebula" aria-hidden="true">
         <div className="absolute inset-0 bg-linear-to-b from-surface-container-lowest/50 via-surface-container-lowest/90 to-surface-container-lowest z-10" />
       </div>
 
@@ -68,7 +58,7 @@ const About = () => {
             initial={{ y: 10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.15 }}
-            className="text-primary-container font-mono text-[10px] uppercase tracking-[0.3em] mb-5"
+            className="text-primary-container font-mono text-[11px] uppercase tracking-[0.3em] mb-5"
           >
             since {FOUNDATION_YEAR} — {YEARS_OF_LEGACY} {t('about.years_label', 'anos de excelência')}
           </motion.p>

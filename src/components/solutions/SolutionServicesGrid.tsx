@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { m as motion } from 'motion/react';
 import BlueDot from '../BlueDot';
 
 interface ServiceItem {

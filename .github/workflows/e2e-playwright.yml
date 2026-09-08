@@ -27,14 +27,21 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
       
-    # 4. Rodar os testes focado no ambiente da Cloudflare (não sobe servidor local)
-    - name: Run Playwright tests
-      run: npx playwright test
+    # 4. Site público: build local + smoke (metadados, overlays, chat, 404, orçamento)
+    - name: Build site
+      run: npm run build
+
+    - name: Run site smoke tests (local preview)
+      run: npm run test:e2e:site
+
+    # 5. Canal (produção) — apenas sob demanda, para não bater em produção a cada PR
+    - name: Run canal tests (production)
+      if: github.event_name == 'workflow_dispatch'
+      run: npm run test:e2e:canal
       env:
-        # Passaremos as chaves seguras caso nosso bypass simulado de admin exija
         ADMIN_JWT_SECRET: ${{ secrets.ADMIN_JWT_SECRET }}
         
-    # 5. Salvar relatórios em caso de falha UI (Traces, Vídeos)
+    # 6. Salvar relatórios em caso de falha UI (Traces, Vídeos)
     - uses: actions/upload-artifact@v4
       if: always()
       with:

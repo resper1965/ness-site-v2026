@@ -1,12 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { motion } from "motion/react";
+import { m as motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import BlueDot from "../components/BlueDot";
 import { ArrowRight, Home, MessageSquare } from "lucide-react";
+import { usePageMeta } from "../hooks/usePageTitle";
 
 const NotFound = () => {
   const { t } = useTranslation();
+  usePageMeta({ title: t('notfound.title', 'página não encontrada'), noindex: true });
 
   return (
     <motion.div
