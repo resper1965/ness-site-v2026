@@ -1,12 +1,12 @@
 import BlueDot from '../components/BlueDot';
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { m as motion } from "motion/react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useLoaderData } from "react-router";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, ExternalLink } from "lucide-react";
-import { usePageTitle } from '../hooks/usePageTitle';
-
 import { CANAL_BASE } from '../config/api';
+import { buscarCase, type D1 } from '../../workers/content';
+import { routeMeta } from '../utils/meta';
 
 interface Case {
   project: string;
@@ -17,43 +17,34 @@ interface Case {
   result?: string;
 }
 
+type LoaderArgs = {
+  params: { slug?: string };
+  context: { cloudflare: { env: { DB: D1 } } };
+};
+
+/** O case vem do D1 no servidor; slug inexistente é 404, não redirect. */
+export async function loader({ params, context }: LoaderArgs) {
+  const item = await buscarCase(context.cloudflare.env.DB, params.slug ?? '', 'pt');
+  if (!item || !item.project) {
+    throw new Response('Not Found', { status: 404 });
+  }
+  return { item: item as unknown as Case };
+}
+
+export function meta(args: Parameters<typeof routeMeta>[0] & { data?: { item: Case } }) {
+  const item = args.data?.item;
+  if (!item) return routeMeta(args, { title: 'case', noindex: true });
+  return routeMeta(args, {
+    title: item.project,
+    description: item.desc || item.result,
+    image: item.image,
+    type: 'article',
+  });
+}
+
 const PortfolioCase = () => {
   const { t } = useTranslation();
-  const { slug } = useParams<{ slug: string }>();
-  const { i18n } = useTranslation();
-  const navigate = useNavigate();
-  const [item, setItem] = useState<Case | null>(null);
-  const [loading, setLoading] = useState(true);
-  usePageTitle('', item?.project ?? 'case');
-
-  useEffect(() => {
-    if (!slug) return;
-    const fetchCase = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch(`${CANAL_BASE}/api/cases/${slug}?lang=${i18n.language}`);
-        if (!res.ok) { navigate('/portfolio', { replace: true }); return; }
-        const data = await res.json();
-        setItem(data);
-      } catch {
-        navigate('/portfolio', { replace: true });
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCase();
-    window.scrollTo(0, 0);
-  }, [slug, i18n.language, navigate]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 rounded-full border-2 border-primary-container border-t-transparent animate-spin" />
-      </div>
-    );
-  }
-
-  if (!item) return null;
+  const { item } = useLoaderData() as { item: Case };
 
   return (
     <motion.div
