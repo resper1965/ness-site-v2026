@@ -1,37 +1,33 @@
 import BlueDot from '../components/BlueDot';
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { m as motion } from "motion/react";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router";
 import { useTranslation } from "react-i18next";
 import { ShieldCheck, Cloud, Cpu, Brain, Lock, Workflow, FileText, ArrowUpRight } from "lucide-react";
 import EmptyState from '../components/EmptyState';
 import { routeMeta } from '../utils/meta';
-import { CANAL_BASE } from '../config/api';
+import { listarInsights, type D1 } from '../../workers/content';
 import type { Insight } from '../types/canal';
+
+/**
+ * A lista sai do D1 no servidor: o HTML já chega com os artigos. Antes vinha
+ * por fetch depois da hidratação, e o crawler via a página vazia.
+ *
+ * Falha do D1 não derruba a página — a lista vem vazia e o EmptyState aparece.
+ */
+export async function loader({ context }: { context: { cloudflare: { env: { DB: D1 } } } }) {
+  try {
+    return { articles: (await listarInsights(context.cloudflare.env.DB, 'pt')) as unknown as Insight[] };
+  } catch {
+    return { articles: [] as Insight[] };
+  }
+}
 
 const Blog = () => {
   const { t, i18n } = useTranslation();
-  const [articles, setArticles] = useState<Insight[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { articles } = useLoaderData() as { articles: Insight[] };
+  const loading = false;
   const [activeTag, setActiveTag] = useState<string>('all');
-
-  useEffect(() => {
-    const fetchInsights = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(`${CANAL_BASE}/api/insights?lang=${i18n.language}`);
-        if (!response.ok) throw new Error("API error");
-        const data = await response.json();
-        setArticles(data);
-      } catch {
-        setArticles([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchInsights();
-    window.scrollTo(0, 0);
-  }, [i18n.language]);
 
   const getIcon = (iconName: string) => {
     switch (iconName) {

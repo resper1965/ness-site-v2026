@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { buscarCase, buscarInsight, listarCases, listarInsights } from './content';
 
 type Env = {
   Bindings: Bindings;
@@ -69,45 +70,16 @@ app.get('/chatbot-config', async (c) => {
 
 // ── public insights (blog) ─────────────────────────────────────────
 app.get('/insights', (c) => withEdgeCache(c, async () => {
-  const lang = c.req.query('lang') || 'pt';
   try {
-    const { results } = await c.env.DB.prepare(
-      `SELECT e.id, e.locale as lang, e.slug,
-              json_extract(e.data, '$.title') as title,
-              json_extract(e.data, '$.tag') as tag,
-              json_extract(e.data, '$.icon') as icon,
-              json_extract(e.data, '$.date') as date,
-              json_extract(e.data, '$.desc') as desc,
-              json_extract(e.data, '$.featured') as featured
-       FROM entries e
-       JOIN collections col ON e.collection_id = col.id
-       WHERE col.slug = 'insights' AND e.locale = ? AND e.status = 'published'
-       ORDER BY date DESC`
-    ).bind(lang).all();
-    return c.json(results);
+    return c.json(await listarInsights(c.env.DB, c.req.query('lang') || 'pt'));
   } catch {
     return c.json({ error: 'Failed to fetch insights' }, 500);
   }
 }));
 
 app.get('/insights/:slug', (c) => withEdgeCache(c, async () => {
-  const lang = c.req.query('lang') || 'pt';
-  const slug = c.req.param('slug');
   try {
-    const result = await c.env.DB.prepare(
-      `SELECT e.id, e.locale as lang, e.slug,
-              json_extract(e.data, '$.title') as title,
-              json_extract(e.data, '$.tag') as tag,
-              json_extract(e.data, '$.icon') as icon,
-              json_extract(e.data, '$.date') as date,
-              json_extract(e.data, '$.desc') as desc,
-              json_extract(e.data, '$.body') as body,
-              json_extract(e.data, '$.featured') as featured
-       FROM entries e
-       JOIN collections col ON e.collection_id = col.id
-       WHERE col.slug = 'insights' AND e.slug = ? AND e.locale = ? AND e.status = 'published'
-       LIMIT 1`
-    ).bind(slug, lang).first();
+    const result = await buscarInsight(c.env.DB, c.req.param('slug'), c.req.query('lang') || 'pt');
     if (!result) return c.json({ error: 'Not found' }, 404);
     return c.json(result);
   } catch {
@@ -117,48 +89,16 @@ app.get('/insights/:slug', (c) => withEdgeCache(c, async () => {
 
 // ── public cases (portfolio) ───────────────────────────────────────
 app.get('/cases', (c) => withEdgeCache(c, async () => {
-  const lang = c.req.query('lang') || 'pt';
   try {
-    const { results } = await c.env.DB.prepare(
-      `SELECT e.id, e.locale as lang, e.slug,
-              json_extract(e.data, '$.client') as client,
-              json_extract(e.data, '$.category') as category,
-              json_extract(e.data, '$.project') as project,
-              json_extract(e.data, '$.result') as result,
-              json_extract(e.data, '$.desc') as desc,
-              json_extract(e.data, '$.stats') as stats,
-              json_extract(e.data, '$.image') as image,
-              json_extract(e.data, '$.featured') as featured
-       FROM entries e
-       JOIN collections col ON e.collection_id = col.id
-       WHERE col.slug = 'cases' AND e.locale = ? AND e.status = 'published'
-       ORDER BY featured DESC, e.id ASC`
-    ).bind(lang).all();
-    return c.json(results);
+    return c.json(await listarCases(c.env.DB, c.req.query('lang') || 'pt'));
   } catch {
     return c.json({ error: 'Failed to fetch cases' }, 500);
   }
 }));
 
 app.get('/cases/:slug', (c) => withEdgeCache(c, async () => {
-  const lang = c.req.query('lang') || 'pt';
-  const slug = c.req.param('slug');
   try {
-    const result = await c.env.DB.prepare(
-      `SELECT e.id, e.locale as lang, e.slug,
-              json_extract(e.data, '$.client') as client,
-              json_extract(e.data, '$.category') as category,
-              json_extract(e.data, '$.project') as project,
-              json_extract(e.data, '$.result') as result,
-              json_extract(e.data, '$.desc') as desc,
-              json_extract(e.data, '$.stats') as stats,
-              json_extract(e.data, '$.image') as image,
-              json_extract(e.data, '$.featured') as featured
-       FROM entries e
-       JOIN collections col ON e.collection_id = col.id
-       WHERE col.slug = 'cases' AND e.slug = ? AND e.locale = ? AND e.status = 'published'
-       LIMIT 1`
-    ).bind(slug, lang).first();
+    const result = await buscarCase(c.env.DB, c.req.param('slug'), c.req.query('lang') || 'pt');
     if (!result) return c.json({ error: 'Not found' }, 404);
     return c.json(result);
   } catch {

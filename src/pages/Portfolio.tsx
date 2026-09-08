@@ -1,51 +1,41 @@
 import BlueDot from '../components/BlueDot';
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { m as motion, AnimatePresence } from "motion/react";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router";
 import { useTranslation } from "react-i18next";
 import { LayoutGrid } from "lucide-react";
 import EmptyState from '../components/EmptyState';
 import { routeMeta } from '../utils/meta';
 import { CANAL_BASE } from '../config/api';
+import { listarCases, type D1 } from '../../workers/content';
 import type { Case } from '../types/canal';
+
+/** Os cases saem do D1 no servidor; o HTML já chega com eles. */
+export async function loader({ context }: { context: { cloudflare: { env: { DB: D1 } } } }) {
+  try {
+    return { cases: (await listarCases(context.cloudflare.env.DB, 'pt')) as unknown as Case[] };
+  } catch {
+    return { cases: [] as Case[] };
+  }
+}
 
 const Portfolio = () => {
   const { t, i18n } = useTranslation();
+  const { cases: casesDoCms } = useLoaderData() as { cases: Case[] };
   const [filter, setFilter] = useState("todos");
-  const [cases, setCases] = useState<Case[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [repos, setRepos] = useState<Case[]>([]);
+  const loading = false;
 
+  // Os repositórios do GitHub são complemento, não conteúdo indexável: seguem
+  // sendo buscados depois da hidratação, para não segurar o HTML.
   useEffect(() => {
-    const fetchCases = async () => {
-      setLoading(true);
-      try {
-        const [casesRes, githubRes] = await Promise.all([
-          fetch(`${CANAL_BASE}/api/cases?lang=${i18n.language}`).catch(() => null),
-          fetch(`${CANAL_BASE}/api/automation/github/repos`).catch(() => null)
-        ]);
+    fetch(`${CANAL_BASE}/api/automation/github/repos`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data) => setRepos(data as Case[]))
+      .catch(() => { /* complemento é opcional */ });
+  }, []);
 
-        let combined: Case[] = [];
-        
-        if (casesRes && casesRes.ok) {
-          const casesData = await casesRes.json();
-          combined = [...combined, ...casesData];
-        }
-
-        if (githubRes && githubRes.ok) {
-          const githubData = await githubRes.json();
-          combined = [...combined, ...githubData];
-        }
-
-        setCases(combined);
-      } catch {
-        setCases([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCases();
-    window.scrollTo(0, 0);
-  }, [i18n.language]);
+  const cases = useMemo(() => [...casesDoCms, ...repos], [casesDoCms, repos]);
 
   const filteredCases = filter === "todos" ? cases : cases.filter(c => c.category === filter);
 

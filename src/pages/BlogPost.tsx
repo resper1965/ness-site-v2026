@@ -1,15 +1,15 @@
 import BlueDot from '../components/BlueDot';
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { m as motion } from "motion/react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useLoaderData, useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, Calendar, Tag, FileText } from "lucide-react";
 import ReactMarkdown from 'react-markdown';
-import { usePageTitle } from '../hooks/usePageTitle';
-
 import { CANAL_BASE } from '../config/api';
-import { canalApi } from '../services/canal';
 import SchemaOrg from '../components/SchemaOrg';
+import { BRAND_DOMAINS, useBrand } from '../config/brand';
+import { buscarInsight, type D1 } from '../../workers/content';
+import { routeMeta } from '../utils/meta';
 
 interface Insight {
   title: string;
@@ -20,42 +20,40 @@ interface Insight {
   content?: string; // legacy alias
 }
 
+/**
+ * O post vem do D1 no servidor, antes de renderizar: o HTML que sai da edge
+ * já contém o corpo do artigo. Antes ele era buscado por fetch depois da
+ * hidratação, então quem não executa JavaScript via uma página vazia.
+ */
+export async function loader({ params, context }: LoaderArgs) {
+  const post = await buscarInsight(context.cloudflare.env.DB, params.slug ?? '', 'pt');
+  if (!post || !post.title) {
+    throw new Response('Not Found', { status: 404 });
+  }
+  return { post: post as unknown as Insight };
+}
+
+type LoaderArgs = {
+  params: { slug?: string };
+  context: { cloudflare: { env: { DB: D1 } } };
+};
+
+export function meta(args: Parameters<typeof routeMeta>[0] & { data?: { post: Insight } }) {
+  const post = args.data?.post;
+  if (!post) return routeMeta(args, { title: 'insight', noindex: true });
+  return routeMeta(args, {
+    title: post.title,
+    description: post.desc,
+    type: 'article',
+  });
+}
+
 const BlogPost = () => {
   const { t } = useTranslation();
-  const { slug } = useParams<{ slug: string }>();
-  const { i18n } = useTranslation();
-  const navigate = useNavigate();
-  const [post, setPost] = useState<Insight | null>(null);
-  const [loading, setLoading] = useState(true);
-  usePageTitle('', post?.title ?? 'insight');
-
-  useEffect(() => {
-    if (!slug) return;
-    const fetchPost = async () => {
-      setLoading(true);
-      try {
-        const data = await canalApi.getInsightBySlug(slug, i18n.language);
-        if (!data || !data.title) { navigate('/blog', { replace: true }); return; }
-        setPost(data);
-      } catch {
-        navigate('/blog', { replace: true });
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPost();
-    window.scrollTo(0, 0);
-  }, [slug, i18n.language, navigate]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 rounded-full border-2 border-primary-container border-t-transparent animate-spin" />
-      </div>
-    );
-  }
-
-  if (!post) return null;
+  const { post } = useLoaderData() as { post: Insight };
+  const { pathname } = useLocation();
+  // O JSON-LD precisa da URL canônica; `window` não existe no servidor.
+  const canonical = BRAND_DOMAINS[useBrand()] + pathname;
 
   return (
     <>
@@ -65,7 +63,7 @@ const BlogPost = () => {
           title: post.title, 
           description: post.desc || '', 
           datePublished: post.date || new Date().toISOString(), 
-          url: window.location.href 
+          url: canonical 
         }} 
       />
       <motion.div

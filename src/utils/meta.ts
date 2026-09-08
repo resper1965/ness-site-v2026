@@ -67,20 +67,25 @@ export function routeMeta(
   return pageMeta(brand, args.location?.pathname ?? '/', resolved);
 }
 
-/** Fallback da marca, usado pelas rotas que não declaram `meta` própria. */
+/**
+ * Fallback da marca, usado pelas rotas que não declaram `meta` própria.
+ *
+ * O título aqui é só a parte específica: `pageMeta` acrescenta o sufixo da
+ * marca. Repetir "ness. IT Company" nesta string produz o título dobrado.
+ */
 export const BRAND_DEFAULT_META: Record<Brand, Required<Pick<PageMeta, 'title' | 'description'>>> = {
   ness: {
-    title: 'ness. IT Company — tecnologia de precisão desde 1991',
+    title: 'tecnologia de precisão desde 1991',
     description:
       'Plataforma modular de transformação digital corporativa B2B — infraestrutura crítica, segurança cibernética, LGPD, investigação forense e engenharia de software de alta performance.',
   },
   trustness: {
-    title: 'trustness. — governança, risco e compliance',
+    title: 'governança, risco e compliance',
     description:
       'trustness. é a vertical de GRC da ness. Consultoria em LGPD, ISO 27001, gestão de riscos, auditoria de segurança, pentest e DPO as a Service para corporações nacionais.',
   },
   forense: {
-    title: 'forense.io — perícia digital e investigação forense',
+    title: 'perícia digital e investigação forense',
     description:
       'forense.io — Perícia digital, resposta a incidentes, análise de ransomware, preservação de evidências e assistência técnica judicial. Laudos com validade processual e cadeia de custódia ISO 27037.',
   },

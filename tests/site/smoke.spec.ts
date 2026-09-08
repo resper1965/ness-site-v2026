@@ -45,10 +45,51 @@ test.describe('metadados por rota', () => {
     }
   });
 
+  // O sufixo da marca é acrescentado por pageMeta. Repeti-lo no título da
+  // própria página produz "… — ness. IT Company — ness. IT Company", que já
+  // aconteceu com o fallback da raiz.
+  test('nenhuma rota repete o sufixo da marca no título', async ({ request }) => {
+    for (const path of ['/', '/assessment/cyber', '/contato', '/blog']) {
+      const html = await (await request.get(path)).text();
+      const titulo = html.match(/<title>([^<]*)<\/title>/)?.[1] ?? '';
+      expect(titulo.match(/IT Company/g)?.length ?? 0, `${path}: ${titulo}`).toBeLessThan(2);
+    }
+  });
+
   test('slug de solução inexistente renderiza 404 com noindex', async ({ page }) => {
     await page.goto('/solucoes/devsecops');
     await expect(page.locator('h1')).toContainText('página não encontrada');
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow');
+  });
+});
+
+test.describe('conteúdo do CMS no HTML', () => {
+  // O D1 local (miniflare) está vazio; estas asserções só valem contra um
+  // ambiente com o banco de verdade, que é o preview do PR.
+  test.skip(!process.env.SITE_BASE_URL, 'precisa do D1 com conteúdo');
+
+  test('a lista do blog sai renderizada do servidor', async ({ request }) => {
+    const html = await (await request.get('/blog')).text();
+    const links = html.match(/href="\/blog\/[a-z0-9-]+"/g) ?? [];
+    expect(links.length, 'nenhum link de post no HTML cru').toBeGreaterThan(0);
+  });
+
+  test('o post traz o corpo e og:type article no HTML cru', async ({ request }) => {
+    const lista = await (await request.get('/blog')).text();
+    const slug = lista.match(/href="\/blog\/([a-z0-9-]+)"/)?.[1];
+    expect(slug, 'nenhum post publicado para testar').toBeTruthy();
+
+    const resposta = await request.get(`/blog/${slug}`);
+    expect(resposta.status()).toBe(200);
+    const html = await resposta.text();
+    expect(html).toContain('content="article"');
+    // O corpo do artigo é markdown renderizado: sem ele a página é uma casca.
+    expect(html.match(/<p[^>]*>/g)?.length ?? 0, 'sem parágrafos no HTML').toBeGreaterThan(1);
+  });
+
+  test('slug inexistente devolve 404', async ({ request }) => {
+    expect((await request.get('/blog/nao-existe-mesmo')).status()).toBe(404);
+    expect((await request.get('/portfolio/nao-existe-mesmo')).status()).toBe(404);
   });
 });
 
