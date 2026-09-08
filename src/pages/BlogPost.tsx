@@ -9,6 +9,7 @@ import { CANAL_BASE } from '../config/api';
 import SchemaOrg from '../components/SchemaOrg';
 import { BRAND_DOMAINS, useBrand } from '../config/brand';
 import { buscarInsight, type D1 } from '../../workers/content';
+import { idiomaDaRota } from '../utils/lang';
 import { routeMeta } from '../utils/meta';
 
 interface Insight {
@@ -25,8 +26,9 @@ interface Insight {
  * já contém o corpo do artigo. Antes ele era buscado por fetch depois da
  * hidratação, então quem não executa JavaScript via uma página vazia.
  */
-export async function loader({ params, context }: LoaderArgs) {
-  const post = await buscarInsight(context.cloudflare.env.DB, params.slug ?? '', 'pt');
+export async function loader({ request, params, context }: LoaderArgs) {
+  const lang = idiomaDaRota(new URL(request.url).pathname);
+  const post = await buscarInsight(context.cloudflare.env.DB, params.slug ?? '', lang);
   if (!post || !post.title) {
     throw new Response('Not Found', { status: 404 });
   }
@@ -34,6 +36,7 @@ export async function loader({ params, context }: LoaderArgs) {
 }
 
 type LoaderArgs = {
+  request: Request;
   params: { slug?: string };
   context: { cloudflare: { env: { DB: D1 } } };
 };

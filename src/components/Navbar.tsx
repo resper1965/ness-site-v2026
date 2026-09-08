@@ -1,17 +1,19 @@
 import BlueDot from '../components/BlueDot';
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import { Menu, X, Sparkles } from "lucide-react";
 
 import { YEARS_OF_LEGACY } from '../constants/brand';
 import { useBrand } from '../config/brand';
+import { rotaNoIdioma, type Idioma } from '../utils/lang';
 
 const Navbar = () => {
   const BRAND = useBrand();
   const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const legacyLabel = t('nav.celebration.label', { years: YEARS_OF_LEGACY, defaultValue: `${YEARS_OF_LEGACY} Anos` });
 
@@ -41,8 +43,10 @@ const Navbar = () => {
     return !nessOnlyKeys.includes(item.key) && !trustnessOnlyKeys.includes(item.key);
   });
 
+  // O idioma vive na URL: trocar de idioma é navegar. Assim a escolha é
+  // compartilhável, indexável e sobrevive a um recarregamento.
   const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
+    navigate(rotaNoIdioma(location.pathname, lng as Idioma) + location.search);
   };
 
   // Fecha o menu ao navegar e ao pressionar Esc; trava o scroll enquanto aberto

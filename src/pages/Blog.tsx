@@ -7,6 +7,7 @@ import { ShieldCheck, Cloud, Cpu, Brain, Lock, Workflow, FileText, ArrowUpRight 
 import EmptyState from '../components/EmptyState';
 import { routeMeta } from '../utils/meta';
 import { listarInsights, type D1 } from '../../workers/content';
+import { idiomaDaRota } from '../utils/lang';
 import type { Insight } from '../types/canal';
 
 /**
@@ -15,9 +16,10 @@ import type { Insight } from '../types/canal';
  *
  * Falha do D1 não derruba a página — a lista vem vazia e o EmptyState aparece.
  */
-export async function loader({ context }: { context: { cloudflare: { env: { DB: D1 } } } }) {
+export async function loader({ request, context }: { request: Request; context: { cloudflare: { env: { DB: D1 } } } }) {
+  const lang = idiomaDaRota(new URL(request.url).pathname);
   try {
-    return { articles: (await listarInsights(context.cloudflare.env.DB, 'pt')) as unknown as Insight[] };
+    return { articles: (await listarInsights(context.cloudflare.env.DB, lang)) as unknown as Insight[] };
   } catch {
     return { articles: [] as Insight[] };
   }
@@ -149,8 +151,14 @@ export default Blog;
 
 
 export function meta(args: Parameters<typeof routeMeta>[0]) {
-  return routeMeta(args, {
-    title: 'insights',
-    description: 'Análises da ness. sobre segurança cibernética, infraestrutura, privacidade e engenharia de software.',
+  return routeMeta(args, (_brand, lang) => {
+    return {
+    title: { pt: 'insights', en: 'insights', es: 'insights' }[lang],
+    description: {
+      pt: 'Análises da ness. sobre segurança cibernética, infraestrutura, privacidade e engenharia de software.',
+      en: 'ness. analysis on cybersecurity, infrastructure, privacy and software engineering.',
+      es: 'Análisis de ness. sobre ciberseguridad, infraestructura, privacidad e ingeniería de software.',
+    }[lang],
+  };
   });
 }

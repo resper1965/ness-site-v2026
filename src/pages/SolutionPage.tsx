@@ -399,10 +399,12 @@ export default SolutionPage;
 export function meta(args: Parameters<typeof routeMeta>[0] & { params: { slug?: string } }) {
   const solution = args.params.slug ? solutionsData[args.params.slug] : null;
   if (!solution) {
-    return routeMeta(args, { title: 'página não encontrada', noindex: true });
+    return routeMeta(args, { title: 'página não encontrada', noindex: true, semAlternates: true });
   }
+  // Conteúdo só em português: a página não existe sob /en e /es.
   return routeMeta(args, {
     title: solution.metaTitle,
     description: solution.metaDescription || solution.overview,
+    semAlternates: true,
   });
 }

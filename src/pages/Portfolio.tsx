@@ -5,15 +5,17 @@ import { Link, useLoaderData } from "react-router";
 import { useTranslation } from "react-i18next";
 import { LayoutGrid } from "lucide-react";
 import EmptyState from '../components/EmptyState';
-import { routeMeta } from '../utils/meta';
+import { routeMeta, traduzir } from '../utils/meta';
 import { CANAL_BASE } from '../config/api';
 import { listarCases, type D1 } from '../../workers/content';
+import { idiomaDaRota } from '../utils/lang';
 import type { Case } from '../types/canal';
 
 /** Os cases saem do D1 no servidor; o HTML já chega com eles. */
-export async function loader({ context }: { context: { cloudflare: { env: { DB: D1 } } } }) {
+export async function loader({ request, context }: { request: Request; context: { cloudflare: { env: { DB: D1 } } } }) {
+  const lang = idiomaDaRota(new URL(request.url).pathname);
   try {
-    return { cases: (await listarCases(context.cloudflare.env.DB, 'pt')) as unknown as Case[] };
+    return { cases: (await listarCases(context.cloudflare.env.DB, lang)) as unknown as Case[] };
   } catch {
     return { cases: [] as Case[] };
   }
@@ -258,8 +260,15 @@ export default Portfolio;
 
 
 export function meta(args: Parameters<typeof routeMeta>[0]) {
-  return routeMeta(args, {
-    title: 'portfólio',
-    description: 'Casos de infraestrutura crítica, segurança, engenharia de software e privacidade entregues pela ness.',
+  return routeMeta(args, (_brand, lang) => {
+    const t = traduzir(lang);
+    return {
+    title: t('nav.portfolio', 'portfólio'),
+    description: {
+      pt: 'Casos de infraestrutura crítica, segurança, engenharia de software e privacidade entregues pela ness.',
+      en: 'Critical infrastructure, security, software engineering and privacy cases delivered by ness.',
+      es: 'Casos de infraestructura crítica, seguridad, ingeniería de software y privacidad entregados por ness.',
+    }[lang],
+  };
   });
 }

@@ -6,7 +6,7 @@ import BlueDot from '../components/BlueDot';
 import React from "react";
 import { m as motion } from "motion/react";
 import { useTranslation } from "react-i18next";
-import { routeMeta } from '../utils/meta';
+import { routeMeta, traduzir } from '../utils/meta';
 import { ShieldCheck, Brain, Scale, Network } from "lucide-react";
 
 const ICONS = [Brain, ShieldCheck, Network, Scale];
@@ -77,8 +77,15 @@ export default Services;
 
 
 export function meta(args: Parameters<typeof routeMeta>[0]) {
-  return routeMeta(args, {
-    title: 'serviços',
-    description: 'Serviços da ness. em infraestrutura crítica, segurança cibernética, engenharia de software, privacidade e perícia digital.',
+  return routeMeta(args, (_brand, lang) => {
+    const t = traduzir(lang);
+    return {
+    title: t('nav.services', 'serviços'),
+    description: {
+      pt: 'Serviços da ness. em infraestrutura crítica, segurança cibernética, engenharia de software, privacidade e perícia digital.',
+      en: 'ness. services in critical infrastructure, cybersecurity, software engineering, privacy and digital forensics.',
+      es: 'Servicios de ness. en infraestructura crítica, ciberseguridad, ingeniería de software, privacidad y peritaje digital.',
+    }[lang],
+  };
   });
 }

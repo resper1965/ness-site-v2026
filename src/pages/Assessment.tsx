@@ -7,6 +7,13 @@ import { CANAL_BASE } from "../config/api";
 import { canalApi } from "../services/canal";
 import BlueDot from "../components/BlueDot";
 import SchemaOrg from "../components/SchemaOrg";
+import { routeMeta } from '../utils/meta';
+
+// Os questionários vivem em `src/data/assessments.ts`, só em português: a
+// página não existe sob /en e /es, então não anuncia alternates.
+export function meta(args: Parameters<typeof routeMeta>[0]) {
+  return routeMeta(args, { title: 'assessment', semAlternates: true });
+}
 
 export default function Assessment() {
   const { type } = useParams<{ type: string }>();
