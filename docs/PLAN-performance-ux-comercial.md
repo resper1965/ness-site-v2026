@@ -426,30 +426,36 @@ Esforço em dias-pessoa (dp) de um dev sênior front/edge. Cada tarefa tem crit�
 | 3.4 (parcial) / A-28, A-47, A-48 | CTA visível no mobile; menu mobile em CSS com Esc e trava de scroll; links de marca na mesma aba; scroll preservado no "voltar" |
 | A-33 (parcial) | gtag só após `load` e sem `page_view` automático (consentimento via Zaraz fica para a Onda 3.6) |
 
-### Onda 2 — HTML na edge (PR #6, 2026-09-08)
+### Onda 2 — HTML na edge (concluída em 2026-09-08)
 
-Tasks **2.1 e 2.6 entregues juntas**: são a mesma virada, porque ao sair do
-Cloudflare Pages a pasta `functions/` deixa de existir e precisa nascer dentro
-do Worker no mesmo commit.
+| Task | Entregue | PR |
+|---|---|---|
+| 2.1 + 2.6 | React Router 7 em modo framework + Worker único servindo as 3 marcas pelo `Host`; `functions/` e `server.ts` substituídos por `workers/`; 404 real; CSP com nonce por requisição | #6 |
+| 2.2 | Loaders lendo o D1 pelo binding, sem HTTP: o HTML do post já contém o corpo; slug inexistente é 404 | #9 |
+| 2.3 | `meta` por rota no servidor — título, descrição, og:, canonical (fecha B-03, B-04, B-05, B-11) | #8 |
+| 2.4 | 301 de `/contact`, `/about`, `/portfólio` para a grafia canônica e de `www` para o domínio raiz (fecha B-06 no que era espelho) | #10 |
+| 2.5 | Idioma na URL (`/en`, `/es`) com hreflang recíproco no HTML e no sitemap; instância do i18next clonada por requisição no servidor (fecha B-10) | #11 |
+| 2.7 | Preview por PR num Worker próprio, apagado ao fechar; smoke e2e e Lighthouse contra a URL real | #5, #6 |
 
-| Entregue | O quê |
-|---|---|
-| 2.1 | React Router 7 em modo framework + Worker com Static Assets; `src/routes.ts` (com `lang` preparado para a 2.5); marca resolvida pelo `Host` no loader da raiz; meta/og/canonical por marca no servidor (fecha B-11) |
-| 2.6 | `server.ts`, `functions/` e o proxy de dev substituídos por `workers/app.ts`; `express`, `@hono/node-server` e `dotenv` fora das dependências |
-| extra | 404 real (sem rota coringa; rotas só-ness devolvem 404 nos outros domínios); CSP com nonce por requisição em vez de `unsafe-inline`; deploy e preview por PR migrados para `wrangler deploy` |
+Virada de produção feita por **rota**, não por Custom Domain — ver
+[`RUNBOOK-virada-para-o-worker.md`](RUNBOOK-virada-para-o-worker.md).
 
-LCP do preview (Lighthouse mobile, 3 rodadas): **2,76 s** — ainda acima da meta
-de 2,5 s, que depende das ondas 2.2 (loaders no servidor) e de imagens.
+**O que ficou de fora, e por quê**
 
-**Virada de produção pendente e manual:** apontar ness.com.br,
-trustness.com.br e forense.io para o Worker. Sem `routes` na `wrangler.toml`,
-o deploy publica só em workers.dev e os domínios seguem no Pages.
+- `/solucoes/:slug` e `/assessment/:type` não existem sob `/en` e `/es`: o
+  conteúdo vive em `src/data`, só em português. Traduzir `solutionsData.ts` e
+  `assessments.ts` desbloqueia os dois — é tarefa de conteúdo, não de código.
+- Cache do HTML na edge: com nonce por requisição, cachear documento exige
+  tratar o par nonce/cabeçalho junto. O `s-maxage` da 2.2 continua aberto.
+- Performance segue abaixo da meta: Lighthouse mobile entre 0,73 e 0,86 e LCP
+  entre 2,8 s e 3,1 s no preview, contra 0,90 e 2,5 s. A variância entre
+  execuções do mesmo código é maior que o efeito de cada mudança, então medir
+  no CI não decide mais nada — o próximo passo precisa de medição de campo
+  (RUM) ou de um ambiente estável.
 
 ### Próximos passos (ordem recomendada)
 
-1. Onda 2.2–2.5: loaders lendo D1 com Cache API, meta por página no servidor,
-   sitemaps e redirects no Worker, i18n por URL (`/en`, `/es`).
-2. Onda 3.5–3.7: Turnstile, UTM, `/obrigado`, Zaraz + consentimento, eventos e Measurement Protocol; chat como canal de lead.
+1. Onda 3.5–3.7: Turnstile, UTM, `/obrigado`, Zaraz + consentimento, eventos e Measurement Protocol; chat como canal de lead.
 3. Onda 0.9: ligar Cloudflare Web Analytics (token no painel) e Early Hints.
 4. Onda 3.8–3.9: prova social, casos com números, assessments no menu.
 5. Lighthouse CI com asserções no PR (Onda 2.7 restante).
