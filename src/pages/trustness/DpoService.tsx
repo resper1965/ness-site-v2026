@@ -424,7 +424,8 @@ export default function DpoService() {
 
 export function meta(args: Parameters<typeof routeMeta>[0]) {
   return routeMeta(args, {
-    title: 'DPO as a Service — trustness.',
+    // A marca vem do sufixo; repetir aqui produz o título dobrado.
+    title: 'DPO as a Service',
     description:
       'Serviço de DPO terceirizado da trustness. Adequação, manutenção e auditoria contínua dos processos de privacidade da sua organização com tecnologia proprietária Aegis. Sem necessidade de aquisição de ferramentas adicionais.',
   });
