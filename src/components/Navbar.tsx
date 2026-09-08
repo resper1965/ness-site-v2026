@@ -141,6 +141,17 @@ const Navbar = () => {
                             <span className="block text-[11px] text-on-surface-variant leading-snug">{solucao.resumo}</span>
                           </Link>
                         ))}
+                        {/* Serviços e Verticais saíram da home: sem lugar no
+                            menu, só se chegaria neles pela URL. */}
+                        <div className="mt-1 pt-2 border-t border-white/10 flex gap-2">
+                          <Link to="/servicos" className="flex-1 px-3 py-2 rounded-xl text-[11px] text-on-surface-variant hover:text-white hover:bg-white/5 transition-colors text-center lowercase-all">
+                            {t('nav.services', 'serviços')}
+                          </Link>
+                          <Link to="/verticais" className="flex-1 px-3 py-2 rounded-xl text-[11px] text-on-surface-variant hover:text-white hover:bg-white/5 transition-colors text-center lowercase-all">
+                            verticais
+                          </Link>
+                        </div>
+
                         <Link
                           to="/assessment/cyber"
                           onClick={() => evento('cta_click', { cta: 'megamenu_diagnostico', destino: '/assessment/cyber' })}
@@ -266,6 +277,12 @@ const Navbar = () => {
                           {solucao.nome}
                         </Link>
                       ))}
+                      <Link to="/servicos" onClick={() => setIsOpen(false)} className="text-sm text-on-surface-variant hover:text-primary-container transition-colors lowercase-all">
+                        {t('nav.services', 'serviços')}
+                      </Link>
+                      <Link to="/verticais" onClick={() => setIsOpen(false)} className="text-sm text-on-surface-variant hover:text-primary-container transition-colors lowercase-all">
+                        verticais
+                      </Link>
                     </div>
                   )}
                 </div>

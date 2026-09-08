@@ -73,6 +73,16 @@ test.describe('metadados por rota', () => {
   });
 });
 
+test.describe('home enxuta', () => {
+  // Nove seções eram nove telas de rolagem no celular. O corte só vale se as
+  // páginas que saíram continuarem alcançáveis — daí o teste do menu acima.
+  test('a home tem seis seções e não repete serviços nem verticais', async ({ page }) => {
+    await page.goto('/');
+    const secoes = page.locator('main > section, main > div > section');
+    expect(await secoes.count(), 'a home passou de seis seções').toBeLessThanOrEqual(6);
+  });
+});
+
 test.describe('eventos de conversão', () => {
   // Lê a fila real do gtag (`dataLayer`, criada pelo /boot.js) em vez de
   // simular: um stub seria sobrescrito pelo próprio boot, e o teste passaria
@@ -135,9 +145,11 @@ test.describe('navegação', () => {
 
     await botao.click();
     await expect(botao).toHaveAttribute('aria-expanded', 'true');
-    // Cinco produtos e o diagnóstico: quem chega por "segurança" não sabe
-    // que o produto se chama n.secops.
-    await expect(page.locator('#menu-solucoes a')).toHaveCount(6);
+    // Cinco produtos, serviços, verticais e o diagnóstico.
+    await expect(page.locator('#menu-solucoes a')).toHaveCount(8);
+    // Serviços e Verticais saíram da home: sem isto, só se chega por URL.
+    await expect(page.locator('#menu-solucoes a[href="/servicos"]')).toHaveCount(1);
+    await expect(page.locator('#menu-solucoes a[href="/verticais"]')).toHaveCount(1);
 
     await page.keyboard.press('Escape');
     await expect(botao).toHaveAttribute('aria-expanded', 'false');
@@ -173,7 +185,7 @@ test.describe('navegação', () => {
     test.skip(!isMobile, 'somente mobile');
     await page.goto('/');
     await page.getByRole('button', { name: /abrir menu/i }).click();
-    await expect(page.locator('#solucoes-mobile a')).toHaveCount(5);
+    await expect(page.locator('#solucoes-mobile a')).toHaveCount(7);
   });
 
   test('a página de solução mostra a trilha; a de blog, não', async ({ page }) => {
