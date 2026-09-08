@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
 import { ArrowRight, ShieldCheck, Server, Code2, Scale, Search } from "lucide-react";
 import { FOUNDATION_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
+import { evento } from '../utils/eventos';
 
 /**
  * Hero da ness. — sem Framer Motion (entradas em CSS), sem animações infinitas,
@@ -52,6 +53,7 @@ const Hero = () => {
           </p>
           <div className="flex flex-wrap items-center gap-5 md:gap-8 pt-2">
             <Link
+              onClick={() => evento('cta_click', { cta: 'hero_primario', destino: '/contato' })}
               to="/contato?ref=home"
               className="bg-linear-to-r from-primary-container to-primary text-on-primary px-8 md:px-10 py-4 rounded-full font-display font-semibold text-sm shadow-xl shadow-primary-container/20 hover:scale-105 transition-transform focus-visible:ring-2 focus-visible:ring-white"
             >

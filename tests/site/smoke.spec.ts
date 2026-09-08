@@ -73,6 +73,32 @@ test.describe('metadados por rota', () => {
   });
 });
 
+test.describe('eventos de conversão', () => {
+  // Lê a fila real do gtag (`dataLayer`, criada pelo /boot.js) em vez de
+  // simular: um stub seria sobrescrito pelo próprio boot, e o teste passaria
+  // medindo a si mesmo.
+  const nomesDeEventos = (page: import('@playwright/test').Page) =>
+    page.evaluate(() =>
+      Array.from((window as unknown as { dataLayer?: IArguments[] }).dataLayer ?? [])
+        .map((entrada) => (entrada[0] === 'event' ? entrada[1] : null))
+        .filter(Boolean),
+    );
+
+  test('o CTA do hero e a rolagem chegam à fila do gtag', async ({ page }) => {
+    await page.goto('/');
+
+    await expect(async () => {
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2));
+      await page.getByRole('link', { name: /falar com um especialista/i }).first().click({ trial: true });
+      expect(await nomesDeEventos(page)).toContain('scroll_depth');
+    }).toPass({ timeout: 15_000 });
+
+    await page.getByRole('link', { name: /falar com um especialista/i }).first().click();
+    await page.waitForURL(/contato/);
+    expect(await nomesDeEventos(page)).toContain('cta_click');
+  });
+});
+
 test.describe('superfícies públicas protegidas', () => {
   // Fechar só o formulário de contato deixa as portas laterais abertas: um
   // robô que quiser inundar vai pela newsletter ou pela ouvidoria.
