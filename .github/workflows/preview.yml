@@ -38,6 +38,21 @@ jobs:
       - name: Build
         run: npm run build
 
+      # A wrangler.toml declara as rotas dos domínios de produção, e o wrangler
+      # as aplica mesmo com --name. Sem esta limpeza, o Worker do PR
+      # reivindicaria ness.com.br, trustness.com.br e forense.io para si —
+      # uma rota só pode apontar para um Worker.
+      - name: Tirar as rotas de produção da config do preview
+        run: |
+          node -e "
+            const fs = require('fs');
+            const f = 'dist/server/wrangler.json';
+            const c = JSON.parse(fs.readFileSync(f, 'utf8'));
+            delete c.routes; delete c.route;
+            fs.writeFileSync(f, JSON.stringify(c));
+          "
+          grep -q '"routes"' dist/server/wrangler.json && { echo '::error::rotas ainda presentes na config do preview'; exit 1; } || true
+
       - name: Publicar preview num Worker do PR
         id: deploy
         uses: cloudflare/wrangler-action@v3

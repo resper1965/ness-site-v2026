@@ -11,56 +11,88 @@ Duração: ~15 min, com uma janela de segundos sem resposta por domínio.
 ## Antes de começar
 
 1. O merge na `main` roda `wrangler deploy` e publica o Worker
-   `ness-site2026` em `workers.dev`. Confirme que ele responde:
+   `ness-site2026` em `workers.dev`.
+
+   **Já validado em 08/09/2026**, no Worker publicado: HTML com conteúdo,
+   `robots.txt` da ness, 404 real em rota inexistente, `/api/chatbot-config`
+   respondendo do D1 e CSP no cabeçalho.
 
    ```bash
-   curl -sI https://ness-site2026.ness.workers.dev/ | head -3
+   U=https://ness-site2026.ness.workers.dev
+   curl -s $U/ | grep -o '<title>[^<]*</title>'      # ness. IT Company — ...
+   curl -so /dev/null -w '%{http_code}\n' $U/nao-existe  # 404
    ```
 
-2. Confirme as três marcas no Worker publicado, antes de qualquer DNS:
+2. As outras duas marcas **não dá para conferir com `-H "Host:"`**: o edge da
+   Cloudflare devolve 403 quando o `Host` não bate com o hostname pedido.
+   Esse truque só funciona no preview local.
+
+   Para provar a detecção de marca no edge antes de mexer em DNS, publique
+   um Worker descartável cujo hostname contenha o nome da marca — é o mesmo
+   `Host` que o código lê:
 
    ```bash
-   for h in ness.com.br trustness.com.br forense.io; do
-     echo "== $h"
-     curl -s -H "Host: $h" https://ness-site2026.ness.workers.dev/ \
-       | grep -o '<title>[^<]*</title>'
+   npm run build
+   for marca in trustness forense; do
+     npx wrangler deploy -c dist/server/wrangler.json --name $marca-preflight
+     curl -s https://$marca-preflight.ness.workers.dev/ | grep -o '<title>[^<]*</title>'
+     npx wrangler delete --name $marca-preflight --force
    done
    ```
 
-   Cada um precisa devolver o título da própria marca. Se devolver ness nos
-   três, **pare**: a marca não está saindo do `Host`.
+   Cada um precisa devolver o título da própria marca. Se devolver ness,
+   **pare**: a marca não está saindo do `Host`.
 
-## A virada, um domínio por vez
+## A virada: rota, não Custom Domain
 
-Comece por `forense.io` (menor tráfego), valide, e só então repita para
-`trustness.com.br` e `ness.com.br`.
+**Feita em 08/09/2026.** Registrado aqui porque a diferença entre os dois
+mecanismos é o que decide se existe ou não janela de indisponibilidade.
 
-Para cada domínio:
+**Custom Domain** cria um registro DNS próprio para o Worker — e a Cloudflare
+recusa criar sobre um CNAME existente. Como os três domínios já tinham CNAME
+apontando para o Pages, seria preciso removê-los do projeto do Pages primeiro:
+uma janela com o domínio sem destino nenhum.
 
-1. **Painel → Workers & Pages → `ness-site2026` (Pages) → Custom domains**
-   → remover o domínio.
-   Enquanto ele não estiver no Worker, o hostname fica sem destino. É a
-   janela; ela dura o tempo dos dois cliques.
+**Route** não toca em DNS. O registro continua apontando para o Pages e o
+Worker passa na frente; o Pages vira um origin que nunca é chamado. Sem
+janela, e o rollback é apagar a rota.
 
-2. **Painel → Workers & Pages → `ness-site2026` (Worker) → Settings →
-   Domains & Routes → Add → Custom Domain** → o mesmo hostname.
-   A Cloudflare cria/ajusta o registro DNS proxied sozinha.
+Um domínio por vez, começando por `forense.io` (menor tráfego):
 
-3. Valide antes de ir para o próximo:
+1. **Painel → Workers & Pages → `ness-site2026` (o Worker) → Domains →
+   + Add Route**
+
+   | Campo | Valor |
+   |---|---|
+   | Zone | `forense.io` |
+   | Route | `forense.io/*` |
+
+   O valor sugerido pelo painel é `*.forense.io/*` — **não serve**: com o
+   ponto antes, o curinga casa só com subdomínios e deixa o domínio raiz de
+   fora.
+
+2. Valide antes de ir para o próximo. A primeira leitura pode vir do cache do
+   Pages; use uma query aleatória para furar:
 
    ```bash
-   curl -sI https://forense.io/ | head -5          # 200, sem redirect estranho
-   curl -s  https://forense.io/ | grep -o '<title>[^<]*</title>'
-   curl -sI https://forense.io/ | grep -i content-security-policy   # tem nonce
-   curl -s  https://forense.io/robots.txt | head -2                 # marca certa
-   curl -so /dev/null -w '%{http_code}\n' https://forense.io/solucoes  # 404
+   U=https://forense.io
+   curl -s "$U/?nocache=$$" | grep -o '<title>[^<]*</title>'   # marca certa
+   curl -sD- -o /dev/null $U/ | grep -i content-security-policy # tem nonce
+   curl -s $U/robots.txt | head -1                              # marca certa
+   curl -so /dev/null -w '%{http_code}\n' $U/solucoes           # 404 fora da ness
+   curl -so /dev/null -w '%{http_code}\n' $U/nao-existe         # 404
    ```
+
+3. Repita para `trustness.com.br/*` e `ness.com.br/*`.
+
+4. As rotas precisam entrar na `wrangler.toml` — o deploy trata o arquivo como
+   fonte da verdade e sobrescreve o que existir só no painel.
 
 ## Rollback
 
-Remover o Custom Domain do Worker e readicionar no projeto do Pages. O
-projeto do Pages continua existindo e com o último build — não o apague
-antes de uns dias de operação normal.
+Apagar a rota (painel, ou remover da `wrangler.toml` e reimplantar). O domínio
+volta na hora para o Pages, que continua de pé com o último build. Não apague
+o projeto do Pages antes de uns dias de operação normal.
 
 ## Depois
 
