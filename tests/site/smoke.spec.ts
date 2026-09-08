@@ -230,6 +230,20 @@ test.describe('primeira visita sem interrupções', () => {
     await expect(page.getByPlaceholder(/digite sua mensagem/i)).toBeVisible({ timeout: 10_000 });
   });
 
+  // O chat existe para virar lead. Mandar o visitante recomeçar num formulário
+  // é onde a conversa morre — a qualificação acontece dentro dele.
+  test('falar com especialista qualifica dentro do chat', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: /gabi/i }).click();
+    await page.getByRole('button', { name: /especialista/i }).click();
+
+    await expect(page.locator('#chat-nome')).toBeVisible();
+    await expect(page.locator('#chat-email')).toBeVisible();
+    await expect(page.locator('#chat-empresa')).toBeVisible();
+    // Enquanto qualifica, o campo de conversa sai de cena: um foco por vez.
+    await expect(page.getByPlaceholder(/digite sua mensagem/i)).toHaveCount(0);
+  });
+
   test('menu mobile abre, fecha com Esc e mantém o CTA visível', async ({ page, isMobile }) => {
     test.skip(!isMobile, 'somente mobile');
     await page.goto('/');
