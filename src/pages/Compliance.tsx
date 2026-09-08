@@ -176,7 +176,8 @@ const Compliance = () => {
                     tenant_id: BRAND,
                     category: formData.get("subject"),
                     description: formData.get("message"),
-                    evidence: `Nome: ${formData.get("name") || "Anônimo"}, Contato: ${formData.get("email") || "N/A"}`
+                    evidence: `Nome: ${formData.get("name") || "Anônimo"}, Contato: ${formData.get("email") || "N/A"}`,
+                    website: formData.get("website"),
                   };
 
                   try {
@@ -203,6 +204,13 @@ const Compliance = () => {
                     <input name="email" type="text" placeholder={t('contact.form.email_placeholder', 'email ou telefone para retorno')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('contact.form.contact_optional')} />
                   </div>
                 </div>
+                {/* Armadilha: fora da tela e fora do teclado. Aqui não há Turnstile —
+                    ver comentário no endpoint. */}
+                <div aria-hidden="true" className="absolute w-px h-px overflow-hidden -left-[9999px]">
+                  <label htmlFor="denuncia-website">não preencha</label>
+                  <input id="denuncia-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                </div>
+
                 <div className="space-y-2">
                   <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.whistleblower.occurrence_type')}</label>
                   <select name="subject" required className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all appearance-none" aria-label={t('contact.whistleblower.occurrence_type')}>

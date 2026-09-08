@@ -7,6 +7,7 @@ import { Send, Linkedin, Instagram, Facebook, Lock } from "lucide-react";
 import { FOUNDATION_YEAR, CURRENT_YEAR } from '../constants/brand';
 import { CANAL_BASE } from '../config/api';
 import { useBrand, BRAND_LABELS, BRAND_DOMAINS } from '../config/brand';
+import Turnstile from './Turnstile';
 
 const ECOSYSTEM_LINKS = [
   { brand: 'ness',      label: 'ness.',       href: BRAND_DOMAINS.ness },
@@ -24,11 +25,16 @@ const Footer = () => {
     e.preventDefault();
     if (!email || newsletterStatus === 'sending') return;
     setNewsletterStatus('sending');
+    const campos = new FormData(e.currentTarget as HTMLFormElement);
     try {
       const res = await fetch(`${CANAL_BASE}/api/newsletter`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({
+          email,
+          website: campos.get('website'),
+          turnstileToken: campos.get('cf-turnstile-response'),
+        }),
       });
       setNewsletterStatus(res.ok ? 'ok' : 'error');
     } catch {
@@ -107,7 +113,14 @@ const Footer = () => {
             {newsletterStatus === 'ok' ? (
               <p className="text-xs text-primary-container font-bold uppercase tracking-widest">✓ inscrito.</p>
             ) : (
-              <form onSubmit={handleNewsletter} className="flex gap-2">
+              <form onSubmit={handleNewsletter} className="flex flex-col gap-2">
+                {/* Armadilha: fora da tela e fora do teclado. */}
+                <div aria-hidden="true" className="absolute w-px h-px overflow-hidden -left-[9999px]">
+                  <label htmlFor="newsletter-website">não preencha</label>
+                  <input id="newsletter-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                </div>
+
+                <div className="flex gap-2">
                 <input
                   type="email"
                   value={email}
@@ -125,6 +138,9 @@ const Footer = () => {
                 >
                   <Send size={14} />
                 </button>
+                </div>
+
+                <Turnstile action="newsletter" />
               </form>
             )}
             {newsletterStatus === 'error' && (
