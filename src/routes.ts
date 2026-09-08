@@ -18,10 +18,10 @@ function siteRoutes(lang = ''): RouteConfig {
 
     // Rotas que só existem na ness — nos outros domínios devolvem 404 real.
     layout('routes/somente-ness.tsx', { id: id('somente-ness') }, [
-      route('solucoes', 'routes/solucoes.tsx', { id: id('solucoes') }),
+      route('solucoes', 'pages/Solutions.tsx', { id: id('solucoes') }),
       route('solucoes/:slug', 'pages/SolutionPage.tsx', { id: id('solucao') }),
-      route('servicos', 'routes/servicos.tsx', { id: id('servicos') }),
-      route('verticais', 'routes/verticais.tsx', { id: id('verticais') }),
+      route('servicos', 'pages/Services.tsx', { id: id('servicos') }),
+      route('verticais', 'pages/Verticals.tsx', { id: id('verticais') }),
     ]),
 
     // Páginas das sub-marcas, acessíveis a partir de qualquer domínio.

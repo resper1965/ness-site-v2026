@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { m as motion } from "motion/react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { usePageTitle } from '../hooks/usePageTitle';
+import { routeMeta } from '../utils/meta';
 import { encryptZeroTrustPayload } from '../utils/crypto';
 import { CANAL_BASE } from '../config/api';
 import { canalApi } from '../services/canal';
@@ -17,7 +17,6 @@ AlertTriangle} from "lucide-react";
 const Compliance = () => {
   const BRAND = useBrand();
   const { t } = useTranslation();
-  usePageTitle('compliance.meta_title', 'compliance — ness.');
   const { type } = useParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
@@ -260,3 +259,16 @@ const Compliance = () => {
 
 
 export default Compliance;
+
+const TITULO_COMPLIANCE: Record<string, string> = {
+  privacidade: 'política de privacidade',
+  termos: 'termos de uso',
+};
+
+export function meta(args: Parameters<typeof routeMeta>[0] & { params: { type?: string } }) {
+  const tipo = args.params.type ?? '';
+  return routeMeta(args, {
+    title: TITULO_COMPLIANCE[tipo] ?? 'compliance',
+    description: 'Políticas de privacidade e termos de uso da ness., em conformidade com a LGPD.',
+  });
+}

@@ -6,12 +6,11 @@ import BlueDot from '../components/BlueDot';
 import React from "react";
 import { m as motion } from "motion/react";
 import { useTranslation } from "react-i18next";
-import { usePageTitle } from '../hooks/usePageTitle';
+import { routeMeta } from '../utils/meta';
 import { ShieldCheck, Fingerprint, ArrowUpRight } from "lucide-react";
 
-const Verticals = ({ standalone = false }: { standalone?: boolean }) => {
+const Verticals = () => {
   const { t } = useTranslation();
-  usePageTitle('verticals.meta_title', 'verticais — ness.', { enabled: standalone });
   return (
     <section className="py-24 bg-surface px-8 border-t border-white/5 relative overflow-hidden">
       {/* Immersive Background for Verticals */}
@@ -76,3 +75,11 @@ const Verticals = ({ standalone = false }: { standalone?: boolean }) => {
 };
 
 export default Verticals;
+
+
+export function meta(args: Parameters<typeof routeMeta>[0]) {
+  return routeMeta(args, {
+    title: 'verticais',
+    description: 'Como a ness. atende saúde, finanças, indústria e setor público — com os requisitos regulatórios de cada um.',
+  });
+}

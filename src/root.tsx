@@ -14,6 +14,7 @@ import SchemaOrg from './components/SchemaOrg';
 import { ErrorBoundary as RenderErrorBoundary } from './components/ErrorBoundary';
 import NotFound from './pages/NotFound';
 import { BrandProvider, BRAND_DOMAINS, resolveBrand, type Brand } from './config/brand';
+import { BRAND_DEFAULT_META, pageMeta } from './utils/meta';
 
 /**
  * A marca sai do Host da requisição, no servidor, antes de qualquer render.
@@ -45,56 +46,14 @@ export function clientLoader(): RootData {
   return forPath(window.location.hostname, window.location.pathname, '');
 }
 
-const META: Record<Brand, { title: string; description: string }> = {
-  ness: {
-    title: 'ness. IT Company — tecnologia de precisão desde 1991',
-    description:
-      'Plataforma modular de transformação digital corporativa B2B — infraestrutura crítica, segurança cibernética, LGPD, investigação forense e engenharia de software de alta performance.',
-  },
-  trustness: {
-    title: 'trustness. — governança, risco e compliance',
-    description:
-      'trustness. é a vertical de GRC da ness. Consultoria em LGPD, ISO 27001, gestão de riscos, auditoria de segurança, pentest e DPO as a Service para corporações nacionais.',
-  },
-  forense: {
-    title: 'forense.io — perícia digital e investigação forense',
-    description:
-      'forense.io — Perícia digital, resposta a incidentes, análise de ransomware, preservação de evidências e assistência técnica judicial. Laudos com validade processual e cadeia de custódia ISO 27037.',
-  },
-};
-
 /**
- * Metadados por marca renderizados no servidor. Scrapers de LinkedIn e
- * WhatsApp não executam JavaScript: até aqui os três domínios compartilhavam
- * o og: da ness, fixo no index.html.
+ * Metadados por marca renderizados no servidor, para toda rota que não
+ * declare os seus. Scrapers de LinkedIn e WhatsApp não executam JavaScript:
+ * até aqui os três domínios compartilhavam o og: da ness, fixo no index.html.
  */
-export function meta({ data }: { data?: RootData }) {
+export function meta({ data, location }: { data?: RootData; location?: { pathname: string } }) {
   const brand = data?.brand ?? 'ness';
-  const url = data?.url ?? BRAND_DOMAINS[brand];
-  const { title, description } = META[brand];
-  const image = `${BRAND_DOMAINS[brand]}/og-image.jpg`;
-
-  return [
-    { title },
-    { name: 'description', content: description },
-    { name: 'author', content: 'NESS Tecnologia' },
-    { name: 'robots', content: 'index, follow' },
-    { name: 'theme-color', content: '#060e20' },
-    { name: 'color-scheme', content: 'dark' },
-    { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: url },
-    { property: 'og:title', content: title },
-    { property: 'og:description', content: description },
-    { property: 'og:image', content: image },
-    { property: 'og:image:width', content: '1200' },
-    { property: 'og:image:height', content: '630' },
-    { property: 'og:locale', content: 'pt_BR' },
-    { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: title },
-    { name: 'twitter:description', content: description },
-    { name: 'twitter:image', content: image },
-    { tagName: 'link', rel: 'canonical', href: url },
-  ];
+  return pageMeta(brand, location?.pathname ?? '/', BRAND_DEFAULT_META[brand]);
 }
 
 export const links = () => [

@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
 import { ArrowRight, ShieldCheck, Server, Code2, Scale, Search } from "lucide-react";
 import { FOUNDATION_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
-import { usePageTitle } from '../hooks/usePageTitle';
 
 /**
  * Hero da ness. — sem Framer Motion (entradas em CSS), sem animações infinitas,
@@ -14,11 +13,6 @@ import { usePageTitle } from '../hooks/usePageTitle';
  */
 const Hero = () => {
   const { t } = useTranslation();
-  usePageTitle({
-    title: 'tecnologia digital de precisão',
-    description: 'ness. é uma plataforma modular de transformação digital corporativa B2B desde 1991. Especialistas em DevSecOps, LGPD, segurança cibernética, perícia digital e engenharia de software de alta performance.',
-  });
-
   const pillars = [
     { icon: ShieldCheck, label: t('hero.pillars.secops', 'segurança 24×7') },
     { icon: Server, label: t('hero.pillars.infra', 'infraestrutura & cloud') },

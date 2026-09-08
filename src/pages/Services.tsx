@@ -6,15 +6,14 @@ import BlueDot from '../components/BlueDot';
 import React from "react";
 import { m as motion } from "motion/react";
 import { useTranslation } from "react-i18next";
-import { usePageTitle } from '../hooks/usePageTitle';
+import { routeMeta } from '../utils/meta';
 import { ShieldCheck, Brain, Scale, Network } from "lucide-react";
 
 const ICONS = [Brain, ShieldCheck, Network, Scale];
 
-const Services = ({ standalone = false }: { standalone?: boolean }) => {
+const Services = () => {
   const { t } = useTranslation();
 
-  usePageTitle('services.meta_title', 'serviços — ness.', { enabled: standalone });
   const services = [0, 1, 2, 3].map((i) => ({
     title: t(`services.items.${i}.title`),
     desc: t(`services.items.${i}.desc`),
@@ -75,3 +74,11 @@ const Services = ({ standalone = false }: { standalone?: boolean }) => {
 };
 
 export default Services;
+
+
+export function meta(args: Parameters<typeof routeMeta>[0]) {
+  return routeMeta(args, {
+    title: 'serviços',
+    description: 'Serviços da ness. em infraestrutura crítica, segurança cibernética, engenharia de software, privacidade e perícia digital.',
+  });
+}

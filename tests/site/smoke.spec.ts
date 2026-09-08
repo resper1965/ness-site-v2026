@@ -24,6 +24,27 @@ test.describe('metadados por rota', () => {
     });
   }
 
+  // Os testes acima leem a página já hidratada. Este lê o HTML cru, como um
+  // scraper de LinkedIn ou WhatsApp, que não executa JavaScript: é o que a
+  // renderização na edge existe para consertar.
+  test('o HTML do servidor já traz os metadados da rota', async ({ request }) => {
+    const casos = [
+      { path: '/', titulo: 'tecnologia digital de precisão', canonical: 'https://ness.com.br/' },
+      { path: '/contato', titulo: 'contato — fale com um especialista', canonical: 'https://ness.com.br/contato' },
+      { path: '/solucoes/secops', titulo: 'n.secops', canonical: 'https://ness.com.br/solucoes/secops' },
+      { path: '/sobre', titulo: 'sobre a ness.', canonical: 'https://ness.com.br/sobre' },
+    ];
+
+    for (const c of casos) {
+      const html = await (await request.get(c.path)).text();
+      expect(html, c.path).toContain(`<title>`);
+      expect(html.match(/<title>([^<]*)<\/title>/)?.[1], c.path).toContain(c.titulo);
+      expect(html, c.path).toContain(`href="${c.canonical}"`);
+      expect(html, c.path).toContain('property="og:title"');
+      expect(html, c.path).toContain('content="index, follow"');
+    }
+  });
+
   test('slug de solução inexistente renderiza 404 com noindex', async ({ page }) => {
     await page.goto('/solucoes/devsecops');
     await expect(page.locator('h1')).toContainText('página não encontrada');

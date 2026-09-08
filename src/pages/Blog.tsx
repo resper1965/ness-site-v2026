@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ShieldCheck, Cloud, Cpu, Brain, Lock, Workflow, FileText, ArrowUpRight } from "lucide-react";
 import EmptyState from '../components/EmptyState';
-import { usePageTitle } from '../hooks/usePageTitle';
+import { routeMeta } from '../utils/meta';
 import { CANAL_BASE } from '../config/api';
 import type { Insight } from '../types/canal';
 
@@ -14,7 +14,6 @@ const Blog = () => {
   const [articles, setArticles] = useState<Insight[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTag, setActiveTag] = useState<string>('all');
-  usePageTitle('blog.meta_title', 'insights — ness.');
 
   useEffect(() => {
     const fetchInsights = async () => {
@@ -151,3 +150,11 @@ const Blog = () => {
 };
 
 export default Blog;
+
+
+export function meta(args: Parameters<typeof routeMeta>[0]) {
+  return routeMeta(args, {
+    title: 'insights',
+    description: 'Análises da ness. sobre segurança cibernética, infraestrutura, privacidade e engenharia de software.',
+  });
+}

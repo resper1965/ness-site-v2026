@@ -21,17 +21,11 @@ import {
 } from "lucide-react";
 import BlueDot from "../../components/BlueDot";
 import SchemaOrg from "../../components/SchemaOrg";
-import { usePageTitle } from "../../hooks/usePageTitle";
+import { routeMeta } from '../../utils/meta';
 import HeroPicture from "../../components/HeroPicture";
 
 export default function DpoService() {
   const { t } = useTranslation();
-
-  usePageTitle({
-    title: "DPO as a Service — trustness.",
-    description:
-      "Serviço de DPO terceirizado da trustness. Adequação, manutenção e auditoria contínua dos processos de privacidade da sua organização com tecnologia proprietária Aegis. Sem necessidade de aquisição de ferramentas adicionais.",
-  });
 
   const phases = [
     {
@@ -426,4 +420,12 @@ export default function DpoService() {
       </section>
     </main>
   );
+}
+
+export function meta(args: Parameters<typeof routeMeta>[0]) {
+  return routeMeta(args, {
+    title: 'DPO as a Service — trustness.',
+    description:
+      'Serviço de DPO terceirizado da trustness. Adequação, manutenção e auditoria contínua dos processos de privacidade da sua organização com tecnologia proprietária Aegis. Sem necessidade de aquisição de ferramentas adicionais.',
+  });
 }
