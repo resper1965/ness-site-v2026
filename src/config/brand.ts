@@ -50,6 +50,21 @@ export const BRAND_LABELS: Record<Brand, string> = {
   forense: 'forense.io',
 };
 
+/**
+ * O sufixo do <title>. "IT Company" descreve a ness., a empresa — não as
+ * sub-marcas: "trustness. IT Company" e "forense.io IT Company" descrevem
+ * errado o que cada uma é. O guia de marca também pede a marca isolada, sem
+ * descritor corporativo colado nela.
+ */
+export const BRAND_TITLE_SUFFIX: Record<Brand, string> = {
+  ness: 'ness. IT Company',
+  trustness: 'trustness.',
+  forense: 'forense.io',
+};
+
+/** O nome do site em og:site_name — a marca, sempre isolada. */
+export const BRAND_SITE_NAME: Record<Brand, string> = BRAND_LABELS;
+
 export const BRAND_DOMAINS: Record<Brand, string> = {
   ness: 'https://ness.com.br',
   trustness: 'https://trustness.com.br',

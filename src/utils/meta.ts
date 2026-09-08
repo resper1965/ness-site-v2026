@@ -1,4 +1,4 @@
-import { BRAND_DOMAINS, BRAND_LABELS, type Brand } from '../config/brand';
+import { BRAND_DOMAINS, BRAND_SITE_NAME, BRAND_TITLE_SUFFIX, type Brand } from '../config/brand';
 import i18n from '../i18n';
 import { IDIOMAS, IDIOMA_PADRAO, rotaNoIdioma, type Idioma } from './lang';
 
@@ -44,7 +44,8 @@ export function brandFromMatches(matches: { id: string; data?: unknown }[] | und
  */
 export function pageMeta(brand: Brand, pathname: string, meta: PageMeta, lang: Idioma = IDIOMA_PADRAO) {
   const domain = BRAND_DOMAINS[brand];
-  const title = meta.title ? `${meta.title} — ${BRAND_LABELS[brand]} IT Company` : `${BRAND_LABELS[brand]} IT Company`;
+  const sufixo = BRAND_TITLE_SUFFIX[brand];
+  const title = meta.title ? `${meta.title} — ${sufixo}` : sufixo;
   const url = domain + pathname;
   const image = meta.image || `${domain}/og-image.jpg`;
   const description = meta.description ?? BRAND_DEFAULT_META[brand].description;
@@ -56,6 +57,7 @@ export function pageMeta(brand: Brand, pathname: string, meta: PageMeta, lang: I
     { name: 'robots', content: meta.noindex ? 'noindex, nofollow' : 'index, follow' },
     { name: 'theme-color', content: '#060e20' },
     { name: 'color-scheme', content: 'dark' },
+    { property: 'og:site_name', content: BRAND_SITE_NAME[brand] },
     { property: 'og:type', content: meta.type || 'website' },
     { property: 'og:url', content: url },
     { property: 'og:title', content: title },
@@ -103,7 +105,7 @@ export function idiomaDosMatches(matches: { id: string; data?: unknown }[] | und
  * Fallback da marca, usado pelas rotas que não declaram `meta` própria.
  *
  * O título aqui é só a parte específica: `pageMeta` acrescenta o sufixo da
- * marca. Repetir "ness. IT Company" nesta string produz o título dobrado.
+ * marca. Repetir o sufixo nesta string produz o título dobrado.
  */
 export const BRAND_DEFAULT_META: Record<Brand, Required<Pick<PageMeta, 'title' | 'description'>>> = {
   ness: {

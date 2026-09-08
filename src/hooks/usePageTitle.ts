@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useBrand, BRAND_DOMAINS, BRAND_LABELS } from '../config/brand';
+import { useBrand, BRAND_DOMAINS, BRAND_TITLE_SUFFIX } from '../config/brand';
 
 interface PageMeta {
   title?: string;
@@ -26,7 +26,7 @@ interface PageMetaOptions {
 export function usePageMeta(titleKeyOrMeta: string | PageMeta, fallback?: string, options: PageMetaOptions = {}) {
   const BRAND = useBrand();
   const { t, i18n } = useTranslation();
-  const brandLabel = BRAND_LABELS[BRAND];
+  const sufixo = BRAND_TITLE_SUFFIX[BRAND];
   const domain = BRAND_DOMAINS[BRAND];
   const enabled = options.enabled !== false;
 
@@ -52,7 +52,7 @@ export function usePageMeta(titleKeyOrMeta: string | PageMeta, fallback?: string
     }
 
     // Title
-    const fullTitle = title ? `${title} — ${brandLabel} IT Company` : `${brandLabel} IT Company`;
+    const fullTitle = title ? `${title} — ${sufixo}` : sufixo;
     document.title = fullTitle;
 
     // Helper to set/update meta tags
@@ -98,7 +98,7 @@ export function usePageMeta(titleKeyOrMeta: string | PageMeta, fallback?: string
     // Robots — sempre redefinido, para uma página noindex não "vazar" para a próxima
     setMeta('name', 'robots', noindex ? 'noindex, nofollow' : 'index, follow');
 
-  }, [titleKeyOrMeta, fallback, t, i18n.language, brandLabel, domain, enabled]);
+  }, [titleKeyOrMeta, fallback, t, i18n.language, sufixo, domain, enabled]);
 }
 
 // Backwards compatibility alias
