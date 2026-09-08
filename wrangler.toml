@@ -7,10 +7,27 @@ compatibility_flags = ["nodejs_compat"]
 # para a saída do cliente. Requisição que casa com um arquivo é servida pelo
 # runtime antes de o Worker rodar; o resto vira HTML renderizado na edge.
 
-# Os domínios de produção continuam no Cloudflare Pages até a virada, que é
-# manual: apontar ness.com.br, trustness.com.br e forense.io para este Worker
-# como Custom Domains. Sem `routes` aqui, `wrangler deploy` publica só em
-# workers.dev e não toca produção.
+# Virada do Pages para o Worker por rota, não por Custom Domain: o DNS segue
+# apontando para o Pages e o Worker passa na frente. Custom Domain exigiria
+# apagar o CNAME antes — a Cloudflare recusa criar um sobre CNAME existente —
+# o que abriria uma janela com o domínio sem destino. Com rota não há janela,
+# e o rollback é remover estas linhas e reimplantar.
+#
+# Virado em 08/09/2026, um domínio por vez, validando entre um e outro.
+# Estas rotas precisam viver aqui: o deploy trata este arquivo como fonte da
+# verdade e sobrescreve o que existir no painel.
+
+[[routes]]
+pattern = "forense.io/*"
+zone_name = "forense.io"
+
+[[routes]]
+pattern = "trustness.com.br/*"
+zone_name = "trustness.com.br"
+
+[[routes]]
+pattern = "ness.com.br/*"
+zone_name = "ness.com.br"
 
 [vars]
 ENVIRONMENT = "production"
