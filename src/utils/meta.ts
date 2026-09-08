@@ -1,4 +1,6 @@
 import { BRAND_DOMAINS, BRAND_LABELS, type Brand } from '../config/brand';
+import i18n from '../i18n';
+import { IDIOMAS, IDIOMA_PADRAO, rotaNoIdioma, type Idioma } from './lang';
 
 export type PageMeta = {
   title?: string;
@@ -6,7 +8,20 @@ export type PageMeta = {
   image?: string;
   type?: string;
   noindex?: boolean;
+  /** Página que não existe em en/es: não deve anunciar alternates. */
+  semAlternates?: boolean;
 };
+
+/** Um texto nos três idiomas, para o que não existe como chave do i18n. */
+export type Trad = Record<Idioma, string>;
+
+/**
+ * Tradução dentro do `meta`, que roda fora da árvore React e não tem acesso
+ * ao useTranslation. O bundle do idioma já foi carregado pelo loader da raiz.
+ */
+export function traduzir(lang: Idioma) {
+  return i18n.getFixedT(lang);
+}
 
 /**
  * A marca da requisição, publicada pelo loader da raiz. O `meta` de uma rota
@@ -27,7 +42,7 @@ export function brandFromMatches(matches: { id: string; data?: unknown }[] | und
  * O canonical usa sempre o domínio de produção da marca, nunca a origem que
  * respondeu: é o que impede uma URL de preview de se declarar canônica.
  */
-export function pageMeta(brand: Brand, pathname: string, meta: PageMeta) {
+export function pageMeta(brand: Brand, pathname: string, meta: PageMeta, lang: Idioma = IDIOMA_PADRAO) {
   const domain = BRAND_DOMAINS[brand];
   const title = meta.title ? `${meta.title} — ${BRAND_LABELS[brand]} IT Company` : `${BRAND_LABELS[brand]} IT Company`;
   const url = domain + pathname;
@@ -48,23 +63,40 @@ export function pageMeta(brand: Brand, pathname: string, meta: PageMeta) {
     { property: 'og:image', content: image },
     { property: 'og:image:width', content: '1200' },
     { property: 'og:image:height', content: '630' },
-    { property: 'og:locale', content: 'pt_BR' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
     { name: 'twitter:image', content: image },
+    { property: 'og:locale', content: lang === 'pt' ? 'pt_BR' : lang },
     { tagName: 'link', rel: 'canonical', href: url },
+    // hreflang de verdade: o sitemap declarava os três idiomas apontando para
+    // a mesma URL, o que o Google ignora. Agora cada idioma tem endereço.
+    ...(meta.semAlternates
+      ? []
+      : IDIOMAS.map((idioma) => ({
+          tagName: 'link' as const,
+          rel: 'alternate',
+          hrefLang: idioma,
+          href: BRAND_DOMAINS[brand] + rotaNoIdioma(pathname, idioma),
+        }))),
   ];
 }
 
 /** Atalho para a assinatura que toda rota usa. */
 export function routeMeta(
   args: { matches?: { id: string; data?: unknown }[]; location?: { pathname: string } },
-  meta: PageMeta | ((brand: Brand) => PageMeta),
+  meta: PageMeta | ((brand: Brand, lang: Idioma) => PageMeta),
 ) {
   const brand = brandFromMatches(args.matches);
-  const resolved = typeof meta === 'function' ? meta(brand) : meta;
-  return pageMeta(brand, args.location?.pathname ?? '/', resolved);
+  const lang = idiomaDosMatches(args.matches);
+  const resolved = typeof meta === 'function' ? meta(brand, lang) : meta;
+  return pageMeta(brand, args.location?.pathname ?? '/', resolved, lang);
+}
+
+/** O idioma da requisição, publicado pelo loader da raiz. */
+export function idiomaDosMatches(matches: { id: string; data?: unknown }[] | undefined): Idioma {
+  const root = matches?.find((m) => m.id === 'root')?.data as { lang?: Idioma } | undefined;
+  return root?.lang ?? IDIOMA_PADRAO;
 }
 
 /**
@@ -95,18 +127,30 @@ export const BRAND_DEFAULT_META: Record<Brand, Required<Pick<PageMeta, 'title' |
  * A home de cada marca. Serve para "/" (que muda conforme o Host) e também
  * para /trustness e /forense, acessíveis a partir de qualquer domínio.
  */
-export const HOME_META: Record<Brand, PageMeta> = {
-  ness: {
-    title: 'tecnologia digital de precisão',
-    description:
-      'ness. é uma plataforma modular de transformação digital corporativa B2B desde 1991. Especialistas em DevSecOps, LGPD, segurança cibernética, perícia digital e engenharia de software de alta performance.',
-  },
-  trustness: {
-    title: 'governança, risco e compliance',
-    description: BRAND_DEFAULT_META.trustness.description,
-  },
-  forense: {
-    title: 'perícia digital e investigação forense',
-    description: BRAND_DEFAULT_META.forense.description,
-  },
-};
+/**
+ * A home de cada marca, nos três idiomas. Serve para "/" (que muda conforme o
+ * Host) e também para /trustness e /forense, acessíveis de qualquer domínio.
+ */
+export function homeMeta(brand: Brand, lang: Idioma): PageMeta {
+  const t = traduzir(lang);
+  if (brand === 'trustness') {
+    return {
+      title: { pt: 'governança, risco e compliance', en: 'governance, risk and compliance', es: 'gobernanza, riesgo y cumplimiento' }[lang],
+      description: BRAND_DEFAULT_META.trustness.description,
+    };
+  }
+  if (brand === 'forense') {
+    return {
+      title: { pt: 'perícia digital e investigação forense', en: 'digital forensics and investigation', es: 'peritaje digital e investigación forense' }[lang],
+      description: BRAND_DEFAULT_META.forense.description,
+    };
+  }
+  return {
+    title: t('hero.tag', 'tecnologia digital de precisão'),
+    description: {
+      pt: 'ness. é uma plataforma modular de transformação digital corporativa B2B desde 1991. Especialistas em DevSecOps, LGPD, segurança cibernética, perícia digital e engenharia de software de alta performance.',
+      en: 'ness. is a modular B2B digital transformation platform since 1991. Specialists in DevSecOps, privacy compliance, cybersecurity, digital forensics and high-performance software engineering.',
+      es: 'ness. es una plataforma modular de transformación digital corporativa B2B desde 1991. Especialistas en DevSecOps, privacidad, ciberseguridad, peritaje digital e ingeniería de software de alto rendimiento.',
+    }[lang],
+  };
+}

@@ -2,7 +2,7 @@ import BlueDot from '../components/BlueDot';
 import React, { useState, useEffect } from "react";
 import { m as motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
-import { routeMeta } from '../utils/meta';
+import { routeMeta, traduzir } from '../utils/meta';
 import { CANAL_BASE } from '../config/api';
 import { canalApi } from '../services/canal';
 import type { Job } from '../types/canal';
@@ -285,8 +285,15 @@ export default Careers;
 
 
 export function meta(args: Parameters<typeof routeMeta>[0]) {
-  return routeMeta(args, {
-    title: 'carreiras',
-    description: 'Vagas abertas na ness. Engenharia, operações de segurança, infraestrutura e privacidade.',
+  return routeMeta(args, (_brand, lang) => {
+    const t = traduzir(lang);
+    return {
+    title: t('nav.careers', 'carreiras'),
+    description: {
+      pt: 'Vagas abertas na ness. Engenharia, operações de segurança, infraestrutura e privacidade.',
+      en: 'Open roles at ness. Engineering, security operations, infrastructure and privacy.',
+      es: 'Vacantes abiertas en ness. Ingeniería, operaciones de seguridad, infraestructura y privacidad.',
+    }[lang],
+  };
   });
 }

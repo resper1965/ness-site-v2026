@@ -1,9 +1,10 @@
-import type { ReactNode } from 'react';
+import { useMemo, type ReactNode } from 'react';
+import { I18nextProvider } from 'react-i18next';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, isRouteErrorResponse, useRouteLoaderData } from 'react-router';
 import { LazyMotion, MotionConfig } from 'motion/react';
 
 import './index.css';
-import './i18n';
+import i18n, { ensureLanguage } from './i18n';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -15,6 +16,7 @@ import { ErrorBoundary as RenderErrorBoundary } from './components/ErrorBoundary
 import NotFound from './pages/NotFound';
 import { BrandProvider, BRAND_DOMAINS, resolveBrand, type Brand } from './config/brand';
 import { BRAND_DEFAULT_META, pageMeta } from './utils/meta';
+import { IDIOMA_PADRAO, idiomaDaRota, type Idioma } from './utils/lang';
 
 /**
  * A marca sai do Host da requisição, no servidor, antes de qualquer render.
@@ -23,7 +25,7 @@ import { BRAND_DEFAULT_META, pageMeta } from './utils/meta';
  * O `clientLoader` refaz a conta no navegador (mesma resposta, `location` é a
  * mesma origem) para a navegação interna não pagar uma ida ao servidor.
  */
-type RootData = { brand: Brand; url: string; nonce: string };
+type RootData = { brand: Brand; url: string; nonce: string; lang: Idioma };
 
 /**
  * O canonical aponta sempre para o domínio de produção da marca, nunca para
@@ -32,18 +34,23 @@ type RootData = { brand: Brand; url: string; nonce: string };
  */
 function forPath(host: string, pathname: string, nonce: string): RootData {
   const brand = resolveBrand(host);
-  return { brand, url: BRAND_DOMAINS[brand] + pathname, nonce };
+  return { brand, url: BRAND_DOMAINS[brand] + pathname, nonce, lang: idiomaDaRota(pathname) };
 }
 
-export function loader({ request, context }: { request: Request; context: { nonce?: string } }): RootData {
+export async function loader({ request, context }: { request: Request; context: { nonce?: string } }): Promise<RootData> {
   const url = new URL(request.url);
-  return forPath(url.hostname, url.pathname, context.nonce ?? '');
+  const dados = forPath(url.hostname, url.pathname, context.nonce ?? '');
+  // Sem os recursos carregados, a página sairia com as chaves cruas.
+  await ensureLanguage(dados.lang);
+  return dados;
 }
 
-export function clientLoader(): RootData {
+export async function clientLoader(): Promise<RootData> {
   // O nonce só vale para o documento que o servidor emitiu; na navegação
   // interna não há script inline novo para autorizar.
-  return forPath(window.location.hostname, window.location.pathname, '');
+  const dados = forPath(window.location.hostname, window.location.pathname, '');
+  await ensureLanguage(dados.lang);
+  return dados;
 }
 
 /**
@@ -56,6 +63,7 @@ export function meta({ data, location }: { data?: RootData; location?: { pathnam
   return pageMeta(brand, location?.pathname ?? '/', BRAND_DEFAULT_META[brand]);
 }
 
+
 export const links = () => [
   { rel: 'preload', href: '/fonts/manrope-latin.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' as const },
   { rel: 'preload', href: '/fonts/inter-latin.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' as const },
@@ -63,10 +71,12 @@ export const links = () => [
 ];
 
 export function Layout({ children }: { children: ReactNode }) {
-  const nonce = (useRouteLoaderData('root') as RootData | undefined)?.nonce;
+  const dados = useRouteLoaderData('root') as RootData | undefined;
+  const lang = dados?.lang ?? IDIOMA_PADRAO;
+  const nonce = dados?.nonce;
 
   return (
-    <html lang="pt-BR">
+    <html lang={lang === 'pt' ? 'pt-BR' : lang}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -121,10 +131,28 @@ function Shell({ brand, children }: { brand: Brand; children: ReactNode }) {
 }
 
 export default function App({ loaderData }: { loaderData: RootData }) {
+  /**
+   * No servidor as requisições dividem o mesmo isolate: trocar o idioma da
+   * instância global faria uma resposta em espanhol vazar para quem pediu
+   * português. Cada render do servidor recebe um clone; o navegador, que
+   * atende um usuário só, segue com a instância única.
+   */
+  const instancia = useMemo(() => {
+    if (typeof window === 'undefined') {
+      return i18n.cloneInstance({ lng: loaderData.lang });
+    }
+    if (!i18n.language.startsWith(loaderData.lang)) {
+      void i18n.changeLanguage(loaderData.lang);
+    }
+    return i18n;
+  }, [loaderData.lang]);
+
   return (
-    <Shell brand={loaderData.brand}>
-      <Outlet />
-    </Shell>
+    <I18nextProvider i18n={instancia}>
+      <Shell brand={loaderData.brand}>
+        <Outlet />
+      </Shell>
+    </I18nextProvider>
   );
 }
 

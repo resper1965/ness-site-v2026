@@ -63,6 +63,47 @@ test.describe('metadados por rota', () => {
   });
 });
 
+test.describe('idioma na URL', () => {
+  test('cada idioma tem endereço próprio, com conteúdo e lang corretos', async ({ request }) => {
+    const casos = [
+      { path: '/', lang: 'pt-BR', trecho: 'invisíveis quando tudo funciona' },
+      { path: '/en', lang: 'en', trecho: 'invisible when everything works' },
+      { path: '/es', lang: 'es', trecho: 'invisibles cuando todo funciona' },
+    ];
+    for (const c of casos) {
+      const html = await (await request.get(c.path)).text();
+      expect(html, c.path).toContain(`<html lang="${c.lang}"`);
+      expect(html, c.path).toContain(c.trecho);
+    }
+  });
+
+  test('o título também muda de idioma', async ({ request }) => {
+    const titulo = async (path: string) =>
+      (await (await request.get(path)).text()).match(/<title>([^<]*)<\/title>/)?.[1] ?? '';
+    expect(await titulo('/en')).toContain('precision digital engineering');
+    expect(await titulo('/es')).toContain('ingeniería digital de precisión');
+    expect(await titulo('/en/contato')).toContain('talk to a specialist');
+  });
+
+  // B-10: o sitemap declarava pt, en e es apontando para a mesma URL.
+  test('hreflang recíproco em cada idioma', async ({ request }) => {
+    for (const path of ['/', '/en', '/es']) {
+      const html = await (await request.get(path)).text();
+      for (const idioma of ['pt', 'en', 'es']) {
+        expect(html.toLowerCase(), `${path} sem hreflang ${idioma}`).toContain(`hreflang="${idioma}"`);
+      }
+    }
+  });
+
+  // Soluções e assessments têm o conteúdo só em português: publicá-los sob
+  // /en seria indexar página inglesa com corpo em português.
+  test('o que não está traduzido não existe em en/es', async ({ request }) => {
+    expect((await request.get('/en/solucoes/secops')).status()).toBe(404);
+    expect((await request.get('/es/assessment/cyber')).status()).toBe(404);
+    expect((await request.get('/solucoes/secops')).status()).toBe(200);
+  });
+});
+
 test.describe('rotas espelho e www', () => {
   const espelhos: [string, string][] = [
     ['/contact', '/contato'],

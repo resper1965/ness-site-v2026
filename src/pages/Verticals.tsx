@@ -78,8 +78,14 @@ export default Verticals;
 
 
 export function meta(args: Parameters<typeof routeMeta>[0]) {
-  return routeMeta(args, {
-    title: 'verticais',
-    description: 'Como a ness. atende saúde, finanças, indústria e setor público — com os requisitos regulatórios de cada um.',
+  return routeMeta(args, (_brand, lang) => {
+    return {
+    title: { pt: 'verticais', en: 'verticals', es: 'verticales' }[lang],
+    description: {
+      pt: 'Como a ness. atende saúde, finanças, indústria e setor público — com os requisitos regulatórios de cada um.',
+      en: 'How ness. serves healthcare, finance, industry and the public sector — with the regulatory requirements of each.',
+      es: 'Cómo ness. atiende salud, finanzas, industria y sector público — con los requisitos regulatorios de cada uno.',
+    }[lang],
+  };
   });
 }

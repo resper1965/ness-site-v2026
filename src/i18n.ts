@@ -735,7 +735,12 @@ const loaders: Record<string, () => Promise<{ default: Record<string, unknown> }
   es: () => import('./locales/es.json'),
 };
 
-async function ensureLanguage(lng: string) {
+/**
+ * Garante que o bundle do idioma esteja carregado antes de renderizar. No
+ * servidor isso precisa ser aguardado no loader: sem os recursos, a página
+ * sairia com as chaves cruas.
+ */
+export async function ensureLanguage(lng: string) {
   const base = lng.split('-')[0];
   const load = loaders[base];
   if (!load || i18n.hasResourceBundle(base, 'translation')) return;

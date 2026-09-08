@@ -3,7 +3,7 @@ import React, {  } from "react";
 import { m as motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { routeMeta } from '../utils/meta';
+import { routeMeta, traduzir } from '../utils/meta';
 import { 
 /**
  * @license
@@ -110,8 +110,15 @@ export default Solutions;
 
 
 export function meta(args: Parameters<typeof routeMeta>[0]) {
-  return routeMeta(args, {
-    title: 'soluções',
-    description: 'As cinco soluções da ness.: SOC 24×7, infraestrutura e cloud, engenharia de software, automação de operações e resposta a incidentes.',
+  return routeMeta(args, (_brand, lang) => {
+    const t = traduzir(lang);
+    return {
+    title: t('nav.solutions', 'soluções'),
+    description: {
+      pt: 'As cinco soluções da ness.: SOC 24×7, infraestrutura e cloud, engenharia de software, automação de operações e resposta a incidentes.',
+      en: "ness.'s five solutions: 24×7 SOC, infrastructure and cloud, software engineering, operations automation and incident response.",
+      es: 'Las cinco soluciones de ness.: SOC 24×7, infraestructura y cloud, ingeniería de software, automatización de operaciones y respuesta a incidentes.',
+    }[lang],
+  };
   });
 }

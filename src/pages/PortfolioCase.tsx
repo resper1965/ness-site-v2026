@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { CANAL_BASE } from '../config/api';
 import { buscarCase, type D1 } from '../../workers/content';
+import { idiomaDaRota } from '../utils/lang';
 import { routeMeta } from '../utils/meta';
 
 interface Case {
@@ -18,13 +19,15 @@ interface Case {
 }
 
 type LoaderArgs = {
+  request: Request;
   params: { slug?: string };
   context: { cloudflare: { env: { DB: D1 } } };
 };
 
 /** O case vem do D1 no servidor; slug inexistente é 404, não redirect. */
-export async function loader({ params, context }: LoaderArgs) {
-  const item = await buscarCase(context.cloudflare.env.DB, params.slug ?? '', 'pt');
+export async function loader({ request, params, context }: LoaderArgs) {
+  const lang = idiomaDaRota(new URL(request.url).pathname);
+  const item = await buscarCase(context.cloudflare.env.DB, params.slug ?? '', lang);
   if (!item || !item.project) {
     throw new Response('Not Found', { status: 404 });
   }

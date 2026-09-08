@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, ShieldAlert, Fingerprint, HardDrive, Smartphone, Network, Clock, FileCheck, Scale, Activity, ShieldCheck, MessageSquare, Search, Lock, CheckCircle2 } from "lucide-react";
 import BlueDot from "../../components/BlueDot";
 import HeroPicture from "../../components/HeroPicture";
-import { HOME_META, routeMeta } from '../../utils/meta';
+import { homeMeta, routeMeta } from '../../utils/meta';
 import { useTranslation } from "react-i18next";
 
 export default function ForenseHome() {
@@ -227,5 +227,5 @@ export default function ForenseHome() {
 }
 
 export function meta(args: Parameters<typeof routeMeta>[0]) {
-  return routeMeta(args, HOME_META.forense);
+  return routeMeta(args, (_brand, lang) => homeMeta('forense', lang));
 }

@@ -57,6 +57,24 @@ export function brandFromHost(host: string): Brand {
   return 'ness';
 }
 
+/**
+ * Rotas que só existem em português: o conteúdo mora em `src/data`, ainda sem
+ * tradução. Ficam fora do sitemap de en/es e não recebem hreflang.
+ */
+const SO_EM_PT = (path: string) => path.startsWith('/solucoes/') || path.startsWith('/assessment/');
+
+const IDIOMAS = ['pt', 'en', 'es'] as const;
+
+const comIdioma = (path: string, idioma: string) =>
+  idioma === 'pt' ? path : path === '/' ? `/${idioma}` : `/${idioma}${path}`;
+
+/** hreflang recíproco: cada URL aponta para si e para as irmãs. */
+const alternates = (domain: string, path: string) =>
+  IDIOMAS.map(
+    (idioma) =>
+      `    <xhtml:link rel="alternate" hreflang="${idioma}" href="${domain}${comIdioma(path, idioma)}"/>`,
+  ).join('\n');
+
 const escapeXml = (s: string) => s.replace(/[<>&'"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' }[c] as string));
 
 const edgeCache = () => (caches as unknown as { default: Cache }).default;
@@ -70,9 +88,23 @@ export async function sitemap(request: Request, env: Env): Promise<Response> {
   const domain = DOMAINS[brand];
   const today = new Date().toISOString().slice(0, 10);
 
-  const urls: string[] = STATIC_ROUTES[brand].map(
-    (r) => `  <url><loc>${domain}${r.path}</loc><changefreq>${r.changefreq}</changefreq><priority>${r.priority}</priority></url>`
-  );
+  const urls: string[] = [];
+  for (const r of STATIC_ROUTES[brand]) {
+    if (SO_EM_PT(r.path)) {
+      urls.push(`  <url><loc>${domain}${r.path}</loc><changefreq>${r.changefreq}</changefreq><priority>${r.priority}</priority></url>`);
+      continue;
+    }
+    for (const idioma of IDIOMAS) {
+      urls.push(
+        `  <url>
+    <loc>${domain}${comIdioma(r.path, idioma)}</loc>
+${alternates(domain, r.path)}
+    <changefreq>${r.changefreq}</changefreq>
+    <priority>${r.priority}</priority>
+  </url>`,
+      );
+    }
+  }
 
   // Conteúdo dinâmico (blog e portfólio) publicado em pt
   if (env.DB) {
@@ -93,7 +125,7 @@ export async function sitemap(request: Request, env: Env): Promise<Response> {
     }
   }
 
-  const body = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`;
+  const body = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join('\n')}\n</urlset>\n`;
   const response = new Response(body, {
     headers: {
       'Content-Type': 'application/xml; charset=utf-8',

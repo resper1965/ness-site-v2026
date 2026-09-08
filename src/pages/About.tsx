@@ -182,8 +182,14 @@ export default About;
 
 
 export function meta(args: Parameters<typeof routeMeta>[0]) {
-  return routeMeta(args, {
-    title: 'sobre a ness.',
-    description: 'Desde 1991, a ness. entrega engenharia de software, operações de segurança 24×7, infraestrutura crítica, LGPD e perícia digital para empresas no Brasil, Portugal, Chile, Peru, Colômbia e EUA.',
+  return routeMeta(args, (_brand, lang) => {
+    return {
+    title: { pt: 'sobre a ness.', en: 'about ness.', es: 'sobre ness.' }[lang],
+    description: {
+      pt: 'Desde 1991, a ness. entrega engenharia de software, operações de segurança 24×7, infraestrutura crítica, LGPD e perícia digital para empresas no Brasil, Portugal, Chile, Peru, Colômbia e EUA.',
+      en: 'Since 1991, ness. has delivered software engineering, 24×7 security operations, critical infrastructure, privacy compliance and digital forensics for companies in Brazil, Portugal, Chile, Peru, Colombia and the US.',
+      es: 'Desde 1991, ness. entrega ingeniería de software, operaciones de seguridad 24×7, infraestructura crítica, privacidad y peritaje digital para empresas en Brasil, Portugal, Chile, Perú, Colombia y EE. UU.',
+    }[lang],
+  };
   });
 }
