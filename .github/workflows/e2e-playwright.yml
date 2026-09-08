@@ -38,9 +38,7 @@ jobs:
     - name: Run canal tests (production)
       if: github.event_name == 'workflow_dispatch'
       run: npm run test:e2e:canal
-      env:
-        ADMIN_JWT_SECRET: ${{ secrets.ADMIN_JWT_SECRET }}
-        
+
     # 6. Salvar relatórios em caso de falha UI (Traces, Vídeos)
     - uses: actions/upload-artifact@v4
       if: always()
