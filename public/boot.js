@@ -1,21 +1,8 @@
-/* Bootstrap síncrono e externo (a CSP não permite scripts inline).
-   1) Preload da imagem do hero (candidata a LCP) só na home, por marca.
-   2) gtag definido já, para enfileirar eventos; o SDK do GA4 é carregado
-      após o `load`, em idle, para não competir com o conteúdo. */
+/* Fila do gtag, em arquivo externo porque a CSP não permite script inline.
+   Carregado com `defer`: nada aqui precisa rodar antes da página aparecer.
+   O preload do hero saiu daqui — agora sai no HTML do servidor, onde o
+   preload scanner o encontra sem esperar este download. */
 (function () {
-  if (location.pathname === '/') {
-    var h = location.hostname;
-    var b = h.indexOf('trustness') > -1 ? 'trustness' : h.indexOf('forense') > -1 ? 'forense' : 'ness';
-    var l = document.createElement('link');
-    l.rel = 'preload';
-    l.as = 'image';
-    l.type = 'image/avif';
-    l.fetchPriority = 'high';
-    l.imageSrcset = '/img/hero-' + b + '-640.avif 640w, /img/hero-' + b + '-1024.avif 1024w, /img/hero-' + b + '-1600.avif 1600w';
-    l.imageSizes = '100vw';
-    document.head.appendChild(l);
-  }
-
   window.dataLayer = window.dataLayer || [];
   window.gtag = function () { window.dataLayer.push(arguments); };
   window.gtag('js', new Date());

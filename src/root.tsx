@@ -16,7 +16,7 @@ import { ErrorBoundary as RenderErrorBoundary } from './components/ErrorBoundary
 import NotFound from './pages/NotFound';
 import { BrandProvider, BRAND_DOMAINS, resolveBrand, type Brand } from './config/brand';
 import { BRAND_DEFAULT_META, pageMeta } from './utils/meta';
-import { IDIOMA_PADRAO, idiomaDaRota, type Idioma } from './utils/lang';
+import { IDIOMA_PADRAO, idiomaDaRota, rotaSemIdioma, type Idioma } from './utils/lang';
 
 /**
  * A marca sai do Host da requisição, no servidor, antes de qualquer render.
@@ -25,7 +25,7 @@ import { IDIOMA_PADRAO, idiomaDaRota, type Idioma } from './utils/lang';
  * O `clientLoader` refaz a conta no navegador (mesma resposta, `location` é a
  * mesma origem) para a navegação interna não pagar uma ida ao servidor.
  */
-type RootData = { brand: Brand; url: string; nonce: string; lang: Idioma };
+type RootData = { brand: Brand; url: string; nonce: string; lang: Idioma; pathnameCompleto: string };
 
 /**
  * O canonical aponta sempre para o domínio de produção da marca, nunca para
@@ -34,7 +34,7 @@ type RootData = { brand: Brand; url: string; nonce: string; lang: Idioma };
  */
 function forPath(host: string, pathname: string, nonce: string): RootData {
   const brand = resolveBrand(host);
-  return { brand, url: BRAND_DOMAINS[brand] + pathname, nonce, lang: idiomaDaRota(pathname) };
+  return { brand, url: BRAND_DOMAINS[brand] + pathname, nonce, lang: idiomaDaRota(pathname), pathnameCompleto: pathname };
 }
 
 export async function loader({ request, context }: { request: Request; context: { nonce?: string } }): Promise<RootData> {
@@ -70,6 +70,27 @@ export const links = () => [
   { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
 ];
 
+/**
+ * O hero é o candidato a LCP. O preload dele vivia no /boot.js: o navegador
+ * só descobria a imagem depois de baixar e executar aquele script. Agora que
+ * o servidor sabe a marca e a rota, o preload sai no HTML e o preload scanner
+ * o encontra na primeira passada.
+ */
+function PreloadDoHero({ brand, pathname }: { brand: Brand; pathname: string }) {
+  if (rotaSemIdioma(pathname) !== '/') return null;
+  const base = `/img/hero-${brand}`;
+  return (
+    <link
+      rel="preload"
+      as="image"
+      type="image/avif"
+      fetchPriority="high"
+      imageSrcSet={`${base}-640.avif 640w, ${base}-1024.avif 1024w, ${base}-1600.avif 1600w`}
+      imageSizes="100vw"
+    />
+  );
+}
+
 export function Layout({ children }: { children: ReactNode }) {
   const dados = useRouteLoaderData('root') as RootData | undefined;
   const lang = dados?.lang ?? IDIOMA_PADRAO;
@@ -82,10 +103,10 @@ export function Layout({ children }: { children: ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <Meta />
         <Links />
-        {/* Preload do hero por marca e fila do gtag. Externo porque a CSP não
-            permite script inline; síncrono porque o preload só vale antes do
-            primeiro paint. */}
-        <script src="/boot.js" nonce={nonce} />
+        {dados ? <PreloadDoHero brand={dados.brand} pathname={dados.pathnameCompleto} /> : null}
+        {/* Só a fila do gtag: o preload do hero saiu daqui para o HTML acima.
+            Sem preload a carregar, o script deixa de bloquear a análise. */}
+        <script src="/boot.js" nonce={nonce} defer />
       </head>
       <body>
         {children}
