@@ -1,0 +1,114 @@
+name: Preview por PR
+
+# Publica cada PR numa URL de preview do Cloudflare Pages e roda
+# smoke e2e + Lighthouse contra ela. Produção não é tocada: preview
+# deployments do Pages são isolados do branch de produção.
+
+on:
+  pull_request:
+    branches: [ main ]
+
+# Necessário para comentar a URL do preview no PR.
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    name: Publicar preview e validar
+    runs-on: ubuntu-latest
+    # PRs vindos de fork não recebem secrets — o job falharia no deploy.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Publicar preview no Cloudflare Pages
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=ness-site2026 --branch=pr-${{ github.event.pull_request.number }}
+
+      # Sem esta trava, uma URL vazia faria o Playwright cair no fallback
+      # de localhost do playwright.site.config.ts — CI verde testando o
+      # build local em vez do preview.
+      - name: Exigir URL de preview
+        run: |
+          if [ -z "${{ steps.deploy.outputs.deployment-url }}" ]; then
+            echo "::error::O deploy não devolveu deployment-url. Abortando para não testar localhost por engano."
+            exit 1
+          fi
+          echo "Preview: ${{ steps.deploy.outputs.deployment-url }}"
+
+      - name: Instalar navegadores do Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Smoke e2e contra o preview
+        run: npm run test:e2e:site
+        env:
+          SITE_BASE_URL: ${{ steps.deploy.outputs.deployment-url }}
+
+      - name: Lighthouse contra o preview
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: ${{ steps.deploy.outputs.deployment-url }}
+          configPath: ./lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+      - name: Comentar a URL do preview no PR
+        uses: actions/github-script@v7
+        if: always()
+        env:
+          PREVIEW_URL: ${{ steps.deploy.outputs.deployment-url }}
+        with:
+          script: |
+            const url = process.env.PREVIEW_URL;
+            if (!url) return;
+            const marker = '<!-- preview-url -->';
+            const body = `${marker}\n🔍 **Preview deste PR:** ${url}\n\nSmoke e2e e Lighthouse rodaram contra esta URL. Produção não foi tocada.`;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const existing = comments.find(c => c.body?.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
+
+      - name: Guardar relatório do Playwright
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

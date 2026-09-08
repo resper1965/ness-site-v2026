@@ -2,8 +2,8 @@ name: Playwright Cloudflare Tests
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+  # PRs são cobertos por preview.yml, que roda o mesmo smoke contra a URL
+  # de preview real em vez de um build local — cobertura melhor, sem duplicar.
   # Acionamento manual via interface do Github
   workflow_dispatch:
 
