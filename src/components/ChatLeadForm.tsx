@@ -3,6 +3,7 @@ import { useBrand } from '../config/brand';
 import { canalApi } from '../services/canal';
 import { origemDaVisita } from '../utils/origem';
 import { validarEmail } from '../utils/formulario';
+import Turnstile from './Turnstile';
 
 /**
  * Qualificação dentro do chat, antes de passar para um humano.
@@ -35,6 +36,7 @@ export default function ChatLeadForm({ assunto, onPronto }: { assunto: string; o
             message: 'lead qualificado pelo chat',
             referrer: brand,
             ...origemDaVisita(),
+            turnstileToken: dados.get('cf-turnstile-response'),
           });
           window.gtag?.('event', 'chat_lead', { subject: assunto, brand });
           onPronto();
@@ -63,6 +65,8 @@ export default function ChatLeadForm({ assunto, onPronto }: { assunto: string; o
       <label className="sr-only" htmlFor="chat-empresa">empresa</label>
       <input id="chat-empresa" name="empresa" required placeholder="empresa"
         className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-primary-container" />
+
+      <Turnstile action="chat" />
 
       {erro && <p role="alert" className="text-[11px] text-red-400">{erro}</p>}
 

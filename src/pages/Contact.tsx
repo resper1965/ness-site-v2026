@@ -268,7 +268,7 @@ const Contact = () => {
                 </div>
               )}
 
-              <Turnstile />
+              <Turnstile action="contato" />
 
               <button 
                 type="submit"

@@ -155,6 +155,21 @@ test.describe('formulário de contato', () => {
     }).toPass({ timeout: 15_000 });
   });
 
+  // O chat manda o lead para o mesmo endpoint do formulário. Sem widget lá, a
+  // verificação recusa todo lead vindo do chat — aconteceu em produção.
+  // Só roda onde a sitekey existe: o build local não a tem.
+  test('cada superfície declara a própria ação na verificação', async ({ page }) => {
+    test.skip(!process.env.SITE_BASE_URL, 'precisa da sitekey, que só existe no preview');
+
+    await page.goto('/contato');
+    await expect(page.locator('.cf-turnstile[data-action="contato"]')).toHaveCount(1);
+
+    await page.goto('/');
+    await page.getByRole('button', { name: /gabi/i }).click();
+    await page.getByRole('button', { name: /especialista/i }).click();
+    await expect(page.locator('.cf-turnstile[data-action="chat"]')).toHaveCount(1);
+  });
+
   test('a confirmação é página própria e não é indexável', async ({ request }) => {
     const resposta = await request.get('/obrigado');
     expect(resposta.status()).toBe(200);

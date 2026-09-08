@@ -11,7 +11,7 @@ const SCRIPT = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
  * sem formulário esperando por ela. O servidor só exige o token quando o
  * segredo correspondente existe.
  */
-export default function Turnstile() {
+export default function Turnstile({ action }: { action: string }) {
   const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,5 +27,16 @@ export default function Turnstile() {
 
   // Renderização implícita: o script injeta no formulário um campo oculto
   // chamado `cf-turnstile-response`, que é o que o servidor verifica.
-  return <div ref={container} className="cf-turnstile" data-sitekey={SITEKEY} data-theme="dark" data-language="auto" />;
+  // `data-action` amarra o token à superfície: sem isso, um token emitido no
+  // chat vale no formulário de contato e vice-versa.
+  return (
+    <div
+      ref={container}
+      className="cf-turnstile"
+      data-sitekey={SITEKEY}
+      data-action={action}
+      data-theme="dark"
+      data-language="auto"
+    />
+  );
 }
