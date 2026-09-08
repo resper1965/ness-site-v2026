@@ -4,6 +4,8 @@
 
 Consultoria boutique especializada em **engenharia de software de alta performance**, **resiliência cibernética** e **operações inteligentes**. Fundada em 1991, com +35 anos de legado digital.
 
+🔗 **Repositório Oficial:** [github.com/resper1965/ness-site-v2026](https://github.com/resper1965/ness-site-v2026)
+
 ---
 
 ## 🏗️ Arquitetura

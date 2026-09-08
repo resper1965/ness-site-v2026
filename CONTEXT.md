@@ -27,15 +27,15 @@ Este é o documento de planejamento central. Contém:
 
 **Toda implementação deve seguir este roadmap.** Novas features devem ser mapeadas a uma fase/entrega existente ou justificar a criação de uma nova.
 
-## Estado atual (2026-04-26)
+## Estado atual (2026-09-08)
 
 | Dimensão | Status |
 |----------|--------|
-| Branch | `main` — sincronizada com origin |
-| Site | ✅ Build OK, 17 páginas, 3 marcas |
-| Canal CMS | ⚠️ Funcional, 30+ arquivos modificados não commitados |
+| Branch | `main` — sincronizada com [github.com/resper1965/ness-site-v2026](https://github.com/resper1965/ness-site-v2026) |
+| Site | ✅ Build OK, 17 páginas, 3 marcas, acessibilidade WCAG 2.1 AA+ e foco executivo CISO/DPO |
+| Canal CMS | ✅ Funcional, MCP Server integrado, validação defensiva e rate-limiting em rotas de IA |
 | Admin | ⚠️ Em expansão (18 rotas, ~5 novos componentes) |
-| Deploy | ❌ Pendente (Fase 1 do roadmap) |
+| Deploy | 🚀 Pronto para deploy via Cloudflare Pages / Workers (Fase 1 do roadmap) |
 
 ## Tech Stack
 
