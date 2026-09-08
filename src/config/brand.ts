@@ -20,16 +20,13 @@ export function detectBrandFromHost(host: string | null | undefined): Brand {
 }
 
 /**
- * Detecção no navegador. VITE_BRAND sobrescreve para dev local (.env).
+ * Marca efetiva de uma requisição. VITE_BRAND sobrescreve para dev local
+ * (.env), onde o host é sempre localhost e as três marcas cairiam em ness.
  */
-export function detectBrand(): Brand {
+export function resolveBrand(host: string | null | undefined): Brand {
   const env = import.meta.env.VITE_BRAND as Brand | undefined;
   if (env && KNOWN.includes(env)) return env;
-
-  if (typeof window !== 'undefined') {
-    return detectBrandFromHost(window.location.hostname);
-  }
-  return 'ness';
+  return detectBrandFromHost(host);
 }
 
 /**

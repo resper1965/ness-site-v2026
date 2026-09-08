@@ -1,5 +1,6 @@
 import React from 'react';
 import { useBrand, BRAND_DOMAINS, type Brand } from '../config/brand';
+import { useNonce } from '../hooks/useNonce';
 import { FOUNDATION_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
 
 interface SchemaOrgProps {
@@ -143,6 +144,7 @@ function getArticleSchema(article: { title: string; description: string; url: st
 
 export default function SchemaOrg({ type = 'organization', data }: SchemaOrgProps) {
   const BRAND = useBrand();
+  const nonce = useNonce();
   let schema: unknown;
 
   switch (type) {
@@ -171,6 +173,8 @@ export default function SchemaOrg({ type = 'organization', data }: SchemaOrgProp
   return (
     <script
       type="application/ld+json"
+      // Bloco de dados, não código — mas a CSP trata todo <script> igual.
+      nonce={nonce}
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, '\\u003c') }}
     />
   );

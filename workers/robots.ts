@@ -1,4 +1,4 @@
-import { brandFromHost } from './sitemap.xml';
+import { brandFromHost } from './sitemap';
 
 const DOMAINS = {
   ness: 'https://ness.com.br',
@@ -7,7 +7,7 @@ const DOMAINS = {
 } as const;
 
 /** robots.txt por marca: aponta apenas para o sitemap do próprio host. */
-export const onRequestGet = async ({ request }: { request: Request }): Promise<Response> => {
+export async function robots(request: Request): Promise<Response> {
   const brand = brandFromHost(new URL(request.url).hostname);
   const body = `# ${brand} — robots.txt
 User-agent: *
@@ -39,4 +39,4 @@ Sitemap: ${DOMAINS[brand]}/sitemap.xml
       'Cache-Control': 'public, max-age=3600, s-maxage=86400',
     },
   });
-};
+}

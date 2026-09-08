@@ -61,7 +61,7 @@ const escapeXml = (s: string) => s.replace(/[<>&'"]/g, (c) => ({ '<': '&lt;', '>
 
 const edgeCache = () => (caches as unknown as { default: Cache }).default;
 
-export const onRequestGet = async ({ request, env }: { request: Request; env: Env }): Promise<Response> => {
+export async function sitemap(request: Request, env: Env): Promise<Response> {
   const cache = edgeCache();
   const cached = await cache.match(request);
   if (cached) return cached;
@@ -102,4 +102,4 @@ export const onRequestGet = async ({ request, env }: { request: Request; env: En
   });
   await cache.put(request, response.clone());
   return response;
-};
+}

@@ -9,3 +9,5 @@ coverage/
 canal-saas/
 playwright-report/
 test-results/
+.react-router/
+.wrangler/
