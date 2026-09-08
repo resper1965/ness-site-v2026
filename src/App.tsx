@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ChatLauncher from './components/ChatLauncher';
 import ScrollToTop from './components/ScrollToTop';
+import Analytics from './components/Analytics';
 import SchemaOrg from './components/SchemaOrg';
 import { BRAND } from './config/brand';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -71,6 +72,7 @@ export default function App() {
             </a>
             <SchemaOrg type="organization" />
             <ScrollToTop />
+            <Analytics />
             <Navbar />
             <ChatLauncher />
             <Suspense fallback={<PageLoader />}>

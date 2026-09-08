@@ -72,6 +72,16 @@ test.describe('orçamento de performance', () => {
     expect(bytes).toBeLessThan(450 * 1024);
   });
 
+  test('index.html não usa scripts inline (CSP sem unsafe-inline) e carrega /boot.js', async ({ page }) => {
+    const res = await page.goto('/');
+    const html = (await res?.text()) || '';
+    const inline = html.match(/<script(?![^>]*\ssrc=)[^>]*>/g) || [];
+    expect(inline, `scripts inline: ${inline.join(' ')}`).toHaveLength(0);
+    expect(html).toContain('src="/boot.js"');
+    const boot = await page.request.get('/boot.js');
+    expect(boot.ok()).toBeTruthy();
+  });
+
   test('formulário de contato tem telefone e e-mail clicáveis', async ({ page }) => {
     await page.goto('/contato');
     await expect(page.locator('a[href^="tel:"]')).toHaveCount(1);

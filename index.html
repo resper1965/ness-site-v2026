@@ -8,18 +8,8 @@
     <link rel="preload" as="font" type="font/woff2" href="/fonts/manrope-latin.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin.woff2" crossorigin />
 
-    <!-- Preload da imagem do hero (candidata a LCP) apenas na home, por marca -->
-    <script>
-      (function () {
-        if (location.pathname !== '/') return;
-        var h = location.hostname, b = h.indexOf('trustness') > -1 ? 'trustness' : h.indexOf('forense') > -1 ? 'forense' : 'ness';
-        var l = document.createElement('link');
-        l.rel = 'preload'; l.as = 'image'; l.type = 'image/avif'; l.fetchPriority = 'high';
-        l.imageSrcset = '/img/hero-' + b + '-640.avif 640w, /img/hero-' + b + '-1024.avif 1024w, /img/hero-' + b + '-1600.avif 1600w';
-        l.imageSizes = '100vw';
-        document.head.appendChild(l);
-      })();
-    </script>
+    <!-- Bootstrap externo (CSP sem inline): preload do hero por marca + gtag enfileirado -->
+    <script src="/boot.js"></script>
 
     <!-- Primary Meta (sobrescrito por marca/rota via usePageMeta) -->
     <title>ness. IT Company</title>
@@ -51,22 +41,6 @@
     <!-- Canonical (dynamic updates via usePageMeta) -->
     <link rel="canonical" href="https://ness.com.br/" />
 
-    <!-- Google Analytics 4: carregado fora do caminho crítico, após o load -->
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      addEventListener('load', function () {
-        var run = function () {
-          var s = document.createElement('script');
-          s.async = true;
-          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-H181SG5HQT';
-          document.head.appendChild(s);
-          gtag('js', new Date());
-          gtag('config', 'G-H181SG5HQT', { send_page_view: false });
-        };
-        'requestIdleCallback' in window ? requestIdleCallback(run, { timeout: 4000 }) : setTimeout(run, 1500);
-      });
-    </script>
   </head>
   <body>
     <div id="root"></div>
