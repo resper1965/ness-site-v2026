@@ -48,6 +48,15 @@ test.describe('metadados por rota', () => {
   // No workerd o relógio fica congelado fora de uma requisição: `new Date()`
   // na importação devolve o epoch. Uma constante de módulo calculada assim
   // colocou "-22 anos" e "© 1991–1970" no HTML que o buscador lê.
+  // Varredura de robô produz dezenas de 404 por minuto. O status precisa ser
+  // 404 de verdade — foi por confiar no 200 que o soft-404 do Pages deixou
+  // URLs mortas indexadas.
+  test('URL inexistente responde 404, inclusive as que robô procura', async ({ request }) => {
+    for (const path of ['/wp-login.php', '/index.php', '/post-sitemap.xml', '/glossario/qualquer-coisa']) {
+      expect((await request.get(path)).status(), path).toBe(404);
+    }
+  });
+
   test('o HTML do servidor não tem data de epoch', async ({ request }) => {
     for (const path of ['/', '/sobre', '/contato']) {
       const html = await (await request.get(path)).text();
