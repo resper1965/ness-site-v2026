@@ -13,8 +13,6 @@ export default function Operacao({
   operacao?: OperacaoDoServico;
   onboarding?: OnboardingStep[];
 }) {
-  if (!operacao && !onboarding?.length) return null;
-
   const campos = operacao
     ? [
         { rotulo: 'cobertura', valor: operacao.cobertura },
@@ -23,6 +21,10 @@ export default function Operacao({
         { rotulo: 'tempo de ativação', valor: operacao.tempoDeAtivacao },
       ].filter((c) => c.valor)
     : [];
+
+  // Objeto presente mas todo em branco não basta: sem campo com valor e sem
+  // onboarding, não há o que mostrar — some a seção em vez do título órfão.
+  if (!campos.length && !onboarding?.length) return null;
 
   return (
     <section id="operacao" className="mb-24">
