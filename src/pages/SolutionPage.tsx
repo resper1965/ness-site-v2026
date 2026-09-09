@@ -3,6 +3,7 @@ import ChatPreview from '../components/ChatPreview';
 import EmergencyChatModal from '../components/EmergencyChatModal';
 import SolutionHeroBackground from '../components/solutions/SolutionHeroBackground';
 import SolutionServicesGrid from '../components/solutions/SolutionServicesGrid';
+import RespostaAIncidente from '../components/solutions/RespostaAIncidente';
 import LeadMagnet from '../components/LeadMagnet';
 import NotFound from './NotFound';
 import React, { useEffect, useState } from "react";
@@ -107,38 +108,7 @@ const SolutionPage = () => {
           )}
         </div>
 
-        {/* NEW Fluxo Operacional (Workflow Espaçoso) */}
-        <section id="fluxo-operacional" className="mb-24">
-          <div className="mb-12">
-            <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase">
-              {t('solutions.intelligence_flow', 'o fluxo de inteligência')}<BlueDot />
-            </h3>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {solution.workflow?.map((w: { step: string; name: string; desc?: string }, idx: number) => (
-              <motion.div 
-                key={w.step}
-                whileHover={{ y: -5 }} 
-                className="relative p-8 rounded-4xl bg-surface-container-low/10 border border-white/5 hover:bg-surface-container-low/30 hover:border-primary/20 transition-all overflow-hidden group flex flex-col"
-              >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/20 transition-all z-0"></div>
-                <div className="relative z-10 flex flex-col flex-1">
-                  <div className="flex items-center gap-4 mb-8">
-                    <div className="w-12 h-12 shrink-0 rounded-full bg-primary-container/10 border border-primary-container/20 flex items-center justify-center text-sm font-mono text-primary-container font-medium shadow-[0_0_15px_rgba(var(--primary-container-rgb),0.1)] group-hover:shadow-[0_0_20px_rgba(var(--primary-container-rgb),0.2)] transition-shadow">
-                      {w.step}
-                    </div>
-                    <div className="h-px flex-1 bg-linear-to-r from-white/10 to-transparent group-hover:from-primary-container/30 transition-colors"></div>
-                  </div>
-                  <h4 className="text-white font-display font-medium text-[1.15rem] leading-snug mb-4 tracking-tight group-hover:text-primary-container transition-colors drop-shadow-sm">{w.name}</h4>
-                  {w.desc && (
-                    <p className="text-on-surface-variant font-normal leading-relaxed text-sm flex-1">{w.desc}</p>
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </section>
+        <RespostaAIncidente severidade={solution.severidade} workflow={solution.workflow} />
 
         {/* NEW Casos de Uso Típicos (Legacy Refactored) */}
         {solution.useCases && (

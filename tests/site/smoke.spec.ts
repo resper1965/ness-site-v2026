@@ -542,3 +542,19 @@ test.describe('marca e alvo de toque', () => {
     await expect(page.locator('#privacy-consent')).toHaveAttribute('required', '');
   });
 });
+
+test.describe('página de produto', () => {
+  // Enquanto a ficha do produto nao volta, a secao 1 cai para o `workflow`,
+  // que ja esta publicado. O que nao pode e ficar titulo com vazio embaixo.
+  test('a resposta a incidente aparece, por severidade ou por fluxo', async ({ page }) => {
+    await page.goto('/solucoes/secops');
+    const secao = page.locator('#resposta');
+    await expect(secao).toBeVisible();
+    await expect(secao.getByRole('heading', { level: 3 })).toContainText(/acontece/i);
+    // ou a tabela de severidade, ou a lista do fluxo — nunca as duas, nunca nenhuma
+    const tabela = await secao.locator('table').count();
+    const lista = await secao.locator('ol > li').count();
+    expect(tabela > 0 || lista > 0).toBe(true);
+    expect(tabela > 0 && lista > 0).toBe(false);
+  });
+});

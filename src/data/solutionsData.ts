@@ -1,13 +1,26 @@
 import { ShieldCheck, Cloud, Cpu, Brain, Gavel } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
-interface WorkflowStep { step: string; name: string; desc: string }
+export interface WorkflowStep { step: string; name: string; desc: string }
 interface Service { name: string; desc: string }
 interface UseCase { title: string; desc: string }
 interface Feature { name: string; category: string }
 interface OnboardingStep { step: string; title: string; desc: string }
 interface TechnicalFeature { title: string; desc: string }
 interface PortfolioEntry { client: string; project: string; result: string }
+
+/**
+ * Um nível do modelo de severidade. `quando` descreve ordem e não prazo:
+ * "contém primeiro, avisa depois" entra; "em 15 minutos" não — número de SLA
+ * fica na proposta comercial.
+ */
+export interface NivelDeSeveridade {
+  nivel: string;
+  exemploConcreto: string;
+  quemAge: string;
+  quando: string;
+  voceRecebe: string;
+}
 
 export interface SolutionData {
   icon: LucideIcon;
@@ -22,6 +35,7 @@ export interface SolutionData {
   onboarding?: OnboardingStep[];
   technicalFeatures?: TechnicalFeature[];
   portfolio: PortfolioEntry[];
+  severidade?: NivelDeSeveridade[];
 }
 
 export const solutionsData: Record<string, SolutionData> = {
