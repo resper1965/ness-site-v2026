@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { CANAL_BASE } from '../config/api';
 import { ShieldCheck, Cloud, Cpu, Brain, Lock, Workflow, FileText, ChevronRight } from "lucide-react";
 
-import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
+import { FOUNDATION_YEAR, anoAtual, anosDeLegado } from '../constants/brand';
 
 interface Insight {
   id?: string;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useBrand, BRAND_DOMAINS, type Brand } from '../config/brand';
 import { useNonce } from '../hooks/useNonce';
-import { FOUNDATION_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
+import { FOUNDATION_YEAR, anosDeLegado } from '../constants/brand';
 
 interface SchemaOrgProps {
   type?: 'organization' | 'website' | 'article' | 'faq' | 'service' | 'breadcrumb';
@@ -21,7 +21,7 @@ function getOrganizationSchema() {
       url: 'https://ness.com.br/favicon.svg',
     },
     foundingDate: '1991-06-12',
-    description: `Empresa brasileira de tecnologia de precisão desde 1991. ${YEARS_OF_LEGACY} anos de experiência em infraestrutura crítica, segurança cibernética (DevSecOps), LGPD, investigação forense e engenharia de software B2B.`,
+    description: `Empresa brasileira de tecnologia de precisão desde 1991. ${anosDeLegado()} anos de experiência em infraestrutura crítica, segurança cibernética (DevSecOps), LGPD, investigação forense e engenharia de software B2B.`,
     slogan: 'tecnologia digital de precisão',
     knowsAbout: [
       'DevSecOps', 'Cybersecurity', 'LGPD', 'Digital Forensics',

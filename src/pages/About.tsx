@@ -7,7 +7,7 @@ import { useTranslation, Trans } from "react-i18next";
 import { routeMeta } from '../utils/meta';
 import { Target, Eye, Heart, Shield, Globe, Cpu } from "lucide-react";
 
-import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
+import { FOUNDATION_YEAR, anoAtual, anosDeLegado } from '../constants/brand';
 
 const About = () => {
   const { t } = useTranslation();
@@ -59,7 +59,7 @@ const About = () => {
             transition={{ delay: 0.15 }}
             className="text-primary-container font-mono text-[11px] uppercase tracking-[0.3em] mb-5"
           >
-            since {FOUNDATION_YEAR} — {YEARS_OF_LEGACY} {t('about.years_label', 'anos de excelência')}
+            since {FOUNDATION_YEAR} — {anosDeLegado()} {t('about.years_label', 'anos de excelência')}
           </motion.p>
 
           <motion.h1
@@ -129,7 +129,7 @@ const About = () => {
 
         {/* ── Metrics ────────────────────────────────────────────── */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 border-t border-white/5 pt-16 mt-8 mb-16">
-          <AnimatedCounter value={YEARS_OF_LEGACY} label={t('about.metrics.legacy', 'anos de operação')} suffix="+" duration={1500} />
+          <AnimatedCounter value={anosDeLegado()} label={t('about.metrics.legacy', 'anos de operação')} suffix="+" duration={1500} />
           <AnimatedCounter value={30} label={t('about.metrics.countries', 'países atendidos')} suffix="+" duration={2000} />
           <AnimatedCounter value={500} label={t('about.metrics.projects', 'projetos globais')} suffix="+" duration={2500} />
           <AnimatedCounter value={99} label={t('about.metrics.uptime', 'sla / uptime')} suffix="%" duration={3000} />
@@ -143,7 +143,7 @@ const About = () => {
                 {t('about.history_title')}<BlueDot />
               </h2>
               <p className="mt-4 text-sm text-on-surface-variant font-light leading-relaxed sticky top-52">
-                {YEARS_OF_LEGACY} {t('about.history_sub', 'anos construindo a base tecnológica de grandes corporações e eventos globais.')}
+                {anosDeLegado()} {t('about.history_sub', 'anos construindo a base tecnológica de grandes corporações e eventos globais.')}
               </p>
             </div>
 
