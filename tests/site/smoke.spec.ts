@@ -240,17 +240,21 @@ test.describe('formulário de contato', () => {
 
   // O chat manda o lead para o mesmo endpoint do formulário. Sem widget lá, a
   // verificação recusa todo lead vindo do chat — aconteceu em produção.
-  // Só roda onde a sitekey existe: o build local não a tem.
-  test('cada superfície declara a própria ação na verificação', async ({ page }) => {
+  //
+  // A prova de que o widget renderizou é o campo oculto `cf-turnstile-response`:
+  // é o próprio Turnstile que o cria. Sem ele, não há token, e todo envio é
+  // recusado — que foi exatamente a falha que a renderização implícita causou.
+  test('cada formulário tem o campo que o Turnstile cria ao renderizar', async ({ page }) => {
     test.skip(!process.env.SITE_BASE_URL, 'precisa da sitekey, que só existe no preview');
 
     await page.goto('/contato');
-    await expect(page.locator('.cf-turnstile[data-action="contato"]')).toHaveCount(1);
+    await expect(page.locator('form input[name="cf-turnstile-response"]').first()).toHaveCount(1, { timeout: 15_000 });
 
     await page.goto('/');
     await page.getByRole('button', { name: /gabi/i }).click();
     await page.getByRole('button', { name: /especialista/i }).click();
-    await expect(page.locator('.cf-turnstile[data-action="chat"]')).toHaveCount(1);
+    await expect(page.locator('#chat-nome')).toBeVisible();
+    await expect(page.locator('form input[name="cf-turnstile-response"]')).not.toHaveCount(0, { timeout: 15_000 });
   });
 
   test('a confirmação é página própria e não é indexável', async ({ request }) => {
