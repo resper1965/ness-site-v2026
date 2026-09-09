@@ -333,21 +333,21 @@ export default function Assessment() {
                       type="text"
                       required
                       placeholder="Seu nome"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary-container"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container"
                     />
                     <input
                       name="email"
                       type="email"
                       required
                       placeholder="Email corporativo"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary-container"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container"
                     />
                     <input
                       name="company"
                       type="text"
                       required
                       placeholder="Empresa"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary-container"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container"
                     />
                     <Turnstile action="assessment" />
 

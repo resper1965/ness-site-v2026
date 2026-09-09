@@ -248,7 +248,7 @@
     },
     "form": {
       "name": "name",
-      "name_placeholder": "your name or leave blank",
+      "name_placeholder": "your name",
       "name_optional": "name (optional)",
       "contact_optional": "contact (optional)",
       "company": "company",
@@ -289,7 +289,7 @@
       },
       "desc_placeholder": "detail the occurrence with as much information as possible (dates, locations, involved)..."
     },
-    "badge": "get in touch — ness. precision",
+    "badge": "contact us — ness. precision",
     "meta_title": "contact — talk to a specialist",
     "meta_description": "Talk to ness.: security diagnostics, infrastructure, software engineering, privacy (LGPD/GDPR) and digital forensics. Reply within 1 business day. +55 (11) 2504-7650."
   },
@@ -313,7 +313,7 @@
       "msg2_user": "Yes, please. Use the 2024 standard template.",
       "msg2_bot": "Understood. Processing drafts... Done! The 3 drafts have been generated and sent to your drafts folder in Teams. Anything else?"
     },
-    "open": "open chat with Gabi"
+    "open": "talk to Gabi"
   },
   "common": {
     "see_all": "see all",
@@ -327,7 +327,8 @@
     "tag": "tag",
     "back": "back",
     "all": "all",
-    "privacy_consent": "I have read and accept the privacy policy and terms of use."
+    "privacy_consent": "I have read and accept the privacy policy and terms of use.",
+    "privacy_consent_links": "I have read and accept the <privacidade>privacy policy</privacidade> and the <termos>terms of use</termos>."
   },
   "compliance": {
     "eyebrow": "compliance — ness. precision",

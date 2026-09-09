@@ -62,7 +62,7 @@ const Blog = () => {
           <motion.div
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            className="text-primary-container font-mono text-xs uppercase tracking-[0.3em] mb-6"
+            className="text-primary-container font-mono text-xs lowercase tracking-[0.3em] mb-6"
           >
             {t('blog.badge', 'blog — ness. insights')}
           </motion.div>

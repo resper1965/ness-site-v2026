@@ -48,7 +48,7 @@ const Footer = () => {
     <footer className="bg-surface py-16 px-8 border-t border-white/5">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
         <div className="max-w-xs space-y-6">
-          <div className="text-xl text-white font-display lowercase-all">
+          <div className="marca text-xl text-white">
             {BRAND === 'trustness' ? <>trustness<BlueDot /></> :
              BRAND === 'forense'   ? <>forense<BlueDot />io</> :
                                      <>ness<BlueDot /></>}
@@ -56,14 +56,16 @@ const Footer = () => {
           <p className="text-sm text-on-surface-variant/85 leading-relaxed font-normal">
             {t('hero.subtitle')}
           </p>
-          <div className="flex gap-4">
+          {/* Alvo de toque de 44 px: a margem negativa mantém o alinhamento
+              visual com o texto acima, sem encolher a área clicável. */}
+          <div className="flex gap-1 -ml-3">
             {[
               { Icon: Linkedin, url: "https://www.linkedin.com/company/nesstec", label: "LinkedIn" },
               { Icon: Instagram, url: "https://www.instagram.com/ness.tecnologia/", label: "Instagram" },
               { Icon: Facebook,  url: "https://www.facebook.com/nesstecnologia", label: "Facebook" },
             ].map((social) => (
               <a key={social.label} href={social.url} target="_blank" rel="noopener noreferrer" aria-label={social.label}
-                className="text-on-surface-variant/80 hover:text-primary transition-colors">
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full text-on-surface-variant/80 transition-colors hover:bg-white/5 hover:text-primary">
                 <social.Icon size={20} />
               </a>
             ))}
@@ -128,7 +130,7 @@ const Footer = () => {
                   required
                   placeholder={t('footer.email_placeholder')}
                   aria-label={t('footer.email_placeholder')}
-                  className="bg-surface-container-low border border-white/10 rounded-full px-4 py-2 text-xs w-full focus:outline-none focus:ring-1 focus:ring-primary text-white"
+                  className="bg-surface-container-low border border-white/10 rounded-full px-4 py-2 text-xs w-full focus:outline-none focus-visible:ring-2 focus:ring-primary text-white"
                 />
                 <button
                   type="submit"

@@ -103,7 +103,7 @@ const Compliance = () => {
           <motion.div
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            className="text-primary-container font-mono text-xs uppercase tracking-[0.3em] mb-6"
+            className="text-primary-container font-mono text-xs lowercase tracking-[0.3em] mb-6"
           >
             {t('compliance.eyebrow')}
           </motion.div>
@@ -199,11 +199,11 @@ const Compliance = () => {
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.name_optional')}</label>
-                    <input name="name" type="text" placeholder={t('contact.form.name_placeholder', 'seu nome ou deixe em branco')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('contact.form.name_optional')} />
+                    <input name="name" type="text" placeholder={t('contact.form.name_placeholder', 'seu nome ou deixe em branco')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all" aria-label={t('contact.form.name_optional')} />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.contact_optional')}</label>
-                    <input name="email" type="text" placeholder={t('contact.form.email_placeholder', 'email ou telefone para retorno')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('contact.form.contact_optional')} />
+                    <input name="email" type="text" placeholder={t('contact.form.email_placeholder', 'email ou telefone para retorno')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all" aria-label={t('contact.form.contact_optional')} />
                   </div>
                 </div>
                 {/* Armadilha: fora da tela e fora do teclado. */}
@@ -214,7 +214,7 @@ const Compliance = () => {
 
                 <div className="space-y-2">
                   <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.whistleblower.occurrence_type')}</label>
-                  <select name="subject" required className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all appearance-none" aria-label={t('contact.whistleblower.occurrence_type')}>
+                  <select name="subject" required className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all appearance-none" aria-label={t('contact.whistleblower.occurrence_type')}>
                     <option value="" className="bg-surface">{t('contact.whistleblower.category_select')}</option>
                     <option value="etica" className="bg-surface">{t('contact.whistleblower.categories.ethics')}</option>
                     <option value="assédio" className="bg-surface">{t('contact.whistleblower.categories.harassment')}</option>
@@ -225,7 +225,7 @@ const Compliance = () => {
                 </div>
                 <div className="space-y-2">
                   <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.whistleblower.description')}</label>
-                  <textarea name="message" required rows={6} placeholder={t('contact.whistleblower.desc_placeholder', 'detalhe o ocorrido com o máximo de informações possíveis (datas, locais, envolvidos)...')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all resize-none" aria-label={t('contact.whistleblower.description')}></textarea>
+                  <textarea name="message" required rows={6} placeholder={t('contact.whistleblower.desc_placeholder', 'detalhe o ocorrido com o máximo de informações possíveis (datas, locais, envolvidos)...')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all resize-none" aria-label={t('contact.whistleblower.description')}></textarea>
                 </div>
 
                 {submitStatus === 'success' && caseCode && (

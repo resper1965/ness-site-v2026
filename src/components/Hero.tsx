@@ -63,7 +63,7 @@ const Hero = () => {
               to="/solucoes"
               className="flex items-center gap-2 text-white font-display font-medium text-sm hover:text-primary transition-colors group"
             >
-              {t('hero.explore')}<BlueDot />
+              {t('hero.explore')}
               <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} aria-hidden="true" />
             </Link>
           </div>

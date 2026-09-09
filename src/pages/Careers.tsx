@@ -1,4 +1,5 @@
 import BlueDot from '../components/BlueDot';
+import ConsentimentoPrivacidade from '../components/ConsentimentoPrivacidade';
 import React, { useState, useEffect } from "react";
 import { m as motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
@@ -217,15 +218,15 @@ const Careers = () => {
                     >
                       <div className="space-y-2">
                         <label htmlFor="name-input" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.full_name')}</label>
-                        <input id="name-input" name="name" type="text" required placeholder="seu nome" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('careers.form.full_name')} />
+                        <input id="name-input" name="name" type="text" required placeholder="seu nome" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all" aria-label={t('careers.form.full_name')} />
                       </div>
                       <div className="space-y-2">
                         <label htmlFor="email-input" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.email')}</label>
-                        <input id="email-input" name="email" type="email" required placeholder="email@exemplo.com" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('contact.form.email')} />
+                        <input id="email-input" name="email" type="email" required placeholder="email@exemplo.com" className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all" aria-label={t('contact.form.email')} />
                       </div>
                       <div className="space-y-2">
                         <label htmlFor="linkedin-input" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.linkedin')}</label>
-                        <input id="linkedin-input" name="linkedin" type="url" placeholder="https://linkedin.com/in/..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('careers.form.linkedin')} />
+                        <input id="linkedin-input" name="linkedin" type="url" placeholder="https://linkedin.com/in/..." className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all" aria-label={t('careers.form.linkedin')} />
                       </div>
                       <div className="space-y-2">
                         <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('careers.form.attach_cv')}</label>
@@ -237,18 +238,7 @@ const Careers = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="flex items-start gap-3 px-4 py-2">
-                        <input 
-                          id="privacy-consent-careers"
-                          name="privacy_consent"
-                          type="checkbox" 
-                          required
-                          className="mt-1 w-4 h-4 bg-white/5 border border-white/10 rounded focus:ring-1 focus:ring-primary-container accent-primary-container cursor-pointer"
-                          aria-label={t('common.privacy_consent')} />
-                        <label htmlFor="privacy-consent-careers" className="text-[11px] text-on-surface-variant font-light leading-relaxed cursor-pointer">
-                          {t('common.privacy_consent')}
-                        </label>
-                      </div>
+                      <ConsentimentoPrivacidade id="privacy-consent-careers" />
                       
                       {submitStatus === 'success' && (
                         <div className="bg-primary-container/10 border border-primary-container/20 text-primary-container px-6 py-4 rounded-2xl text-xs font-light mt-4">

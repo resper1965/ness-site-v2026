@@ -243,7 +243,7 @@
     "subtitle": "contacte a nuestro equipo de expertos para transformar su operación digital.",
     "form": {
       "name": "nombre",
-      "name_placeholder": "su nombre o dejar en blanco",
+      "name_placeholder": "su nombre",
       "company": "empresa",
       "company_placeholder": "su empresa",
       "email": "correo corporativo",
@@ -284,7 +284,7 @@
       },
       "desc_placeholder": "detalle la ocurrencia con tanta información como sea posible..."
     },
-    "badge": "get in touch — ness. precision",
+    "badge": "hable con nosotros — ness. precision",
     "info": {
       "email": "email",
       "phone": "teléfono",
@@ -313,7 +313,7 @@
       "msg2_user": "Sí, por favor. Use el modelo estándar de 2024.",
       "msg2_bot": "Entendido. Procesando borradores... ¡Listo! Los 3 borradores han sido generados y enviados a su carpeta de borradores en Teams. ¿Algo más?"
     },
-    "open": "abrir chat con Gabi"
+    "open": "hablar con Gabi"
   },
   "common": {
     "see_all": "ver todo",
@@ -327,7 +327,8 @@
     "tag": "etiqueta",
     "back": "volver",
     "all": "todos",
-    "privacy_consent": "He leído e acepto la política de privacidad y los términos de uso."
+    "privacy_consent": "He leído e acepto la política de privacidad y los términos de uso.",
+    "privacy_consent_links": "he leído y acepto la <privacidade>política de privacidad</privacidade> y los <termos>términos de uso</termos>."
   },
   "compliance": {
     "eyebrow": "compliance — ness. precision",

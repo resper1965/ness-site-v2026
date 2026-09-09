@@ -28,7 +28,7 @@ export default function ClientLogos() {
     <section className="py-20 px-6 md:px-8 bg-surface border-t border-white/5">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <span className="text-[11px] text-primary-container font-bold uppercase tracking-widest block mb-3">
+          <span className="text-[11px] text-primary-container font-bold lowercase tracking-widest block mb-3">
             {t('clients.eyebrow', 'quem confia na ness.')}
           </span>
           <h2 className="text-2xl md:text-3xl font-display text-white tracking-tight lowercase">

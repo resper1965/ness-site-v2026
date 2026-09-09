@@ -1,7 +1,10 @@
 @import "tailwindcss";
 
 /* ── Fontes self-host (woff2 variável, subsets latin / latin-ext) ─────────
-   Inter e Manrope são fontes variáveis: um arquivo cobre todos os pesos.
+   Inter e Montserrat são fontes variáveis: um arquivo cobre todos os pesos.
+   Montserrat é a fonte de marca definida no brandbook — trocar por outra faz
+   o ponto da marca sair com desenho errado, que foi o que aconteceu com o
+   Manrope: em corpo grande, o ponto virava um quadrado.
    `font-display: swap` + fallback métrico evitam texto invisível e CLS. */
 @font-face {
   font-family: "Inter";
@@ -20,43 +23,39 @@
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
-  font-family: "Manrope";
+  font-family: "Montserrat";
   font-style: normal;
-  font-weight: 200 800;
+  font-weight: 100 900;
   font-display: swap;
-  src: url("/fonts/manrope-latin.woff2") format("woff2");
+  src: url("/fonts/montserrat-latin.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: "Manrope";
-  font-style: normal;
-  font-weight: 200 800;
-  font-display: swap;
-  src: url("/fonts/manrope-latin-ext.woff2") format("woff2");
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 /* Fallbacks métricos: reduzem o salto de layout enquanto a fonte carrega */
 @font-face {
   font-family: "Inter Fallback";
-  src: local("Arial"), local("Helvetica Neue"), local("Helvetica");
+  src: local("Arial"), local("Helvetica Neue"), local("Helvetica"), local("Liberation Sans"), local("Arimo");
   size-adjust: 107%;
   ascent-override: 90%;
   descent-override: 22%;
   line-gap-override: 0%;
 }
 @font-face {
-  font-family: "Manrope Fallback";
-  src: local("Arial"), local("Helvetica Neue"), local("Helvetica");
-  size-adjust: 104%;
-  ascent-override: 92%;
-  descent-override: 24%;
+  font-family: "Montserrat Fallback";
+  src: local("Arial"), local("Helvetica Neue"), local("Helvetica"), local("Liberation Sans"), local("Arimo");
+  /* Medido no navegador com `scripts/metricas-de-fonte.mjs`: a 100 px a mesma
+     frase ocupa 2667 px em Montserrat e 2449 px em Arial, e a Montserrat tem
+     ascent 97 / descent 25. Daí size-adjust = 2667/2449 e os overrides
+     divididos por ele. Sem isso o texto salta quando a fonte real chega. */
+  size-adjust: 108.9%;
+  ascent-override: 89.1%;
+  descent-override: 23.0%;
   line-gap-override: 0%;
 }
 
 @theme {
   --font-sans: "Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Manrope", "Manrope Fallback", ui-sans-serif, system-ui, sans-serif;
-  --font-brand: "Manrope", "Manrope Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Montserrat", "Montserrat Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-brand: "Montserrat", "Montserrat Fallback", ui-sans-serif, system-ui, sans-serif;
 
   --color-surface: #0b1326;
   --color-surface-container-lowest: #060e20;
@@ -109,6 +108,17 @@
   }
 
   .lowercase-all {
+    text-transform: lowercase;
+  }
+
+  /* Assinatura da marca, exatamente como o brandbook define: Montserrat 500,
+     caixa baixa, tracking -0.01em. Vale para ness., trustness. e forense.io.
+     Não usar em título comum — só no nome da marca, sempre com <BlueDot />. */
+  .marca {
+    font-family: var(--font-brand);
+    font-weight: 500;
+    font-style: normal;
+    letter-spacing: -0.01em;
     text-transform: lowercase;
   }
 

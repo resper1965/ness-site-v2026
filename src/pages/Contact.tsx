@@ -1,4 +1,5 @@
 import BlueDot from '../components/BlueDot';
+import ConsentimentoPrivacidade from '../components/ConsentimentoPrivacidade';
 import React, { useEffect, useState } from "react";
 import { m as motion } from "motion/react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router";
@@ -76,7 +77,7 @@ const Contact = () => {
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="text-primary-container font-mono text-xs uppercase tracking-[0.3em] mb-6"
+                className="text-primary-container font-mono text-xs lowercase tracking-[0.3em] mb-6"
               >
                 {t('contact.badge', 'get in touch — ness. precision')}
               </motion.div>
@@ -142,8 +143,8 @@ const Contact = () => {
             {/* Interest Context Badge */}
             {refInfo && (
               <div className="mb-6 flex items-center gap-3 px-4 py-3 rounded-2xl bg-primary-container/10 border border-primary-container/20">
-                <div className="w-2 h-2 rounded-full bg-primary-container animate-pulse" />
-                <span className="text-[11px] uppercase tracking-widest text-primary-container font-bold">
+                <div className="w-2 h-2 rounded-full bg-primary-container" aria-hidden="true" />
+                <span className="text-[11px] lowercase tracking-widest text-primary-container font-bold">
                   {t('contact.form.interest', { product: refInfo.label, defaultValue: `Interesse em: ${refInfo.label}` })}
                 </span>
               </div>
@@ -184,30 +185,30 @@ const Contact = () => {
             >
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label htmlFor="contact-name" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.name')}</label>
+                  <label htmlFor="contact-name" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-6">{t('contact.form.name')}</label>
                   <input 
                     id="contact-name"
                     name="name"
                     type="text" 
                     required
                     placeholder={t('contact.form.name_placeholder')} 
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all"
                     aria-label={t('contact.form.name')} />
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="contact-company" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.company')}</label>
+                  <label htmlFor="contact-company" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-6">{t('contact.form.company')}</label>
                   <input 
                     id="contact-company"
                     name="company"
                     type="text" 
                     required
                     placeholder={t('contact.form.company_placeholder')} 
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all"
                     aria-label={t('contact.form.company')} />
                 </div>
               </div>
               <div className="space-y-2">
-                <label htmlFor="contact-email" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.email')}</label>
+                <label htmlFor="contact-email" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-6">{t('contact.form.email')}</label>
                 <input 
                   id="contact-email"
                   name="email"
@@ -219,7 +220,7 @@ const Contact = () => {
                   aria-describedby={erroEmail ? 'contact-email-erro' : undefined}
                   onBlur={(e) => setErroEmail(validarEmail(e.target.value))}
                   onChange={() => erroEmail && setErroEmail(null)}
-                  className={`w-full bg-white/5 border rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all ${erroEmail ? 'border-red-500/60' : 'border-white/10'}`}
+                  className={`w-full bg-white/5 border rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all ${erroEmail ? 'border-red-500/60' : 'border-white/10'}`}
                   aria-label={t('contact.form.email')} />
                 {erroEmail && (
                   <p id="contact-email-erro" role="alert" className="text-[11px] text-red-400 ml-4">{erroEmail}</p>
@@ -232,28 +233,17 @@ const Contact = () => {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="contact-message" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.message')}</label>
+                <label htmlFor="contact-message" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-6">{t('contact.form.message')}</label>
                 <textarea 
                   id="contact-message"
                   name="message"
                   rows={4}
                   required
                   placeholder={t('contact.form.message_placeholder')} 
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all resize-none"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all resize-none"
                 ></textarea>
               </div>
-              <div className="flex items-start gap-3 px-4 py-2">
-                <input 
-                  id="privacy-consent"
-                  name="privacy_consent"
-                  type="checkbox" 
-                  required
-                  className="mt-1 w-4 h-4 bg-white/5 border border-white/10 rounded focus:ring-1 focus:ring-primary-container accent-primary-container cursor-pointer"
-                  aria-label={t('common.privacy_consent')} />
-                <label htmlFor="privacy-consent" className="text-[11px] text-on-surface-variant font-light leading-relaxed cursor-pointer">
-                  {t('common.privacy_consent')}
-                </label>
-              </div>
+              <ConsentimentoPrivacidade />
 
               {submitStatus === 'error' && (
                 <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-6 py-4 rounded-2xl text-xs font-light mt-4 flex items-start gap-3">

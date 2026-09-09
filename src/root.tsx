@@ -67,7 +67,7 @@ export function meta({ data, location }: { data?: RootData; location?: { pathnam
 
 
 export const links = () => [
-  { rel: 'preload', href: '/fonts/manrope-latin.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' as const },
+  { rel: 'preload', href: '/fonts/montserrat-latin.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' as const },
   { rel: 'preload', href: '/fonts/inter-latin.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' as const },
   { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
 ];

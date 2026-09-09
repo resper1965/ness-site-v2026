@@ -91,7 +91,7 @@ const Navbar = () => {
   return (
     <>
       <nav aria-label="Principal" className="fixed top-3 md:top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl glass rounded-full flex justify-between items-center px-5 md:px-8 py-2.5 md:py-3 z-50 nebula-shadow">
-        <Link to="/" className="text-2xl font-display tracking-tighter text-white lowercase-all">
+        <Link to="/" className="marca text-2xl text-white">
           {brandMark}
         </Link>
 
@@ -102,7 +102,10 @@ const Navbar = () => {
           <div className="hidden lg:block">
             <EcosystemSwitcher />
           </div>
-          {menuItems.map((item) => {
+          {/* "contato" sai da fileira: o botão de ação ao lado já leva lá, e
+              repetir o mesmo destino a três centímetros só divide a atenção.
+              No menu mobile ele continua, porque lá o botão não está à vista. */}
+          {menuItems.filter((item) => item.key !== 'contato').map((item) => {
             const active = isActive(item.to);
 
             // Soluções abre o mapa das cinco: o visitante que chega por
@@ -191,7 +194,7 @@ const Navbar = () => {
                 onClick={() => changeLanguage(lng)}
                 aria-label={`Alterar idioma para ${lng.toUpperCase()}`}
                 aria-pressed={i18n.language.startsWith(lng)}
-                className={`px-2 py-1 rounded-full text-[11px] uppercase font-bold transition-all focus-visible:ring-2 focus-visible:ring-primary-container ${
+                className={`px-3 py-2 rounded-full text-[11px] uppercase font-bold tracking-wide transition-all focus-visible:ring-2 focus-visible:ring-primary-container ${
                   i18n.language.startsWith(lng)
                     ? "bg-primary-container text-on-primary"
                     : "text-on-surface-variant hover:text-white"
@@ -237,7 +240,7 @@ const Navbar = () => {
                   type="button"
                   onClick={() => { changeLanguage(lng); setIsOpen(false); }}
                   aria-pressed={i18n.language.startsWith(lng)}
-                  className={`px-4 py-2 rounded-full text-xs uppercase font-bold transition-all focus-visible:ring-2 focus-visible:ring-primary-container ${
+                  className={`px-5 py-3 rounded-full text-xs uppercase font-bold tracking-wide transition-all focus-visible:ring-2 focus-visible:ring-primary-container ${
                     i18n.language.startsWith(lng)
                       ? "bg-primary-container text-on-primary"
                       : "bg-white/5 text-on-surface-variant"

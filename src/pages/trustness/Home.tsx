@@ -47,7 +47,7 @@ export default function TrustnessHome() {
                  href="#cases"
                 className="flex items-center gap-2 text-white font-display font-medium text-sm hover:text-primary transition-colors group"
               >
-                {t("trustness.hero.cta2")}<BlueDot />
+                {t("trustness.hero.cta2")}
                 <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
               </a>
             </div>

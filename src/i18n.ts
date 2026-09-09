@@ -254,7 +254,7 @@ const ptResources = {
         },
         "form": {
           "name": "nome",
-          "name_placeholder": "seu nome ou deixe em branco",
+          "name_placeholder": "seu nome",
           "name_optional": "nome (opcional)",
           "contact_optional": "contato (opcional)",
           "company": "empresa",
@@ -295,7 +295,7 @@ const ptResources = {
           },
           "desc_placeholder": "detalhe o ocorrido com o máximo de informações possíveis (datas, locais, envolvidos)..."
         },
-        "badge": "get in touch — ness. precision",
+        "badge": "fale conosco — ness. precision",
         "meta_title": "contato — fale com um especialista",
         "meta_description": "Fale com a ness.: diagnóstico de segurança, infraestrutura, engenharia de software, LGPD e perícia digital. Resposta em até 1 dia útil. +55 (11) 2504-7650."
       },
@@ -319,7 +319,7 @@ const ptResources = {
           "msg2_user": "Sim, por favor. Use o modelo padrão de 2024.",
           "msg2_bot": "Entendido. Processando minutas... Pronto! As 3 minutas foram geradas e enviadas para sua pasta de rascunhos no Teams. Algo mais?"
         },
-        "open": "abrir chat com a Gabi"
+        "open": "falar com a Gabi"
       },
       "common": {
         "see_all": "ver tudo",
@@ -333,7 +333,8 @@ const ptResources = {
         "tag": "tag",
         "back": "voltar",
         "all": "todos",
-        "privacy_consent": "Eu li e aceito a política de privacidade e os termos de uso."
+        "privacy_consent": "Eu li e aceito a política de privacidade e os termos de uso.",
+        "privacy_consent_links": "li e aceito a <privacidade>política de privacidade</privacidade> e os <termos>termos de uso</termos>."
       },
       "compliance": {
         "eyebrow": "compliance — ness. precision",
