@@ -29,8 +29,13 @@ export default function TrustnessHome() {
             transition={{ duration: 0.8 }}
             className="max-w-5xl space-y-10"
           >
+            {/* A marca sai do corpo do h1 e vira sobrancelha, como na home da
+                ness.: o nome ja esta no topo da pagina, e no mesmo tamanho da
+                frase ele disputava a leitura com o que a marca faz. */}
+            <span className="marca inline-flex items-center rounded-full border border-primary-container/20 bg-primary-container/10 px-5 py-2 text-base text-white md:text-lg">
+              {t("trustness.title")}<BlueDot />
+            </span>
             <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-display font-medium text-white leading-[1.05] tracking-tighter lowercase-all">
-              {t("trustness.title")}<BlueDot />{" "}<br />
               <span className="text-white/90 drop-shadow-[0_0_20px_rgba(0,173,232,0.4)]">{t("trustness.hero.tag")}</span>
             </h1>
             <p className="text-lg md:text-2xl text-on-surface-variant max-w-3xl leading-relaxed font-light">
