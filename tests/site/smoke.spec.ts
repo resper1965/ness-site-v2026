@@ -489,3 +489,56 @@ test.describe('orçamento de performance', () => {
     await expect(page.locator('label[for="contact-email"]')).toBeVisible();
   });
 });
+
+test.describe('marca e alvo de toque', () => {
+  // O ponto das marcas do ecossistema e sempre #00ade8, qualquer que seja a
+  // cor do texto ao lado. E a regra que o guia chama de inegociavel, e ja foi
+  // quebrada uma vez: o ponto de forense.io saia branco no seletor de marcas.
+  test('todo ponto de marca sai no azul da marca', async ({ page }) => {
+    await page.goto('/');
+    const pontos = page.locator('header .text-primary-container, nav .text-primary-container').filter({ hasText: /^\.$/ });
+    const total = await pontos.count();
+    expect(total, 'a marca do topo precisa ter um ponto').toBeGreaterThan(0);
+    for (let i = 0; i < total; i++) {
+      await expect(pontos.nth(i)).toHaveCSS('color', 'rgb(0, 173, 232)');
+    }
+  });
+
+  // WCAG 2.2 (2.5.8) pede 24x24 px de alvo. A excecao e o link dentro de uma
+  // frase, cuja altura e limitada pela entrelinha do texto ao redor — por isso
+  // os links da frase de consentimento ficam de fora.
+  for (const rota of ['/', '/contato', '/carreiras']) {
+    test(`nenhum controle de ${rota} fica abaixo de 24 px`, async ({ page }) => {
+      await page.goto(rota);
+      await page.evaluate(() => document.fonts.ready);
+      const pequenos = await page.evaluate(() => {
+        const achados: string[] = [];
+        const alvos = document.querySelectorAll('button, a[href], input[type="checkbox"], [role="button"]');
+        for (const el of alvos) {
+          const r = el.getBoundingClientRect();
+          const s = getComputedStyle(el);
+          if (r.width === 0 || r.height === 0 || s.visibility === 'hidden' || s.display === 'none') continue;
+          // sr-only: recortado ate receber foco, quando vira um alvo de verdade.
+          if (s.clipPath !== 'none' || s.clip !== 'auto') continue;
+          if (el.closest('label')) continue; // link dentro de frase: excecao da norma
+          if (Math.min(r.width, r.height) < 24) {
+            const nome = (el.getAttribute('aria-label') || el.textContent || '').trim().slice(0, 40);
+            achados.push(`${Math.round(r.width)}x${Math.round(r.height)} ${nome}`);
+          }
+        }
+        return achados;
+      });
+      expect(pequenos, 'controles menores que 24 px').toEqual([]);
+    });
+  }
+
+  // O consentimento e o unico texto do site com efeito juridico. Ja esteve no
+  // ar dizendo "li e aceito a politica de privacidade" sem link para ela.
+  test('o consentimento aponta para a politica e para os termos', async ({ page }) => {
+    await page.goto('/contato');
+    const rotulo = page.locator('label[for="privacy-consent"]');
+    await expect(rotulo.locator('a[href="/compliance/privacidade"]')).toHaveCount(1);
+    await expect(rotulo.locator('a[href="/compliance/termos"]')).toHaveCount(1);
+    await expect(page.locator('#privacy-consent')).toHaveAttribute('required', '');
+  });
+});

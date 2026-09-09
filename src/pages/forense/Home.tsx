@@ -44,7 +44,7 @@ export default function ForenseHome() {
               </Link>
               <a
                 href="#resources"
-                className="flex items-center gap-2 text-white font-display font-medium text-sm hover:text-primary transition-colors group"
+                className="group inline-flex items-center gap-2 py-2 font-display text-sm font-medium text-white transition-colors hover:text-primary focus-visible:ring-2 focus-visible:ring-primary-container focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest"
               >
                 {t("forense.hero.cta2")}
                 <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />

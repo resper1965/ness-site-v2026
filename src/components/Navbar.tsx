@@ -120,7 +120,7 @@ const Navbar = () => {
                     /* Só clique: abrir no hover e fechar no clique é o padrão
                        que confunde no mouse e não existe no toque. */
                     onClick={() => setMenuSolucoes((aberto) => !aberto)}
-                    className={`flex items-center gap-1 tracking-wide text-[11px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-bold focus-visible:ring-2 focus-visible:ring-primary-container rounded-sm ${
+                    className={`flex items-center gap-1 py-2 tracking-wide text-[11px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-bold focus-visible:ring-2 focus-visible:ring-primary-container rounded-sm ${
                       active ? 'text-primary-container' : 'text-on-surface-variant'
                     }`}
                   >
@@ -174,7 +174,7 @@ const Navbar = () => {
                 key={item.key}
                 to={item.to}
                 aria-current={active ? 'page' : undefined}
-                className={`tracking-wide text-[11px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-bold focus-visible:ring-2 focus-visible:ring-primary-container rounded-sm ${
+                className={`inline-flex items-center py-2 tracking-wide text-[11px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-bold focus-visible:ring-2 focus-visible:ring-primary-container rounded-sm ${
                   active ? "text-primary-container" : "text-on-surface-variant"
                 }`}
               >

@@ -129,7 +129,7 @@ function Shell({ brand, children }: { brand: Brand; children: ReactNode }) {
         <LazyMotion features={loadMotionFeatures}>
           <MotionConfig reducedMotion="user">
             <div className="min-h-screen">
-              <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary-container text-on-primary-container px-4 py-2 z-50 rounded-lg font-bold">
+              <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:inline-flex focus:min-h-11 focus:items-center focus:rounded-lg focus:bg-primary-container focus:px-5 focus:py-3 focus:font-display focus:font-semibold focus:text-on-primary focus:outline-none focus:ring-2 focus:ring-white">
                 Pular para o conteúdo principal
               </a>
               <SchemaOrg type="organization" />

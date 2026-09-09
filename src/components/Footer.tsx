@@ -75,33 +75,33 @@ const Footer = () => {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 md:gap-24">
           <div className="space-y-4">
             <h2 className="text-[11px] uppercase tracking-widest text-white font-bold">{t('footer.company')}</h2>
-            <ul className="space-y-3 text-sm text-on-surface-variant/85 font-normal">
-              <li><Link className="hover:text-white transition-colors" to="/sobre">{t('nav.about')}</Link></li>
-              <li><Link className="hover:text-white transition-colors" to="/portfolio">{t('nav.portfolio')}</Link></li>
-              <li><Link className="hover:text-white transition-colors" to="/blog">{t('nav.blog')}</Link></li>
-              <li><Link className="hover:text-white transition-colors" to="/carreiras">{t('nav.careers')}</Link></li>
-              <li><Link className="hover:text-white transition-colors" to="/contato">{t('nav.contact')}</Link></li>
+            <ul className="space-y-1 text-sm text-on-surface-variant/85 font-normal">
+              <li><Link className="inline-block py-1 hover:text-white transition-colors" to="/sobre">{t('nav.about')}</Link></li>
+              <li><Link className="inline-block py-1 hover:text-white transition-colors" to="/portfolio">{t('nav.portfolio')}</Link></li>
+              <li><Link className="inline-block py-1 hover:text-white transition-colors" to="/blog">{t('nav.blog')}</Link></li>
+              <li><Link className="inline-block py-1 hover:text-white transition-colors" to="/carreiras">{t('nav.careers')}</Link></li>
+              <li><Link className="inline-block py-1 hover:text-white transition-colors" to="/contato">{t('nav.contact')}</Link></li>
             </ul>
           </div>
 
           <div className="space-y-4">
             <h2 className="text-[11px] uppercase tracking-widest text-white font-bold">{t('footer.legal')}</h2>
-            <ul className="space-y-3 text-sm text-on-surface-variant/85 font-normal">
-              <li><Link className="hover:text-white transition-colors" to="/compliance/termos">{t('footer.terms')}</Link></li>
-              <li><Link className="hover:text-white transition-colors" to="/compliance/privacidade">{t('footer.privacy')}</Link></li>
-              <li><Link className="hover:text-white transition-colors" to="/compliance/etica">{t('footer.compliance')}</Link></li>
-              <li><Link className="hover:text-white text-primary-container font-semibold transition-colors" to="/compliance/etica">{t('contact.whistleblower.title')}</Link></li>
+            <ul className="space-y-1 text-sm text-on-surface-variant/85 font-normal">
+              <li><Link className="inline-block py-1 hover:text-white transition-colors" to="/compliance/termos">{t('footer.terms')}</Link></li>
+              <li><Link className="inline-block py-1 hover:text-white transition-colors" to="/compliance/privacidade">{t('footer.privacy')}</Link></li>
+              <li><Link className="inline-block py-1 hover:text-white transition-colors" to="/compliance/etica">{t('footer.compliance')}</Link></li>
+              <li><Link className="inline-block py-1 text-primary-container font-semibold transition-colors hover:text-white" to="/compliance/etica">{t('contact.whistleblower.title')}</Link></li>
             </ul>
           </div>
 
           <div className="space-y-4">
             <h2 className="text-[11px] uppercase tracking-widest text-white font-bold">{t('footer.ecosystem')}</h2>
-            <ul className="space-y-3 text-sm text-on-surface-variant/85 font-normal">
+            <ul className="space-y-1 text-sm text-on-surface-variant/85 font-normal">
               {ECOSYSTEM_LINKS
                 .filter(l => l.brand !== BRAND)
                 .map(l => (
                   <li key={l.brand}>
-                    <a href={l.href} className="hover:text-white transition-colors">
+                    <a href={l.href} className="inline-block py-1 hover:text-white transition-colors">
                       {l.label}
                     </a>
                   </li>
@@ -178,7 +178,7 @@ const Footer = () => {
             rel="noopener noreferrer"
             title="canal (acesso restrito)"
             aria-label="Canal CMS — acesso restrito"
-            className="text-on-surface-variant/70 hover:text-on-surface-variant transition-all duration-300"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full text-on-surface-variant/70 transition-colors hover:bg-white/5 hover:text-on-surface-variant focus-visible:ring-2 focus-visible:ring-primary-container"
           >
             <Lock size={12} />
           </a>

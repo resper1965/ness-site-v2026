@@ -87,7 +87,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <p className="text-white font-bold text-xs uppercase tracking-widest mb-1">{t('contact.info.email')}</p>
-                  <a href="mailto:contato@ness.com.br" className="text-on-surface-variant hover:text-primary transition-colors">contato@ness.com.br</a>
+                  <a href="mailto:contato@ness.com.br" className="inline-block py-1 text-on-surface-variant transition-colors hover:text-primary">contato@ness.com.br</a>
                 </div>
               </div>
 
@@ -97,7 +97,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <p className="text-white font-bold text-xs uppercase tracking-widest mb-1">{t('contact.info.phone')}</p>
-                  <a href="tel:+551125047650" className="text-on-surface-variant hover:text-primary transition-colors">+55 (11) 2504-7650</a>
+                  <a href="tel:+551125047650" className="inline-block py-1 text-on-surface-variant transition-colors hover:text-primary">+55 (11) 2504-7650</a>
                 </div>
               </div>
 

@@ -135,7 +135,7 @@ const Compliance = () => {
               transition={{ delay: i * 0.1 }}
               className="space-y-4"
             >
-              <h3 className="text-lg font-medium text-white lowercase-all">{section.h}</h3>
+              <h2 className="text-lg font-medium text-white lowercase-all">{section.h}</h2>
               <p className="text-on-surface-variant font-light leading-relaxed">
                 {section.p}
               </p>
