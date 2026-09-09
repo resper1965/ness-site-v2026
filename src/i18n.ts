@@ -97,7 +97,7 @@ const ptResources = {
         "technical_arsenal": "o arsenal em operação",
         "onboarding_journey": "jornada de ativação",
         "cta_title": "sua empresa em um novo nível",
-        "cta_desc": "descubra como a ness pode transformar sua operação com inteligência e segurança de elite.",
+        "cta_desc": "descubra como a ness. pode transformar sua operação com inteligência e segurança de elite.",
         "tech_engine": "o motor da resiliência",
         "tech_desc": "para os interessados na engenharia por trás da proteção, aqui estão os pilares técnicos que sustentam nossa entrega de valor.",
         "impact_portfolio": "portfólio de impacto"
@@ -301,7 +301,7 @@ const ptResources = {
       },
       "cta": {
         "title": "pronto para o próximo nível?",
-        "subtitle": "fale com nossos especialistas e descubra como a ness pode elevar o nível de inteligência, segurança e eficiência da sua operação.",
+        "subtitle": "fale com nossos especialistas e descubra como a ness. pode elevar o nível de inteligência, segurança e eficiência da sua operação.",
         "button": "agendar consultoria",
         "support": "atendimento especializado imediato."
       },

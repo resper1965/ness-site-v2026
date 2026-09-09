@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import { CANAL_BASE } from '../config/api';
 import { ShieldCheck, Cloud, Cpu, Brain, Lock, Workflow, FileText, ChevronRight } from "lucide-react";
 
-import { FOUNDATION_YEAR, anoAtual, anosDeLegado } from '../constants/brand';
 
 interface Insight {
   id?: string;
@@ -54,6 +53,10 @@ const Insights = () => {
     }
   };
 
+  // Sem post, a seção inteira sai da home: um título "blog." com um vazio de
+  // 300 px embaixo é pior do que não ter a seção.
+  if (!loading && articles.length === 0) return null;
+
   return (
     <section id="insights" className="py-24 bg-surface px-8 border-t border-white/5 relative overflow-hidden">
       {/* Immersive Background for Insights */}
@@ -76,7 +79,7 @@ const Insights = () => {
             [1, 2, 3].map((i) => (
               <div key={i} className="animate-pulse border border-white/5 p-8 rounded-3xl bg-surface-container-low/20 h-64" />
             ))
-          ) : articles.length === 0 ? null : (
+          ) : (
             articles.map((art, i) => {
               const Icon = getIcon(art.icon);
               const slug = art.slug ?? String(i);

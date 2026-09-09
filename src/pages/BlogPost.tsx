@@ -5,7 +5,6 @@ import { Link, useLoaderData, useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, Calendar, Tag, FileText } from "lucide-react";
 import ReactMarkdown from 'react-markdown';
-import { CANAL_BASE } from '../config/api';
 import SchemaOrg from '../components/SchemaOrg';
 import { BRAND_DOMAINS, useBrand } from '../config/brand';
 import { buscarInsight, type D1 } from '../../workers/content';

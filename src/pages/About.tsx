@@ -7,7 +7,7 @@ import { useTranslation, Trans } from "react-i18next";
 import { routeMeta } from '../utils/meta';
 import { Target, Eye, Heart, Shield, Globe, Cpu } from "lucide-react";
 
-import { FOUNDATION_YEAR, anoAtual, anosDeLegado } from '../constants/brand';
+import { FOUNDATION_YEAR, anosDeLegado } from '../constants/brand';
 
 const About = () => {
   const { t } = useTranslation();

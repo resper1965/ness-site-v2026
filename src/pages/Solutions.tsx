@@ -1,28 +1,10 @@
 import BlueDot from '../components/BlueDot';
-import React, {  } from "react";
 import { m as motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { routeMeta, traduzir } from '../utils/meta';
-import { 
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
+import { ShieldCheck, Cloud, Cpu, Brain, ArrowRight, Gavel } from "lucide-react";
 
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-  ShieldCheck, 
-  Cloud, 
-  Cpu, 
-  Brain, 
-  ArrowRight, 
-  Gavel} from "lucide-react";
-
-import { FOUNDATION_YEAR, anoAtual, anosDeLegado } from '../constants/brand';
 
 
 
@@ -88,7 +70,7 @@ const Solutions = () => {
               <motion.div whileHover={{ y: -5 }}>
                 <s.icon className="text-primary-container mb-6" size={32} />
                 <h3 className="text-2xl mb-4 text-white font-brand font-medium lowercase-all">
-                  {s.title.split('.')[0]}<span className="text-primary-container">.</span>{s.title.split('.')[1]}
+                  {s.title.split('.')[0]}<BlueDot />{s.title.split('.')[1]}
                 </h3>
                 <p className="text-on-surface-variant text-sm leading-relaxed font-light">
                   {s.desc}

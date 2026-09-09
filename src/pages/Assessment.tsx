@@ -1,9 +1,8 @@
 import React, { useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { m as motion, AnimatePresence } from "motion/react";
-import { ArrowRight, ArrowLeft, BarChart3, Send, CheckCircle2, AlertTriangle } from "lucide-react";
-import { assessments, AssessmentConfig } from "../data/assessments";
-import { CANAL_BASE } from "../config/api";
+import { ArrowRight, ArrowLeft, Send, CheckCircle2, AlertTriangle } from "lucide-react";
+import { assessments } from "../data/assessments";
 import { canalApi } from "../services/canal";
 import BlueDot from "../components/BlueDot";
 import SchemaOrg from "../components/SchemaOrg";

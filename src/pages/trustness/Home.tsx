@@ -1,7 +1,7 @@
 import React from "react";
 import { m as motion } from "motion/react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Fingerprint, Lock, FileCheck, ShieldCheck, Target, GraduationCap, Scale, Activity, PieChart, Users, ShieldAlert, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Lock, FileCheck, ShieldCheck, Target, GraduationCap, Scale, PieChart, Users, ShieldAlert, CheckCircle2 } from "lucide-react";
 import BlueDot from "../../components/BlueDot";
 import HeroPicture from "../../components/HeroPicture";
 import { homeMeta, routeMeta } from '../../utils/meta';
@@ -39,7 +39,7 @@ export default function TrustnessHome() {
             <div className="flex flex-wrap items-center gap-8 pt-4">
               <Link
                 to="/contato?ref=trustness"
-                className="bg-primary-container text-on-primary px-10 py-4 rounded-full font-display font-semibold text-sm shadow-xl shadow-primary-container/20 hover:scale-105 transition-transform"
+                className="bg-primary-container text-on-primary px-8 md:px-10 py-4 rounded-full font-display font-semibold text-sm shadow-xl shadow-primary-container/25 transition-all hover:brightness-110 hover:shadow-[0_0_28px_rgba(0,173,232,0.4)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest"
               >
                 {t("trustness.hero.cta1")}
               </Link>

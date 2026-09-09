@@ -4,7 +4,6 @@ import { m as motion } from "motion/react";
 import { Link, useLoaderData } from "react-router";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, ExternalLink } from "lucide-react";
-import { CANAL_BASE } from '../config/api';
 import { buscarCase, type D1 } from '../../workers/content';
 import { idiomaDaRota } from '../utils/lang';
 import { routeMeta } from '../utils/meta';

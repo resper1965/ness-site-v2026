@@ -1,6 +1,6 @@
 import BlueDot from '../components/BlueDot';
 import ConsentimentoPrivacidade from '../components/ConsentimentoPrivacidade';
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { m as motion } from "motion/react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router";
 import { useTranslation } from "react-i18next";
@@ -10,19 +10,10 @@ import { origemDaVisita } from '../utils/origem';
 import { evento } from '../utils/eventos';
 import { validarEmail } from '../utils/formulario';
 import Turnstile from '../components/Turnstile';
-import { CANAL_BASE } from '../config/api';
 import { canalApi } from '../services/canal';
 import { useBrand } from '../config/brand';
-import { 
-Mail,
-  Phone,
-  MapPin,
-  Linkedin,
-  Instagram,
-  Facebook,
-  AlertTriangle} from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin, Instagram, Facebook, AlertTriangle } from "lucide-react";
 
-import { FOUNDATION_YEAR, anoAtual, anosDeLegado } from '../constants/brand';
 
 
 

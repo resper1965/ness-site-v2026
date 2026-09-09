@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { m as motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { routeMeta, traduzir } from '../utils/meta';
-import { CANAL_BASE } from '../config/api';
 import { canalApi } from '../services/canal';
 import type { Job } from '../types/canal';
 import { MapPin, X, Briefcase, Clock, Upload } from "lucide-react";

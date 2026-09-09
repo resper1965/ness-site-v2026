@@ -2,23 +2,7 @@ import React from "react";
 import { m as motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import {
-  ArrowRight,
-  ShieldCheck,
-  Users,
-  FileCheck,
-  Scale,
-  Activity,
-  Lock,
-  Eye,
-  Settings,
-  BarChart3,
-  Clock,
-  CheckCircle2,
-  Zap,
-  Building2,
-  Handshake,
-} from "lucide-react";
+import { ArrowRight, ShieldCheck, Scale, Activity, Lock, Eye, Settings, BarChart3, Clock, CheckCircle2, Zap, Building2, Handshake } from "lucide-react";
 import BlueDot from "../../components/BlueDot";
 import SchemaOrg from "../../components/SchemaOrg";
 import { routeMeta } from '../../utils/meta';

@@ -4,7 +4,7 @@ import { m as motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router";
 import { CANAL_BASE } from '../config/api';
-import { Send, X, MessageSquare, Bot, ThumbsUp, ThumbsDown } from "lucide-react";
+import { Send, X, ThumbsUp, ThumbsDown } from "lucide-react";
 
 import type { ChatbotConfig } from '../types/canal';
 import ChatLeadForm from './ChatLeadForm';

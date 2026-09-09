@@ -1,11 +1,7 @@
-import React, {  } from "react";
 import { m as motion } from "motion/react";
 import { useTranslation } from "react-i18next";
-import { 
-Brain, 
-  Send} from "lucide-react";
+import { Brain, Send } from "lucide-react";
 
-import { FOUNDATION_YEAR, anoAtual, anosDeLegado } from '../constants/brand';
 
 
 

@@ -8,19 +8,14 @@ import LeadMagnet from '../components/LeadMagnet';
 import NotFound from './NotFound';
 import React, { useEffect, useState } from "react";
 import { m as motion, AnimatePresence } from "motion/react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { routeMeta } from '../utils/meta';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { solutionsData } from "../data/solutionsData";
 import SchemaOrg from '../components/SchemaOrg';
 import { useBrand, BRAND_DOMAINS } from '../config/brand';
-import { 
-  ChevronLeft,
-  CheckCircle2,
-  ExternalLink,
-  ChevronDown
-} from "lucide-react";
+import { CheckCircle2, ExternalLink, ChevronDown } from "lucide-react";
 
 
 
@@ -300,7 +295,7 @@ const SolutionPage = () => {
           </div>
           <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
             <h4 className="text-3xl lg:text-5xl font-display font-medium text-white mb-6 tracking-tight lowercase">{t('solutions.cta_title', 'sua empresa em um novo nível')}<BlueDot /></h4>
-            <p className="text-lg text-on-surface-variant font-light leading-relaxed mb-10">{t('solutions.cta_desc', 'descubra como a ness pode transformar sua operação com inteligência e segurança de elite.')}</p>
+            <p className="text-lg text-on-surface-variant font-light leading-relaxed mb-10">{t('solutions.cta_desc', 'descubra como a ness. pode transformar sua operação com inteligência e segurança de elite.')}</p>
             <button 
               onClick={() => {
                 if (slug === 'cirt') {

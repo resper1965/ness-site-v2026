@@ -4,12 +4,9 @@ import { m as motion } from "motion/react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { routeMeta } from '../utils/meta';
-import { encryptZeroTrustPayload } from '../utils/crypto';
-import { CANAL_BASE } from '../config/api';
 import { canalApi } from '../services/canal';
 import { useBrand } from '../config/brand';
-import { 
-AlertTriangle} from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 import Turnstile from '../components/Turnstile';
 
 

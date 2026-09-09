@@ -45,7 +45,7 @@ const Footer = () => {
   const brandLabel = BRAND_LABELS[BRAND];
 
   return (
-    <footer className="bg-surface py-16 px-8 border-t border-white/5">
+    <footer className="bg-surface px-8 pt-16 pb-28 md:pb-24 border-t border-white/5">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
         <div className="max-w-xs space-y-6">
           <div className="marca text-xl text-white">
