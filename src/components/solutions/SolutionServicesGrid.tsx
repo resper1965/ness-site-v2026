@@ -15,10 +15,10 @@ interface SolutionServicesGridProps {
 
 const SolutionServicesGrid: React.FC<SolutionServicesGridProps> = ({ services, t, icon: Icon }) => {
   return (
-    <section id="serviços" className="mb-24">
-      <div className="text-center mb-12">
-        <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase">
-          {t('solutions.strategic_solutions', 'soluções estratégicas')}<BlueDot />
+    <section id="ferramentas" className="mb-24">
+      <div className="mb-12">
+        <h3 className="font-display text-3xl font-semibold lowercase tracking-tight text-white md:text-4xl">
+          ferramentas<BlueDot />
         </h3>
       </div>
 

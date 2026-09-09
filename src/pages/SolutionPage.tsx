@@ -119,18 +119,40 @@ const SolutionPage = () => {
 
         <Operacao operacao={solution.operacao} onboarding={solution.onboarding} />
 
-        {/* NEW Casos de Uso Típicos (Legacy Refactored) */}
+        {/* NEW Soluções Estratégicas (Full Width SaaS Modules) */}
+        <SolutionServicesGrid services={solution.services} t={t} icon={PageIcon} />
+
+        {solution.features && solution.features.length > 0 && (
+          <div className="mb-24 -mt-8">
+            {/* Era uma nuvem de pilulas escalonadas com opacidade decrescente:
+                sugeria hierarquia que ninguem decidiu, e o item de baixo
+                parecia menos importante sem motivo. Lista, para conferir. */}
+            <ul className="grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
+              {solution.features.map((feat) => (
+                <li key={feat.name} className="flex items-baseline gap-3 border-b border-white/5 py-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary-container" aria-hidden="true" />
+                  <span className="text-sm text-white">{feat.name}</span>
+                  <span className="ml-auto text-[11px] uppercase tracking-widest text-on-surface-variant/70">
+                    {feat.category}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Quatro situações (Casos de Uso, renomeado) */}
         {solution.useCases && (
-          <section id="casos-de-uso" className="mb-24">
+          <section id="situacoes" className="mb-24">
             <div className="mb-12">
               <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase">
-                {t('solutions.use_cases', 'casos de uso reais')}<BlueDot />
+                {t('solutions.use_cases', 'quatro situações')}<BlueDot />
               </h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {solution.useCases.map((useCase: { title: string; desc: string }, i: number) => (
-                <motion.div 
-                  key={i} 
+                <motion.div
+                  key={i}
                   whileHover={{ y: -5 }}
                   className="p-8 lg:p-10 rounded-4xl bg-surface-container-low/10 border border-white/5 hover:bg-surface-container-low/30 hover:border-primary/20 transition-all group flex flex-col justify-between"
                 >
@@ -139,49 +161,6 @@ const SolutionPage = () => {
                 </motion.div>
               ))}
             </div>
-          </section>
-        )}
-
-        {/* NEW Soluções Estratégicas (Full Width SaaS Modules) */}
-        <SolutionServicesGrid services={solution.services} t={t} icon={PageIcon} />
-
-        {/* NEW O Arsenal Técnico (Features Legadas) */}
-        {solution.features && (
-          <section id="funcionalidades" className="mb-24 pt-12 border-t border-white/5">
-            <div className="mb-16 text-center">
-              <h3 className="text-3xl md:text-4xl font-display font-medium text-white tracking-tight lowercase mb-6">
-                {t('solutions.technical_arsenal', 'o arsenal em operação')}<BlueDot />
-              </h3>
-            </div>
-            <motion.div 
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={{
-                hidden: { opacity: 0 },
-                show: { opacity: 1, transition: { staggerChildren: 0.1 } }
-              }}
-              className="flex flex-wrap items-center justify-center gap-4 max-w-[1000px] mx-auto relative p-4"
-            >
-              {/* Linhas de conexão visuais no fundo pra dar sensação de correlação/pipeline */}
-              <div className="absolute inset-x-20 top-1/2 h-px bg-linear-to-r from-transparent via-primary/30 to-transparent -translate-y-1/2 z-0 hidden lg:block"></div>
-              
-              {solution.features.map((feat: { name: string; category?: string }, i: number) => (
-                <motion.div 
-                  key={i} 
-                  variants={{
-                    hidden: { opacity: 0, scale: 0.8, y: 15 },
-                    show: { opacity: 1, scale: 1, y: 0, transition: { type: "spring" } }
-                  }}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  className="relative z-10 flex items-center gap-2 px-5 py-3 rounded-full border border-white/10 bg-surface-container-low/80 backdrop-blur-md hover:border-primary/50 hover:bg-surface-container-low transition-all shadow-xl shadow-black/20 group cursor-default"
-                >
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary-container shadow-[0_0_8px_rgba(var(--primary-container-rgb),0.8)] group-hover:scale-150 transition-transform"></div>
-                  <span className="text-white text-sm font-medium">{feat.name}</span>
-                  <span className="text-on-surface-variant text-[11px] uppercase tracking-widest ml-2 hidden md:inline-block border-l border-white/10 pl-2">{feat.category}</span>
-                </motion.div>
-              ))}
-            </motion.div>
           </section>
         )}
 
@@ -220,7 +199,7 @@ const SolutionPage = () => {
                   navigate(`/contato?ref=${slug}`);
                 }
               }}
-              className="bg-white text-surface px-10 py-5 rounded-full font-display font-semibold uppercase tracking-widest text-sm hover:bg-primary-container hover:text-on-primary hover:scale-105 transition-all shadow-lg shadow-primary-container/20 whitespace-nowrap">
+              className="whitespace-nowrap rounded-full bg-primary-container px-10 py-5 font-display text-sm font-semibold uppercase tracking-widest text-on-primary shadow-lg shadow-primary-container/25 transition-all hover:brightness-110 hover:shadow-[0_0_28px_rgba(0,173,232,0.4)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-low">
               {solution.ctaLabel}
             </button>
           </div>
@@ -271,7 +250,7 @@ const SolutionPage = () => {
           </section>
         )}
 
-        <section id="portfólio">
+        <section id="portfolio">
           <h3 className="text-xl md:text-2xl font-display font-semibold text-white mb-10 tracking-tight lowercase">{t('solutions.impact_portfolio', 'portfólio de impacto')}<BlueDot /></h3>
           <div className="grid md:grid-cols-2 gap-8">
             {solution.portfolio.map((item: { client: string; project: string; result: string }, i: number) => (

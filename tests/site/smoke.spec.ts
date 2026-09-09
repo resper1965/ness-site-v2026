@@ -570,4 +570,19 @@ test.describe('página de produto', () => {
       }
     }
   });
+
+  // A ordem e a decisao do desenho: cada secao responde uma pergunta, na
+  // ordem em que o comprador a faz. Trocar a ordem sem trocar o spec e bug.
+  test('as seções aparecem na ordem do desenho', async ({ page }) => {
+    await page.goto('/solucoes/secops');
+    const esperada = ['#resposta', '#escopo', '#entregaveis', '#operacao', '#ferramentas', '#situacoes', '#portfolio'];
+    const posicoes: number[] = [];
+    for (const id of esperada) {
+      const el = page.locator(id);
+      if (!(await el.count())) continue;
+      posicoes.push((await el.boundingBox())!.y);
+    }
+    expect(posicoes).toEqual([...posicoes].sort((a, b) => a - b));
+    expect(posicoes.length).toBeGreaterThanOrEqual(3);
+  });
 });
