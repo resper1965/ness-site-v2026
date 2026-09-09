@@ -38,10 +38,9 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          # Chaves públicas, resolvidas no build. Ausentes, os recursos
-          # correspondentes ficam desligados e o site funciona igual.
+          # Chave pública, resolvida no build. Ausente, o widget não
+          # renderiza e o site funciona igual.
           VITE_TURNSTILE_SITEKEY: ${{ vars.TURNSTILE_SITEKEY }}
-          VITE_CF_BEACON_TOKEN: ${{ vars.CF_BEACON_TOKEN }}
 
       # A wrangler.toml declara as rotas dos domínios de produção, e o wrangler
       # as aplica mesmo com --name. Sem esta limpeza, o Worker do PR
