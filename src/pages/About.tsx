@@ -78,7 +78,7 @@ const About = () => {
             initial={{ y: 16, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.35 }}
-            className="text-base md:text-lg text-on-surface-variant font-light leading-relaxed max-w-xl"
+            className="text-base md:text-lg text-on-surface-variant font-normal leading-relaxed max-w-xl"
           >
             {t('about.desc')}
           </motion.p>
@@ -120,7 +120,7 @@ const About = () => {
               <h2 className="text-base font-display font-semibold text-white lowercase tracking-tight">
                 {title}<BlueDot />
               </h2>
-              <p className="text-sm text-on-surface-variant font-light leading-relaxed">
+              <p className="text-sm text-on-surface-variant font-normal leading-relaxed">
                 {desc}
               </p>
             </motion.div>
@@ -142,7 +142,7 @@ const About = () => {
               <h2 className="text-2xl font-display font-medium text-white sticky top-32 tracking-tight lowercase">
                 {t('about.history_title')}<BlueDot />
               </h2>
-              <p className="mt-4 text-sm text-on-surface-variant font-light leading-relaxed sticky top-52">
+              <p className="mt-4 text-sm text-on-surface-variant font-normal leading-relaxed sticky top-52">
                 {anosDeLegado()} {t('about.history_sub', 'anos construindo a base tecnológica de grandes corporações e eventos globais.')}
               </p>
             </div>
@@ -157,12 +157,12 @@ const About = () => {
                   transition={{ delay: i * 0.04 }}
                   className="flex gap-10 group"
                 >
-                  <div className="w-16 shrink-0 text-primary-container font-mono text-sm font-bold pt-0.5">
+                  <div className="w-16 shrink-0 text-primary-container font-mono text-sm font-medium pt-0.5">
                     {item.year}
                   </div>
                   <div className="relative pb-10 border-l border-white/8 pl-10 group-last:border-transparent">
                     <div className="absolute top-2.5 -left-[5px] w-2 h-2 rounded-full bg-primary-container shadow-[0_0_8px_rgba(0,173,232,0.4)]" />
-                    <p className="text-sm text-white font-light leading-relaxed group-hover:text-primary-container transition-colors duration-200">
+                    <p className="text-sm text-white font-normal leading-relaxed group-hover:text-primary-container transition-colors duration-200">
                       {item.desc}
                     </p>
                   </div>

@@ -108,7 +108,7 @@ export default function Breadcrumbs({ items, semTrilhaVisivel, semSchema }: Brea
     {!semTrilhaVisivel && (
     <nav
       aria-label={t("a11y.breadcrumb", "trilha de navegação")}
-      className="flex items-center gap-1.5 text-[11px] uppercase tracking-widest font-bold"
+      className="flex items-center gap-1.5 text-[11px] uppercase tracking-widest font-medium"
     >
       {crumbs.map((crumb, i) => {
         const isLast = i === crumbs.length - 1;

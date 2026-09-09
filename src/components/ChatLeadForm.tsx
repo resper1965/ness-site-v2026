@@ -72,7 +72,7 @@ export default function ChatLeadForm({ assunto, onPronto }: { assunto: string; o
       {erro && <p role="alert" className="text-[11px] text-red-400">{erro}</p>}
 
       <button type="submit" disabled={enviando}
-        className="w-full bg-primary-container text-on-primary py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-widest disabled:opacity-50">
+        className="w-full bg-primary-container text-on-primary py-2.5 rounded-xl text-[11px] font-medium uppercase tracking-widest disabled:opacity-50">
         {enviando ? 'enviando...' : 'quero falar com um especialista'}
       </button>
     </form>

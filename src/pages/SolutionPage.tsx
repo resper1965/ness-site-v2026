@@ -78,7 +78,7 @@ const SolutionPage = () => {
             <h2 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight leading-tight lowercase">
               {t(`solutions.${slug}.fullTitle`)}<BlueDot />
             </h2>
-            <p className="text-base md:text-lg text-on-surface-variant font-light leading-relaxed">
+            <p className="text-base md:text-lg text-on-surface-variant font-normal leading-relaxed">
               {solution.overview || t(`solutions.${slug}.longDesc`)}
             </p>
             <div className="flex gap-4 pt-4">
@@ -129,14 +129,14 @@ const SolutionPage = () => {
                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/20 transition-all z-0"></div>
                 <div className="relative z-10 flex flex-col flex-1">
                   <div className="flex items-center gap-4 mb-8">
-                    <div className="w-12 h-12 shrink-0 rounded-full bg-primary-container/10 border border-primary-container/20 flex items-center justify-center text-sm font-mono text-primary-container font-bold shadow-[0_0_15px_rgba(var(--primary-container-rgb),0.1)] group-hover:shadow-[0_0_20px_rgba(var(--primary-container-rgb),0.2)] transition-shadow">
+                    <div className="w-12 h-12 shrink-0 rounded-full bg-primary-container/10 border border-primary-container/20 flex items-center justify-center text-sm font-mono text-primary-container font-medium shadow-[0_0_15px_rgba(var(--primary-container-rgb),0.1)] group-hover:shadow-[0_0_20px_rgba(var(--primary-container-rgb),0.2)] transition-shadow">
                       {w.step}
                     </div>
                     <div className="h-px flex-1 bg-linear-to-r from-white/10 to-transparent group-hover:from-primary-container/30 transition-colors"></div>
                   </div>
                   <h4 className="text-white font-display font-medium text-[1.15rem] leading-snug mb-4 tracking-tight group-hover:text-primary-container transition-colors drop-shadow-sm">{w.name}</h4>
                   {w.desc && (
-                    <p className="text-on-surface-variant font-light leading-relaxed text-sm flex-1">{w.desc}</p>
+                    <p className="text-on-surface-variant font-normal leading-relaxed text-sm flex-1">{w.desc}</p>
                   )}
                 </div>
               </motion.div>
@@ -160,7 +160,7 @@ const SolutionPage = () => {
                   className="p-8 lg:p-10 rounded-4xl bg-surface-container-low/10 border border-white/5 hover:bg-surface-container-low/30 hover:border-primary/20 transition-all group flex flex-col justify-between"
                 >
                   <h4 className="text-white font-medium text-lg lg:text-xl leading-tight mb-4 group-hover:text-primary-container transition-colors pr-6">{useCase.title}</h4>
-                  <p className="text-on-surface-variant font-light text-sm">{useCase.desc}</p>
+                  <p className="text-on-surface-variant font-normal text-sm">{useCase.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -190,7 +190,7 @@ const SolutionPage = () => {
                     <CheckCircle2 className="text-primary-container" size={24} />
                   </div>
                   <h4 className="text-white font-display font-semibold text-xl mb-4 group-hover:text-primary-container transition-colors tracking-tight">{benefit.title}</h4>
-                  <p className="text-on-surface-variant font-light leading-relaxed flex-1">{benefit.desc}</p>
+                  <p className="text-on-surface-variant font-normal leading-relaxed flex-1">{benefit.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -204,7 +204,7 @@ const SolutionPage = () => {
         {solution.features && (
           <section id="funcionalidades" className="mb-24 pt-12 border-t border-white/5">
             <div className="mb-16 text-center">
-              <h3 className="text-3xl md:text-4xl font-display font-bold text-white tracking-tight lowercase mb-6">
+              <h3 className="text-3xl md:text-4xl font-display font-medium text-white tracking-tight lowercase mb-6">
                 {t('solutions.technical_arsenal', 'o arsenal em operação')}<BlueDot />
               </h3>
             </div>
@@ -256,12 +256,12 @@ const SolutionPage = () => {
                   whileHover={{ y: -10 }}
                   className="flex-1 relative z-10 bg-surface-container-lowest md:bg-transparent p-6 md:p-0 rounded-3xl border border-white/5 md:border-transparent group"
                 >
-                  <div className="w-12 h-12 bg-surface-container-lowest border border-white/10 rounded-full flex items-center justify-center text-primary font-mono text-sm font-bold mb-8 mx-auto shadow-xl group-hover:border-primary/50 group-hover:text-primary-container transition-all">
+                  <div className="w-12 h-12 bg-surface-container-lowest border border-white/10 rounded-full flex items-center justify-center text-primary font-mono text-sm font-medium mb-8 mx-auto shadow-xl group-hover:border-primary/50 group-hover:text-primary-container transition-all">
                     {step.step}
                   </div>
                   <div className="text-center md:px-2">
                     <h4 className="text-white font-medium text-lg mb-3 tracking-tight">{step.title}</h4>
-                    <p className="text-on-surface-variant text-xs md:text-sm font-light leading-relaxed">{step.desc}</p>
+                    <p className="text-on-surface-variant text-xs md:text-sm font-normal leading-relaxed">{step.desc}</p>
                   </div>
                 </motion.div>
               ))}
@@ -295,7 +295,7 @@ const SolutionPage = () => {
           </div>
           <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
             <h4 className="text-3xl lg:text-5xl font-display font-medium text-white mb-6 tracking-tight lowercase">{t('solutions.cta_title', 'sua empresa em um novo nível')}<BlueDot /></h4>
-            <p className="text-lg text-on-surface-variant font-light leading-relaxed mb-10">{t('solutions.cta_desc', 'descubra como a ness. pode transformar sua operação com inteligência e segurança de elite.')}</p>
+            <p className="text-lg text-on-surface-variant font-normal leading-relaxed mb-10">{t('solutions.cta_desc', 'descubra como a ness. pode transformar sua operação com inteligência e segurança de elite.')}</p>
             <button 
               onClick={() => {
                 if (slug === 'cirt') {
@@ -315,7 +315,7 @@ const SolutionPage = () => {
             <div className="flex justify-center mb-8">
               <button 
                 onClick={() => setShowTech(!showTech)}
-                className="flex items-center gap-3 px-8 py-4 rounded-full bg-surface-container-low border border-white/10 hover:bg-surface-container-low/80 hover:border-primary/20 transition-all text-on-surface-variant text-xs font-bold uppercase tracking-[0.2em] shadow-lg shadow-black/20"
+                className="flex items-center gap-3 px-8 py-4 rounded-full bg-surface-container-low border border-white/10 hover:bg-surface-container-low/80 hover:border-primary/20 transition-all text-on-surface-variant text-xs font-medium uppercase tracking-[0.2em] shadow-lg shadow-black/20"
               >
                 {t('solutions.technical_view_toggle', 'visão para engenharia & ctos')}
                 <motion.div animate={{ rotate: showTech ? 180 : 0 }}>
@@ -335,7 +335,7 @@ const SolutionPage = () => {
                   <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8 pt-6">
                     <div className="max-w-xl">
                       <h3 className="text-xl md:text-2xl font-display font-semibold text-white tracking-tight lowercase">{t('solutions.tech_engine', 'o motor da resiliência')}<BlueDot /></h3>
-                      <p className="text-on-surface-variant mt-4 font-light">{t('solutions.tech_desc', 'para os interessados na engenharia por trás da proteção, aqui estão os pilares técnicos que sustentam nossa entrega de valor.')}</p>
+                      <p className="text-on-surface-variant mt-4 font-normal">{t('solutions.tech_desc', 'para os interessados na engenharia por trás da proteção, aqui estão os pilares técnicos que sustentam nossa entrega de valor.')}</p>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-6">
@@ -345,7 +345,7 @@ const SolutionPage = () => {
                           <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
                           {feat.title}
                         </h4>
-                        <p className="text-on-surface-variant text-xs font-light leading-relaxed">{feat.desc}</p>
+                        <p className="text-on-surface-variant text-xs font-normal leading-relaxed">{feat.desc}</p>
                       </div>
                     ))}
                   </div>
@@ -362,7 +362,7 @@ const SolutionPage = () => {
               <div key={i} className="p-8 rounded-4xl border border-white/5 bg-linear-to-br from-surface-container-low to-surface-container-lowest">
                 <div className="flex justify-between items-start mb-6">
                   <div>
-                    <span className="text-[11px] uppercase tracking-widest text-primary font-bold">{item.client}</span>
+                    <span className="text-[11px] uppercase tracking-widest text-primary font-medium">{item.client}</span>
                     <h4 className="text-xl text-white mt-1 font-medium">{item.project}</h4>
                   </div>
                   <ExternalLink className="text-on-surface-variant/60" size={20} />

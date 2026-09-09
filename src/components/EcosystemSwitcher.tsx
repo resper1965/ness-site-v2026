@@ -48,7 +48,7 @@ export default function EcosystemSwitcher() {
         className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-white/5 border border-white/10 hover:border-primary-container/40 transition-colors focus-visible:ring-2 focus-visible:ring-primary-container"
       >
         {/* Não repete o nome da marca: o logo ao lado já diz onde se está. */}
-        <span className="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">
+        <span className="text-[11px] font-medium text-on-surface-variant uppercase tracking-widest">
           ecossistema
         </span>
         <ChevronDown size={11} aria-hidden="true" className={`text-on-surface-variant ${aberto ? 'rotate-180' : ''} transition-transform`} />

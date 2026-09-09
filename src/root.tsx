@@ -198,7 +198,7 @@ export function ErrorBoundary({ error }: { error: unknown }) {
     <Shell brand={brand}>
       <div className="min-h-screen flex items-center justify-center px-8 text-center">
         <div>
-          <h1 className="text-3xl font-bold mb-4">algo deu errado</h1>
+          <h1 className="text-3xl font-medium mb-4">algo deu errado</h1>
           <p className="opacity-70">tente recarregar a página em instantes.</p>
         </div>
       </div>

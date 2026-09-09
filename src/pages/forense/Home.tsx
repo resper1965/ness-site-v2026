@@ -37,7 +37,7 @@ export default function ForenseHome() {
             <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-display font-medium text-white leading-[1.05] tracking-tighter lowercase-all">
               <span className="text-white/90 drop-shadow-[0_0_20px_rgba(0,173,232,0.4)]">{t("forense.hero.tag")}</span> {t("forense.hero.tag2")}
             </h1>
-            <p className="text-lg md:text-2xl text-on-surface-variant max-w-3xl leading-relaxed font-light">
+            <p className="text-lg md:text-2xl text-on-surface-variant max-w-3xl leading-relaxed font-normal">
               {t("forense.hero.subtitle")}
             </p>
             <div className="flex flex-wrap items-center gap-8 pt-4">
@@ -66,7 +66,7 @@ export default function ForenseHome() {
              <h2 className="text-3xl md:text-5xl font-display font-medium text-white lowercase-all tracking-tighter">
                 {t("forense.why.title")}<BlueDot />
              </h2>
-             <p className="mt-6 text-on-surface-variant max-w-2xl leading-relaxed font-light">
+             <p className="mt-6 text-on-surface-variant max-w-2xl leading-relaxed font-normal">
                 {t("forense.why.desc")}
              </p>
           </div>
@@ -102,9 +102,9 @@ export default function ForenseHome() {
             ].map((feature, i) => (
               <div key={i} className={`p-8 rounded-3xl bg-surface-container border border-white/5 hover:border-primary-container/30 transition-colors group ${feature.className}`}>
                 <feature.icon className="text-primary-container mb-6 group-hover:scale-110 transition-transform" size={32} />
-                <span className="text-[11px] text-primary-container font-bold uppercase tracking-widest block mb-2">{feature.title}</span>
+                <span className="text-[11px] text-primary-container font-medium uppercase tracking-widest block mb-2">{feature.title}</span>
                 <h3 className="text-lg font-display text-white mb-3 tracking-tight leading-tight">{feature.subtitle}</h3>
-                <p className="text-sm text-on-surface-variant font-light leading-relaxed">{feature.description}</p>
+                <p className="text-sm text-on-surface-variant font-normal leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -119,7 +119,7 @@ export default function ForenseHome() {
              <h2 className="text-3xl md:text-4xl font-display font-medium text-white lowercase-all tracking-tighter">
                 {t("forense.resources.title")}<BlueDot />
              </h2>
-             <p className="mt-4 text-on-surface-variant max-w-2xl font-light">{t("forense.resources.desc")}</p>
+             <p className="mt-4 text-on-surface-variant max-w-2xl font-normal">{t("forense.resources.desc")}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
@@ -137,7 +137,7 @@ export default function ForenseHome() {
               <div key={i} className="p-8 rounded-3xl bg-surface-container border border-white/5 hover:border-primary-container/30 transition-colors group">
                 <feature.icon className="text-primary-container mb-6 group-hover:scale-110 transition-transform" size={32} />
                 <h3 className="text-xl font-display text-white mb-3 tracking-tight">{feature.title}</h3>
-                <p className="text-sm text-on-surface-variant font-light leading-relaxed">{feature.desc}</p>
+                <p className="text-sm text-on-surface-variant font-normal leading-relaxed">{feature.desc}</p>
               </div>
             ))}
           </div>
@@ -170,7 +170,7 @@ export default function ForenseHome() {
               ].map((m, i) => (
                 <div key={i} className="p-8 rounded-3xl bg-surface-container-lowest border border-white/5 text-center">
                   <div className="text-3xl font-display text-white mb-2">{m.value}</div>
-                  <div className="text-[11px] text-primary-container font-bold uppercase tracking-widest">{m.label}</div>
+                  <div className="text-[11px] text-primary-container font-medium uppercase tracking-widest">{m.label}</div>
                 </div>
               ))}
             </div>
@@ -185,7 +185,7 @@ export default function ForenseHome() {
              <h2 className="text-3xl md:text-5xl font-display font-medium text-white lowercase-all tracking-tighter">
                 {t("forense.process.title")}<BlueDot />
              </h2>
-             <p className="mt-6 text-on-surface-variant max-w-2xl leading-relaxed font-light">
+             <p className="mt-6 text-on-surface-variant max-w-2xl leading-relaxed font-normal">
                 {t("forense.process.desc")}
              </p>
           </div>
@@ -199,9 +199,9 @@ export default function ForenseHome() {
               { step: t("forense.process.steps.s5.step"), title: t("forense.process.steps.s5.title"), desc: t("forense.process.steps.s5.desc") },
             ].map((s, i) => (
               <div key={i} className="p-6 rounded-2xl bg-surface-container/50 border border-white/5">
-                <span className="text-primary-container font-display text-xs font-bold block mb-4 tracking-widest">{s.step}</span>
+                <span className="text-primary-container font-display text-xs font-medium block mb-4 tracking-widest">{s.step}</span>
                 <h3 className="text-lg font-display text-white mb-2 leading-tight">{s.title}</h3>
-                <p className="text-xs text-on-surface-variant font-light">{s.desc}</p>
+                <p className="text-xs text-on-surface-variant font-normal">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -214,13 +214,13 @@ export default function ForenseHome() {
           <h2 className="text-4xl md:text-6xl font-display font-medium text-white lowercase-all tracking-tighter">
             {t("forense.cta.title")}<BlueDot />
           </h2>
-          <p className="text-on-surface-variant text-lg font-light leading-relaxed">
+          <p className="text-on-surface-variant text-lg font-normal leading-relaxed">
             {t("forense.cta.desc")}
           </p>
           <div className="pt-4 flex flex-wrap justify-center gap-6">
             <Link
               to="/contato"
-              className="inline-block bg-primary-container text-on-primary px-12 py-5 rounded-full font-display font-bold text-sm uppercase tracking-widest hover:brightness-110 transition-all"
+              className="inline-block bg-primary-container text-on-primary px-12 py-5 rounded-full font-display font-medium text-sm uppercase tracking-widest hover:brightness-110 transition-all"
             >
               {t("forense.cta.btn")}
             </Link>

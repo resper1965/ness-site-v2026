@@ -34,7 +34,7 @@ const Services = () => {
             <h2 className="text-4xl font-display font-semibold tracking-tighter mb-6 text-white lowercase-all">
               {t('nav.services')}<BlueDot />
             </h2>
-            <p className="text-on-surface-variant text-lg font-light">
+            <p className="text-on-surface-variant text-lg font-normal">
               {t('services.subtitle')}
             </p>
           </div>
@@ -55,12 +55,12 @@ const Services = () => {
                 <service.icon className="text-primary-container" size={24} />
               </div>
               <h3 className="text-xl font-medium text-white mb-4">{service.title}</h3>
-              <p className="text-on-surface-variant text-sm font-light leading-relaxed mb-8 flex-1">
+              <p className="text-on-surface-variant text-sm font-normal leading-relaxed mb-8 flex-1">
                 {service.desc}
               </p>
               <div className="flex flex-wrap gap-2">
                 {service.tags.map((tag) => (
-                  <span key={tag} className="text-[11px] uppercase tracking-widest text-primary-container/60 font-bold px-3 py-1 rounded-full bg-primary-container/5 border border-primary-container/10">
+                  <span key={tag} className="text-[11px] uppercase tracking-widest text-primary-container/60 font-medium px-3 py-1 rounded-full bg-primary-container/5 border border-primary-container/10">
                     {tag}
                   </span>
                 ))}

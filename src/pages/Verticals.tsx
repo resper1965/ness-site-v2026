@@ -24,7 +24,7 @@ const Verticals = () => {
             <h2 className="text-4xl font-display font-semibold tracking-tighter mb-6 text-white lowercase-all">
               {t('verticals.title')}<BlueDot />
             </h2>
-            <p className="text-on-surface-variant text-lg font-light">
+            <p className="text-on-surface-variant text-lg font-normal">
               {t('verticals.subtitle')}
             </p>
           </div>
@@ -42,10 +42,10 @@ const Verticals = () => {
             <h3 className="text-3xl mb-4 text-white font-brand font-medium lowercase-all">
               forense<span className="text-primary-container">.</span>io
             </h3>
-            <p className="text-on-surface-variant leading-relaxed font-light">
+            <p className="text-on-surface-variant leading-relaxed font-normal">
               {t('verticals.forense.desc')}
             </p>
-            <div className="mt-8 flex items-center gap-2 text-[11px] text-primary-container uppercase tracking-widest font-bold">
+            <div className="mt-8 flex items-center gap-2 text-[11px] text-primary-container uppercase tracking-widest font-medium">
               {t('verticals.cta')} <ArrowUpRight size={14} />
             </div>
           </motion.a>
@@ -61,10 +61,10 @@ const Verticals = () => {
             <h3 className="text-3xl mb-4 text-white font-brand font-medium lowercase-all">
               trustness<BlueDot />
             </h3>
-            <p className="text-on-surface-variant leading-relaxed font-light">
+            <p className="text-on-surface-variant leading-relaxed font-normal">
               {t('verticals.trustness.desc')}
             </p>
-            <div className="mt-8 flex items-center gap-2 text-[11px] text-primary-container uppercase tracking-widest font-bold">
+            <div className="mt-8 flex items-center gap-2 text-[11px] text-primary-container uppercase tracking-widest font-medium">
               {t('verticals.cta')} <ArrowUpRight size={14} />
             </div>
           </motion.a>

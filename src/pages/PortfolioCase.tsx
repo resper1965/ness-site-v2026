@@ -59,7 +59,7 @@ const PortfolioCase = () => {
         {/* Back */}
         <Link
           to="/portfolio"
-          className="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-xs uppercase tracking-widest font-bold mb-12"
+          className="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-xs uppercase tracking-widest font-medium mb-12"
         >
           <ArrowLeft size={14} /> {t('portfolio.case.back', 'portfolio')}
         </Link>
@@ -86,10 +86,10 @@ const PortfolioCase = () => {
         <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}>
           <div className="flex items-center gap-3 mb-4">
             {item.client && (
-              <span className="text-[11px] uppercase tracking-widest text-primary font-bold">{item.client}</span>
+              <span className="text-[11px] uppercase tracking-widest text-primary font-medium">{item.client}</span>
             )}
             {item.stats && (
-              <span className="px-3 py-1 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container text-[11px] font-bold uppercase tracking-widest">
+              <span className="px-3 py-1 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container text-[11px] font-medium uppercase tracking-widest">
                 {(() => {
                   try {
                     if (item.stats.startsWith('{')) {
@@ -105,10 +105,10 @@ const PortfolioCase = () => {
               </span>
             )}
           </div>
-          <h1 className="text-3xl md:text-4xl font-display font-bold text-white lowercase-all mb-6">
+          <h1 className="text-3xl md:text-4xl font-display font-medium text-white lowercase-all mb-6">
             {item.project}<BlueDot />
           </h1>
-          <p className="text-base text-on-surface-variant font-light leading-relaxed mb-12">{item.desc}</p>
+          <p className="text-base text-on-surface-variant font-normal leading-relaxed mb-12">{item.desc}</p>
         </motion.div>
 
         {/* Result block */}
@@ -119,7 +119,7 @@ const PortfolioCase = () => {
             transition={{ delay: 0.2 }}
             className="p-8 rounded-4xl bg-surface-container-low border border-white/5 mb-12"
           >
-            <div className="text-[11px] uppercase tracking-widest text-on-surface-variant/60 font-bold mb-2">{t('portfolio.result')}</div>
+            <div className="text-[11px] uppercase tracking-widest text-on-surface-variant/60 font-medium mb-2">{t('portfolio.result')}</div>
             <div className="text-white text-lg font-display font-semibold">{item.result}</div>
           </motion.div>
         )}
@@ -128,13 +128,13 @@ const PortfolioCase = () => {
         <div className="flex flex-wrap gap-4">
           <Link
             to="/portfolio"
-            className="inline-flex items-center gap-2 border border-white/10 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 border border-white/10 px-6 py-2 rounded-full text-xs font-medium uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors"
           >
             <ArrowLeft size={12} /> {t('portfolio.case.all', 'todos os cases')}
           </Link>
           <Link
             to="/contato"
-            className="inline-flex items-center gap-2 bg-primary-container text-on-primary px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform"
+            className="inline-flex items-center gap-2 bg-primary-container text-on-primary px-6 py-2 rounded-full text-xs font-medium uppercase tracking-widest hover:scale-105 transition-transform"
           >
             {t('portfolio.case.talk', 'falar com especialista')} <ExternalLink size={12} />
           </Link>

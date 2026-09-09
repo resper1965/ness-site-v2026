@@ -93,11 +93,11 @@ const Insights = () => {
                     <div className="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center mb-6">
                       <Icon className="text-primary-container" size={24} />
                     </div>
-                    <span className="text-primary-container text-[11px] uppercase tracking-widest font-bold">{art.tag}</span>
+                    <span className="text-primary-container text-[11px] uppercase tracking-widest font-medium">{art.tag}</span>
                     <h3 className="text-xl mt-2 mb-4 text-white group-hover:text-primary transition-colors lowercase-all">
                       {art.title}
                     </h3>
-                    <p className="text-on-surface-variant text-sm font-light line-clamp-2">
+                    <p className="text-on-surface-variant text-sm font-normal line-clamp-2">
                       {art.desc}
                     </p>
                   </Link>

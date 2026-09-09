@@ -37,7 +37,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({
       <h3 className="text-2xl font-display font-semibold text-white/60 mb-3 lowercase">
         {displayTitle}<BlueDot />
       </h3>
-      <p className="text-sm text-on-surface-variant/60 font-light max-w-md leading-relaxed">
+      <p className="text-sm text-on-surface-variant/60 font-normal max-w-md leading-relaxed">
         {displaySubtitle}
       </p>
     </motion.div>

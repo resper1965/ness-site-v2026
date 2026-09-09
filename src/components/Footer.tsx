@@ -74,7 +74,7 @@ const Footer = () => {
 
         <div className="grid min-w-0 grid-cols-2 gap-10 lg:grid-cols-4 lg:gap-12">
           <div className="space-y-4">
-            <h2 className="text-[11px] uppercase tracking-widest text-white font-bold">{t('footer.company')}</h2>
+            <h2 className="text-[11px] uppercase tracking-widest text-white font-medium">{t('footer.company')}</h2>
             <ul className="space-y-1 text-sm text-on-surface-variant/85 font-normal">
               <li><Link className="inline-block py-1 hover:text-white transition-colors" to="/sobre">{t('nav.about')}</Link></li>
               <li><Link className="inline-block py-1 hover:text-white transition-colors" to="/portfolio">{t('nav.portfolio')}</Link></li>
@@ -85,7 +85,7 @@ const Footer = () => {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-[11px] uppercase tracking-widest text-white font-bold">{t('footer.legal')}</h2>
+            <h2 className="text-[11px] uppercase tracking-widest text-white font-medium">{t('footer.legal')}</h2>
             <ul className="space-y-1 text-sm text-on-surface-variant/85 font-normal">
               <li><Link className="inline-block py-1 hover:text-white transition-colors" to="/compliance/termos">{t('footer.terms')}</Link></li>
               <li><Link className="inline-block py-1 hover:text-white transition-colors" to="/compliance/privacidade">{t('footer.privacy')}</Link></li>
@@ -95,7 +95,7 @@ const Footer = () => {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-[11px] uppercase tracking-widest text-white font-bold">{t('footer.ecosystem')}</h2>
+            <h2 className="text-[11px] uppercase tracking-widest text-white font-medium">{t('footer.ecosystem')}</h2>
             <ul className="space-y-1 text-sm text-on-surface-variant/85 font-normal">
               {ECOSYSTEM_LINKS
                 .filter(l => l.brand !== BRAND)
@@ -110,10 +110,10 @@ const Footer = () => {
           </div>
 
           <div className="space-y-4 col-span-2 lg:col-span-1">
-            <h2 className="text-[11px] uppercase tracking-widest text-white font-bold">{t('footer.updates')}</h2>
+            <h2 className="text-[11px] uppercase tracking-widest text-white font-medium">{t('footer.updates')}</h2>
             <p className="text-sm text-on-surface-variant/85 font-normal">{t('footer.newsletter')}</p>
             {newsletterStatus === 'ok' ? (
-              <p className="text-xs text-primary-container font-bold uppercase tracking-widest">✓ inscrito.</p>
+              <p className="text-xs text-primary-container font-medium uppercase tracking-widest">✓ inscrito.</p>
             ) : (
               <form onSubmit={handleNewsletter} className="flex flex-col gap-2">
                 {/* Armadilha: fora da tela e fora do teclado. */}

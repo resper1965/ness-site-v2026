@@ -25,7 +25,7 @@ const SolutionExecutiveDashboard: React.FC<SolutionDashboardProps> = ({ slug, da
       <div className="absolute top-0 right-0 p-6">
         <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
           <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
-          <span className="text-[11px] text-green-500 font-bold uppercase tracking-widest">
+          <span className="text-[11px] text-green-500 font-medium uppercase tracking-widest">
             {t('solutions.active_resilience')}
           </span>
         </div>
@@ -33,11 +33,11 @@ const SolutionExecutiveDashboard: React.FC<SolutionDashboardProps> = ({ slug, da
       
       <div className="space-y-10">
         <div className="flex justify-between items-end">
-          <h3 className="text-xs uppercase tracking-[0.2em] text-primary font-bold">
+          <h3 className="text-xs uppercase tracking-[0.2em] text-primary font-medium">
             {dashboard?.title || 'executive dashboard'}
           </h3>
           <div className="text-right">
-            <div className="text-3xl font-display font-bold text-white tracking-tighter">
+            <div className="text-3xl font-display font-medium text-white tracking-tighter">
               {dashboard?.mainStat.value || '99.9%'}
             </div>
             <div className="text-[11px] text-on-surface-variant uppercase tracking-widest">
@@ -53,7 +53,7 @@ const SolutionExecutiveDashboard: React.FC<SolutionDashboardProps> = ({ slug, da
                 initial={{ opacity: 0.5 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
-                className={`${metric.color} text-xl font-bold mb-1`}
+                className={`${metric.color} text-xl font-medium mb-1`}
               >
                 {metric.value}
               </motion.div>
@@ -66,7 +66,7 @@ const SolutionExecutiveDashboard: React.FC<SolutionDashboardProps> = ({ slug, da
 
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <h4 className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold">
+            <h4 className="text-[11px] uppercase tracking-widest text-on-surface-variant font-medium">
               {dashboard?.progress.label}
             </h4>
             <span className="text-[11px] text-primary font-mono">

@@ -59,7 +59,7 @@ export default function LeadMagnet({
         <div className="flex-1 space-y-3">
           <div className="flex items-center gap-3">
             <FileText className="text-primary-container" size={24} />
-            <span className="text-[11px] text-primary-container font-bold uppercase tracking-widest">
+            <span className="text-[11px] text-primary-container font-medium uppercase tracking-widest">
               material gratuito
             </span>
           </div>
@@ -67,13 +67,13 @@ export default function LeadMagnet({
             {title}
             <BlueDot />
           </h3>
-          <p className="text-sm text-on-surface-variant font-light leading-relaxed max-w-lg">
+          <p className="text-sm text-on-surface-variant font-normal leading-relaxed max-w-lg">
             {description}
           </p>
         </div>
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-primary-container text-on-primary px-8 py-4 rounded-full font-display font-bold text-sm uppercase tracking-widest hover:brightness-110 transition-all whitespace-nowrap shrink-0 flex items-center gap-2"
+          className="bg-primary-container text-on-primary px-8 py-4 rounded-full font-display font-medium text-sm uppercase tracking-widest hover:brightness-110 transition-all whitespace-nowrap shrink-0 flex items-center gap-2"
         >
           <Download size={16} />
           {ctaLabel}
@@ -110,14 +110,14 @@ export default function LeadMagnet({
               {!isSubmitted ? (
                 <>
                   <div>
-                    <span className="text-[11px] text-primary-container font-bold uppercase tracking-widest block mb-2">
+                    <span className="text-[11px] text-primary-container font-medium uppercase tracking-widest block mb-2">
                       download gratuito
                     </span>
                     <h3 className="text-2xl font-display text-white tracking-tight lowercase mb-2">
                       {title}
                       <BlueDot />
                     </h3>
-                    <p className="text-sm text-on-surface-variant font-light">
+                    <p className="text-sm text-on-surface-variant font-normal">
                       {description}
                     </p>
                   </div>
@@ -169,7 +169,7 @@ export default function LeadMagnet({
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="w-full bg-primary-container text-on-primary py-3.5 rounded-xl font-display font-bold uppercase tracking-widest text-xs hover:brightness-110 transition-all disabled:opacity-50"
+                      className="w-full bg-primary-container text-on-primary py-3.5 rounded-xl font-display font-medium uppercase tracking-widest text-xs hover:brightness-110 transition-all disabled:opacity-50"
                     >
                       {isLoading ? "enviando..." : "receber material"}
                     </button>
@@ -193,7 +193,7 @@ export default function LeadMagnet({
                   <h3 className="text-xl font-display text-white">
                     Material enviado!
                   </h3>
-                  <p className="text-sm text-on-surface-variant font-light">
+                  <p className="text-sm text-on-surface-variant font-normal">
                     Verifique seu email. O material também estará disponível em
                     breve na sua caixa de entrada.
                   </p>
@@ -202,7 +202,7 @@ export default function LeadMagnet({
                       setIsOpen(false);
                       setIsSubmitted(false);
                     }}
-                    className="text-primary-container font-display font-bold text-sm uppercase tracking-widest hover:brightness-110"
+                    className="text-primary-container font-display font-medium text-sm uppercase tracking-widest hover:brightness-110"
                   >
                     fechar
                   </button>

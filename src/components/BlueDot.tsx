@@ -11,4 +11,23 @@ const BlueDot = () => (
   <span className="text-primary-container" style={{ letterSpacing: 0 }}>.</span>
 );
 
+/**
+ * Nome de produto da familia n: n.secops, n.cirt, n.infraops.
+ *
+ * O ponto tambem e o BlueDot — a regra vale para qualquer marca do
+ * ecossistema, nao so para ness., trustness. e forense.io. Estava sendo
+ * quebrada nos tres lugares que listam os produtos.
+ */
+export function NomeDeProduto({ nome }: { nome: string }) {
+  const [antes, ...resto] = nome.split('.');
+  if (!resto.length) return <>{nome}</>;
+  return (
+    <>
+      {antes}
+      <BlueDot />
+      {resto.join('.')}
+    </>
+  );
+}
+
 export default BlueDot;

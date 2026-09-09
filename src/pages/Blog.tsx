@@ -69,7 +69,7 @@ const Blog = () => {
           <h1 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight mb-6 lowercase">
             {t('blog.title')}<BlueDot />
           </h1>
-          <p className="text-base md:text-lg text-on-surface-variant font-light max-w-3xl leading-relaxed">
+          <p className="text-base md:text-lg text-on-surface-variant font-normal max-w-3xl leading-relaxed">
             {t('blog.subtitle')}
           </p>
         </div>
@@ -81,7 +81,7 @@ const Blog = () => {
               <button
                 key={tag}
                 onClick={() => setActiveTag(tag)}
-                className={`px-5 py-2 rounded-full text-[11px] uppercase tracking-widest font-bold transition-all ${
+                className={`px-5 py-2 rounded-full text-[11px] uppercase tracking-widest font-medium transition-all ${
                   activeTag === tag
                     ? 'bg-primary-container text-on-primary shadow-lg shadow-primary-container/20'
                     : 'bg-white/5 text-on-surface-variant hover:bg-white/10'
@@ -122,18 +122,18 @@ const Blog = () => {
                     <Icon className="text-primary-container" size={24} />
                   </div>
                   <div className="flex justify-between items-center mb-4">
-                    <span className="text-primary-container text-[11px] uppercase tracking-widest font-bold">{art.tag}</span>
+                    <span className="text-primary-container text-[11px] uppercase tracking-widest font-medium">{art.tag}</span>
                     <span className="text-on-surface-variant/60 text-[11px] font-mono">{art.date}</span>
                   </div>
                   <h3 className="text-2xl mb-4 text-white group-hover:text-primary transition-colors lowercase-all leading-tight">
                     {art.title}
                   </h3>
-                  <p className="text-on-surface-variant text-sm font-light leading-relaxed mb-8 flex-1">
+                  <p className="text-on-surface-variant text-sm font-normal leading-relaxed mb-8 flex-1">
                     {art.desc}
                   </p>
                   <Link
                     to={`/blog/${slug}`}
-                    className="flex items-center gap-2 text-[11px] text-primary-container uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="flex items-center gap-2 text-[11px] text-primary-container uppercase tracking-widest font-medium opacity-0 group-hover:opacity-100 transition-opacity"
                   >
                     {t('blog.read_article', 'ler artigo completo')} <ArrowUpRight size={14} />
                   </Link>

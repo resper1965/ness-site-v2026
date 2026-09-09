@@ -34,7 +34,7 @@ export default function ConsentimentoPrivacidade({ id = 'privacy-consent' }: { i
       >
         <path d="M5.5 10.5l3 3 6-6.5" fill="none" stroke="#003549" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
-      <label htmlFor={id} className="cursor-pointer text-[11px] font-light leading-relaxed text-on-surface-variant">
+      <label htmlFor={id} className="cursor-pointer text-[11px] font-normal leading-relaxed text-on-surface-variant">
         <Trans
           i18nKey="common.privacy_consent_links"
           defaults="li e aceito a <privacidade>política de privacidade</privacidade> e os <termos>termos de uso</termos>."

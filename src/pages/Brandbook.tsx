@@ -92,7 +92,7 @@ export default function Brandbook() {
            <motion.p
              initial={{ y: 16, opacity: 0 }}
              animate={{ y: 0, opacity: 1 }}
-             className="text-base md:text-lg text-on-surface-variant font-light leading-relaxed max-w-xl"
+             className="text-base md:text-lg text-on-surface-variant font-normal leading-relaxed max-w-xl"
            >
              Bem-vindo ao manual online da marca Ness. Aqui você encontra as diretrizes oficiais de uso do logotipo, paleta de cores institucionais e arquivos em alta resolução para aplicações corporativas.
            </motion.p>
@@ -104,7 +104,7 @@ export default function Brandbook() {
              <h2 className="text-2xl font-display font-medium text-white tracking-tight flex items-center gap-3">
                <Component className="text-primary-container" size={24} /> O Logotipo
              </h2>
-             <p className="mt-4 text-sm text-on-surface-variant font-light max-w-2xl">
+             <p className="mt-4 text-sm text-on-surface-variant font-normal max-w-2xl">
                Nossa marca de nascença carrega precisão e foco. Use sempre as versões oficiais SVG ou PNG sem alterar as proporções ou substituir a tipografia customizada. O 'Blue Dot' (ponto final ciano) deve estar sempre presente.
              </p>
           </div>
@@ -166,7 +166,7 @@ export default function Brandbook() {
              <h2 className="text-2xl font-display font-medium text-white tracking-tight flex items-center gap-3">
                <Monitor className="text-primary-container" size={24} /> Paleta de Cores
              </h2>
-             <p className="mt-4 text-sm text-on-surface-variant font-light max-w-2xl">
+             <p className="mt-4 text-sm text-on-surface-variant font-normal max-w-2xl">
                Uma base azul-noite de alto contraste. O BlueDot (#00ADE8) entra só como destaque — o ponto da marca, a ação primária, o ícone que precisa ser visto. Nunca como fundo de área grande.
              </p>
           </div>
@@ -213,19 +213,19 @@ export default function Brandbook() {
           <div className="grid md:grid-cols-3 gap-8">
              <div className="p-6 rounded-2xl bg-surface-container-low/40 border border-white/5">
                 <h3 className="text-white font-medium mb-3">01. Margem de Segurança ("X")</h3>
-                <p className="text-sm text-on-surface-variant font-light leading-relaxed">
+                <p className="text-sm text-on-surface-variant font-normal leading-relaxed">
                   O logotipo deve sempre respirar. Deve haver um espaço vazio correspondente à altura completa da letra "n" ao redor de toda a extensão do bloco da marca.
                 </p>
              </div>
              <div className="p-6 rounded-2xl bg-surface-container-low/40 border border-white/5">
                 <h3 className="text-white font-medium mb-3">02. Ponto Final Obrigatório</h3>
-                <p className="text-sm text-on-surface-variant font-light leading-relaxed">
+                <p className="text-sm text-on-surface-variant font-normal leading-relaxed">
                   O BlueDot "." não é adorno: é elemento essencial da linguagem visual. Representa foco, diretividade e inteligência orquestrada.
                 </p>
              </div>
              <div className="p-6 rounded-2xl bg-surface-container-low/40 border border-red-500/20">
                 <h3 className="text-white font-medium mb-3">03. O Que NÃO Fazer</h3>
-                <ul className="text-sm text-red-200/70 font-light leading-relaxed list-disc list-inside space-y-1">
+                <ul className="text-sm text-red-200/70 font-normal leading-relaxed list-disc list-inside space-y-1">
                    <li>Não achatar ou esticar a marca.</li>
                    <li>Não aplicar outline ou sombras intensas.</li>
                    <li>Não usar a versão "Clear" em fundos poluídos.</li>

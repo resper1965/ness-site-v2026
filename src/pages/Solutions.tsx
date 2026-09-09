@@ -1,4 +1,4 @@
-import BlueDot from '../components/BlueDot';
+import BlueDot, { NomeDeProduto } from '../components/BlueDot';
 import { m as motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -70,12 +70,12 @@ const Solutions = () => {
               <motion.div whileHover={{ y: -5 }}>
                 <s.icon className="text-primary-container mb-6" size={32} />
                 <h3 className="text-2xl mb-4 text-white font-brand font-medium lowercase-all">
-                  {s.title.split('.')[0]}<BlueDot />{s.title.split('.')[1]}
+                  <NomeDeProduto nome={s.title} />
                 </h3>
-                <p className="text-on-surface-variant text-sm leading-relaxed font-light">
+                <p className="text-on-surface-variant text-sm leading-relaxed font-normal">
                   {s.desc}
                 </p>
-                <div className="mt-8 flex items-center gap-2 text-[11px] text-primary-container uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="mt-8 flex items-center gap-2 text-[11px] text-primary-container uppercase tracking-widest font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                   ver detalhes <ArrowRight size={14} />
                 </div>
               </motion.div>

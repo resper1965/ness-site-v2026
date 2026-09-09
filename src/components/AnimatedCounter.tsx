@@ -44,12 +44,12 @@ const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
       transition={{ duration: 0.6 }}
       className="text-center space-y-2"
     >
-      <div className="text-4xl md:text-5xl font-display font-bold text-white tracking-tight">
+      <div className="text-4xl md:text-5xl font-display font-medium text-white tracking-tight">
         <span className="text-primary-container">{prefix}</span>
         {count}
         <span className="text-primary-container">{suffix}</span>
       </div>
-      <p className="text-xs text-on-surface-variant/60 uppercase tracking-widest font-bold">{label}</p>
+      <p className="text-xs text-on-surface-variant/60 uppercase tracking-widest font-medium">{label}</p>
     </motion.div>
   );
 };

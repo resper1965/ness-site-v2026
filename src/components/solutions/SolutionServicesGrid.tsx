@@ -41,7 +41,7 @@ const SolutionServicesGrid: React.FC<SolutionServicesGridProps> = ({ services, t
               <h4 className="text-white font-display text-xl lg:text-2xl font-semibold mb-4 tracking-tight drop-shadow-md group-hover:text-primary-container transition-colors">
                 {service.name}
               </h4>
-              <p className="text-on-surface-variant font-light leading-relaxed flex-1">
+              <p className="text-on-surface-variant font-normal leading-relaxed flex-1">
                 {service.desc}
               </p>
             </div>

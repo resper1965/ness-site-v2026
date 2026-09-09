@@ -1,4 +1,4 @@
-import BlueDot from '../components/BlueDot';
+import BlueDot, { NomeDeProduto } from '../components/BlueDot';
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
@@ -120,7 +120,7 @@ const Navbar = () => {
                     /* Só clique: abrir no hover e fechar no clique é o padrão
                        que confunde no mouse e não existe no toque. */
                     onClick={() => setMenuSolucoes((aberto) => !aberto)}
-                    className={`flex items-center gap-1 py-2 tracking-wide text-[11px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-bold focus-visible:ring-2 focus-visible:ring-primary-container rounded-sm ${
+                    className={`flex items-center gap-1 py-2 tracking-wide text-[11px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-medium focus-visible:ring-2 focus-visible:ring-primary-container rounded-sm ${
                       active ? 'text-primary-container' : 'text-on-surface-variant'
                     }`}
                   >
@@ -140,7 +140,9 @@ const Navbar = () => {
                             to={`/solucoes/${solucao.slug}`}
                             className="block px-4 py-2.5 rounded-2xl hover:bg-white/5 transition-colors"
                           >
-                            <span className="block text-xs font-bold text-white lowercase-all">{solucao.nome}</span>
+                            <span className="marca block text-sm text-white">
+                              <NomeDeProduto nome={solucao.nome} />
+                            </span>
                             <span className="block text-[11px] text-on-surface-variant leading-snug">{solucao.resumo}</span>
                           </Link>
                         ))}
@@ -158,7 +160,7 @@ const Navbar = () => {
                         <Link
                           to="/assessment/cyber"
                           onClick={() => evento('cta_click', { cta: 'megamenu_diagnostico', destino: '/assessment/cyber' })}
-                          className="block mt-1 px-4 py-2.5 rounded-2xl bg-primary-container/10 text-primary-container text-[11px] font-bold uppercase tracking-widest text-center hover:bg-primary-container hover:text-on-primary transition-colors"
+                          className="block mt-1 px-4 py-2.5 rounded-2xl bg-primary-container/10 text-primary-container text-[11px] font-medium uppercase tracking-widest text-center hover:bg-primary-container hover:text-on-primary transition-colors"
                         >
                           {t('nav.assessment', 'diagnóstico gratuito')}
                         </Link>
@@ -174,7 +176,7 @@ const Navbar = () => {
                 key={item.key}
                 to={item.to}
                 aria-current={active ? 'page' : undefined}
-                className={`inline-flex items-center py-2 tracking-wide text-[11px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-bold focus-visible:ring-2 focus-visible:ring-primary-container rounded-sm ${
+                className={`inline-flex items-center py-2 tracking-wide text-[11px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-medium focus-visible:ring-2 focus-visible:ring-primary-container rounded-sm ${
                   active ? "text-primary-container" : "text-on-surface-variant"
                 }`}
               >
@@ -194,7 +196,7 @@ const Navbar = () => {
                 onClick={() => changeLanguage(lng)}
                 aria-label={`Alterar idioma para ${lng.toUpperCase()}`}
                 aria-pressed={i18n.language.startsWith(lng)}
-                className={`px-3 py-2 rounded-full text-[11px] uppercase font-bold tracking-wide transition-all focus-visible:ring-2 focus-visible:ring-primary-container ${
+                className={`px-3 py-2 rounded-full text-[11px] uppercase font-medium tracking-wide transition-all focus-visible:ring-2 focus-visible:ring-primary-container ${
                   i18n.language.startsWith(lng)
                     ? "bg-primary-container text-on-primary"
                     : "text-on-surface-variant hover:text-white"
@@ -209,7 +211,7 @@ const Navbar = () => {
           <Link
             onClick={() => evento('cta_click', { cta: 'navbar', destino: '/contato' })}
             to="/contato"
-            className="bg-primary-container text-on-primary px-4 md:px-6 py-2 rounded-full font-display font-bold text-[11px] md:text-xs uppercase tracking-wide transition-all hover:brightness-110 active:scale-95 focus-visible:ring-2 focus-visible:ring-primary-container whitespace-nowrap"
+            className="bg-primary-container text-on-primary px-4 md:px-6 py-2 rounded-full font-display font-medium text-[11px] md:text-xs uppercase tracking-wide transition-all hover:brightness-110 active:scale-95 focus-visible:ring-2 focus-visible:ring-primary-container whitespace-nowrap"
           >
             {t('nav.contact')}
           </Link>
@@ -240,7 +242,7 @@ const Navbar = () => {
                   type="button"
                   onClick={() => { changeLanguage(lng); setIsOpen(false); }}
                   aria-pressed={i18n.language.startsWith(lng)}
-                  className={`px-5 py-3 rounded-full text-xs uppercase font-bold tracking-wide transition-all focus-visible:ring-2 focus-visible:ring-primary-container ${
+                  className={`px-5 py-3 rounded-full text-xs uppercase font-medium tracking-wide transition-all focus-visible:ring-2 focus-visible:ring-primary-container ${
                     i18n.language.startsWith(lng)
                       ? "bg-primary-container text-on-primary"
                       : "bg-white/5 text-on-surface-variant"
@@ -275,9 +277,9 @@ const Navbar = () => {
                           key={solucao.slug}
                           to={`/solucoes/${solucao.slug}`}
                           onClick={() => setIsOpen(false)}
-                          className="text-sm text-on-surface-variant hover:text-primary-container transition-colors lowercase-all"
+                          className="marca text-base text-on-surface-variant transition-colors hover:text-primary-container"
                         >
-                          {solucao.nome}
+                          <NomeDeProduto nome={solucao.nome} />
                         </Link>
                       ))}
                       <Link to="/servicos" onClick={() => setIsOpen(false)} className="text-sm text-on-surface-variant hover:text-primary-container transition-colors lowercase-all">
@@ -296,7 +298,7 @@ const Navbar = () => {
               <Link
                 onClick={() => { setIsOpen(false); evento('cta_click', { cta: 'menu_mobile', destino: '/contato' }); }}
                 to="/contato"
-                className="w-full block text-center bg-primary-container text-on-primary py-4 rounded-2xl font-display font-bold uppercase tracking-widest text-sm"
+                className="w-full block text-center bg-primary-container text-on-primary py-4 rounded-2xl font-display font-medium uppercase tracking-widest text-sm"
               >
                 {t('nav.cta')}
               </Link>

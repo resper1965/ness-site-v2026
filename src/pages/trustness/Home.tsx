@@ -38,7 +38,7 @@ export default function TrustnessHome() {
             <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-display font-medium text-white leading-[1.05] tracking-tighter lowercase-all">
               <span className="text-white/90 drop-shadow-[0_0_20px_rgba(0,173,232,0.4)]">{t("trustness.hero.tag")}</span>
             </h1>
-            <p className="text-lg md:text-2xl text-on-surface-variant max-w-3xl leading-relaxed font-light">
+            <p className="text-lg md:text-2xl text-on-surface-variant max-w-3xl leading-relaxed font-normal">
               {t("trustness.hero.subtitle")}
             </p>
             <div className="flex flex-wrap items-center gap-8 pt-4">
@@ -67,7 +67,7 @@ export default function TrustnessHome() {
              <h2 className="text-3xl md:text-5xl font-display font-medium text-white lowercase-all tracking-tighter">
                 {t("trustness.why.title")}<BlueDot />
              </h2>
-             <p className="mt-6 text-on-surface-variant max-w-2xl leading-relaxed font-light">
+             <p className="mt-6 text-on-surface-variant max-w-2xl leading-relaxed font-normal">
                 {t("trustness.why.desc")}
              </p>
           </div>
@@ -108,9 +108,9 @@ export default function TrustnessHome() {
             ].map((feature, i) => (
               <div key={i} className={`p-8 rounded-3xl border transition-colors group ${feature.highlight ? 'bg-primary-container/5 border-primary-container/20' : 'bg-surface-container border-white/5 hover:border-primary-container/30'}`}>
                 <feature.icon className="text-primary-container mb-6 group-hover:scale-110 transition-transform" size={32} />
-                <span className="text-[11px] text-primary-container font-bold uppercase tracking-widest block mb-2">{feature.title}</span>
+                <span className="text-[11px] text-primary-container font-medium uppercase tracking-widest block mb-2">{feature.title}</span>
                 <h3 className="text-lg font-display text-white mb-3 tracking-tight leading-tight">{feature.subtitle}</h3>
-                <p className="text-sm text-on-surface-variant font-light leading-relaxed">{feature.description}</p>
+                <p className="text-sm text-on-surface-variant font-normal leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -118,17 +118,17 @@ export default function TrustnessHome() {
           {/* DPO as a Service — Featured Banner */}
           <div className="mt-8 p-8 md:p-12 rounded-3xl bg-primary-container/5 border border-primary-container/20 flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="flex-1">
-              <span className="text-[11px] text-primary-container font-bold uppercase tracking-widest block mb-3">serviço principal</span>
+              <span className="text-[11px] text-primary-container font-medium uppercase tracking-widest block mb-3">serviço principal</span>
               <h3 className="text-2xl md:text-3xl font-display text-white mb-3 tracking-tight lowercase">
                 dpo as a service<BlueDot />
               </h3>
-              <p className="text-on-surface-variant font-light leading-relaxed max-w-xl">
+              <p className="text-on-surface-variant font-normal leading-relaxed max-w-xl">
                 A trustness. assume o papel do Encarregado (DPO) da sua organização com tecnologia proprietária Aegis. Adequação, manutenção e auditoria contínua — sem ferramentas extras.
               </p>
             </div>
             <Link
               to="/dpo-as-a-service"
-              className="bg-primary-container text-on-primary px-8 py-4 rounded-full font-display font-bold text-sm uppercase tracking-widest hover:brightness-110 transition-all whitespace-nowrap shrink-0"
+              className="bg-primary-container text-on-primary px-8 py-4 rounded-full font-display font-medium text-sm uppercase tracking-widest hover:brightness-110 transition-all whitespace-nowrap shrink-0"
             >
               saiba mais
             </Link>
@@ -143,7 +143,7 @@ export default function TrustnessHome() {
              <h2 className="text-3xl md:text-4xl font-display font-medium text-white lowercase-all tracking-tighter">
                 {t("trustness.resources.title")}<BlueDot />
              </h2>
-             <p className="mt-4 text-on-surface-variant max-w-2xl font-light">{t("trustness.resources.desc")}</p>
+             <p className="mt-4 text-on-surface-variant max-w-2xl font-normal">{t("trustness.resources.desc")}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
@@ -160,7 +160,7 @@ export default function TrustnessHome() {
               <div key={i} className="p-8 rounded-3xl bg-surface-container border border-white/5 hover:border-primary-container/30 transition-colors group">
                 <feature.icon className="text-primary-container mb-6 group-hover:scale-110 transition-transform" size={32} />
                 <h3 className="text-xl font-display text-white mb-3 tracking-tight">{feature.title}</h3>
-                <p className="text-sm text-on-surface-variant font-light leading-relaxed">{feature.desc}</p>
+                <p className="text-sm text-on-surface-variant font-normal leading-relaxed">{feature.desc}</p>
               </div>
             ))}
           </div>
@@ -186,17 +186,17 @@ export default function TrustnessHome() {
           {/* Assessment CTA */}
           <div className="p-8 md:p-10 rounded-3xl bg-surface-container border border-white/10 flex flex-col md:flex-row items-center gap-8">
             <div className="flex-1 space-y-3">
-              <span className="text-[11px] text-primary-container font-bold uppercase tracking-widest block">assessment interativo</span>
+              <span className="text-[11px] text-primary-container font-medium uppercase tracking-widest block">assessment interativo</span>
               <h3 className="text-xl md:text-2xl font-display text-white tracking-tight lowercase">
                 descubra sua maturidade lgpd em 3 minutos<BlueDot />
               </h3>
-              <p className="text-sm text-on-surface-variant font-light leading-relaxed max-w-lg">
+              <p className="text-sm text-on-surface-variant font-normal leading-relaxed max-w-lg">
                 Quiz gratuito com 10 perguntas que avalia governança, processos, tecnologia e pessoas. Receba seu score e recomendações personalizadas.
               </p>
             </div>
             <Link
               to="/assessment/lgpd"
-              className="bg-white text-surface px-8 py-4 rounded-full font-display font-bold text-sm uppercase tracking-widest hover:bg-primary-container hover:text-on-primary transition-all whitespace-nowrap shrink-0 flex items-center gap-2"
+              className="bg-white text-surface px-8 py-4 rounded-full font-display font-medium text-sm uppercase tracking-widest hover:bg-primary-container hover:text-on-primary transition-all whitespace-nowrap shrink-0 flex items-center gap-2"
             >
               iniciar assessment
               <ArrowRight size={16} />
@@ -231,7 +231,7 @@ export default function TrustnessHome() {
               ].map((m, i) => (
                 <div key={i} className="p-8 rounded-3xl bg-surface-container-lowest border border-white/5 text-center">
                   <div className="text-3xl font-display text-white mb-2">{m.value}</div>
-                  <div className="text-[11px] text-primary-container font-bold uppercase tracking-widest">{m.label}</div>
+                  <div className="text-[11px] text-primary-container font-medium uppercase tracking-widest">{m.label}</div>
                 </div>
               ))}
             </div>
@@ -246,7 +246,7 @@ export default function TrustnessHome() {
              <h2 className="text-3xl md:text-5xl font-display font-medium text-white lowercase-all tracking-tighter">
                 {t("trustness.process.title")}<BlueDot />
              </h2>
-             <p className="mt-6 text-on-surface-variant max-w-2xl leading-relaxed font-light">
+             <p className="mt-6 text-on-surface-variant max-w-2xl leading-relaxed font-normal">
                 {t("trustness.process.desc")}
              </p>
           </div>
@@ -260,9 +260,9 @@ export default function TrustnessHome() {
               { step: t("trustness.process.steps.s5.step"), title: t("trustness.process.steps.s5.title"), desc: t("trustness.process.steps.s5.desc") },
             ].map((s, i) => (
               <div key={i} className="p-6 rounded-2xl bg-surface-container/50 border border-white/5">
-                <span className="text-primary-container font-display text-xs font-bold block mb-4 tracking-widest">{s.step}</span>
+                <span className="text-primary-container font-display text-xs font-medium block mb-4 tracking-widest">{s.step}</span>
                 <h3 className="text-lg font-display text-white mb-2 leading-tight">{s.title}</h3>
-                <p className="text-xs text-on-surface-variant font-light">{s.desc}</p>
+                <p className="text-xs text-on-surface-variant font-normal">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -275,19 +275,19 @@ export default function TrustnessHome() {
           <h2 className="text-4xl md:text-6xl font-display font-medium text-white lowercase-all tracking-tighter">
             {t("trustness.cta.title")}<BlueDot />
           </h2>
-          <p className="text-on-surface-variant text-lg font-light leading-relaxed">
+          <p className="text-on-surface-variant text-lg font-normal leading-relaxed">
             {t("trustness.cta.desc")}
           </p>
           <div className="pt-4 flex flex-wrap justify-center gap-6">
             <Link
               to="/contato"
-              className="bg-primary-container text-on-primary px-12 py-5 rounded-full font-display font-bold text-sm uppercase tracking-widest hover:brightness-110 transition-all"
+              className="bg-primary-container text-on-primary px-12 py-5 rounded-full font-display font-medium text-sm uppercase tracking-widest hover:brightness-110 transition-all"
             >
               {t("trustness.cta.btn1")}
             </Link>
             <Link
               to="/contato"
-              className="border border-white/10 text-white px-12 py-5 rounded-full font-display font-bold text-sm uppercase tracking-widest hover:bg-white/5 transition-all"
+              className="border border-white/10 text-white px-12 py-5 rounded-full font-display font-medium text-sm uppercase tracking-widest hover:bg-white/5 transition-all"
             >
               {t("trustness.cta.btn2")}
             </Link>

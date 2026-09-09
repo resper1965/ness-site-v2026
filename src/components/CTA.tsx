@@ -15,7 +15,7 @@ const CTA = () => {
             <h2 className="text-2xl md:text-3xl font-display font-medium text-white tracking-tight leading-snug mb-4 lowercase">
               {t('cta.title')}
             </h2>
-            <p className="text-on-surface-variant text-sm leading-relaxed font-light">
+            <p className="text-on-surface-variant text-sm leading-relaxed font-normal">
               {t('cta.subtitle')}
             </p>
           </div>
@@ -23,7 +23,7 @@ const CTA = () => {
             <Link to="/contato" className="bg-primary-container text-on-primary px-8 py-3 rounded-full font-display font-semibold text-sm text-center shadow-lg shadow-primary-container/25 transition-all hover:brightness-110 hover:shadow-[0_0_28px_rgba(0,173,232,0.4)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-low">
               {t('cta.button')}
             </Link>
-            <p className="text-on-surface-variant/70 text-center text-xs font-light">{t('cta.support')}</p>
+            <p className="text-on-surface-variant/70 text-center text-xs font-normal">{t('cta.support')}</p>
           </div>
         </div>
       </div>
