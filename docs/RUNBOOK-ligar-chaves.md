@@ -89,24 +89,44 @@ O lead aparece no D1 de qualquer jeito; o e-mail é aviso.
 
 ---
 
-## 4. Zaraz + consentimento — 15 min, e depois me chame
+## 4. Zaraz + consentimento — feito em 09/09/2026
 
-**No painel**
+Configurado nas três zones e verificado em navegador: o aviso aparece, o
+consentimento começa negado (`{analytics: false}`), passa a concedido no aceite,
+e **nenhuma requisição sai para o Google em momento algum** — o repasse ao GA4
+acontece do lado servidor.
 
-1. Cloudflare → **Zaraz** (no zone de `ness.com.br`) → *Add tool* → **Google
-   Analytics 4**
-2. Measurement ID: `G-H181SG5HQT` (o mesmo que está no site hoje)
-3. Zaraz → **Consent** → ativar o *Consent Management*
-   - Purposes: pelo menos `Analytics` (obrigatório marcar o GA4 nele)
-   - Idiomas: pt-BR, en, es
-4. Repita para os zones de `trustness.com.br` e `forense.io`
+Os eventos do site já chegam: a ferramenta GA4 do Zaraz vem com a ação
+`AllTracks`, ligada ao gatilho que casa com `zaraz.track`. Não foi preciso
+configurar nada para isso.
 
-**Depois disso, me avise.** Enquanto o GA4 estiver nos dois lugares — no Zaraz
-e no nosso `/boot.js` — cada visita conta duas vezes. A remoção do gtag do
-código é um PR de dois minutos, mas só faz sentido depois que o Zaraz estiver
-medindo.
+### Dois achados que custaram tempo
 
----
+**O campo que associa a ferramenta à finalidade é `defaultPurpose`**, dentro do
+objeto da ferramenta. Não está documentado. Escrever `consent.purposeId`, que
+parece o óbvio, não funciona: a API aceita, o Zaraz ignora, e o aviso nunca
+aparece. Só descobrimos lendo o que a interface gravou depois de um ajuste
+manual.
+
+**O modal é injetado antes da hidratação do React.** Qualquer divergência entre
+o HTML do servidor e o primeiro render do cliente derruba a hidratação e apaga
+o modal junto. Foi o que segurou a ness.com.br, por um `-22+` na faixa de prova
+— mesmo mecanismo que já tinha apagado o Turnstile.
+
+### Reaplicar ou revisar
+
+```powershell
+.\scripts\zaraz-consentimento.ps1 -Verificar   # so mostra o estado
+.\scripts\zaraz-consentimento.ps1              # aplica, com copia de seguranca
+.\scripts\zaraz-consentimento.ps1 -Reverter    # restaura a copia
+```
+
+Precisa de `CLOUDFLARE_API_TOKEN` com `Zone -> Zaraz -> Edit`, gravado por
+`.\scripts	oken-cloudflare.ps1`. **Apague o token ao terminar:**
+`.\scripts	oken-cloudflare.ps1 -Remover`.
+
+**O texto do aviso é rascunho** e está no ar nos três domínios. Vale revisão do
+jurídico — ajusta pela tela do Zaraz, sem código.
 
 ## Resumo do que fica ligado
 
