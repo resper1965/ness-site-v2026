@@ -26,6 +26,9 @@ export interface NivelDeSeveridade {
  *  constrói confiança: fornecedor que só diz o que faz não diz nada. */
 export interface EscopoDoServico { dentro: string[]; fora: string[] }
 
+/** O artefato que chega ao cliente e de quanto em quanto tempo. */
+export interface Entregavel { item: string; cadencia: string }
+
 export interface SolutionData {
   icon: LucideIcon;
   metaTitle?: string;
@@ -41,6 +44,7 @@ export interface SolutionData {
   portfolio: PortfolioEntry[];
   severidade?: NivelDeSeveridade[];
   escopo?: EscopoDoServico;
+  entregaveis?: Entregavel[];
 }
 
 export const solutionsData: Record<string, SolutionData> = {

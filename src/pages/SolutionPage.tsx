@@ -5,6 +5,7 @@ import SolutionHeroBackground from '../components/solutions/SolutionHeroBackgrou
 import SolutionServicesGrid from '../components/solutions/SolutionServicesGrid';
 import RespostaAIncidente from '../components/solutions/RespostaAIncidente';
 import Escopo from '../components/solutions/Escopo';
+import Entregaveis from '../components/solutions/Entregaveis';
 import LeadMagnet from '../components/LeadMagnet';
 import NotFound from './NotFound';
 import React, { useEffect, useState } from "react";
@@ -112,6 +113,8 @@ const SolutionPage = () => {
         <RespostaAIncidente severidade={solution.severidade} workflow={solution.workflow} />
 
         <Escopo escopo={solution.escopo} />
+
+        <Entregaveis entregaveis={solution.entregaveis} />
 
         {/* NEW Casos de Uso Típicos (Legacy Refactored) */}
         {solution.useCases && (
