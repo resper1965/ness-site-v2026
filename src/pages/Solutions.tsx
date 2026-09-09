@@ -1,6 +1,6 @@
 import BlueDot, { NomeDeProduto } from '../components/BlueDot';
 import { m as motion } from "motion/react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { routeMeta, traduzir } from '../utils/meta';
 import { ShieldCheck, Cloud, Cpu, Brain, ArrowRight, Gavel } from "lucide-react";
@@ -13,9 +13,15 @@ import { ShieldCheck, Cloud, Cpu, Brain, ArrowRight, Gavel } from "lucide-react"
  * precisa de h1 proprio — sem ele /solucoes ia ao ar sem titulo de primeiro
  * nivel; como secao da home o h1 ja e o do hero, entao vira h2.
  */
-const Solutions = ({ comoSecao = false }: { comoSecao?: boolean }) => {
+const Solutions = () => {
   const { t } = useTranslation();
-  const Titulo = comoSecao ? "h2" : "h1";
+  // O nivel do titulo vem da URL, nao de uma prop: este mesmo arquivo e o
+  // modulo da rota /solucoes e a secao de solucoes da home, e o React Router
+  // instancia modulo de rota do seu jeito — a prop nao chegava. Como pagina o
+  // titulo e h1; dentro da home o h1 ja e o do hero, entao desce um nivel.
+  const comoPagina = /\/solucoes\/?$/.test(useLocation().pathname);
+  const Titulo = comoPagina ? "h1" : "h2";
+  const TituloDoCard = comoPagina ? "h2" : "h3";
   const solutions = [
     {
       slug: "secops",
@@ -75,9 +81,9 @@ const Solutions = ({ comoSecao = false }: { comoSecao?: boolean }) => {
             >
               <motion.div whileHover={{ y: -5 }}>
                 <s.icon className="text-primary-container mb-6" size={32} />
-                <h3 className="text-2xl mb-4 text-white font-brand font-medium lowercase-all">
+                <TituloDoCard className="text-2xl mb-4 text-white font-brand font-medium lowercase-all">
                   <NomeDeProduto nome={s.title} />
-                </h3>
+                </TituloDoCard>
                 <p className="text-on-surface-variant text-sm leading-relaxed font-normal">
                   {s.desc}
                 </p>
