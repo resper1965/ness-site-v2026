@@ -10,6 +10,7 @@ import { canalApi } from '../services/canal';
 import { useBrand } from '../config/brand';
 import { 
 AlertTriangle} from "lucide-react";
+import Turnstile from '../components/Turnstile';
 
 
 
@@ -178,6 +179,7 @@ const Compliance = () => {
                     description: formData.get("message"),
                     evidence: `Nome: ${formData.get("name") || "Anônimo"}, Contato: ${formData.get("email") || "N/A"}`,
                     website: formData.get("website"),
+                    turnstileToken: formData.get("cf-turnstile-response"),
                   };
 
                   try {
@@ -204,8 +206,7 @@ const Compliance = () => {
                     <input name="email" type="text" placeholder={t('contact.form.email_placeholder', 'email ou telefone para retorno')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('contact.form.contact_optional')} />
                   </div>
                 </div>
-                {/* Armadilha: fora da tela e fora do teclado. Aqui não há Turnstile —
-                    ver comentário no endpoint. */}
+                {/* Armadilha: fora da tela e fora do teclado. */}
                 <div aria-hidden="true" className="absolute w-px h-px overflow-hidden -left-[9999px]">
                   <label htmlFor="denuncia-website">não preencha</label>
                   <input id="denuncia-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
@@ -241,6 +242,8 @@ const Compliance = () => {
                     {t('contact.whistleblower.form.error')}
                   </div>
                 )}
+
+                <Turnstile action="ouvidoria" />
 
                 <button 
                   type="submit"
