@@ -4,6 +4,7 @@ import EmergencyChatModal from '../components/EmergencyChatModal';
 import SolutionHeroBackground from '../components/solutions/SolutionHeroBackground';
 import SolutionServicesGrid from '../components/solutions/SolutionServicesGrid';
 import RespostaAIncidente from '../components/solutions/RespostaAIncidente';
+import Escopo from '../components/solutions/Escopo';
 import LeadMagnet from '../components/LeadMagnet';
 import NotFound from './NotFound';
 import React, { useEffect, useState } from "react";
@@ -109,6 +110,8 @@ const SolutionPage = () => {
         </div>
 
         <RespostaAIncidente severidade={solution.severidade} workflow={solution.workflow} />
+
+        <Escopo escopo={solution.escopo} />
 
         {/* NEW Casos de Uso Típicos (Legacy Refactored) */}
         {solution.useCases && (

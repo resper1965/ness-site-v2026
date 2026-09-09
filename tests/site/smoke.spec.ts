@@ -557,4 +557,17 @@ test.describe('página de produto', () => {
     expect(tabela > 0 || lista > 0).toBe(true);
     expect(tabela > 0 && lista > 0).toBe(false);
   });
+
+  // Secao sem dado nao pode deixar titulo orfao — foi o erro que a home
+  // cometia com o blog.
+  test('seção sem dado não deixa título órfão', async ({ page }) => {
+    await page.goto('/solucoes/secops');
+    for (const id of ['#escopo', '#entregaveis', '#operacao']) {
+      const secao = page.locator(id);
+      if (await secao.count()) {
+        const itens = await secao.locator('li, dd').count();
+        expect(itens, `${id} existe mas está vazia`).toBeGreaterThan(0);
+      }
+    }
+  });
 });

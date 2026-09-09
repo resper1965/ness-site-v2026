@@ -22,6 +22,10 @@ export interface NivelDeSeveridade {
   voceRecebe: string;
 }
 
+/** O que a ness. faz e o que explicitamente não faz. A segunda lista é a que
+ *  constrói confiança: fornecedor que só diz o que faz não diz nada. */
+export interface EscopoDoServico { dentro: string[]; fora: string[] }
+
 export interface SolutionData {
   icon: LucideIcon;
   metaTitle?: string;
@@ -36,6 +40,7 @@ export interface SolutionData {
   technicalFeatures?: TechnicalFeature[];
   portfolio: PortfolioEntry[];
   severidade?: NivelDeSeveridade[];
+  escopo?: EscopoDoServico;
 }
 
 export const solutionsData: Record<string, SolutionData> = {
