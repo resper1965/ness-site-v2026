@@ -58,10 +58,13 @@ test.describe('metadados por rota', () => {
   });
 
   test('o HTML do servidor não tem data de epoch', async ({ request }) => {
+    // A home tem o tempo de casa na faixa de prova; /sobre repete em três lugares.
     for (const path of ['/', '/sobre', '/contato']) {
       const html = await (await request.get(path)).text();
       expect(html, `${path} com ano de epoch`).not.toContain('1970');
-      expect(html, `${path} com tempo de casa negativo`).not.toMatch(/-\d+ anos/);
+      // Pega qualquer numero negativo renderizado como texto: a primeira
+      // versao so procurava "-N anos" e nao viu o "-22+" da faixa de prova.
+      expect(html, `${path} com numero negativo no HTML`).not.toMatch(/>\s*-\d/);
     }
   });
 

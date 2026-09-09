@@ -14,15 +14,18 @@ import { anosDeLegado } from '../constants/brand';
  * (docs/PESQUISA-metricas.md) devolver as fontes, eles ganham origem — e os
  * que não tiverem fonte saem.
  */
-const NUMEROS = [
-  { chave: 'years', valor: `${anosDeLegado()}+`, rotulo: 'anos de experiência' },
-  { chave: 'projects', valor: '500+', rotulo: 'projetos executados' },
-  { chave: 'clients', valor: '200+', rotulo: 'clientes ativos' },
-  { chave: 'uptime', valor: '99.9%', rotulo: 'disponibilidade' },
-];
-
 export default function Prova() {
   const { t } = useTranslation();
+
+  // Dentro do componente, não no escopo do módulo: `anosDeLegado()` avaliado
+  // na importação roda com o relógio congelado do workerd e devolve número
+  // negativo. Foi assim que "-22+" foi parar no HTML do servidor — duas vezes.
+  const NUMEROS = [
+    { chave: 'years', valor: `${anosDeLegado()}+`, rotulo: 'anos de experiência' },
+    { chave: 'projects', valor: '500+', rotulo: 'projetos executados' },
+    { chave: 'clients', valor: '200+', rotulo: 'clientes ativos' },
+    { chave: 'uptime', valor: '99.9%', rotulo: 'disponibilidade' },
+  ];
 
   const paises = [
     t('presence.locations.brazil'),
