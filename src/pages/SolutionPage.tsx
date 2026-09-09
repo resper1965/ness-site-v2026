@@ -6,6 +6,7 @@ import SolutionServicesGrid from '../components/solutions/SolutionServicesGrid';
 import RespostaAIncidente from '../components/solutions/RespostaAIncidente';
 import Escopo from '../components/solutions/Escopo';
 import Entregaveis from '../components/solutions/Entregaveis';
+import Operacao from '../components/solutions/Operacao';
 import LeadMagnet from '../components/LeadMagnet';
 import NotFound from './NotFound';
 import React, { useEffect, useState } from "react";
@@ -116,6 +117,8 @@ const SolutionPage = () => {
 
         <Entregaveis entregaveis={solution.entregaveis} />
 
+        <Operacao operacao={solution.operacao} onboarding={solution.onboarding} />
+
         {/* NEW Casos de Uso Típicos (Legacy Refactored) */}
         {solution.useCases && (
           <section id="casos-de-uso" className="mb-24">
@@ -179,35 +182,6 @@ const SolutionPage = () => {
                 </motion.div>
               ))}
             </motion.div>
-          </section>
-        )}
-
-        {/* NEW Timeline de Onboarding (Legacy Refactored) */}
-        {solution.onboarding && (
-          <section id="onboarding" className="mb-24 pt-12 border-t border-white/5">
-            <div className="mb-16">
-              <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase mb-6">
-                {t('solutions.onboarding_journey', 'jornada de ativação')}<BlueDot />
-              </h3>
-            </div>
-            <div className="flex flex-col md:flex-row gap-8 relative mt-16">
-              <div className="absolute top-6 left-0 right-0 h-px bg-white/5 hidden md:block z-0"></div>
-              {solution.onboarding.map((step: { step: string; title: string; desc: string }, i: number) => (
-                <motion.div 
-                  key={i} 
-                  whileHover={{ y: -10 }}
-                  className="flex-1 relative z-10 bg-surface-container-lowest md:bg-transparent p-6 md:p-0 rounded-3xl border border-white/5 md:border-transparent group"
-                >
-                  <div className="w-12 h-12 bg-surface-container-lowest border border-white/10 rounded-full flex items-center justify-center text-primary font-mono text-sm font-medium mb-8 mx-auto shadow-xl group-hover:border-primary/50 group-hover:text-primary-container transition-all">
-                    {step.step}
-                  </div>
-                  <div className="text-center md:px-2">
-                    <h4 className="text-white font-medium text-lg mb-3 tracking-tight">{step.title}</h4>
-                    <p className="text-on-surface-variant text-xs md:text-sm font-normal leading-relaxed">{step.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
           </section>
         )}
 

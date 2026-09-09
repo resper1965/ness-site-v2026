@@ -5,7 +5,7 @@ export interface WorkflowStep { step: string; name: string; desc: string }
 interface Service { name: string; desc: string }
 interface UseCase { title: string; desc: string }
 interface Feature { name: string; category: string }
-interface OnboardingStep { step: string; title: string; desc: string }
+export interface OnboardingStep { step: string; title: string; desc: string }
 interface TechnicalFeature { title: string; desc: string }
 interface PortfolioEntry { client: string; project: string; result: string }
 
@@ -29,6 +29,15 @@ export interface EscopoDoServico { dentro: string[]; fora: string[] }
 /** O artefato que chega ao cliente e de quanto em quanto tempo. */
 export interface Entregavel { item: string; cadencia: string }
 
+/** Como a operação roda por dentro. `cobertura` descreve o modelo (turnos,
+ *  sobreaviso), não o número de pessoas. */
+export interface OperacaoDoServico {
+  cobertura: string;
+  passagemDePlantao: string;
+  escalacao: string;
+  tempoDeAtivacao: string;
+}
+
 export interface SolutionData {
   icon: LucideIcon;
   metaTitle?: string;
@@ -45,6 +54,7 @@ export interface SolutionData {
   severidade?: NivelDeSeveridade[];
   escopo?: EscopoDoServico;
   entregaveis?: Entregavel[];
+  operacao?: OperacaoDoServico;
 }
 
 export const solutionsData: Record<string, SolutionData> = {
