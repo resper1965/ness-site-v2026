@@ -127,7 +127,7 @@ export default function Breadcrumbs({ items, semTrilhaVisivel, semSchema }: Brea
             ) : (
               <Link
                 to={crumb.to}
-                className="text-on-surface-variant/70 hover:text-on-surface-variant transition-colors truncate max-w-[120px]"
+                className="inline-block max-w-[120px] truncate py-1.5 text-on-surface-variant/70 transition-colors hover:text-on-surface-variant"
               >
                 {crumb.label}
               </Link>

@@ -104,10 +104,30 @@ Adiciona a `SolutionData`: `severidade?`, `escopo?`, `entregaveis?`,
 `operacao?` — todos opcionais.
 Remove: `dashboard`, `benefits`.
 Mantém: `workflow`, `useCases`, `services`, `features`, `onboarding`,
-`portfolio`.
+`portfolio`, `technicalFeatures`.
 
 `dashboard` hoje é obrigatório na interface; ao removê-lo o TypeScript aponta
 os cinco produtos de uma vez, que é o comportamento desejado.
+
+**Onde `workflow` e `onboarding` entram** (a primeira versão deste documento
+não dizia, e sem isso o plano ficaria ambíguo):
+
+- **Seção 1 usa `severidade` se existir; se não, cai para `workflow`.** Os
+  dois dizem a mesma coisa em graus diferentes de precisão — `workflow` é a
+  versão narrativa que já está publicada. Isso é o que impede n.secops de
+  nascer com a primeira seção vazia enquanto a ficha não volta. Quando a
+  `severidade` chega, `workflow` sai daquele produto.
+- **`onboarding` é a última parte da seção 4**, "como a operação roda": a
+  linha do tempo responde "em quanto tempo entra no ar", que é uma das quatro
+  perguntas daquela seção.
+- **`services` e `features` dividem a seção 5.** `services` traz as três
+  frentes com descrição; `features` vira o checklist conferível embaixo.
+- **`technicalFeatures` continua no final, atrás do botão de abrir.** É
+  profundidade opcional para engenharia e não disputa com o resto.
+
+**Uma quebra que este documento não tinha previsto:** `SchemaOrg` recebe hoje
+`name: solution.dashboard?.title`. Removendo `dashboard`, o nome do serviço no
+JSON-LD vira `Solution` — o fallback. Passa a usar `solution.metaTitle`.
 
 ## Degradação
 
