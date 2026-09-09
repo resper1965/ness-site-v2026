@@ -2,7 +2,6 @@ import BlueDot from '../components/BlueDot';
 import ChatPreview from '../components/ChatPreview';
 import EmergencyChatModal from '../components/EmergencyChatModal';
 import SolutionHeroBackground from '../components/solutions/SolutionHeroBackground';
-import SolutionExecutiveDashboard from '../components/solutions/SolutionExecutiveDashboard';
 import SolutionServicesGrid from '../components/solutions/SolutionServicesGrid';
 import LeadMagnet from '../components/LeadMagnet';
 import NotFound from './NotFound';
@@ -41,9 +40,9 @@ const SolutionPage = () => {
     <>
       <SchemaOrg 
         type="service" 
-        data={{ 
-          name: solution.dashboard?.title || 'Solution', 
-          description: solution.overview || '', 
+        data={{
+          name: solution.metaTitle || t(`solutions.${slug}.title`),
+          description: solution.overview || '',
           url: `${BRAND_DOMAINS[BRAND]}/solucoes/${slug}` 
         }} 
       />
@@ -60,7 +59,7 @@ const SolutionPage = () => {
         {/* O schema já sai do shell; aqui é só a trilha visível. */}
         <Breadcrumbs semSchema />
 
-        <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
+        <div className={`mb-24 grid items-center gap-16 ${slug === 'autoops' ? 'lg:grid-cols-2' : 'max-w-3xl'}`}>
           <motion.div 
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -96,19 +95,16 @@ const SolutionPage = () => {
             </div>
           </motion.div>
 
-          <motion.div 
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="relative"
-          >
-            <div className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full animate-pulse"></div>
-            {slug === 'autoops' ? (
+          {slug === 'autoops' && (
+            <motion.div
+              initial={{ scale: 0.96, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="relative"
+            >
               <ChatPreview />
-            ) : (
-              <SolutionExecutiveDashboard slug={slug!} dashboard={solution.dashboard} />
-            )}
-          </motion.div>
+            </motion.div>
+          )}
         </div>
 
         {/* NEW Fluxo Operacional (Workflow Espaçoso) */}
@@ -166,36 +162,6 @@ const SolutionPage = () => {
             </div>
           </section>
         )}
-
-        {/* NEW Valor para o Negócio (Full Width Bento-style Cards) */}
-        <section id="benefícios" className="mb-24">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
-            <div className="max-w-2xl">
-              <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase">
-                {t('solutions.business_value', 'valor para o negócio')}<BlueDot />
-              </h3>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {solution.benefits?.map((benefit: { title: string; desc: string }, i: number) => (
-              <motion.div 
-                key={i} 
-                whileHover={{ y: -10 }}
-                className="p-10 rounded-4xl bg-surface-container-low/20 border border-white/5 hover:bg-surface-container-low/40 hover:border-primary/30 transition-all relative overflow-hidden group flex flex-col"
-              >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/20 transition-all"></div>
-                <div className="relative z-10 flex-1 flex flex-col">
-                  <div className="w-12 h-12 rounded-2xl bg-primary-container/10 flex items-center justify-center mb-8 border border-primary-container/20">
-                    <CheckCircle2 className="text-primary-container" size={24} />
-                  </div>
-                  <h4 className="text-white font-display font-semibold text-xl mb-4 group-hover:text-primary-container transition-colors tracking-tight">{benefit.title}</h4>
-                  <p className="text-on-surface-variant font-normal leading-relaxed flex-1">{benefit.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </section>
 
         {/* NEW Soluções Estratégicas (Full Width SaaS Modules) */}
         <SolutionServicesGrid services={solution.services} t={t} icon={PageIcon} />
