@@ -1,5 +1,5 @@
 import { renderToReadableStream } from 'react-dom/server';
-import { ServerRouter, type EntryContext } from 'react-router';
+import { ServerRouter, isRouteErrorResponse, type EntryContext } from 'react-router';
 import { isbot } from 'isbot';
 
 /**
@@ -38,4 +38,25 @@ export default async function handleRequest(
     headers: responseHeaders,
     status: didError ? 500 : responseStatusCode,
   });
+}
+
+/**
+ * O que vai para o log de erro — e o que não vai.
+ *
+ * Varredura de robô procurando WordPress produz dezenas de 404 por minuto.
+ * Registrados como erro de aplicação, eles enterram o erro de verdade: em
+ * quatro minutos de produção foram treze linhas, e nenhuma era defeito nosso.
+ *
+ * 404 de rota inexistente vira uma linha curta e identificável, para dar para
+ * contar quais URLs antigas ainda recebem tráfego. O resto continua erro.
+ */
+export function handleError(erro: unknown, { request }: { request: Request }): void {
+  if (request.signal.aborted) return;
+
+  if (isRouteErrorResponse(erro) && erro.status === 404) {
+    console.log(`[404] ${new URL(request.url).pathname}`);
+    return;
+  }
+
+  console.error(erro);
 }
