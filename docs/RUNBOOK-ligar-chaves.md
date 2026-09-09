@@ -89,24 +89,53 @@ O lead aparece no D1 de qualquer jeito; o e-mail é aviso.
 
 ---
 
-## 4. Zaraz + consentimento — 15 min, e depois me chame
+## 4. Zaraz + consentimento
 
-**No painel**
+O Zaraz mudou de lugar: hoje é **Tag Management, no nível da conta** — não mais
+dentro de cada zone.
 
-1. Cloudflare → **Zaraz** (no zone de `ness.com.br`) → *Add tool* → **Google
-   Analytics 4**
-2. Measurement ID: `G-H181SG5HQT` (o mesmo que está no site hoje)
-3. Zaraz → **Consent** → ativar o *Consent Management*
-   - Purposes: pelo menos `Analytics` (obrigatório marcar o GA4 nele)
-   - Idiomas: pt-BR, en, es
-4. Repita para os zones de `trustness.com.br` e `forense.io`
+### 4.1 Ligar e adicionar o GA4 (repetir nas três zones)
 
-**Depois disso, me avise.** Enquanto o GA4 estiver nos dois lugares — no Zaraz
-e no nosso `/boot.js` — cada visita conta duas vezes. A remoção do gtag do
-código é um PR de dois minutos, mas só faz sentido depois que o Zaraz estiver
-medindo.
+1. Painel → **Tag Management** → **Tag Setup**
+2. Escolha a zone (`ness.com.br`, depois `trustness.com.br`, depois `forense.io`)
+3. **Third-party tools** → *Add tool* → **Google Analytics 4**
+4. Measurement ID: `G-H181SG5HQT` — o mesmo que o site usa hoje
+5. Salve. O Zaraz já cria a ação de **Pageview** automática
 
----
+> A Pageview automática não conflita com a nossa: o código só envia
+> `page_view` nas trocas de rota da SPA, que não geram requisição de documento
+> e o Zaraz não enxerga. O primeiro carregamento é dele.
+
+### 4.2 Consentimento
+
+1. Painel → **Tag Management** → **Consent**
+2. Ative o gerenciamento de consentimento
+3. Crie a finalidade **Analytics** (ou use a sugerida)
+4. Em **Assign purposes to tools**, ligue o GA4 a essa finalidade
+5. Idiomas do aviso: pt-BR, en, es — o site serve os três
+6. Salve, e repita nas três zones
+
+Sem o passo 4, o consentimento existe mas não governa nada: o GA4 dispararia
+de qualquer forma.
+
+### 4.3 Os nossos eventos
+
+O site envia `cta_click`, `scroll_depth`, `page_view`, `generate_lead`,
+`chat_lead`, `assessment_start` e `assessment_complete` por `zaraz.track`.
+
+Para eles chegarem ao GA4, o Zaraz precisa de um **trigger** que case com esses
+eventos e de uma **ação** no GA4 que os repasse. Esta é a parte que não
+consegui confirmar na documentação — a interface guia, mas prefiro fazer junto
+com você depois que a ferramenta existir, olhando a tela, a inventar o caminho.
+
+### 4.4 Depois
+
+Me avise. Eu tiro o rascunho do PR #31 e mergeio — a partir daí o `gtag.js`
+some do navegador e toda a medição passa pelo Zaraz.
+
+**Espere os números caírem.** Quem recusa o consentimento deixa de ser contado.
+É o comportamento correto, não um defeito, mas atrapalha comparação com o mês
+anterior se ninguém avisar.
 
 ## Resumo do que fica ligado
 
