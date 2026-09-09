@@ -270,6 +270,10 @@ test.describe('formulário de contato', () => {
     await page.goto('/contato');
     await expect(page.locator('form input[name="cf-turnstile-response"]').first()).toHaveCount(1, { timeout: 15_000 });
 
+    // A ouvidoria também: sem widget lá, a denúncia seria recusada.
+    await page.goto('/compliance/etica');
+    await expect(page.locator('form input[name="cf-turnstile-response"]').first()).toHaveCount(1, { timeout: 15_000 });
+
     await page.goto('/');
     await page.getByRole('button', { name: /gabi/i }).click();
     await page.getByRole('button', { name: /especialista/i }).click();

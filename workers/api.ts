@@ -288,10 +288,15 @@ app.post('/whistleblower', async (c) => {
   try {
     const body = await c.req.json();
 
-    // Só honeypot por enquanto. O Turnstile faria uma chamada a
-    // challenges.cloudflare.com no momento em que alguém denuncia — mais um
-    // rastro no caminho de quem já está em risco. Decisão pendente.
-    if (body.website) return c.json({ case_code: generateCaseCode(), message: 'Denúncia registrada.' });
+    // Verificação também aqui, por decisão do contratante em 09/09/2026. O
+    // custo conhecido: o widget chama challenges.cloudflare.com no momento da
+    // denúncia — um rastro a mais no caminho de quem já está em risco.
+    const guarda = await guardar(c, { website: body.website, turnstileToken: body.turnstileToken }, 'ouvidoria');
+    if (!guarda.ok) {
+      // Honeypot recebe um código de mentira: recusar ensina o robô a contornar.
+      if (guarda.status === 200) return c.json({ case_code: generateCaseCode(), message: 'Denúncia registrada.' });
+      return c.json(guarda.corpo as Record<string, unknown>, guarda.status);
+    }
     const now = new Date().toISOString();
     const id = crypto.randomUUID();
     const caseCode = generateCaseCode();
