@@ -23,7 +23,7 @@ const Home = () => {
     <>
       <Hero />
       <Prova />
-      <Solutions />
+      <Solutions comoSecao />
       <Insights />
       <ClientLogos />
       <CTA />

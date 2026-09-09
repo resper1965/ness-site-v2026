@@ -123,8 +123,11 @@ const Portfolio = () => {
                   highlightStat = item.stats || '';
                 }
 
-                // Placeholder image if empty
-                const imageUrl = item.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(item.client)}&background=random&color=fff&size=512`;
+                // Sem imagem, o cartao usa a propria superficie do site. Antes ia
+                // buscar um avatar em ui-avatars.com passando o nome do cliente
+                // — dado de cliente saindo para um terceiro, e com os registros
+                // sem `client` o servico devolvia um circulo escrito "null".
+                const imagem = typeof item.image === 'string' && item.image ? item.image : null;
 
                 return (
                   item.url ? (
@@ -157,7 +160,7 @@ const Portfolio = () => {
                         <div className="p-8 flex-1 flex flex-col">
                           <div className="mb-6">
                             <span className="text-[11px] uppercase tracking-widest text-primary font-medium">{item.client}</span>
-                            <h3 className="text-2xl text-white font-display font-medium mt-2 lowercase">{item.project}<BlueDot /></h3>
+                            <h2 className="text-2xl text-white font-display font-medium mt-2 lowercase">{item.project}<BlueDot /></h2>
                           </div>
                           <p className="text-on-surface-variant text-sm font-normal leading-relaxed mb-8 flex-1">{item.desc}</p>
                           <div className="pt-6 border-t border-white/5 flex items-center justify-between">
@@ -181,15 +184,19 @@ const Portfolio = () => {
                         transition={{ duration: 0.4, delay: i * 0.05 }}
                         className="group relative glass rounded-[2.5rem] border border-white/10 overflow-hidden nebula-shadow flex flex-col h-full hover:border-primary-container/30 transition-colors"
                       >
-                        <div className="aspect-video overflow-hidden relative">
-                          <img
-                            src={imageUrl}
-                            alt={item.project}
-                            loading="lazy"
-                            decoding="async"
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-60"
-                            referrerPolicy="no-referrer"
-                          />
+                        <div className="aspect-video overflow-hidden relative bg-surface-container-low">
+                          {imagem ? (
+                            <img
+                              src={imagem}
+                              alt=""
+                              loading="lazy"
+                              decoding="async"
+                              className="w-full h-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-110"
+                              referrerPolicy="no-referrer"
+                            />
+                          ) : (
+                            <div aria-hidden="true" className="absolute inset-0 bg-nebula" />
+                          )}
                           <div className="absolute inset-0 bg-linear-to-t from-surface-container-lowest to-transparent" />
                           {highlightStat && (
                             <div className="absolute top-6 right-6">
@@ -202,7 +209,7 @@ const Portfolio = () => {
                         <div className="p-8 flex-1 flex flex-col">
                           <div className="mb-6">
                             <span className="text-[11px] uppercase tracking-widest text-primary font-medium">{item.client}</span>
-                            <h3 className="text-2xl text-white font-display font-medium mt-2 lowercase-all">{item.project}<BlueDot /></h3>
+                            <h2 className="text-2xl text-white font-display font-medium mt-2 lowercase-all">{item.project}<BlueDot /></h2>
                           </div>
                           <p className="text-on-surface-variant text-sm font-normal leading-relaxed mb-8 flex-1">{item.desc}</p>
                           <div className="pt-6 border-t border-white/5 flex items-center justify-between">

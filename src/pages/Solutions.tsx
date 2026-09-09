@@ -8,8 +8,14 @@ import { ShieldCheck, Cloud, Cpu, Brain, ArrowRight, Gavel } from "lucide-react"
 
 
 
-const Solutions = () => {
+/**
+ * Serve as duas: e a rota /solucoes e a secao de solucoes da home. Como pagina
+ * precisa de h1 proprio — sem ele /solucoes ia ao ar sem titulo de primeiro
+ * nivel; como secao da home o h1 ja e o do hero, entao vira h2.
+ */
+const Solutions = ({ comoSecao = false }: { comoSecao?: boolean }) => {
   const { t } = useTranslation();
+  const Titulo = comoSecao ? "h2" : "h1";
   const solutions = [
     {
       slug: "secops",
@@ -54,9 +60,9 @@ const Solutions = () => {
     <section id="soluções" className="py-24 bg-surface px-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-16">
-          <h2 className="text-4xl font-display font-semibold text-white tracking-tighter lowercase-all">
+          <Titulo className="text-4xl font-display font-semibold text-white tracking-tighter lowercase-all">
             {t('nav.solutions')}<BlueDot />
-          </h2>
+          </Titulo>
           <div className="w-16 h-px bg-primary-container mt-4"></div>
         </div>
         

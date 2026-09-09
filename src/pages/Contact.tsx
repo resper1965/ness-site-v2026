@@ -130,7 +130,7 @@ const Contact = () => {
           </div>
 
           {/* Right Side: Form */}
-          <div className="bg-surface-container-low/30 border border-white/5 p-8 md:p-12 rounded-[3rem] nebula-shadow">
+          <div className="min-w-0 bg-surface-container-low/30 border border-white/5 p-8 md:p-12 rounded-[3rem] nebula-shadow">
             {/* Interest Context Badge */}
             {refInfo && (
               <div className="mb-6 flex items-center gap-3 px-4 py-3 rounded-2xl bg-primary-container/10 border border-primary-container/20">

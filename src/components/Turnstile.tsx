@@ -85,5 +85,5 @@ export default function Turnstile({ action, tamanho = 'normal' }: { action: stri
 
   if (!SITEKEY) return null;
 
-  return <div ref={container} className="max-w-full overflow-x-auto" />;
+  return <div ref={container} className="w-0 min-w-full max-w-full overflow-x-auto" />;
 }
