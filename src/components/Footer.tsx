@@ -46,8 +46,8 @@ const Footer = () => {
 
   return (
     <footer className="bg-surface px-8 pt-16 pb-28 md:pb-24 border-t border-white/5">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
-        <div className="max-w-xs space-y-6">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12 min-w-0">
+        <div className="max-w-xs space-y-6 min-w-0">
           <div className="marca text-xl text-white">
             {BRAND === 'trustness' ? <>trustness<BlueDot /></> :
              BRAND === 'forense'   ? <>forense<BlueDot />io</> :
@@ -72,7 +72,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 md:gap-24">
+        <div className="grid min-w-0 grid-cols-2 gap-10 lg:grid-cols-4 lg:gap-12">
           <div className="space-y-4">
             <h2 className="text-[11px] uppercase tracking-widest text-white font-bold">{t('footer.company')}</h2>
             <ul className="space-y-1 text-sm text-on-surface-variant/85 font-normal">
@@ -142,7 +142,7 @@ const Footer = () => {
                 </button>
                 </div>
 
-                <Turnstile action="newsletter" />
+                <Turnstile action="newsletter" tamanho="compact" />
               </form>
             )}
             {newsletterStatus === 'error' && (

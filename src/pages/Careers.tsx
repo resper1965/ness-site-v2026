@@ -99,7 +99,7 @@ const Careers = () => {
                     {job.vertical}
                   </span>
                 </div>
-                <h3 className="text-2xl font-display font-bold text-white mb-4 lowercase-all">{job.title}<BlueDot /></h3>
+                <h2 className="text-2xl font-display font-bold text-white mb-4 lowercase-all">{job.title}<BlueDot /></h2>
                 
                 <div className="flex flex-wrap gap-6 mb-8">
                   <div className="flex items-center gap-2 text-on-surface-variant/60 text-xs">

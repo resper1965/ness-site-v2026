@@ -46,7 +46,13 @@ function carregarApi(): Promise<void> {
  * Sem `VITE_TURNSTILE_SITEKEY` não renderiza nada e o formulário segue
  * funcionando — o servidor só exige token quando o segredo existe.
  */
-export default function Turnstile({ action }: { action: string }) {
+/**
+ * `tamanho`: o widget normal ocupa 300 px. Em coluna estreita — o rodapé tem
+ * 156 px — ele nao encolhe: transborda e empurra o documento inteiro, o que
+ * pos rolagem horizontal de 64 px nos tres dominios em producao. Nessas
+ * colunas use 'compact', que mede 150 px.
+ */
+export default function Turnstile({ action, tamanho = 'normal' }: { action: string; tamanho?: 'normal' | 'compact' }) {
   const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -64,6 +70,7 @@ export default function Turnstile({ action }: { action: string }) {
           action,
           theme: 'dark',
           language: 'auto',
+          size: tamanho,
         });
       })
       .catch(() => {
@@ -74,9 +81,9 @@ export default function Turnstile({ action }: { action: string }) {
       cancelado = true;
       if (idWidget && window.turnstile) window.turnstile.remove(idWidget);
     };
-  }, [action]);
+  }, [action, tamanho]);
 
   if (!SITEKEY) return null;
 
-  return <div ref={container} />;
+  return <div ref={container} className="max-w-full overflow-x-auto" />;
 }
