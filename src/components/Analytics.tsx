@@ -1,17 +1,13 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router";
 import { registrarOrigem } from "../utils/origem";
-
-declare global {
-  interface Window {
-    gtag?: (...args: unknown[]) => void;
-  }
-}
+import { evento } from "../utils/eventos";
 
 /**
- * Envia `page_view` ao GA4 em cada navegação da SPA.
- * O primeiro page_view vem do `gtag('config')` em /boot.js; aqui só as trocas
- * de rota. `window.gtag` existe desde o boot e enfileira até o SDK carregar.
+ * Envia `page_view` a cada navegação da SPA.
+ *
+ * O primeiro carregamento é contado pelo próprio Zaraz; aqui só as trocas de
+ * rota, que ele não enxerga porque não há nova requisição de documento.
  */
 export default function Analytics() {
   const { pathname, search } = useLocation();
@@ -22,7 +18,7 @@ export default function Analytics() {
 
   useEffect(() => {
     if (first.current) { first.current = false; return; }
-    window.gtag?.('event', 'page_view', {
+    evento('page_view', {
       page_path: pathname + search,
       page_location: window.location.href,
       page_title: document.title,

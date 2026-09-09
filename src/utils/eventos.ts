@@ -1,15 +1,25 @@
 /**
  * Eventos de conversão, num lugar só.
  *
- * O `gtag` é enfileirado pelo /boot.js antes de o SDK chegar, então chamar
- * cedo não perde evento. Se o consentimento negar analytics, a fila
- * simplesmente não é despachada — a decisão não é daqui.
+ * O destino é o Zaraz, que roda na Cloudflare: o navegador manda um pacote
+ * pequeno e ela repassa ao GA4 do lado servidor. Nada de `gtag.js` no
+ * navegador, e o consentimento é respeitado pelo próprio Zaraz — quem recusa
+ * analytics não tem evento enviado, sem o site precisar saber disso.
+ *
+ * Se o Zaraz não estiver presente (preview local, ou zone sem ele), o evento
+ * simplesmente não sai. Silêncio é melhor que medir escondido.
  */
 type Parametros = Record<string, string | number | boolean | undefined>;
 
+declare global {
+  interface Window {
+    zaraz?: { track: (nome: string, parametros?: Parametros) => void };
+  }
+}
+
 export function evento(nome: string, parametros: Parametros = {}): void {
   if (typeof window === 'undefined') return;
-  window.gtag?.('event', nome, parametros);
+  window.zaraz?.track(nome, parametros);
 }
 
 /**

@@ -3,6 +3,7 @@ import { useBrand } from '../config/brand';
 import { canalApi } from '../services/canal';
 import { origemDaVisita } from '../utils/origem';
 import { validarEmail } from '../utils/formulario';
+import { evento } from '../utils/eventos';
 import Turnstile from './Turnstile';
 
 /**
@@ -38,7 +39,7 @@ export default function ChatLeadForm({ assunto, onPronto }: { assunto: string; o
             ...origemDaVisita(),
             turnstileToken: dados.get('cf-turnstile-response'),
           });
-          window.gtag?.('event', 'chat_lead', { subject: assunto, brand });
+          evento('chat_lead', { subject: assunto, brand });
           onPronto();
         } catch {
           setErro('não consegui registrar agora. tente pelo formulário de contato.');
