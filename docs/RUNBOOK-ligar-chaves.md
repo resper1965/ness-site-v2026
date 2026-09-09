@@ -42,29 +42,20 @@ npx wrangler secret put TURNSTILE_SECRET_KEY
 
 ---
 
-## 2. Cloudflare Web Analytics (dado de campo) — 3 min
+## 2. Cloudflare Web Analytics — feito
 
-Sem isto, qualquer ajuste de performance é chute: a variação entre execuções do
-Lighthouse no CI é maior que o efeito de cada mudança.
+Os três sites estão em **setup automático** e coletando. Confirmado em
+09/09/2026 num navegador real: o beacon aparece no DOM e a chamada a
+`static.cloudflareinsights.com` dispara nos três domínios.
 
-**Caminho A — automático, sem código (recomendado)**
+Duas observações para quem for conferir:
 
-1. Cloudflare → **Web Analytics** → *Add a site*
-2. Escolha o hostname (repita para os três) → **Enable automatic setup**
-3. Pronto — a Cloudflare injeta o beacon na resposta, porque os domínios são
-   proxied.
-
-**Caminho B — por token, se preferir controlar pelo código**
-
-1. Em *Add a site*, escolha **Manual setup** e copie o token
-2. GitHub → Settings → Secrets and variables → Actions → **Variables**
-   - Name: `CF_BEACON_TOKEN`
-   - Value: o token
-
-**Conferir:** `curl -s https://ness.com.br/ | grep cloudflareinsights` devolve
-uma linha, e o painel começa a mostrar visitas em alguns minutos.
-
----
+- **`curl` não enxerga o beacon.** A injeção automática só acontece para
+  requisições de navegador; num `curl` o HTML volta sem ele. Isso não é
+  defeito — confira com um navegador de verdade.
+- **A injeção depende da nossa CSP.** `static.cloudflareinsights.com` está em
+  `script-src` e `cloudflareinsights.com` em `connect-src`, em
+  `workers/app.ts`. Remover qualquer uma das duas mata a medição em silêncio.
 
 ## 3. Resend (aviso de lead novo por e-mail) — 10 min
 
@@ -123,7 +114,6 @@ medindo.
 |---|---|---|
 | `TURNSTILE_SITEKEY` | GitHub → Variables | Widget aparece no formulário |
 | `TURNSTILE_SECRET_KEY` | `wrangler secret put` | Servidor passa a exigir o token |
-| `CF_BEACON_TOKEN` | GitHub → Variables (caminho B) | Beacon de campo carrega |
 | `RESEND_API_KEY` | `wrangler secret put` | Aviso de lead novo por e-mail |
 
 Nenhuma delas precisa passar por chat: as duas públicas vão no GitHub, as duas

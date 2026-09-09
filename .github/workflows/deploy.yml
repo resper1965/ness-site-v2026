@@ -25,10 +25,9 @@ jobs:
       - name: Build Main Site
         run: npm run build
         env:
-          # Chaves públicas, resolvidas no build. Ausentes, os recursos
-          # correspondentes ficam desligados e o site funciona igual.
+          # Chave pública, resolvida no build. Ausente, o widget não
+          # renderiza e o site funciona igual.
           VITE_TURNSTILE_SITEKEY: ${{ vars.TURNSTILE_SITEKEY }}
-          VITE_CF_BEACON_TOKEN: ${{ vars.CF_BEACON_TOKEN }}
 
       # O build gera dist/server/wrangler.json — a configuração com os
       # caminhos dos artefatos. Publicar com a wrangler.toml da raiz faria o
