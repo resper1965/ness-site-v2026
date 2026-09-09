@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
 import { ArrowRight, ShieldCheck, Server, Code2, Scale, Search } from "lucide-react";
-import { FOUNDATION_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
+import { FOUNDATION_YEAR, anosDeLegado } from '../constants/brand';
 import { evento } from '../utils/eventos';
 
 /**
@@ -47,8 +47,8 @@ const Hero = () => {
           </h1>
           <p className="text-lg md:text-2xl text-on-surface-variant max-w-3xl leading-relaxed">
             {t('hero.subtitle_clear', {
-              years: YEARS_OF_LEGACY,
-              defaultValue: `operações de segurança 24×7, infraestrutura, engenharia de software, LGPD e perícia digital para empresas que não podem parar. ${YEARS_OF_LEGACY} anos entregando com precisão.`,
+              years: anosDeLegado(),
+              defaultValue: `operações de segurança 24×7, infraestrutura, engenharia de software, LGPD e perícia digital para empresas que não podem parar. ${anosDeLegado()} anos entregando com precisão.`,
             })}
           </p>
           <div className="flex flex-wrap items-center gap-5 md:gap-8 pt-2">

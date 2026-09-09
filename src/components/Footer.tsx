@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Send, Linkedin, Instagram, Facebook, Lock } from "lucide-react";
 
-import { FOUNDATION_YEAR, CURRENT_YEAR } from '../constants/brand';
+import { FOUNDATION_YEAR, anoAtual } from '../constants/brand';
 import { CANAL_BASE } from '../config/api';
 import { useBrand, BRAND_LABELS, BRAND_DOMAINS } from '../config/brand';
 import Turnstile from './Turnstile';
@@ -163,7 +163,7 @@ const Footer = () => {
 
       <div className="max-w-7xl mx-auto mt-8 flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-sm text-on-surface-variant/70 font-normal">
-          © {FOUNDATION_YEAR}–{CURRENT_YEAR} {brandLabel} precision digital engineering. {t('footer.rights')}
+          © {FOUNDATION_YEAR}–{anoAtual()} {brandLabel} precision digital engineering. {t('footer.rights')}
         </p>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">

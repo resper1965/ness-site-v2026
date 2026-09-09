@@ -1,7 +1,7 @@
 import { m as motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import { Globe } from 'lucide-react';
-import { YEARS_OF_LEGACY } from '../constants/brand';
+import { anosDeLegado } from '../constants/brand';
 
 /**
  * A faixa de prova: números e alcance numa seção só.
@@ -15,7 +15,7 @@ import { YEARS_OF_LEGACY } from '../constants/brand';
  * que não tiverem fonte saem.
  */
 const NUMEROS = [
-  { chave: 'years', valor: `${YEARS_OF_LEGACY}+`, rotulo: 'anos de experiência' },
+  { chave: 'years', valor: `${anosDeLegado()}+`, rotulo: 'anos de experiência' },
   { chave: 'projects', valor: '500+', rotulo: 'projetos executados' },
   { chave: 'clients', valor: '200+', rotulo: 'clientes ativos' },
   { chave: 'uptime', valor: '99.9%', rotulo: 'disponibilidade' },

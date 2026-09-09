@@ -2,7 +2,7 @@ import React, {  } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
+import { FOUNDATION_YEAR, anoAtual, anosDeLegado } from '../constants/brand';
 
 
 

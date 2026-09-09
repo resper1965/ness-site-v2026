@@ -45,6 +45,17 @@ test.describe('metadados por rota', () => {
     }
   });
 
+  // No workerd o relógio fica congelado fora de uma requisição: `new Date()`
+  // na importação devolve o epoch. Uma constante de módulo calculada assim
+  // colocou "-22 anos" e "© 1991–1970" no HTML que o buscador lê.
+  test('o HTML do servidor não tem data de epoch', async ({ request }) => {
+    for (const path of ['/', '/sobre', '/contato']) {
+      const html = await (await request.get(path)).text();
+      expect(html, `${path} com ano de epoch`).not.toContain('1970');
+      expect(html, `${path} com tempo de casa negativo`).not.toMatch(/-\d+ anos/);
+    }
+  });
+
   // O sufixo da marca é acrescentado por pageMeta. Repeti-lo no título da
   // própria página produz "… — ness. IT Company — ness. IT Company", que já
   // aconteceu com o fallback da raiz.

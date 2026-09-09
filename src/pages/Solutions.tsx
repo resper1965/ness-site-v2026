@@ -22,7 +22,7 @@ import {
   ArrowRight, 
   Gavel} from "lucide-react";
 
-import { FOUNDATION_YEAR, CURRENT_YEAR, YEARS_OF_LEGACY } from '../constants/brand';
+import { FOUNDATION_YEAR, anoAtual, anosDeLegado } from '../constants/brand';
 
 
 
