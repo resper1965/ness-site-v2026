@@ -104,28 +104,42 @@ test.describe('home enxuta', () => {
 });
 
 test.describe('eventos de conversão', () => {
-  // Lê a fila real do gtag (`dataLayer`, criada pelo /boot.js) em vez de
-  // simular: um stub seria sobrescrito pelo próprio boot, e o teste passaria
-  // medindo a si mesmo.
-  const nomesDeEventos = (page: import('@playwright/test').Page) =>
-    page.evaluate(() =>
-      Array.from((window as unknown as { dataLayer?: IArguments[] }).dataLayer ?? [])
-        .map((entrada) => (entrada[0] === 'event' ? entrada[1] : null))
-        .filter(Boolean),
-    );
+  // Os eventos vão para o Zaraz, que roda na Cloudflare e não existe no
+  // preview local. O dublê é instalado antes do carregamento e, ao contrário
+  // do antigo stub de gtag, nada o sobrescreve — o que se testa aqui é o
+  // nosso despachante, não o Zaraz.
+  const instalarDuble = (page: import('@playwright/test').Page) =>
+    page.addInitScript(() => {
+      (window as unknown as { __eventos: unknown[][] }).__eventos = [];
+      (window as unknown as { zaraz: { track: (n: string, p?: unknown) => void } }).zaraz = {
+        track: (nome, parametros) =>
+          (window as unknown as { __eventos: unknown[][] }).__eventos.push([nome, parametros]),
+      };
+    });
 
-  test('o CTA do hero e a rolagem chegam à fila do gtag', async ({ page }) => {
+  const nomes = (page: import('@playwright/test').Page) =>
+    page.evaluate(() => (window as unknown as { __eventos: unknown[][] }).__eventos.map((e) => e[0]));
+
+  test('o CTA do hero e a rolagem chegam ao Zaraz', async ({ page }) => {
+    await instalarDuble(page);
     await page.goto('/');
 
     await expect(async () => {
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2));
-      await page.getByRole('link', { name: /falar com um especialista/i }).first().click({ trial: true });
-      expect(await nomesDeEventos(page)).toContain('scroll_depth');
+      expect(await nomes(page)).toContain('scroll_depth');
     }).toPass({ timeout: 15_000 });
 
     await page.getByRole('link', { name: /falar com um especialista/i }).first().click();
     await page.waitForURL(/contato/);
-    expect(await nomesDeEventos(page)).toContain('cta_click');
+
+    // O page_view sai de um efeito, depois da navegação: esperar a fila é
+    // honesto; ler na hora é corrida.
+    await expect(async () => {
+      const disparados = await nomes(page);
+      expect(disparados).toContain('cta_click');
+      // Navegação de SPA não gera requisição de documento: o page_view é nosso.
+      expect(disparados).toContain('page_view');
+    }).toPass({ timeout: 10_000 });
   });
 });
 
@@ -463,9 +477,6 @@ test.describe('orçamento de performance', () => {
       .filter((tag) => !tag.includes(`nonce="${nonce}"`));
     expect(semNonce, `scripts inline sem nonce: ${semNonce.join(' ')}`).toHaveLength(0);
 
-    expect(html).toContain('src="/boot.js"');
-    const boot = await page.request.get('/boot.js');
-    expect(boot.ok()).toBeTruthy();
   });
 
   test('formulário de contato tem telefone e e-mail clicáveis', async ({ page }) => {

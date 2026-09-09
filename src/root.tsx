@@ -73,10 +73,9 @@ export const links = () => [
 ];
 
 /**
- * O hero é o candidato a LCP. O preload dele vivia no /boot.js: o navegador
- * só descobria a imagem depois de baixar e executar aquele script. Agora que
- * o servidor sabe a marca e a rota, o preload sai no HTML e o preload scanner
- * o encontra na primeira passada.
+ * O hero é o candidato a LCP. O preload sai no HTML do servidor, que sabe a
+ * marca e a rota, e o preload scanner o encontra na primeira passada — sem
+ * depender de nenhum script carregar antes.
  */
 function PreloadDoHero({ brand, pathname }: { brand: Brand; pathname: string }) {
   if (rotaSemIdioma(pathname) !== '/') return null;
@@ -106,10 +105,6 @@ export function Layout({ children }: { children: ReactNode }) {
         <Meta />
         <Links />
         {dados ? <PreloadDoHero brand={dados.brand} pathname={dados.pathnameCompleto} /> : null}
-        {/* Só a fila do gtag: o preload do hero saiu daqui para o HTML acima.
-            Sem preload a carregar, o script deixa de bloquear a análise. */}
-        <script src="/boot.js" nonce={nonce} defer />
-
       </head>
       <body>
         {children}

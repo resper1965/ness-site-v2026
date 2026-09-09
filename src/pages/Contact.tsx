@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { routeMeta, traduzir } from '../utils/meta';
 import { idiomaDaRota, rotaNoIdioma } from '../utils/lang';
 import { origemDaVisita } from '../utils/origem';
+import { evento } from '../utils/eventos';
 import { validarEmail } from '../utils/formulario';
 import Turnstile from '../components/Turnstile';
 import { CANAL_BASE } from '../config/api';
@@ -172,11 +173,7 @@ const Contact = () => {
                 };
                 try {
                   await canalApi.submitForm(payload);
-                  window.gtag?.('event', 'generate_lead', {
-                    form_type: 'contact',
-                    subject: assunto,
-                    brand: BRAND,
-                  });
+                  evento('generate_lead', { form_type: 'contact', subject: assunto, brand: BRAND });
                   navigate(rotaNoIdioma(pathname, idiomaDaRota(pathname)).replace('/contato', '/obrigado'));
                 } catch (error) {
                   setSubmitStatus('error');
