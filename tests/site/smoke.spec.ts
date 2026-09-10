@@ -1,5 +1,14 @@
 import { test, expect } from '@playwright/test';
 
+/** Globais que só existem dentro do navegador dos testes do aviso, para
+ *  observar o que o componente chamou na API simulada da Zaraz. */
+declare global {
+  interface Window {
+    __setAll?: boolean[];
+    __enviou?: boolean;
+  }
+}
+
 /**
  * Smoke do site público: metadados por rota, ausência de overlays não
  * solicitados, chat só por clique, 404 real e orçamento de peso inicial.
@@ -626,7 +635,7 @@ test.describe('aviso de consentimento', () => {
     await botao.click({ timeout: 5_000 });
 
     // e escondeu o modal de fabrica, caso a configuracao da zone seja revertida
-    expect(await page.evaluate(() => window.zaraz.consent.modal)).toBe(false);
+    expect(await page.evaluate(() => window.zaraz?.consent?.modal)).toBe(false);
   });
 
   test('nao aparece para quem ja respondeu', async ({ page }) => {

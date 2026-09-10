@@ -12,7 +12,7 @@ O usuário está relatando um incidente de segurança crítico ativo.
 Responda de forma direta, técnica e orientada à contenção imediata.
 Colete informações sobre: tipo do incidente, sistemas afetados, horário de detecção, ações já tomadas.
 Oriente sobre preservação de evidências e próximos passos táticos.
-Informe que um especialista da ness. será alocado via contato direto em até 15 minutos.`;
+Informe que um especialista da ness. será acionado por contato direto.`;
 
 interface EmergencyChatModalProps {
   isOpen: boolean;
@@ -22,7 +22,7 @@ interface EmergencyChatModalProps {
 export default function EmergencyChatModal({ isOpen, onClose }: EmergencyChatModalProps) {
   const { t } = useTranslation();
   const [messages, setMessages] = useState<DisplayMessage[]>([
-    { role: 'system', content: 'ATENÇÃO: Você iniciou o protocolo de acionamento do n.cirt. Este canal tem SLA de atendimento de 15 minutos.' },
+    { role: 'system', content: 'ATENÇÃO: Você iniciou o protocolo de acionamento do n.cirt. Este canal aciona o time de plantão de imediato. Não prometa prazo de resposta: os prazos de acionamento estão no contrato de cada cliente.' },
     { role: 'bot', content: 'Qual o tipo de incidente de segurança? (Ex: Ransomware, Vazamento de Dados, Indisponibilidade crítica)' }
   ]);
   const [input, setInput] = useState('');

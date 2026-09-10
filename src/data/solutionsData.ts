@@ -151,7 +151,7 @@ export const solutionsData: Record<string, SolutionData> = {
     icon: Cpu,
     metaTitle: "n.devarch — engenharia e arquitetura de software sob medida",
     metaDescription: "Squads de engenharia de software de alta performance: arquitetura, desenvolvimento seguro (DevSecOps) e modernização de sistemas críticos.",
-    overview: "80% das vulnerabilidades nascem no código mal versionado. O n.devarch embarca Segurança e Cloud Native diretamente no seu SDLC. Desenhe aplicações escaláveis, consolide CI/CD com varreduras SAST/DAST integradas, levante SBOM dinamicamente e escale sua malha de microsserviços sem travar a velocidade de entrega técnica.",
+    overview: "Segurança que entra no fim do ciclo é retrabalho. O n.devarch embarca Segurança e Cloud Native diretamente no seu SDLC. Desenhe aplicações escaláveis, consolide CI/CD com varreduras SAST/DAST integradas, levante SBOM dinamicamente e escale sua malha de microsserviços sem travar a velocidade de entrega técnica.",
     workflow: [
       { step: "01", name: "Architecture Review", desc: "Varredura pontual na arquitetura vigente identificando débitos técnicos, riscos iminentes e desenhando os Threat Models lógicos." },
       { step: "02", name: "SSDLC Design", desc: "Integração cirúrgica do Secure SDLC desenhando gates automatizados. SAST/DAST acoplados diretamente ao pull request do seu desenvolvedor sem estresse." },
@@ -216,9 +216,9 @@ export const solutionsData: Record<string, SolutionData> = {
   },
   "cirt": {
     icon: Gavel,
-    metaTitle: "n.cirt — resposta a incidentes cibernéticos com SLA de 15 minutos",
-    metaDescription: "Time de resposta a incidentes para ransomware, vazamento de dados e indisponibilidade crítica. Contenção, forense e comunicação com SLA de acionamento de 15 minutos.",
-    overview: "Quando o impensável acontece, o pânico e o tempo são seus maiores inimigos. O n.cirt é a força de liderança em Resposta a Incidentes, atuando na orquestração da crise. Acionamos uma Sala de Guerra virtual estruturada em até 15 minutos, assumindo o controle gerencial usando Playbooks NIST/ISO. Alinhamos sua equipe de TI, a Comunicação (PR), o Jurídico e até acionamos perícia forense externa, tirando o peso dos ombros da sua diretoria para garantir a continuidade do negócio.",
+    metaTitle: "n.cirt — resposta a incidentes: contenção, forense e comunicação de crise",
+    metaDescription: "Time de resposta a incidentes para ransomware, vazamento de dados e indisponibilidade crítica. Contenção, forense e comunicação de crise, com sala de guerra estruturada e playbooks NIST/ISO.",
+    overview: "Quando o impensável acontece, o pânico e o tempo são seus maiores inimigos. O n.cirt é a força de liderança em Resposta a Incidentes, atuando na orquestração da crise. Acionamos uma sala de guerra virtual estruturada e assumimos o controle gerencial com playbooks NIST/ISO. Alinhamos sua equipe de TI, a Comunicação (PR), o Jurídico e até acionamos perícia forense externa, tirando o peso dos ombros da sua diretoria para garantir a continuidade do negócio.",
     workflow: [
       { step: "01", name: "War Room e Triagem", desc: "Assumimos a cadeira central de comando. Centralizamos as informações cruzando relatos dos seus times internos e provedores de segurança (SOC/MSSP) para entender a magnitude do incidente sem achismos." },
       { step: "02", name: "Coordenação de Contenção", desc: "Direcionamos a aplicação de playbooks táticos aprovados. Instruímos suas equipes de redes e infraestrutura sobre exatamente quais conectividades cortar e quais ativos isolar para estancar a sangria imediatamente." },

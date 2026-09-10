@@ -16,7 +16,7 @@ interface Client {
 const clients: Client[] = [
   { name: "Alupar", url: "https://alupar.com.br", sector: "energia" },
   { name: "Leite Tosto e Barros", url: "https://tostoadv.com", sector: "jurídico" },
-  { name: "Target Trading", url: "https://targettrading.com.br", sector: "mercado financeiro" },
+  { name: "Target Trading", url: "https://targettrading.com.br", sector: "logística" },
   { name: "Ionic Health", url: "https://ionic.health", sector: "saúde" },
   { name: "TNE", url: "https://tnesa.com.br", sector: "energia" },
   { name: "TBE", url: "https://tbe.com.br", sector: "energia" },
