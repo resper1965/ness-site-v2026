@@ -44,7 +44,7 @@ function Escada({ niveis }: { niveis: NivelDeSeveridade[] }) {
 
       {niveis.map((n, i) => {
         const celulas: { ator: Ator; tinta: string; texto: string; quando?: string }[] = [
-          { ator: 'ia', tinta: 'bg-primary-container/15', texto: n.agentes },
+          { ator: 'ia', tinta: 'bg-primary-container/15', texto: n.aiops },
           n.time
             ? { ator: 'time', tinta: tom(TINTA.time, i), texto: n.time }
             : { ator: 'time', tinta: 'border border-dashed border-surface-container-highest text-on-surface-variant', texto: 'Não precisa entrar.' },

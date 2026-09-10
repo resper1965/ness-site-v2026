@@ -568,7 +568,7 @@ test.describe('página de produto', () => {
     const niveis = secao.locator('article');
     await expect(niveis).toHaveCount(4);
     for (let i = 0; i < 4; i++) {
-      await expect(niveis.nth(i).locator('dt')).toHaveText([/agentes de IA/, /time de segurança/, /você/]);
+      await expect(niveis.nth(i).locator('dt')).toHaveText([/AIOps/, /time de segurança/, /você/]);
     }
     // Em P4 o time nao entra, e a pagina diz isso em vez de deixar o vazio.
     await expect(niveis.nth(3).locator('dd').nth(1)).toContainText(/não precisa entrar/i);

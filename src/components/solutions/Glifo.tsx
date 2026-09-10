@@ -6,7 +6,7 @@
 export type Ator = 'ia' | 'time' | 'voce';
 
 export const NOME_DO_ATOR: Record<Ator, string> = {
-  ia: 'agentes de IA',
+  ia: 'AIOps',
   time: 'time de segurança',
   voce: 'você',
 };

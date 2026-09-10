@@ -1,7 +1,7 @@
 import type { Ator } from './Glifo';
 
 /**
- * O caminho de um evento pelo n.secops: das fontes aos agentes de IA, deles ao
+ * O caminho de um evento pelo n.secops: das fontes ao AIOps, dele ao
  * time de segurança quando é preciso julgar, e a você. O tracejado é o
  * contrato. É o modelo de operação do n.secops desenhado — por isso os textos
  * dos nós moram aqui, e só as fontes vêm do dado.
@@ -16,7 +16,7 @@ const SETA = 'fill-none stroke-on-surface-variant';
 
 const NO: Record<Ator, { titulo: string; linhas: [string, string]; caixa: string; marca: string }> = {
   ia: {
-    titulo: 'agentes de IA',
+    titulo: 'AIOps',
     linhas: ['correlação 24×7', 'triagem e prioridade'],
     caixa: 'fill-primary-container/15 stroke-primary-container/70',
     marca: 'fill-primary-container',
@@ -67,7 +67,7 @@ function Marca({ x, y }: { x: number; y: number }) {
 }
 
 const DESCRICAO =
-  'Eventos das suas fontes chegam aos agentes de IA do n.secops. Eles contêm o que já está autorizado no runbook, escalam ao time de segurança o que precisa de julgamento e notificam você conforme a severidade; o time aciona você com contexto.';
+  'Eventos das suas fontes chegam ao AIOps do n.secops. Ele contém o que já está autorizado no runbook, escalam ao time de segurança o que precisa de julgamento e notificam você conforme a severidade; o time aciona você com contexto.';
 
 export default function FluxoDoEvento({ fontes }: { fontes?: string[] }) {
   if (!fontes?.length) return null;
