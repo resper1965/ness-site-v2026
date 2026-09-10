@@ -47,12 +47,26 @@ export default function AvisoDeConsentimento() {
 
   useEffect(() => {
     const decidir = () => {
-      const consent = window.zaraz?.consent;
-      if (!consent) return;
-      // Esconde o modal de fábrica também pelo cliente: se a configuração da
-      // zone for revertida, o visitante não leva os dois avisos na cara.
-      consent.modal = false;
-      setVisivel(!jaRespondeu());
+      // Tudo aqui dentro é conversa com código de terceiro. Um erro solto
+      // sobe até o ErrorBoundary e derruba a árvore inteira — foi o que
+      // aconteceu em produção: sem nav, sem rodapé, sem h1, porque
+      // `consent.modal = false` chamava o `hideConsentModal()` da Zaraz, que
+      // tentava remover um modal que a própria configuração `hideModal: true`
+      // já tinha impedido de existir. O pior desfecho aceitável aqui é o
+      // aviso não aparecer; nunca o site sumir.
+      try {
+        const consent = window.zaraz?.consent;
+        if (!consent) return;
+        // Só desliga o modal de fábrica se ele existir de verdade. Serve para
+        // o caso de a configuração da zone ser revertida — aí o visitante não
+        // leva os dois avisos na cara.
+        const temModal = document.querySelector('.cf_modal_container') ||
+          [...document.querySelectorAll('*')].some((el) => el.shadowRoot?.querySelector('.cf_modal'));
+        if (temModal && consent.modal !== false) consent.modal = false;
+        setVisivel(!jaRespondeu());
+      } catch {
+        // Terceiro quebrou. O site segue.
+      }
     };
 
     document.addEventListener('zarazConsentAPIReady', decidir);
@@ -64,9 +78,15 @@ export default function AvisoDeConsentimento() {
   if (!visivel) return null;
 
   const responder = (aceitou: boolean) => {
-    const consent = window.zaraz?.consent;
-    consent?.setAll?.(aceitou);
-    if (aceitou) consent?.sendQueuedEvents?.();
+    // Mesmo motivo do try/catch acima: a escolha da pessoa tem que valer
+    // mesmo que a API da Zaraz quebre no meio.
+    try {
+      const consent = window.zaraz?.consent;
+      consent?.setAll?.(aceitou);
+      if (aceitou) consent?.sendQueuedEvents?.();
+    } catch {
+      /* segue */
+    }
     setVisivel(false);
   };
 
