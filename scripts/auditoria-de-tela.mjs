@@ -74,8 +74,17 @@ const auditar = () => {
   }
 
   for (const el of document.querySelectorAll('button, a[href], input[type="checkbox"], [role="button"]')) {
-    // link dentro de frase é a exceção que a própria norma dá (WCAG 2.5.8)
-    if (!visivel(el) || el.closest('label')) continue;
+    if (!visivel(el)) continue;
+    // Link dentro de frase e a excecao que a propria norma da (WCAG 2.5.8,
+    // \"Inline\"): a altura dele e limitada pela entrelinha do texto em volta,
+    // nao por uma decisao de design. A versao anterior so reconhecia a
+    // excecao dentro de <label>, entao acusava o link da politica no meio de
+    // um paragrafo — 12 achados falsos de uma vez.
+    const dentroDeFrase =
+      el.tagName === 'A' &&
+      el.parentElement &&
+      el.parentElement.textContent.trim().length > el.textContent.trim().length + 10;
+    if (dentroDeFrase) continue;
     const r = el.getBoundingClientRect();
     if (Math.min(r.width, r.height) < 24) {
       achados.push(['alvo abaixo de 24 px', `${Math.round(r.width)}x${Math.round(r.height)} ${nomeDe(el).slice(0, 30)}`]);
