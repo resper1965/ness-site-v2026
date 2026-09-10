@@ -1,6 +1,5 @@
 import { NomeDeProduto } from '../components/BlueDot';
 import Abertura, { CabecalhoDeSecao } from '../components/Abertura';
-import ComMarcas from '../components/ComMarcas';
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { routeMeta, traduzir } from '../utils/meta';
@@ -91,9 +90,6 @@ const Solutions = () => {
               </div>
             ))}
           </div>
-          <figcaption className="mt-6 max-w-[72ch] text-[13px] leading-relaxed text-on-surface-variant">
-            <ComMarcas>{t('solutions.ciclo.legenda')}</ComMarcas>
-          </figcaption>
         </figure>
 
         {comoPagina && <Passagem />}

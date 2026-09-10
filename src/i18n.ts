@@ -92,7 +92,6 @@ const ptResources = {
           },
           "forense": "Perícia digital, com cadeia de custódia preservada.",
           "trustness": "Auditoria, conformidade e DPO como serviço.",
-          "legenda": "Onde cada solução atua. Perícia e conformidade têm marcas próprias, com equipe e método dedicados: forense.io e trustness.",
           "ver_mapa": "ver o mapa das soluções",
           "passagem": {
             "titulo": "quando um incidente atravessa o ecossistema",
