@@ -238,6 +238,18 @@ foreach ($z in $zonas) {
         }
     }
     $consent.enabled = $true
+
+    # O modal de fabrica da Zaraz e um <dialog> aberto em modo modal: cobre a
+    # tela e TRAVA a pagina ate o visitante responder. Medimos em producao —
+    # elementFromPoint no botao do chat devolvia DIV.cf_modal_container — e
+    # quem chegava pela primeira vez nao clicava em nada. Consentir antes de
+    # medir e certo; impedir a pessoa de ler o site antes de decidir, nao.
+    # O aviso passou a ser nosso, em src/components/AvisoDeConsentimento.tsx,
+    # ancorado embaixo e sem bloquear nada. A Zaraz segue governando a medicao.
+    $consent.hideModal = $true
+
+    # O customCSS abaixo fica inerte enquanto hideModal for true. Mantido de
+    # proposito: se alguem reverter, o modal volta vestido e nao de fabrica.
     if ($Textos -or -not $consent.customCSS) {
         $consent | Add-Member -NotePropertyName customCSS -NotePropertyValue $estilo -Force
         Write-Host "   estilo do aviso aplicado"

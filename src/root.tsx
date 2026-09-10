@@ -9,6 +9,7 @@ import i18n, { ensureLanguage } from './i18n';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ChatLauncher from './components/ChatLauncher';
+import AvisoDeConsentimento from './components/AvisoDeConsentimento';
 import ScrollToTop from './components/ScrollToTop';
 import Analytics from './components/Analytics';
 import SchemaOrg from './components/SchemaOrg';
@@ -138,6 +139,7 @@ function Shell({ brand, children }: { brand: Brand; children: ReactNode }) {
               <ProfundidadeDeRolagem />
               <Navbar />
               <ChatLauncher />
+              <AvisoDeConsentimento />
               <main id="main-content" tabIndex={-1} className="outline-none">
                 <Breadcrumbs semTrilhaVisivel />
                 {children}

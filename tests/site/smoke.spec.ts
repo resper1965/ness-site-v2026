@@ -1,5 +1,14 @@
 import { test, expect } from '@playwright/test';
 
+/** Globais que só existem dentro do navegador dos testes do aviso, para
+ *  observar o que o componente chamou na API simulada da Zaraz. */
+declare global {
+  interface Window {
+    __setAll?: boolean[];
+    __enviou?: boolean;
+  }
+}
+
 /**
  * Smoke do site público: metadados por rota, ausência de overlays não
  * solicitados, chat só por clique, 404 real e orçamento de peso inicial.
@@ -473,12 +482,18 @@ test.describe('orçamento de performance', () => {
 
     const scriptSrc = csp.match(/script-src ([^;]*)/)?.[1] ?? '';
     expect(scriptSrc, `script-src: ${scriptSrc}`).not.toContain("'unsafe-inline'");
-    expect(scriptSrc).toMatch(/'nonce-[a-f0-9]+'/);
-    const nonce = scriptSrc.match(/'nonce-([a-f0-9]+)'/)?.[1];
+
+    // Em produção a Zaraz injeta um script próprio e a Cloudflare acrescenta o
+    // nonce dela ao cabeçalho — formato UUID, ao lado do nosso, hexadecimal. A
+    // propriedade que interessa não é "todo script tem O NOSSO nonce", e sim
+    // "todo script inline está autorizado por ALGUM nonce da política". Exigir
+    // só o nosso reprovava uma resposta perfeitamente segura.
+    const autorizados = [...csp.matchAll(/'nonce-([A-Za-z0-9+/=_-]+)'/g)].map((m) => m[1]);
+    expect(autorizados.length, `nenhum nonce em script-src: ${scriptSrc}`).toBeGreaterThan(0);
 
     const semNonce = (html.match(/<script(?![^>]*\ssrc=)[^>]*>/g) || [])
-      .filter((tag) => !tag.includes(`nonce="${nonce}"`));
-    expect(semNonce, `scripts inline sem nonce: ${semNonce.join(' ')}`).toHaveLength(0);
+      .filter((tag) => !autorizados.some((n) => tag.includes(`nonce="${n}"`)));
+    expect(semNonce, `scripts inline sem nonce autorizado: ${semNonce.join(' ')}`).toHaveLength(0);
 
   });
 
@@ -584,5 +599,64 @@ test.describe('página de produto', () => {
     }
     expect(posicoes).toEqual([...posicoes].sort((a, b) => a - b));
     expect(posicoes.length).toBeGreaterThanOrEqual(3);
+  });
+});
+
+test.describe('aviso de consentimento', () => {
+  // O preview roda em workers.dev, fora das zones, entao nao tem Zaraz — e o
+  // aviso so aparece quando a API dela existe. Aqui ela e simulada antes do
+  // carregamento, que e a unica forma de exercitar isto sem producao.
+  const simularZaraz = (jaRespondeu: boolean) => `
+    window.__setAll = [];
+    window.zaraz = {
+      track: () => {},
+      consent: {
+        modal: true,
+        getAll: () => (${jaRespondeu} ? { analytics: true } : { analytics: undefined }),
+        setAll: (v) => window.__setAll.push(v),
+        sendQueuedEvents: () => { window.__enviou = true; },
+      },
+    };
+    document.addEventListener('DOMContentLoaded', () => {
+      document.dispatchEvent(new Event('zarazConsentAPIReady'));
+    });
+  `;
+
+  test('aparece para quem ainda nao respondeu, e nao bloqueia a pagina', async ({ page }) => {
+    await page.addInitScript(simularZaraz(false));
+    await page.goto('/');
+    const aviso = page.getByRole('region', { name: /privacidade|privacy/i });
+    await expect(aviso).toBeVisible();
+
+    // O modal de fabrica da Zaraz travava a pagina: o que estava no ponto do
+    // botao do chat era o backdrop dele. O nosso nao pode interceptar nada.
+    const botao = page.getByRole('button', { name: /gabi/i });
+    await expect(botao).toBeVisible();
+    await botao.click({ timeout: 5_000 });
+
+    // e escondeu o modal de fabrica, caso a configuracao da zone seja revertida
+    expect(await page.evaluate(() => window.zaraz?.consent?.modal)).toBe(false);
+  });
+
+  test('nao aparece para quem ja respondeu', async ({ page }) => {
+    await page.addInitScript(simularZaraz(true));
+    await page.goto('/');
+    await page.waitForTimeout(1_500);
+    await expect(page.getByRole('region', { name: /privacidade|privacy/i })).toHaveCount(0);
+  });
+
+  test('recusar e aceitar chamam a API, e so aceitar libera a fila', async ({ page }) => {
+    await page.addInitScript(simularZaraz(false));
+    await page.goto('/');
+    await page.getByRole('button', { name: /^recusar$|^decline$|^rechazar$/i }).click();
+    expect(await page.evaluate(() => window.__setAll)).toEqual([false]);
+    expect(await page.evaluate(() => window.__enviou)).toBeUndefined();
+    await expect(page.getByRole('region', { name: /privacidade|privacy/i })).toHaveCount(0);
+
+    await page.addInitScript(simularZaraz(false));
+    await page.goto('/');
+    await page.getByRole('button', { name: /^aceitar$|^accept$|^aceptar$/i }).click();
+    expect(await page.evaluate(() => window.__setAll)).toEqual([true]);
+    expect(await page.evaluate(() => window.__enviou)).toBe(true);
   });
 });

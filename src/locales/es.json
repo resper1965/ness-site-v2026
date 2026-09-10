@@ -710,5 +710,11 @@
   "clients": {
     "eyebrow": "quién confía en ness.",
     "title": "empresas que transformamos"
+  },
+  "consentimento": {
+    "titulo": "aviso de privacidad",
+    "texto": "Medimos audiencia para entender cómo se usa el sitio. No compartimos nada con anunciantes y puede rechazar sin perder ninguna función. <politica>Cómo tratamos sus datos</politica>.",
+    "aceitar": "aceptar",
+    "recusar": "rechazar"
   }
 }
