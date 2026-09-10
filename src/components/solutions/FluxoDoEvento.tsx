@@ -1,4 +1,5 @@
 import type { Ator } from './Glifo';
+import ComMarcas from '../ComMarcas';
 
 /**
  * O caminho de um evento pelo n.secops: das fontes ao AIOps, dele ao
@@ -70,6 +71,9 @@ function Marca({ x, y }: { x: number; y: number }) {
 
 const DESCRICAO =
   'Eventos das suas fontes chegam ao AIOps do n.secops. Ele contém o que já está autorizado no runbook, escala ao time de segurança o que precisa de julgamento e notifica você conforme a severidade; o time aciona você com contexto.';
+
+const LEGENDA =
+  'O caminho de um evento. O tracejado é o n.secops: tudo dentro dele a ness. opera. Contenção só acontece sem consulta quando a ação já está autorizada no runbook.';
 
 export default function FluxoDoEvento({ fontes }: { fontes?: string[] }) {
   if (!fontes?.length) return null;
@@ -148,8 +152,7 @@ export default function FluxoDoEvento({ fontes }: { fontes?: string[] }) {
         </svg>
 
         <figcaption className="mt-4 max-w-3xl text-[13px] leading-relaxed text-on-surface-variant">
-          O caminho de um evento. O tracejado é o n.secops: tudo dentro dele a ness. opera. Contenção só acontece sem
-          consulta quando a ação já está autorizada no runbook.
+          <ComMarcas>{LEGENDA}</ComMarcas>
         </figcaption>
       </figure>
     </section>

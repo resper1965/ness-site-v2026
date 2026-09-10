@@ -3,26 +3,23 @@ import Solutions from '../pages/Solutions';
 import Insights from '../pages/Insights';
 import CTA from '../components/CTA';
 import Hero from '../components/Hero';
-import Prova from '../components/Prova';
 import ClientLogos from '../components/ClientLogos';
 
 /**
- * Seis seções, não nove.
+ * Cinco seções, no desenho delicado: nenhum título acima de 32 px.
  *
- * Presença e Métricas viraram uma faixa de prova só. Serviços e Verticais
- * saíram: são páginas completas, e repeti-las aqui alongava a home em duas
- * telas de rolagem no celular sem dizer nada novo — elas agora aparecem no
- * mega-menu de Soluções.
+ * A faixa de prova saiu. Dos seus números, só o tempo de casa tinha fonte, e
+ * ele já está no texto do hero; os países estão no rodapé de todas as páginas.
+ * Serviços e verticais viraram o mapa de soluções, que vem logo depois do hero.
  *
  * Quando a pesquisa de conteúdo entregar casos com números e depoimentos,
  * "casos" entra no lugar de ClientLogos e "como trabalhamos" entra depois de
- * Soluções. A home segue em seis.
+ * Soluções.
  */
 const Home = () => {
   return (
     <>
       <Hero />
-      <Prova />
       <Solutions />
       <Insights />
       <ClientLogos />

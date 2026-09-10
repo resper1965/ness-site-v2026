@@ -671,7 +671,7 @@ test.describe('telas no desenho delicado', () => {
   // Pedido de 10/09: elegante e delicado, sem fontes grandes. O teto é o do
   // título de abertura, 32 px; cabeçalho, rodapé e menu ficam de fora.
   test('nenhum título das telas passa de 32 px', async ({ page }) => {
-    for (const path of ['/solucoes', '/solucoes/secops', '/forense', '/trustness']) {
+    for (const path of ['/', '/solucoes', '/solucoes/secops', '/forense', '/trustness']) {
       await page.goto(path);
       const maior = await page.evaluate(() =>
         Math.max(
@@ -684,8 +684,29 @@ test.describe('telas no desenho delicado', () => {
     }
   });
 
+  // O ponto das marcas é sempre azul, também no meio de uma frase: "a ness."
+  // num parágrafo, com o ponto cinza, foi o exemplo mandado em 10/09. Todo texto
+  // das telas com nome de marca precisa sair desenhado como marca.
+  test('nenhuma marca aparece como texto comum nas telas', async ({ page }) => {
+    for (const path of ['/', '/solucoes', '/solucoes/secops', '/forense', '/trustness']) {
+      await page.goto(path);
+      const soltas = await page.evaluate(() => {
+        const marca = /(n\.(secops|infraops|devarch|autoops|cirt)|forense\.io|trustness\.|(?<![\p{L}\p{N}])ness\.)(?![\p{L}\p{N}])/u;
+        const achados: string[] = [];
+        const passo = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        for (let no = passo.nextNode(); no; no = passo.nextNode()) {
+          const pai = no.parentElement;
+          if (!pai || pai.closest('header, footer, nav, script, style, svg, [role="dialog"], .marca')) continue;
+          if (marca.test(no.textContent ?? '')) achados.push((no.textContent ?? '').trim().slice(0, 70));
+        }
+        return achados;
+      });
+      expect(soltas, path).toEqual([]);
+    }
+  });
+
   test('nenhuma das telas rola de lado', async ({ page }) => {
-    for (const path of ['/solucoes', '/forense', '/trustness']) {
+    for (const path of ['/', '/solucoes', '/forense', '/trustness']) {
       await page.goto(path);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth), path).toBe(true);
     }

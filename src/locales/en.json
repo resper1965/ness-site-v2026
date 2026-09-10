@@ -22,15 +22,7 @@
     "know_ness": "know ness",
     "since": "since {{year}}",
     "subtitle_clear": "24×7 security operations, infrastructure, software engineering, data privacy and digital forensics for companies that cannot stop. {{years}} years delivering with precision.",
-    "cta_primary": "talk to a specialist",
-    "pillars": {
-      "label": "what we do",
-      "secops": "24×7 security",
-      "infra": "infrastructure & cloud",
-      "software": "software engineering",
-      "privacy": "privacy & compliance",
-      "forensics": "digital forensics"
-    }
+    "cta_primary": "talk to a specialist"
   },
   "presence": {
     "global": "global presence",
@@ -100,7 +92,7 @@
       },
       "forense": "Digital forensics, with the chain of custody preserved.",
       "trustness": "Audit, compliance and DPO as a service.",
-      "legenda": "Where each solution works. The n. solutions are ness.'s own; forense.io and trustness. are brands in their own right, with dedicated teams and methods.",
+      "legenda": "Where each solution works. Forensics and compliance have brands of their own, with dedicated teams and methods: forense.io and trustness.",
       "ver_mapa": "see the solutions map",
       "passagem": {
         "titulo": "when an incident crosses the ecosystem",
@@ -680,8 +672,7 @@
     "cta": "back to home"
   },
   "clients": {
-    "eyebrow": "who trusts ness.",
-    "title": "companies we transformed"
+    "title": "who trusts ness"
   },
   "consentimento": {
     "titulo": "privacy notice",

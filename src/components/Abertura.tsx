@@ -1,5 +1,9 @@
 import type { ReactNode } from 'react';
 import BlueDot from './BlueDot';
+import ComMarcas from './ComMarcas';
+
+/** Texto que chega como string ganha as marcas desenhadas; o resto passa como veio. */
+const comMarcas = (conteudo: ReactNode) => (typeof conteudo === 'string' ? <ComMarcas>{conteudo}</ComMarcas> : conteudo);
 
 /**
  * A abertura das páginas de produto no desenho delicado: a marca pequena, uma
@@ -24,7 +28,7 @@ export default function Abertura({
       <h1 className="text-balance font-display text-2xl font-medium leading-tight tracking-tight text-white md:text-[32px]">
         {titulo}<BlueDot />
       </h1>
-      <p className="max-w-[62ch] text-base leading-relaxed text-on-surface-variant">{children}</p>
+      <p className="max-w-[62ch] text-base leading-relaxed text-on-surface-variant">{comMarcas(children)}</p>
       {acoes && <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-2">{acoes}</div>}
     </div>
   );
@@ -37,7 +41,7 @@ export function CabecalhoDeSecao({ id, titulo, children }: { id?: string; titulo
       <h2 id={id} className="text-balance font-display text-xl font-medium lowercase tracking-tight text-white">
         {titulo}<BlueDot />
       </h2>
-      {children && <div className="mt-2 space-y-3 text-[15px] leading-relaxed text-on-surface-variant">{children}</div>}
+      {children && <div className="mt-2 space-y-3 text-[15px] leading-relaxed text-on-surface-variant">{comMarcas(children)}</div>}
     </div>
   );
 }

@@ -22,15 +22,7 @@
     "know_ness": "conozca a ness",
     "since": "desde {{year}}",
     "subtitle_clear": "operaciones de seguridad 24×7, infraestructura, ingeniería de software, privacidad y peritaje digital para empresas que no pueden parar. {{years}} años entregando con precisión.",
-    "cta_primary": "hablar con un especialista",
-    "pillars": {
-      "label": "áreas de actuación",
-      "secops": "seguridad 24×7",
-      "infra": "infraestructura & cloud",
-      "software": "ingeniería de software",
-      "privacy": "privacidad & compliance",
-      "forensics": "peritaje digital"
-    }
+    "cta_primary": "hablar con un especialista"
   },
   "presence": {
     "global": "presencia global",
@@ -100,7 +92,7 @@
       },
       "forense": "Peritaje digital, con la cadena de custodia preservada.",
       "trustness": "Auditoría, cumplimiento y DPO como servicio.",
-      "legenda": "Dónde actúa cada solución. Las n. son soluciones de ness.; forense.io y trustness. son marcas propias, con equipo y método dedicados.",
+      "legenda": "Dónde actúa cada solución. Peritaje y cumplimiento tienen marcas propias, con equipo y método dedicados: forense.io y trustness.",
       "ver_mapa": "ver el mapa de soluciones",
       "passagem": {
         "titulo": "cuando un incidente atraviesa el ecosistema",
@@ -680,8 +672,7 @@
     "cta": "volver al inicio"
   },
   "clients": {
-    "eyebrow": "quién confía en ness.",
-    "title": "empresas que transformamos"
+    "title": "quién confía en ness"
   },
   "consentimento": {
     "titulo": "aviso de privacidad",

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import BlueDot from "../../components/BlueDot";
 import Abertura, { BOTAO, CabecalhoDeSecao, LINK } from "../../components/Abertura";
 import LeadMagnet from "../../components/LeadMagnet";
+import ComMarcas from "../../components/ComMarcas";
 import { homeMeta, routeMeta } from '../../utils/meta';
 
 /**
@@ -130,7 +131,7 @@ export default function TrustnessHome() {
         <section id="dpo" aria-labelledby="t-dpo" className="mb-24 grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-14">
           <div>
             <CabecalhoDeSecao id="t-dpo" titulo={t('trustness.dpo.titulo')}>
-              <p>{t('trustness.dpo.texto')}</p>
+              <p><ComMarcas>{t('trustness.dpo.texto')}</ComMarcas></p>
               <p>{t('trustness.dpo.aegis')}</p>
             </CabecalhoDeSecao>
             <Link to="/dpo-as-a-service" className={LINK}>{t('trustness.dpo.link')}</Link>

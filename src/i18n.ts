@@ -28,15 +28,7 @@ const ptResources = {
         "know_ness": "conheça a ness",
         "since": "desde {{year}}",
         "subtitle_clear": "operações de segurança 24×7, infraestrutura, engenharia de software, LGPD e perícia digital para empresas que não podem parar. {{years}} anos entregando com precisão.",
-        "cta_primary": "falar com um especialista",
-        "pillars": {
-          "label": "frentes de atuação",
-          "secops": "segurança 24×7",
-          "infra": "infraestrutura & cloud",
-          "software": "engenharia de software",
-          "privacy": "LGPD & compliance",
-          "forensics": "perícia digital"
-        }
+        "cta_primary": "falar com um especialista"
       },
       "presence": {
         "global": "presença global",
@@ -100,7 +92,7 @@ const ptResources = {
           },
           "forense": "Perícia digital, com cadeia de custódia preservada.",
           "trustness": "Auditoria, conformidade e DPO como serviço.",
-          "legenda": "Onde cada solução atua. As n. são soluções da ness.; forense.io e trustness. são marcas próprias, com equipe e método dedicados.",
+          "legenda": "Onde cada solução atua. Perícia e conformidade têm marcas próprias, com equipe e método dedicados: forense.io e trustness.",
           "ver_mapa": "ver o mapa das soluções",
           "passagem": {
             "titulo": "quando um incidente atravessa o ecossistema",
@@ -586,8 +578,7 @@ const ptResources = {
         "cta": "voltar ao início"
       },
       "clients": {
-        "eyebrow": "quem confia na ness.",
-        "title": "empresas que transformamos"
+        "title": "quem confia na ness"
       }
     }
   }
