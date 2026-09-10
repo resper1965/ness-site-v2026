@@ -1,10 +1,49 @@
 # Pesquisa — as métricas que precisam de fonte
 
-Preencha uma ficha por alegação. Uma alegação só volta ao site com os campos
-**valor apurado**, **fonte** e **quem confirma** preenchidos.
+> **Estado em 09/09/2026.** Os números foram levantados na reunião e Ricardo
+> confirmou que os que estão no ar são coerentes. Isso encerra as alegações
+> **quantificadas** — elas ficam como estão. O que segue aberto são as três
+> alegações **sem denominador**, listadas ao fim: ali o problema nunca foi o
+> valor estar errado, e sim a frase não dizer o que mede. Coerência não
+> resolve isso.
 
-A regra que decide tudo: *alguém do time consegue apontar a fonte desse número
-em 30 segundos?* Se não, o número não publica — nem numa versão menor.
+## Encerrado — alegações quantificadas, confirmadas na reunião
+
+| Onde | Alegação no ar | Situação |
+|---|---|---|
+| ness. | `35+` anos de experiência | confirmada |
+| ness. | `500+` projetos executados | confirmada |
+| ness. | `200+` clientes ativos | confirmada |
+| ness. | `99.9%` disponibilidade | confirmada |
+| forense.io | `450+` perícias | confirmada |
+| trustness. | `15+` frameworks | confirmada |
+
+Falta só uma linha para a ficha ficar completa e a próxima pessoa não reabrir
+a discussão: **de onde saiu cada número** (sistema, planilha ou relatório — o
+nome e onde fica) e **quem confirma**. Me passe isso e eu registro aqui, no
+mesmo commit da próxima mudança.
+
+## Aberto — as três que não têm denominador
+
+Estas não entram no encerramento acima porque a objeção não é sobre exatidão:
+
+| Onde | No ar hoje | O que continua sem resposta |
+|---|---|---|
+| forense.io | **laudos aceitos — 100%** | É afirmação sobre o que o juízo decidiu, não sobre o que a ness. fez. Mesmo exata hoje, um laudo contestado torna o site falso — e ninguém aqui controla isso |
+| trustness. | **certificações — 100%** | 100% de quê? Sem denominador o leitor não consegue interpretar |
+| trustness. | **compliance score — A+** | Índice sem metodologia declarada. (A ficha 3 abaixo fala em `100%`; o site mostra `A+` — o valor mudou, a falta de metodologia não) |
+
+Proposta, mantendo o mesmo fato e trocando só a forma:
+
+- `laudos aceitos 100%` → o volume já está ao lado em `450+ perícias`; o par
+  honesto é o que a ness. controla, como a cadeia de custódia ISO 27037, que
+  já ocupa o terceiro slot.
+- `certificações 100%` → nomeá-las. `ISO 27001 · SOC 2 · LGPD` diz mais que
+  um percentual e não envelhece mal.
+- `compliance score A+` → ou vem com a metodologia em uma frase, ou o slot
+  fica com `15+ frameworks`, que já é verificável.
+
+As fichas abaixo seguem valendo para qualquer número novo.
 
 ---
 

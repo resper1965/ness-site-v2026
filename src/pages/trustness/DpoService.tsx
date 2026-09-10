@@ -2,23 +2,7 @@ import React from "react";
 import { m as motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import {
-  ArrowRight,
-  ShieldCheck,
-  Users,
-  FileCheck,
-  Scale,
-  Activity,
-  Lock,
-  Eye,
-  Settings,
-  BarChart3,
-  Clock,
-  CheckCircle2,
-  Zap,
-  Building2,
-  Handshake,
-} from "lucide-react";
+import { ArrowRight, ShieldCheck, Scale, Activity, Lock, Eye, Settings, BarChart3, Clock, CheckCircle2, Zap, Building2, Handshake } from "lucide-react";
 import BlueDot from "../../components/BlueDot";
 import SchemaOrg from "../../components/SchemaOrg";
 import { routeMeta } from '../../utils/meta';
@@ -153,19 +137,19 @@ export default function DpoService() {
             <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-display font-medium text-white leading-[1.05] tracking-tighter lowercase-all">
               dpo as a service<BlueDot />
             </h1>
-            <p className="text-lg md:text-2xl text-on-surface-variant max-w-3xl leading-relaxed font-light">
+            <p className="text-lg md:text-2xl text-on-surface-variant max-w-3xl leading-relaxed font-normal">
               Seu programa de privacidade operado por especialistas. Adequação, manutenção e auditoria contínua da LGPD com a plataforma Aegis — sem investimento em ferramentas adicionais.
             </p>
             <div className="flex flex-wrap items-center gap-8 pt-4">
               <Link
                 to="/contato?ref=dpo"
-                className="bg-primary-container text-on-primary px-10 py-4 rounded-full font-display font-semibold text-sm shadow-xl shadow-primary-container/20 hover:scale-105 transition-transform"
+                className="bg-primary-container text-on-primary px-10 py-4 rounded-full font-display font-semibold text-sm shadow-xl shadow-primary-container/20 transition-all hover:brightness-110 hover:shadow-[0_0_28px_rgba(0,173,232,0.4)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest"
               >
                 agendar diagnóstico gratuito
               </Link>
               <a
                 href="#como-funciona"
-                className="flex items-center gap-2 text-white font-display font-medium text-sm hover:text-primary transition-colors group"
+                className="flex items-center gap-2 py-1 text-white font-display font-medium text-sm hover:text-primary transition-colors group"
               >
                 como funciona<BlueDot />
                 <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
@@ -182,7 +166,7 @@ export default function DpoService() {
             <h2 className="text-3xl md:text-5xl font-display font-medium text-white lowercase-all tracking-tighter">
               para quem é<BlueDot />
             </h2>
-            <p className="mt-6 text-on-surface-variant max-w-2xl leading-relaxed font-light">
+            <p className="mt-6 text-on-surface-variant max-w-2xl leading-relaxed font-normal">
               O DPO as a Service da trustness. atende organizações de todos os portes que precisam de um programa de privacidade profissional, operacional e auditável.
             </p>
           </div>
@@ -195,7 +179,7 @@ export default function DpoService() {
               >
                 <a.icon className="text-primary-container mb-6 group-hover:scale-110 transition-transform" size={32} />
                 <h3 className="text-xl font-display text-white mb-3 tracking-tight">{a.title}</h3>
-                <p className="text-sm text-on-surface-variant font-light leading-relaxed">
+                <p className="text-sm text-on-surface-variant font-normal leading-relaxed">
                   {a.desc}
                 </p>
               </div>
@@ -211,7 +195,7 @@ export default function DpoService() {
             <h2 className="text-3xl md:text-5xl font-display font-medium text-white lowercase-all tracking-tighter">
               como funciona<BlueDot />
             </h2>
-            <p className="mt-6 text-on-surface-variant max-w-2xl leading-relaxed font-light">
+            <p className="mt-6 text-on-surface-variant max-w-2xl leading-relaxed font-normal">
               Um ciclo contínuo de quatro fases que leva sua organização da análise inicial à maturidade plena em privacidade de dados.
             </p>
           </div>
@@ -226,16 +210,16 @@ export default function DpoService() {
                 transition={{ delay: i * 0.1 }}
                 className="p-8 rounded-3xl bg-surface-container border border-white/5 hover:border-primary-container/30 transition-colors group relative"
               >
-                <span className="text-[64px] font-display font-bold text-primary-container/10 absolute top-4 right-6">
+                <span className="text-[64px] font-display font-medium text-primary-container/10 absolute top-4 right-6">
                   {phase.step}
                 </span>
                 <phase.icon className="text-primary-container mb-6 group-hover:scale-110 transition-transform" size={32} />
-                <span className="text-[11px] text-primary-container font-bold uppercase tracking-widest block mb-2">
+                <span className="text-[11px] text-primary-container font-medium uppercase tracking-widest block mb-2">
                   fase {phase.step}
                 </span>
                 <h3 className="text-xl font-display text-white mb-2 tracking-tight">{phase.title}</h3>
                 <p className="text-xs text-primary-container/70 font-medium mb-3">{phase.subtitle}</p>
-                <p className="text-sm text-on-surface-variant font-light leading-relaxed">
+                <p className="text-sm text-on-surface-variant font-normal leading-relaxed">
                   {phase.desc}
                 </p>
               </motion.div>
@@ -251,7 +235,7 @@ export default function DpoService() {
             <h2 className="text-3xl md:text-5xl font-display font-medium text-white lowercase-all tracking-tighter">
               por que a trustness<BlueDot />
             </h2>
-            <p className="mt-6 text-on-surface-variant max-w-2xl leading-relaxed font-light">
+            <p className="mt-6 text-on-surface-variant max-w-2xl leading-relaxed font-normal">
               Não somos escritório de advocacia. Somos engenheiros de privacidade com ferramentas próprias e visão operacional.
             </p>
           </div>
@@ -268,7 +252,7 @@ export default function DpoService() {
               >
                 <d.icon className="text-primary-container mb-6 group-hover:scale-110 transition-transform" size={32} />
                 <h3 className="text-lg font-display text-white mb-3 tracking-tight">{d.title}</h3>
-                <p className="text-sm text-on-surface-variant font-light leading-relaxed">
+                <p className="text-sm text-on-surface-variant font-normal leading-relaxed">
                   {d.desc}
                 </p>
               </motion.div>
@@ -288,7 +272,7 @@ export default function DpoService() {
               <h2 className="text-3xl md:text-5xl font-display font-medium text-white lowercase-all tracking-tighter mb-6">
                 plataforma aegis<BlueDot />
               </h2>
-              <p className="text-on-surface-variant leading-relaxed font-light mb-8">
+              <p className="text-on-surface-variant leading-relaxed font-normal mb-8">
                 Toda a operação de privacidade da sua organização em uma única plataforma. O Aegis é o sistema nervoso central do programa de proteção de dados — integrado, auditável e acessível de qualquer lugar.
               </p>
               <p className="text-sm text-primary-container/80 font-medium">
@@ -384,7 +368,7 @@ export default function DpoService() {
                   <span>{faq.q}</span>
                   <ArrowRight size={16} className="text-primary-container group-open:rotate-90 transition-transform shrink-0 ml-4" />
                 </summary>
-                <p className="mt-4 text-sm text-on-surface-variant font-light leading-relaxed">
+                <p className="mt-4 text-sm text-on-surface-variant font-normal leading-relaxed">
                   {faq.a}
                 </p>
               </details>
@@ -399,19 +383,19 @@ export default function DpoService() {
           <h2 className="text-4xl md:text-6xl font-display font-medium text-white lowercase-all tracking-tighter">
             seu programa de privacidade em boas mãos<BlueDot />
           </h2>
-          <p className="text-on-surface-variant text-lg font-light leading-relaxed max-w-2xl mx-auto">
+          <p className="text-on-surface-variant text-lg font-normal leading-relaxed max-w-2xl mx-auto">
             Diagnóstico inicial gratuito. Sem compromisso. Avaliamos a maturidade do seu programa de privacidade e apresentamos um roadmap personalizado.
           </p>
           <div className="pt-4 flex flex-wrap justify-center gap-6">
             <Link
               to="/contato?ref=dpo"
-              className="bg-primary-container text-on-primary px-12 py-5 rounded-full font-display font-bold text-sm uppercase tracking-widest hover:brightness-110 transition-all"
+              className="bg-primary-container text-on-primary px-12 py-5 rounded-full font-display font-medium text-sm uppercase tracking-widest transition-all hover:brightness-110 hover:shadow-[0_0_28px_rgba(0,173,232,0.4)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest"
             >
               agendar diagnóstico gratuito
             </Link>
             <Link
               to="/contato?ref=trustness"
-              className="border border-white/10 text-white px-12 py-5 rounded-full font-display font-bold text-sm uppercase tracking-widest hover:bg-white/5 transition-all"
+              className="border border-white/10 text-white px-12 py-5 rounded-full font-display font-medium text-sm uppercase tracking-widest hover:bg-white/5 transition-all"
             >
               falar com especialista
             </Link>

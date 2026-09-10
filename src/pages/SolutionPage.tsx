@@ -2,25 +2,23 @@ import BlueDot from '../components/BlueDot';
 import ChatPreview from '../components/ChatPreview';
 import EmergencyChatModal from '../components/EmergencyChatModal';
 import SolutionHeroBackground from '../components/solutions/SolutionHeroBackground';
-import SolutionExecutiveDashboard from '../components/solutions/SolutionExecutiveDashboard';
 import SolutionServicesGrid from '../components/solutions/SolutionServicesGrid';
+import RespostaAIncidente from '../components/solutions/RespostaAIncidente';
+import Escopo from '../components/solutions/Escopo';
+import Entregaveis from '../components/solutions/Entregaveis';
+import Operacao from '../components/solutions/Operacao';
 import LeadMagnet from '../components/LeadMagnet';
 import NotFound from './NotFound';
 import React, { useEffect, useState } from "react";
 import { m as motion, AnimatePresence } from "motion/react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { routeMeta } from '../utils/meta';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { solutionsData } from "../data/solutionsData";
 import SchemaOrg from '../components/SchemaOrg';
 import { useBrand, BRAND_DOMAINS } from '../config/brand';
-import { 
-  ChevronLeft,
-  CheckCircle2,
-  ExternalLink,
-  ChevronDown
-} from "lucide-react";
+import { CheckCircle2, ExternalLink, ChevronDown } from "lucide-react";
 
 
 
@@ -46,9 +44,9 @@ const SolutionPage = () => {
     <>
       <SchemaOrg 
         type="service" 
-        data={{ 
-          name: solution.dashboard?.title || 'Solution', 
-          description: solution.overview || '', 
+        data={{
+          name: solution.metaTitle || t(`solutions.${slug}.title`),
+          description: solution.overview || '',
           url: `${BRAND_DOMAINS[BRAND]}/solucoes/${slug}` 
         }} 
       />
@@ -65,7 +63,7 @@ const SolutionPage = () => {
         {/* O schema já sai do shell; aqui é só a trilha visível. */}
         <Breadcrumbs semSchema />
 
-        <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
+        <div className={`mb-24 grid items-center gap-16 ${slug === 'autoops' ? 'lg:grid-cols-2' : 'max-w-3xl'}`}>
           <motion.div 
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -83,7 +81,7 @@ const SolutionPage = () => {
             <h2 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight leading-tight lowercase">
               {t(`solutions.${slug}.fullTitle`)}<BlueDot />
             </h2>
-            <p className="text-base md:text-lg text-on-surface-variant font-light leading-relaxed">
+            <p className="text-base md:text-lg text-on-surface-variant font-normal leading-relaxed">
               {solution.overview || t(`solutions.${slug}.longDesc`)}
             </p>
             <div className="flex gap-4 pt-4">
@@ -101,173 +99,65 @@ const SolutionPage = () => {
             </div>
           </motion.div>
 
-          <motion.div 
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="relative"
-          >
-            <div className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full animate-pulse"></div>
-            {slug === 'autoops' ? (
+          {slug === 'autoops' && (
+            <motion.div
+              initial={{ scale: 0.96, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="relative"
+            >
               <ChatPreview />
-            ) : (
-              <SolutionExecutiveDashboard slug={slug!} dashboard={solution.dashboard} />
-            )}
-          </motion.div>
+            </motion.div>
+          )}
         </div>
 
-        {/* NEW Fluxo Operacional (Workflow Espaçoso) */}
-        <section id="fluxo-operacional" className="mb-24">
-          <div className="mb-12">
-            <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase">
-              {t('solutions.intelligence_flow', 'o fluxo de inteligência')}<BlueDot />
-            </h3>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {solution.workflow?.map((w: { step: string; name: string; desc?: string }, idx: number) => (
-              <motion.div 
-                key={w.step}
-                whileHover={{ y: -5 }} 
-                className="relative p-8 rounded-4xl bg-surface-container-low/10 border border-white/5 hover:bg-surface-container-low/30 hover:border-primary/20 transition-all overflow-hidden group flex flex-col"
-              >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/20 transition-all z-0"></div>
-                <div className="relative z-10 flex flex-col flex-1">
-                  <div className="flex items-center gap-4 mb-8">
-                    <div className="w-12 h-12 shrink-0 rounded-full bg-primary-container/10 border border-primary-container/20 flex items-center justify-center text-sm font-mono text-primary-container font-bold shadow-[0_0_15px_rgba(var(--primary-container-rgb),0.1)] group-hover:shadow-[0_0_20px_rgba(var(--primary-container-rgb),0.2)] transition-shadow">
-                      {w.step}
-                    </div>
-                    <div className="h-px flex-1 bg-linear-to-r from-white/10 to-transparent group-hover:from-primary-container/30 transition-colors"></div>
-                  </div>
-                  <h4 className="text-white font-display font-medium text-[1.15rem] leading-snug mb-4 tracking-tight group-hover:text-primary-container transition-colors drop-shadow-sm">{w.name}</h4>
-                  {w.desc && (
-                    <p className="text-on-surface-variant font-light leading-relaxed text-sm flex-1">{w.desc}</p>
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </section>
+        <RespostaAIncidente severidade={solution.severidade} workflow={solution.workflow} />
 
-        {/* NEW Casos de Uso Típicos (Legacy Refactored) */}
+        <Escopo escopo={solution.escopo} />
+
+        <Entregaveis entregaveis={solution.entregaveis} />
+
+        <Operacao operacao={solution.operacao} onboarding={solution.onboarding} />
+
+        {/* NEW Soluções Estratégicas (Full Width SaaS Modules) */}
+        <SolutionServicesGrid services={solution.services} icon={PageIcon} />
+
+        {solution.features && solution.features.length > 0 && (
+          <div className="mb-24 -mt-8">
+            {/* Era uma nuvem de pilulas escalonadas com opacidade decrescente:
+                sugeria hierarquia que ninguem decidiu, e o item de baixo
+                parecia menos importante sem motivo. Lista, para conferir. */}
+            <ul className="grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
+              {solution.features.map((feat) => (
+                <li key={feat.name} className="flex items-baseline gap-3 border-b border-white/5 py-3">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary-container" aria-hidden="true" />
+                  <span className="text-sm text-white">{feat.name}</span>
+                  <span className="ml-auto text-[11px] uppercase tracking-widest text-on-surface-variant/70">
+                    {feat.category}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Quatro situações (Casos de Uso, renomeado) */}
         {solution.useCases && (
-          <section id="casos-de-uso" className="mb-24">
+          <section id="situacoes" className="mb-24">
             <div className="mb-12">
               <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase">
-                {t('solutions.use_cases', 'casos de uso reais')}<BlueDot />
+                {t('solutions.use_cases', 'quatro situações')}<BlueDot />
               </h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {solution.useCases.map((useCase: { title: string; desc: string }, i: number) => (
-                <motion.div 
-                  key={i} 
+                <motion.div
+                  key={i}
                   whileHover={{ y: -5 }}
                   className="p-8 lg:p-10 rounded-4xl bg-surface-container-low/10 border border-white/5 hover:bg-surface-container-low/30 hover:border-primary/20 transition-all group flex flex-col justify-between"
                 >
                   <h4 className="text-white font-medium text-lg lg:text-xl leading-tight mb-4 group-hover:text-primary-container transition-colors pr-6">{useCase.title}</h4>
-                  <p className="text-on-surface-variant font-light text-sm">{useCase.desc}</p>
-                </motion.div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* NEW Valor para o Negócio (Full Width Bento-style Cards) */}
-        <section id="benefícios" className="mb-24">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
-            <div className="max-w-2xl">
-              <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase">
-                {t('solutions.business_value', 'valor para o negócio')}<BlueDot />
-              </h3>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {solution.benefits?.map((benefit: { title: string; desc: string }, i: number) => (
-              <motion.div 
-                key={i} 
-                whileHover={{ y: -10 }}
-                className="p-10 rounded-4xl bg-surface-container-low/20 border border-white/5 hover:bg-surface-container-low/40 hover:border-primary/30 transition-all relative overflow-hidden group flex flex-col"
-              >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/20 transition-all"></div>
-                <div className="relative z-10 flex-1 flex flex-col">
-                  <div className="w-12 h-12 rounded-2xl bg-primary-container/10 flex items-center justify-center mb-8 border border-primary-container/20">
-                    <CheckCircle2 className="text-primary-container" size={24} />
-                  </div>
-                  <h4 className="text-white font-display font-semibold text-xl mb-4 group-hover:text-primary-container transition-colors tracking-tight">{benefit.title}</h4>
-                  <p className="text-on-surface-variant font-light leading-relaxed flex-1">{benefit.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* NEW Soluções Estratégicas (Full Width SaaS Modules) */}
-        <SolutionServicesGrid services={solution.services} t={t} icon={PageIcon} />
-
-        {/* NEW O Arsenal Técnico (Features Legadas) */}
-        {solution.features && (
-          <section id="funcionalidades" className="mb-24 pt-12 border-t border-white/5">
-            <div className="mb-16 text-center">
-              <h3 className="text-3xl md:text-4xl font-display font-bold text-white tracking-tight lowercase mb-6">
-                {t('solutions.technical_arsenal', 'o arsenal em operação')}<BlueDot />
-              </h3>
-            </div>
-            <motion.div 
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={{
-                hidden: { opacity: 0 },
-                show: { opacity: 1, transition: { staggerChildren: 0.1 } }
-              }}
-              className="flex flex-wrap items-center justify-center gap-4 max-w-[1000px] mx-auto relative p-4"
-            >
-              {/* Linhas de conexão visuais no fundo pra dar sensação de correlação/pipeline */}
-              <div className="absolute inset-x-20 top-1/2 h-px bg-linear-to-r from-transparent via-primary/30 to-transparent -translate-y-1/2 z-0 hidden lg:block"></div>
-              
-              {solution.features.map((feat: { name: string; category?: string }, i: number) => (
-                <motion.div 
-                  key={i} 
-                  variants={{
-                    hidden: { opacity: 0, scale: 0.8, y: 15 },
-                    show: { opacity: 1, scale: 1, y: 0, transition: { type: "spring" } }
-                  }}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  className="relative z-10 flex items-center gap-2 px-5 py-3 rounded-full border border-white/10 bg-surface-container-low/80 backdrop-blur-md hover:border-primary/50 hover:bg-surface-container-low transition-all shadow-xl shadow-black/20 group cursor-default"
-                >
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary-container shadow-[0_0_8px_rgba(var(--primary-container-rgb),0.8)] group-hover:scale-150 transition-transform"></div>
-                  <span className="text-white text-sm font-medium">{feat.name}</span>
-                  <span className="text-on-surface-variant text-[11px] uppercase tracking-widest ml-2 hidden md:inline-block border-l border-white/10 pl-2">{feat.category}</span>
-                </motion.div>
-              ))}
-            </motion.div>
-          </section>
-        )}
-
-        {/* NEW Timeline de Onboarding (Legacy Refactored) */}
-        {solution.onboarding && (
-          <section id="onboarding" className="mb-24 pt-12 border-t border-white/5">
-            <div className="mb-16">
-              <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase mb-6">
-                {t('solutions.onboarding_journey', 'jornada de ativação')}<BlueDot />
-              </h3>
-            </div>
-            <div className="flex flex-col md:flex-row gap-8 relative mt-16">
-              <div className="absolute top-6 left-0 right-0 h-px bg-white/5 hidden md:block z-0"></div>
-              {solution.onboarding.map((step: { step: string; title: string; desc: string }, i: number) => (
-                <motion.div 
-                  key={i} 
-                  whileHover={{ y: -10 }}
-                  className="flex-1 relative z-10 bg-surface-container-lowest md:bg-transparent p-6 md:p-0 rounded-3xl border border-white/5 md:border-transparent group"
-                >
-                  <div className="w-12 h-12 bg-surface-container-lowest border border-white/10 rounded-full flex items-center justify-center text-primary font-mono text-sm font-bold mb-8 mx-auto shadow-xl group-hover:border-primary/50 group-hover:text-primary-container transition-all">
-                    {step.step}
-                  </div>
-                  <div className="text-center md:px-2">
-                    <h4 className="text-white font-medium text-lg mb-3 tracking-tight">{step.title}</h4>
-                    <p className="text-on-surface-variant text-xs md:text-sm font-light leading-relaxed">{step.desc}</p>
-                  </div>
+                  <p className="text-on-surface-variant font-normal text-sm">{useCase.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -300,7 +190,7 @@ const SolutionPage = () => {
           </div>
           <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
             <h4 className="text-3xl lg:text-5xl font-display font-medium text-white mb-6 tracking-tight lowercase">{t('solutions.cta_title', 'sua empresa em um novo nível')}<BlueDot /></h4>
-            <p className="text-lg text-on-surface-variant font-light leading-relaxed mb-10">{t('solutions.cta_desc', 'descubra como a ness pode transformar sua operação com inteligência e segurança de elite.')}</p>
+            <p className="text-lg text-on-surface-variant font-normal leading-relaxed mb-10">{t('solutions.cta_desc', 'descubra como a ness. pode transformar sua operação com inteligência e segurança de elite.')}</p>
             <button 
               onClick={() => {
                 if (slug === 'cirt') {
@@ -309,7 +199,7 @@ const SolutionPage = () => {
                   navigate(`/contato?ref=${slug}`);
                 }
               }}
-              className="bg-white text-surface px-10 py-5 rounded-full font-display font-semibold uppercase tracking-widest text-sm hover:bg-primary-container hover:text-on-primary hover:scale-105 transition-all shadow-lg shadow-primary-container/20 whitespace-nowrap">
+              className="whitespace-nowrap rounded-full bg-primary-container px-10 py-5 font-display text-sm font-semibold uppercase tracking-widest text-on-primary shadow-lg shadow-primary-container/25 transition-all hover:brightness-110 hover:shadow-[0_0_28px_rgba(0,173,232,0.4)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-low">
               {solution.ctaLabel}
             </button>
           </div>
@@ -320,7 +210,7 @@ const SolutionPage = () => {
             <div className="flex justify-center mb-8">
               <button 
                 onClick={() => setShowTech(!showTech)}
-                className="flex items-center gap-3 px-8 py-4 rounded-full bg-surface-container-low border border-white/10 hover:bg-surface-container-low/80 hover:border-primary/20 transition-all text-on-surface-variant text-xs font-bold uppercase tracking-[0.2em] shadow-lg shadow-black/20"
+                className="flex items-center gap-3 px-8 py-4 rounded-full bg-surface-container-low border border-white/10 hover:bg-surface-container-low/80 hover:border-primary/20 transition-all text-on-surface-variant text-xs font-medium uppercase tracking-[0.2em] shadow-lg shadow-black/20"
               >
                 {t('solutions.technical_view_toggle', 'visão para engenharia & ctos')}
                 <motion.div animate={{ rotate: showTech ? 180 : 0 }}>
@@ -340,7 +230,7 @@ const SolutionPage = () => {
                   <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-8 pt-6">
                     <div className="max-w-xl">
                       <h3 className="text-xl md:text-2xl font-display font-semibold text-white tracking-tight lowercase">{t('solutions.tech_engine', 'o motor da resiliência')}<BlueDot /></h3>
-                      <p className="text-on-surface-variant mt-4 font-light">{t('solutions.tech_desc', 'para os interessados na engenharia por trás da proteção, aqui estão os pilares técnicos que sustentam nossa entrega de valor.')}</p>
+                      <p className="text-on-surface-variant mt-4 font-normal">{t('solutions.tech_desc', 'para os interessados na engenharia por trás da proteção, aqui estão os pilares técnicos que sustentam nossa entrega de valor.')}</p>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-6">
@@ -350,7 +240,7 @@ const SolutionPage = () => {
                           <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
                           {feat.title}
                         </h4>
-                        <p className="text-on-surface-variant text-xs font-light leading-relaxed">{feat.desc}</p>
+                        <p className="text-on-surface-variant text-xs font-normal leading-relaxed">{feat.desc}</p>
                       </div>
                     ))}
                   </div>
@@ -360,14 +250,14 @@ const SolutionPage = () => {
           </section>
         )}
 
-        <section id="portfólio">
+        <section id="portfolio">
           <h3 className="text-xl md:text-2xl font-display font-semibold text-white mb-10 tracking-tight lowercase">{t('solutions.impact_portfolio', 'portfólio de impacto')}<BlueDot /></h3>
           <div className="grid md:grid-cols-2 gap-8">
             {solution.portfolio.map((item: { client: string; project: string; result: string }, i: number) => (
               <div key={i} className="p-8 rounded-4xl border border-white/5 bg-linear-to-br from-surface-container-low to-surface-container-lowest">
                 <div className="flex justify-between items-start mb-6">
                   <div>
-                    <span className="text-[11px] uppercase tracking-widest text-primary font-bold">{item.client}</span>
+                    <span className="text-[11px] uppercase tracking-widest text-primary font-medium">{item.client}</span>
                     <h4 className="text-xl text-white mt-1 font-medium">{item.project}</h4>
                   </div>
                   <ExternalLink className="text-on-surface-variant/60" size={20} />

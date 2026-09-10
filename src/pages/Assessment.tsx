@@ -1,9 +1,8 @@
 import React, { useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { m as motion, AnimatePresence } from "motion/react";
-import { ArrowRight, ArrowLeft, BarChart3, Send, CheckCircle2, AlertTriangle } from "lucide-react";
-import { assessments, AssessmentConfig } from "../data/assessments";
-import { CANAL_BASE } from "../config/api";
+import { ArrowRight, ArrowLeft, Send, CheckCircle2, AlertTriangle } from "lucide-react";
+import { assessments } from "../data/assessments";
 import { canalApi } from "../services/canal";
 import BlueDot from "../components/BlueDot";
 import SchemaOrg from "../components/SchemaOrg";
@@ -35,7 +34,7 @@ export default function Assessment() {
       <div className="min-h-screen flex items-center justify-center bg-surface-container-lowest px-8">
         <div className="text-center">
           <h2 className="text-3xl font-display text-white mb-4">Assessment não encontrado</h2>
-          <Link to="/" className="text-primary-container font-display font-bold text-sm uppercase tracking-widest">
+          <Link to="/" className="text-primary-container font-display font-medium text-sm uppercase tracking-widest">
             voltar ao início
           </Link>
         </div>
@@ -141,13 +140,13 @@ export default function Assessment() {
             animate={{ opacity: 1, y: 0 }}
             className="mb-12"
           >
-            <span className="text-[11px] text-primary-container font-bold uppercase tracking-widest block mb-3">
+            <span className="text-[11px] text-primary-container font-medium uppercase tracking-widest block mb-3">
               assessment gratuito
             </span>
             <h1 className="text-3xl md:text-4xl font-display text-white tracking-tight lowercase mb-2">
               {config.title}<BlueDot />
             </h1>
-            <p className="text-on-surface-variant font-light">
+            <p className="text-on-surface-variant font-normal">
               {config.subtitle}
             </p>
           </motion.div>
@@ -155,10 +154,10 @@ export default function Assessment() {
           {/* Progress Bar */}
           <div className="mb-10">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] text-on-surface-variant font-bold uppercase tracking-widest">
+              <span className="text-[11px] text-on-surface-variant font-medium uppercase tracking-widest">
                 {showResult ? "resultado" : `pergunta ${currentStep + 1} de ${totalQuestions}`}
               </span>
-              <span className="text-[11px] text-primary-container font-bold">
+              <span className="text-[11px] text-primary-container font-medium">
                 {Math.round(progress)}%
               </span>
             </div>
@@ -183,7 +182,7 @@ export default function Assessment() {
                 className="space-y-6"
               >
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="text-[11px] text-primary-container/60 font-bold uppercase tracking-widest">
+                  <span className="text-[11px] text-primary-container/60 font-medium uppercase tracking-widest">
                     {question.category}
                   </span>
                 </div>
@@ -201,7 +200,7 @@ export default function Assessment() {
                           : "border-white/5 bg-surface-container"
                       }`}
                     >
-                      <span className="text-sm text-white group-hover:text-white font-light">
+                      <span className="text-sm text-white group-hover:text-white font-normal">
                         {option.label}
                       </span>
                     </button>
@@ -240,7 +239,7 @@ export default function Assessment() {
                       />
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-4xl font-display font-bold text-white">
+                      <span className="text-4xl font-display font-medium text-white">
                         {scorePercent}
                       </span>
                       <span className="text-[11px] text-on-surface-variant uppercase tracking-widest">
@@ -257,7 +256,7 @@ export default function Assessment() {
 
                 {/* Category Breakdown */}
                 <div className="space-y-4 p-6 rounded-2xl bg-surface-container border border-white/5">
-                  <h3 className="text-xs text-primary-container font-bold uppercase tracking-widest mb-4">
+                  <h3 className="text-xs text-primary-container font-medium uppercase tracking-widest mb-4">
                     breakdown por área
                   </h3>
                   {config.categories.map((cat) => {
@@ -285,10 +284,10 @@ export default function Assessment() {
 
                 {/* Recommendation */}
                 <div className="p-6 rounded-2xl bg-primary-container/5 border border-primary-container/20">
-                  <h3 className="text-xs text-primary-container font-bold uppercase tracking-widest mb-3">
+                  <h3 className="text-xs text-primary-container font-medium uppercase tracking-widest mb-3">
                     recomendação
                   </h3>
-                  <p className="text-sm text-white/80 font-light leading-relaxed">
+                  <p className="text-sm text-white/80 font-normal leading-relaxed">
                     {level.recommendation}
                   </p>
                 </div>
@@ -298,14 +297,14 @@ export default function Assessment() {
                   <div className="space-y-4">
                     <button
                       onClick={() => setShowEmailForm(true)}
-                      className="w-full bg-primary-container text-on-primary py-4 rounded-xl font-display font-bold uppercase tracking-widest text-xs hover:brightness-110 transition-all flex items-center justify-center gap-2"
+                      className="w-full bg-primary-container text-on-primary py-4 rounded-xl font-display font-medium uppercase tracking-widest text-xs hover:brightness-110 transition-all flex items-center justify-center gap-2"
                     >
                       <Send size={16} />
                       receber relatório completo por email
                     </button>
                     <Link
                       to={`/contato?ref=assessment-${config.slug}&score=${scorePercent}`}
-                      className="w-full block text-center border border-white/10 text-white py-4 rounded-xl font-display font-bold uppercase tracking-widest text-xs hover:bg-white/5 transition-all"
+                      className="w-full block text-center border border-white/10 text-white py-4 rounded-xl font-display font-medium uppercase tracking-widest text-xs hover:bg-white/5 transition-all"
                     >
                       {level.cta}
                     </Link>
@@ -319,7 +318,7 @@ export default function Assessment() {
                     onSubmit={handleEmailSubmit}
                     className="space-y-4 p-6 rounded-2xl bg-surface-container border border-white/5"
                   >
-                    <h3 className="text-xs text-primary-container font-bold uppercase tracking-widest mb-2">
+                    <h3 className="text-xs text-primary-container font-medium uppercase tracking-widest mb-2">
                       receba o relatório completo
                     </h3>
 
@@ -333,29 +332,29 @@ export default function Assessment() {
                       type="text"
                       required
                       placeholder="Seu nome"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary-container"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container"
                     />
                     <input
                       name="email"
                       type="email"
                       required
                       placeholder="Email corporativo"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary-container"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container"
                     />
                     <input
                       name="company"
                       type="text"
                       required
                       placeholder="Empresa"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary-container"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container"
                     />
                     <Turnstile action="assessment" />
 
                     {submitError && (
-                      <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-5 py-3 rounded-xl text-xs font-light flex items-start gap-3">
+                      <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-5 py-3 rounded-xl text-xs font-normal flex items-start gap-3">
                         <AlertTriangle size={16} className="shrink-0 mt-0.5" />
                         <div>
-                          <p className="font-bold mb-1">{submitError}</p>
+                          <p className="font-medium mb-1">{submitError}</p>
                           <p className="text-red-400/80">Por favor, verifique sua conexão ou tente novamente em alguns instantes.</p>
                         </div>
                       </div>
@@ -363,7 +362,7 @@ export default function Assessment() {
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="w-full bg-primary-container text-on-primary py-3.5 rounded-xl font-display font-bold uppercase tracking-widest text-xs hover:brightness-110 transition-all disabled:opacity-50"
+                      className="w-full bg-primary-container text-on-primary py-3.5 rounded-xl font-display font-medium uppercase tracking-widest text-xs hover:brightness-110 transition-all disabled:opacity-50"
                     >
                       {isLoading ? "enviando..." : "enviar relatório"}
                     </button>
@@ -380,7 +379,7 @@ export default function Assessment() {
                     <p className="text-white font-display">Relatório enviado!</p>
                     <Link
                       to={`/contato?ref=assessment-${config.slug}&score=${scorePercent}`}
-                      className="text-primary-container font-display font-bold text-sm uppercase tracking-widest hover:brightness-110 inline-flex items-center gap-2"
+                      className="text-primary-container font-display font-medium text-sm uppercase tracking-widest hover:brightness-110 inline-flex items-center gap-2"
                     >
                       {level.cta}
                       <ArrowRight size={14} />

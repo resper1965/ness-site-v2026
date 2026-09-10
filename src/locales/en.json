@@ -48,8 +48,6 @@
     "title": "our solutions",
     "subtitle": "elite technology for companies that don't accept failure.",
     "technical_view_toggle": "engineering & ctos view",
-    "active_resilience": "active resilience",
-    "intelligence_flow": "intelligence flow",
     "secops": {
       "title": "n.secops",
       "fullTitle": "operational resilience & continuity",
@@ -85,13 +83,9 @@
       "longDesc": "n.cirt is the elite of incident response. when the unthinkable happens, our team takes the field to contain, remedy, and rebuild with surgical precision.",
       "cta": "talk to response team"
     },
-    "strategic_solutions": "strategic solutions",
     "use_cases": "real use cases",
-    "business_value": "business value",
-    "technical_arsenal": "operational arsenal",
-    "onboarding_journey": "activation journey",
     "cta_title": "your company to the next level",
-    "cta_desc": "discover how ness can transform your operation with elite intelligence and security.",
+    "cta_desc": "discover how ness. can transform your operation with elite intelligence and security.",
     "tech_engine": "resilience engine",
     "tech_desc": "for those interested in the engineering behind our protection, here are the technical pillars of our value delivery.",
     "impact_portfolio": "impact portfolio"
@@ -248,7 +242,7 @@
     },
     "form": {
       "name": "name",
-      "name_placeholder": "your name or leave blank",
+      "name_placeholder": "your name",
       "name_optional": "name (optional)",
       "contact_optional": "contact (optional)",
       "company": "company",
@@ -289,13 +283,13 @@
       },
       "desc_placeholder": "detail the occurrence with as much information as possible (dates, locations, involved)..."
     },
-    "badge": "get in touch — ness. precision",
+    "badge": "contact us — ness. precision",
     "meta_title": "contact — talk to a specialist",
     "meta_description": "Talk to ness.: security diagnostics, infrastructure, software engineering, privacy (LGPD/GDPR) and digital forensics. Reply within 1 business day. +55 (11) 2504-7650."
   },
   "cta": {
     "title": "ready for the next level?",
-    "subtitle": "talk to our experts and discover how ness can elevate the level of intelligence, security, and efficiency of your operation.",
+    "subtitle": "talk to our experts and discover how ness. can elevate the level of intelligence, security, and efficiency of your operation.",
     "button": "schedule consultancy",
     "support": "immediate specialized support."
   },
@@ -313,7 +307,7 @@
       "msg2_user": "Yes, please. Use the 2024 standard template.",
       "msg2_bot": "Understood. Processing drafts... Done! The 3 drafts have been generated and sent to your drafts folder in Teams. Anything else?"
     },
-    "open": "open chat with Gabi"
+    "open": "talk to Gabi"
   },
   "common": {
     "see_all": "see all",
@@ -327,7 +321,8 @@
     "tag": "tag",
     "back": "back",
     "all": "all",
-    "privacy_consent": "I have read and accept the privacy policy and terms of use."
+    "privacy_consent": "I have read and accept the privacy policy and terms of use.",
+    "privacy_consent_links": "I have read and accept the <privacidade>privacy policy</privacidade> and the <termos>terms of use</termos>."
   },
   "compliance": {
     "eyebrow": "compliance — ness. precision",

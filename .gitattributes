@@ -1,0 +1,10 @@
+# O repositório mora num caminho WSL acessado também pelo Windows. Sem isto,
+# uma gravação do lado Windows converte a árvore inteira para CRLF e o diff
+# some debaixo de 25 mil linhas que não mudaram nada.
+* text=auto eol=lf
+*.woff2 binary
+*.png binary
+*.jpg binary
+*.webp binary
+*.ico binary
+*.avif binary

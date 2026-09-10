@@ -73,6 +73,12 @@ escrito (e-mail de aprovação anexado ao card no canal).
 
 ## 4. Prioridade 3 — trocar as três métricas indefensáveis
 
+> **09/09/2026.** Os números foram levantados na reunião e os quantificados
+> (35+, 500+, 200+, 99.9%, 450+, 15+) ficaram confirmados — ver
+> `PESQUISA-metricas.md`. As três abaixo continuam abertas: a objeção nunca
+> foi o valor, e sim a frase não ter denominador ou ser sobre decisão de
+> terceiro.
+
 Estas estão no site hoje e não se sustentam:
 
 | Onde | Alegação atual | O problema | Troque por |

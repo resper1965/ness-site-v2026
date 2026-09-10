@@ -22,14 +22,14 @@ const NotFound = () => {
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.2, type: "spring" }}
-          className="text-[120px] font-display font-bold text-primary-container/10 leading-none mb-2"
+          className="text-[120px] font-display font-medium text-primary-container/10 leading-none mb-2"
         >
           404
         </motion.p>
         <h1 className="text-4xl md:text-5xl font-display font-medium text-white tracking-tight lowercase mb-4">
           {t('notfound.title', 'página não encontrada')}<BlueDot />
         </h1>
-        <p className="text-base text-on-surface-variant font-light leading-relaxed mb-10">
+        <p className="text-base text-on-surface-variant font-normal leading-relaxed mb-10">
           {t('notfound.desc', 'a rota que você buscou não existe ou foi removida.')}
         </p>
         <div className="flex flex-wrap justify-center gap-4">

@@ -9,16 +9,15 @@ interface ServiceItem {
 
 interface SolutionServicesGridProps {
   services: ServiceItem[];
-  t: (key: string, defaultString: string) => string;
   icon: React.ElementType;
 }
 
-const SolutionServicesGrid: React.FC<SolutionServicesGridProps> = ({ services, t, icon: Icon }) => {
+const SolutionServicesGrid: React.FC<SolutionServicesGridProps> = ({ services, icon: Icon }) => {
   return (
-    <section id="serviços" className="mb-24">
-      <div className="text-center mb-12">
-        <h3 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight lowercase">
-          {t('solutions.strategic_solutions', 'soluções estratégicas')}<BlueDot />
+    <section id="ferramentas" className="mb-24">
+      <div className="mb-12">
+        <h3 className="font-display text-3xl font-semibold lowercase tracking-tight text-white md:text-4xl">
+          ferramentas<BlueDot />
         </h3>
       </div>
 
@@ -41,7 +40,7 @@ const SolutionServicesGrid: React.FC<SolutionServicesGridProps> = ({ services, t
               <h4 className="text-white font-display text-xl lg:text-2xl font-semibold mb-4 tracking-tight drop-shadow-md group-hover:text-primary-container transition-colors">
                 {service.name}
               </h4>
-              <p className="text-on-surface-variant font-light leading-relaxed flex-1">
+              <p className="text-on-surface-variant font-normal leading-relaxed flex-1">
                 {service.desc}
               </p>
             </div>

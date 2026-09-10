@@ -126,7 +126,7 @@ export default function EmergencyChatModal({ isOpen, onClose }: EmergencyChatMod
                 </div>
                 <div>
                   <h3 className="text-white font-display font-medium text-xl flex items-center gap-2">
-                    n.cirt <span className="text-red-500 font-bold tracking-tight">emergência</span> 
+                    n.cirt <span className="text-red-500 font-medium tracking-tight">emergência</span> 
                     <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse ml-1 shadow-[0_0_10px_rgba(239,68,68,0.8)]" />
                   </h3>
                   <p className="text-red-400/80 text-[11px] font-mono uppercase tracking-[0.2em] mt-1 hidden sm:block">War Room Activation Protocol</p>
@@ -143,7 +143,7 @@ export default function EmergencyChatModal({ isOpen, onClose }: EmergencyChatMod
             {/* Warning Banner */}
             <div className="bg-red-500/10 px-6 py-3 flex items-start gap-3 border-b border-red-500/10">
               <AlertTriangle className="text-red-400 shrink-0 mt-0.5" size={16} />
-              <p className="text-red-200/70 text-xs leading-relaxed font-light">
+              <p className="text-red-200/70 text-xs leading-relaxed font-normal">
                 Este canal isolado é exclusivo para incidentes críticos ativos (Cyberbreach, Ransomware). O faturamento emergencial aplicável começa a partir da entrada tática.
               </p>
             </div>
@@ -158,7 +158,7 @@ export default function EmergencyChatModal({ isOpen, onClose }: EmergencyChatMod
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div className={`
-                    max-w-[90%] sm:max-w-[80%] rounded-2xl px-5 py-3.5 text-sm font-light leading-relaxed whitespace-pre-wrap
+                    max-w-[90%] sm:max-w-[80%] rounded-2xl px-5 py-3.5 text-sm font-normal leading-relaxed whitespace-pre-wrap
                     ${msg.role === 'user'
                       ? 'bg-red-600/90 text-white rounded-tr-sm border border-red-500/50 shadow-lg shadow-red-900/20'
                       : msg.role === 'system'
@@ -190,7 +190,7 @@ export default function EmergencyChatModal({ isOpen, onClose }: EmergencyChatMod
                   disabled={loading}
                   aria-label="Descreva o incidente de segurança"
                   placeholder="Descreva o incidente em andamento..."
-                  className="w-full bg-[#111] border border-white/10 rounded-full py-4 pl-6 pr-14 text-white text-sm focus:outline-none focus:border-red-500/60 transition-colors placeholder:text-white/20 font-light disabled:opacity-50"
+                  className="w-full bg-[#111] border border-white/10 rounded-full py-4 pl-6 pr-14 text-white text-sm focus:outline-none focus:border-red-500/60 transition-colors placeholder:text-white/20 font-normal disabled:opacity-50"
                 />
                 <button
                   type="submit"

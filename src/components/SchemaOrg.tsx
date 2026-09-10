@@ -1,7 +1,7 @@
 import React from 'react';
 import { useBrand, BRAND_DOMAINS, type Brand } from '../config/brand';
 import { useNonce } from '../hooks/useNonce';
-import { FOUNDATION_YEAR, anosDeLegado } from '../constants/brand';
+import { anosDeLegado } from '../constants/brand';
 
 interface SchemaOrgProps {
   type?: 'organization' | 'website' | 'article' | 'faq' | 'service' | 'breadcrumb';

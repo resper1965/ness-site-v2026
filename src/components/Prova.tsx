@@ -49,10 +49,10 @@ export default function Prova() {
               transition={{ delay: i * 0.1 }}
               className="text-center"
             >
-              <div className="text-4xl md:text-5xl font-display font-bold text-white mb-2 tracking-tighter">
+              <div className="text-4xl md:text-5xl font-display font-medium text-white mb-2 tracking-tighter">
                 {n.valor}
               </div>
-              <div className="text-[11px] text-primary-container font-bold uppercase tracking-widest">
+              <div className="text-[11px] text-primary-container font-medium uppercase tracking-widest">
                 {t(`metrics.${n.chave}`, n.rotulo)}
               </div>
             </motion.div>
@@ -62,7 +62,7 @@ export default function Prova() {
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 pt-2 border-t border-white/5">
           <div className="flex items-center gap-2">
             <Globe className="text-primary-container" size={16} aria-hidden="true" />
-            <span className="text-on-surface-variant text-[11px] tracking-widest uppercase font-bold">
+            <span className="text-on-surface-variant text-[11px] tracking-widest uppercase font-medium">
               {t('presence.global')}
             </span>
           </div>

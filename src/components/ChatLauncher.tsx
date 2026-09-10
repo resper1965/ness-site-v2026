@@ -1,4 +1,5 @@
-import React, { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useState } from "react";
+import { MessageCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const ChatbotWidget = lazy(() => import('./ChatbotWidget'));
@@ -7,6 +8,10 @@ const ChatbotWidget = lazy(() => import('./ChatbotWidget'));
  * Botão estático do chat. O widget completo (streaming, CSAT, histórico) só é
  * baixado no primeiro clique, então nenhuma página paga o custo do chat sem o
  * usuário pedir. Nunca abre sozinho.
+ *
+ * O rosto da Gabi fica dentro da conversa, não no botão: em cima do fundo
+ * escuro o avatar entrava com moldura branca e destoava do resto do site. Aqui
+ * o convite é tipográfico — ponto azul, ícone e o nome dela.
  */
 export default function ChatLauncher() {
   const { t } = useTranslation();
@@ -14,13 +19,13 @@ export default function ChatLauncher() {
 
   if (loaded) {
     return (
-      <Suspense fallback={<LauncherButton pending onClick={() => undefined} label={t('chatbot.open', 'abrir chat com a Gabi')} />}>
+      <Suspense fallback={<LauncherButton pending onClick={() => undefined} label={t('chatbot.open', 'falar com a Gabi')} />}>
         <ChatbotWidget initialOpen />
       </Suspense>
     );
   }
 
-  return <LauncherButton onClick={() => setLoaded(true)} label={t('chatbot.open', 'abrir chat com a Gabi')} />;
+  return <LauncherButton onClick={() => setLoaded(true)} label={t('chatbot.open', 'falar com a Gabi')} />;
 }
 
 function LauncherButton({ onClick, label, pending = false }: { onClick: () => void; label: string; pending?: boolean }) {
@@ -31,18 +36,17 @@ function LauncherButton({ onClick, label, pending = false }: { onClick: () => vo
         onClick={onClick}
         aria-label={label}
         aria-busy={pending}
-        className="w-14 h-14 md:w-16 md:h-16 rounded-2xl overflow-hidden shadow-2xl shadow-primary-container/30 border-2 border-primary-container bg-surface-container-low transition-transform hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-primary-container"
+        className="group glass flex h-14 w-14 items-center justify-center gap-3 rounded-full border-primary-container/25 shadow-xl shadow-black/30 sm:w-auto sm:justify-start sm:px-5 transition-all hover:border-primary-container/60 hover:shadow-2xl active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-primary-container focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
       >
-        <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 border-2 border-surface rounded-full z-10" aria-hidden="true" />
-        <img
-          src="/img/gabi-avatar.webp"
-          alt=""
-          width={128}
-          height={128}
-          loading="lazy"
-          decoding="async"
-          className={`w-full h-full object-cover ${pending ? 'opacity-60' : ''}`}
-        />
+        <span
+          aria-hidden="true"
+          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary-container text-on-primary transition-transform group-hover:scale-105 ${pending ? 'opacity-60' : ''}`}
+        >
+          <MessageCircle size={18} strokeWidth={2.25} />
+        </span>
+        <span className="hidden pr-1 text-sm font-display font-medium text-white sm:inline lowercase-all">
+          {label}
+        </span>
       </button>
     </div>
   );

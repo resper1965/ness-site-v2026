@@ -54,25 +54,25 @@ export default function ChatLeadForm({ assunto, onPronto }: { assunto: string; o
 
       <label className="sr-only" htmlFor="chat-nome">nome</label>
       <input id="chat-nome" name="nome" required placeholder="nome"
-        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-primary-container" />
+        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container" />
 
       <label className="sr-only" htmlFor="chat-email">e-mail corporativo</label>
       <input id="chat-email" name="email" type="email" required placeholder="e-mail corporativo"
         onBlur={(e) => setAvisoEmail(validarEmail(e.target.value))}
         aria-describedby={avisoEmail ? 'chat-email-aviso' : undefined}
-        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-primary-container" />
+        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container" />
       {avisoEmail && <p id="chat-email-aviso" className="text-[10px] text-amber-400 leading-snug">{avisoEmail}</p>}
 
       <label className="sr-only" htmlFor="chat-empresa">empresa</label>
       <input id="chat-empresa" name="empresa" required placeholder="empresa"
-        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-primary-container" />
+        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container" />
 
       <Turnstile action="chat" />
 
       {erro && <p role="alert" className="text-[11px] text-red-400">{erro}</p>}
 
       <button type="submit" disabled={enviando}
-        className="w-full bg-primary-container text-on-primary py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-widest disabled:opacity-50">
+        className="w-full bg-primary-container text-on-primary py-2.5 rounded-xl text-[11px] font-medium uppercase tracking-widest disabled:opacity-50">
         {enviando ? 'enviando...' : 'quero falar com um especialista'}
       </button>
     </form>

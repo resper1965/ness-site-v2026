@@ -1,11 +1,7 @@
-import React, {  } from "react";
 import { m as motion } from "motion/react";
 import { useTranslation } from "react-i18next";
-import { 
-Brain, 
-  Send} from "lucide-react";
+import { Brain, Send } from "lucide-react";
 
-import { FOUNDATION_YEAR, anoAtual, anosDeLegado } from '../constants/brand';
 
 
 
@@ -26,8 +22,8 @@ const ChatPreview = () => {
             <Brain size={20} className="text-primary-container" />
           </div>
           <div>
-            <div className="text-white font-bold text-sm">Gabi</div>
-            <div className="text-[11px] text-green-500 uppercase tracking-widest font-bold flex items-center gap-1">
+            <div className="text-white font-medium text-sm">Gabi</div>
+            <div className="text-[11px] text-green-500 uppercase tracking-widest font-medium flex items-center gap-1">
               <div className="w-1 h-1 rounded-full bg-green-500 animate-pulse"></div>
               online
             </div>

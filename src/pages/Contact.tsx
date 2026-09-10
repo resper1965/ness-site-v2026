@@ -1,5 +1,6 @@
 import BlueDot from '../components/BlueDot';
-import React, { useEffect, useState } from "react";
+import ConsentimentoPrivacidade from '../components/ConsentimentoPrivacidade';
+import React, { useState } from "react";
 import { m as motion } from "motion/react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router";
 import { useTranslation } from "react-i18next";
@@ -9,19 +10,10 @@ import { origemDaVisita } from '../utils/origem';
 import { evento } from '../utils/eventos';
 import { validarEmail } from '../utils/formulario';
 import Turnstile from '../components/Turnstile';
-import { CANAL_BASE } from '../config/api';
 import { canalApi } from '../services/canal';
 import { useBrand } from '../config/brand';
-import { 
-Mail,
-  Phone,
-  MapPin,
-  Linkedin,
-  Instagram,
-  Facebook,
-  AlertTriangle} from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin, Instagram, Facebook, AlertTriangle } from "lucide-react";
 
-import { FOUNDATION_YEAR, anoAtual, anosDeLegado } from '../constants/brand';
 
 
 
@@ -76,14 +68,14 @@ const Contact = () => {
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="text-primary-container font-mono text-xs uppercase tracking-[0.3em] mb-6"
+                className="text-primary-container font-mono text-xs lowercase tracking-[0.3em] mb-6"
               >
                 {t('contact.badge', 'get in touch — ness. precision')}
               </motion.div>
               <h1 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight leading-tight mb-6 lowercase">
                 {t('contact.title')}<BlueDot />
               </h1>
-              <p className="text-base md:text-lg text-on-surface-variant font-light leading-relaxed">
+              <p className="text-base md:text-lg text-on-surface-variant font-normal leading-relaxed">
                 {t('contact.subtitle')}
               </p>
             </div>
@@ -94,8 +86,8 @@ const Contact = () => {
                   <Mail className="text-primary-container" size={24} />
                 </div>
                 <div>
-                  <p className="text-white font-bold text-xs uppercase tracking-widest mb-1">{t('contact.info.email')}</p>
-                  <a href="mailto:contato@ness.com.br" className="text-on-surface-variant hover:text-primary transition-colors">contato@ness.com.br</a>
+                  <p className="text-white font-medium text-xs uppercase tracking-widest mb-1">{t('contact.info.email')}</p>
+                  <a href="mailto:contato@ness.com.br" className="inline-block py-1 text-on-surface-variant transition-colors hover:text-primary">contato@ness.com.br</a>
                 </div>
               </div>
 
@@ -104,8 +96,8 @@ const Contact = () => {
                   <Phone className="text-primary-container" size={24} />
                 </div>
                 <div>
-                  <p className="text-white font-bold text-xs uppercase tracking-widest mb-1">{t('contact.info.phone')}</p>
-                  <a href="tel:+551125047650" className="text-on-surface-variant hover:text-primary transition-colors">+55 (11) 2504-7650</a>
+                  <p className="text-white font-medium text-xs uppercase tracking-widest mb-1">{t('contact.info.phone')}</p>
+                  <a href="tel:+551125047650" className="inline-block py-1 text-on-surface-variant transition-colors hover:text-primary">+55 (11) 2504-7650</a>
                 </div>
               </div>
 
@@ -114,8 +106,8 @@ const Contact = () => {
                   <MapPin className="text-primary-container" size={24} />
                 </div>
                 <div>
-                  <p className="text-white font-bold text-xs uppercase tracking-widest mb-1">{t('contact.info.office')}</p>
-                  <p className="text-on-surface-variant font-light leading-relaxed">
+                  <p className="text-white font-medium text-xs uppercase tracking-widest mb-1">{t('contact.info.office')}</p>
+                  <p className="text-on-surface-variant font-normal leading-relaxed">
                     Rua George Ohm 230 Torre A Cj 82<br />
                     Brooklin Paulista - São Paulo/SP<br />
                     CEP 04576-020
@@ -138,12 +130,12 @@ const Contact = () => {
           </div>
 
           {/* Right Side: Form */}
-          <div className="bg-surface-container-low/30 border border-white/5 p-8 md:p-12 rounded-[3rem] nebula-shadow">
+          <div className="min-w-0 bg-surface-container-low/30 border border-white/5 p-8 md:p-12 rounded-[3rem] nebula-shadow">
             {/* Interest Context Badge */}
             {refInfo && (
               <div className="mb-6 flex items-center gap-3 px-4 py-3 rounded-2xl bg-primary-container/10 border border-primary-container/20">
-                <div className="w-2 h-2 rounded-full bg-primary-container animate-pulse" />
-                <span className="text-[11px] uppercase tracking-widest text-primary-container font-bold">
+                <div className="w-2 h-2 rounded-full bg-primary-container" aria-hidden="true" />
+                <span className="text-[11px] lowercase tracking-widest text-primary-container font-medium">
                   {t('contact.form.interest', { product: refInfo.label, defaultValue: `Interesse em: ${refInfo.label}` })}
                 </span>
               </div>
@@ -184,30 +176,30 @@ const Contact = () => {
             >
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label htmlFor="contact-name" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.name')}</label>
+                  <label htmlFor="contact-name" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-medium ml-6">{t('contact.form.name')}</label>
                   <input 
                     id="contact-name"
                     name="name"
                     type="text" 
                     required
                     placeholder={t('contact.form.name_placeholder')} 
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all"
                     aria-label={t('contact.form.name')} />
                 </div>
                 <div className="space-y-2">
-                  <label htmlFor="contact-company" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.company')}</label>
+                  <label htmlFor="contact-company" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-medium ml-6">{t('contact.form.company')}</label>
                   <input 
                     id="contact-company"
                     name="company"
                     type="text" 
                     required
                     placeholder={t('contact.form.company_placeholder')} 
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all"
                     aria-label={t('contact.form.company')} />
                 </div>
               </div>
               <div className="space-y-2">
-                <label htmlFor="contact-email" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.email')}</label>
+                <label htmlFor="contact-email" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-medium ml-6">{t('contact.form.email')}</label>
                 <input 
                   id="contact-email"
                   name="email"
@@ -219,7 +211,7 @@ const Contact = () => {
                   aria-describedby={erroEmail ? 'contact-email-erro' : undefined}
                   onBlur={(e) => setErroEmail(validarEmail(e.target.value))}
                   onChange={() => erroEmail && setErroEmail(null)}
-                  className={`w-full bg-white/5 border rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all ${erroEmail ? 'border-red-500/60' : 'border-white/10'}`}
+                  className={`w-full bg-white/5 border rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all ${erroEmail ? 'border-red-500/60' : 'border-white/10'}`}
                   aria-label={t('contact.form.email')} />
                 {erroEmail && (
                   <p id="contact-email-erro" role="alert" className="text-[11px] text-red-400 ml-4">{erroEmail}</p>
@@ -232,34 +224,23 @@ const Contact = () => {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="contact-message" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.message')}</label>
+                <label htmlFor="contact-message" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-medium ml-6">{t('contact.form.message')}</label>
                 <textarea 
                   id="contact-message"
                   name="message"
                   rows={4}
                   required
                   placeholder={t('contact.form.message_placeholder')} 
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all resize-none"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all resize-none"
                 ></textarea>
               </div>
-              <div className="flex items-start gap-3 px-4 py-2">
-                <input 
-                  id="privacy-consent"
-                  name="privacy_consent"
-                  type="checkbox" 
-                  required
-                  className="mt-1 w-4 h-4 bg-white/5 border border-white/10 rounded focus:ring-1 focus:ring-primary-container accent-primary-container cursor-pointer"
-                  aria-label={t('common.privacy_consent')} />
-                <label htmlFor="privacy-consent" className="text-[11px] text-on-surface-variant font-light leading-relaxed cursor-pointer">
-                  {t('common.privacy_consent')}
-                </label>
-              </div>
+              <ConsentimentoPrivacidade />
 
               {submitStatus === 'error' && (
-                <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-6 py-4 rounded-2xl text-xs font-light mt-4 flex items-start gap-3">
+                <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-6 py-4 rounded-2xl text-xs font-normal mt-4 flex items-start gap-3">
                   <AlertTriangle size={16} className="shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-bold mb-1">{t('contact.form.error', 'Erro ao enviar mensagem.')}</p>
+                    <p className="font-medium mb-1">{t('contact.form.error', 'Erro ao enviar mensagem.')}</p>
                     <p className="text-red-400/80">Por favor, verifique sua conexão ou tente novamente em alguns instantes. Se o problema persistir, contate-nos diretamente pelo e-mail contato@ness.com.br.</p>
                   </div>
                 </div>
@@ -293,15 +274,15 @@ const Contact = () => {
               <AlertTriangle className="text-primary-container" size={32} />
             </div>
             <div>
-              <h2 className="text-xl font-display font-bold text-white mb-2 lowercase-all">{t('contact.whistleblower.title')}<BlueDot /></h2>
-              <p className="text-on-surface-variant font-light text-sm max-w-md">
+              <h2 className="text-xl font-display font-medium text-white mb-2 lowercase-all">{t('contact.whistleblower.title')}<BlueDot /></h2>
+              <p className="text-on-surface-variant font-normal text-sm max-w-md">
                 {t('contact.whistleblower.desc')}
               </p>
             </div>
           </div>
           <Link 
             to="/compliance/etica"
-            className="bg-white/5 hover:bg-white/10 text-white px-8 py-4 rounded-2xl font-display font-bold uppercase tracking-widest text-xs transition-all border border-white/10"
+            className="bg-white/5 hover:bg-white/10 text-white px-8 py-4 rounded-2xl font-display font-medium uppercase tracking-widest text-xs transition-all border border-white/10"
           >
             {t('contact.whistleblower.cta')}
           </Link>

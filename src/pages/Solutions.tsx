@@ -1,33 +1,27 @@
-import BlueDot from '../components/BlueDot';
-import React, {  } from "react";
+import BlueDot, { NomeDeProduto } from '../components/BlueDot';
 import { m as motion } from "motion/react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { routeMeta, traduzir } from '../utils/meta';
-import { 
+import { ShieldCheck, Cloud, Cpu, Brain, ArrowRight, Gavel } from "lucide-react";
+
+
+
+
 /**
- * @license
- * SPDX-License-Identifier: Apache-2.0
+ * Serve as duas: e a rota /solucoes e a secao de solucoes da home. Como pagina
+ * precisa de h1 proprio — sem ele /solucoes ia ao ar sem titulo de primeiro
+ * nivel; como secao da home o h1 ja e o do hero, entao vira h2.
  */
-
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-  ShieldCheck, 
-  Cloud, 
-  Cpu, 
-  Brain, 
-  ArrowRight, 
-  Gavel} from "lucide-react";
-
-import { FOUNDATION_YEAR, anoAtual, anosDeLegado } from '../constants/brand';
-
-
-
 const Solutions = () => {
   const { t } = useTranslation();
+  // O nivel do titulo vem da URL, nao de uma prop: este mesmo arquivo e o
+  // modulo da rota /solucoes e a secao de solucoes da home, e o React Router
+  // instancia modulo de rota do seu jeito — a prop nao chegava. Como pagina o
+  // titulo e h1; dentro da home o h1 ja e o do hero, entao desce um nivel.
+  const comoPagina = /\/solucoes\/?$/.test(useLocation().pathname);
+  const Titulo = comoPagina ? "h1" : "h2";
+  const TituloDoCard = comoPagina ? "h2" : "h3";
   const solutions = [
     {
       slug: "secops",
@@ -72,9 +66,9 @@ const Solutions = () => {
     <section id="soluções" className="py-24 bg-surface px-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-16">
-          <h2 className="text-4xl font-display font-semibold text-white tracking-tighter lowercase-all">
+          <Titulo className="text-4xl font-display font-semibold text-white tracking-tighter lowercase-all">
             {t('nav.solutions')}<BlueDot />
-          </h2>
+          </Titulo>
           <div className="w-16 h-px bg-primary-container mt-4"></div>
         </div>
         
@@ -87,13 +81,13 @@ const Solutions = () => {
             >
               <motion.div whileHover={{ y: -5 }}>
                 <s.icon className="text-primary-container mb-6" size={32} />
-                <h3 className="text-2xl mb-4 text-white font-brand font-medium lowercase-all">
-                  {s.title.split('.')[0]}<span className="text-primary-container">.</span>{s.title.split('.')[1]}
-                </h3>
-                <p className="text-on-surface-variant text-sm leading-relaxed font-light">
+                <TituloDoCard className="text-2xl mb-4 text-white font-brand font-medium lowercase-all">
+                  <NomeDeProduto nome={s.title} />
+                </TituloDoCard>
+                <p className="text-on-surface-variant text-sm leading-relaxed font-normal">
                   {s.desc}
                 </p>
-                <div className="mt-8 flex items-center gap-2 text-[11px] text-primary-container uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="mt-8 flex items-center gap-2 text-[11px] text-primary-container uppercase tracking-widest font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                   ver detalhes <ArrowRight size={14} />
                 </div>
               </motion.div>

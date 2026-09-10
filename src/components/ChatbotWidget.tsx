@@ -4,7 +4,7 @@ import { m as motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router";
 import { CANAL_BASE } from '../config/api';
-import { Send, X, MessageSquare, Bot, ThumbsUp, ThumbsDown } from "lucide-react";
+import { Send, X, ThumbsUp, ThumbsDown } from "lucide-react";
 
 import type { ChatbotConfig } from '../types/canal';
 import ChatLeadForm from './ChatLeadForm';
@@ -172,7 +172,7 @@ const ChatbotWidget = ({ initialOpen = false }: ChatbotWidgetProps) => {
             <div className="flex flex-col gap-2 mt-2">
               {parsed.data.map((job: any) => (
                 <div key={job.id} className="bg-white/5 border border-white/10 p-3 rounded-xl hover:bg-white/10 transition-colors cursor-pointer text-left">
-                  <h5 className="font-bold text-primary-container">{job.title}</h5>
+                  <h5 className="font-medium text-primary-container">{job.title}</h5>
                   <p className="text-xs text-white/70">{job.location} {job.type && `• ${job.type}`}</p>
                 </div>
               ))}
@@ -187,7 +187,7 @@ const ChatbotWidget = ({ initialOpen = false }: ChatbotWidgetProps) => {
             <div className="flex flex-col gap-2 mt-2">
               {parsed.data.map((item: any) => (
                 <div key={item.id} className="bg-white/5 border border-white/10 p-3 rounded-xl hover:bg-white/10 transition-colors cursor-pointer text-left">
-                  <h5 className="font-bold text-primary-container">{item.title}</h5>
+                  <h5 className="font-medium text-primary-container">{item.title}</h5>
                   <p className="text-xs text-white/70">{item.sector} {item.metric && `• ${item.metric}`}</p>
                 </div>
               ))}
@@ -226,11 +226,11 @@ const ChatbotWidget = ({ initialOpen = false }: ChatbotWidgetProps) => {
                   <img src={avatarUrl} alt="" width={128} height={128} className="w-full h-full object-cover" />
                 </div>
                 <div>
-                  <h4 className="text-white font-display font-bold text-sm lowercase-all flex items-center gap-1">
+                  <h4 className="text-white font-display font-medium text-sm lowercase-all flex items-center gap-1">
                     {botName}
                     <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: primaryColor }} />
                   </h4>
-                  <p className="text-[11px] text-primary-container uppercase tracking-widest font-bold" style={{ color: primaryColor }}>{t('chatbot.status')}</p>
+                  <p className="text-[11px] text-primary-container uppercase tracking-widest font-medium" style={{ color: primaryColor }}>{t('chatbot.status')}</p>
                 </div>
               </div>
               <button
@@ -248,7 +248,7 @@ const ChatbotWidget = ({ initialOpen = false }: ChatbotWidgetProps) => {
             <div className="flex-1 overflow-y-auto p-6 space-y-4 scrollbar-hide">
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[80%] p-4 rounded-2xl text-sm font-light leading-relaxed whitespace-pre-wrap ${
+                  <div className={`max-w-[80%] p-4 rounded-2xl text-sm font-normal leading-relaxed whitespace-pre-wrap ${
                     msg.role === 'user'
                       ? 'text-[#0a0a0a] rounded-tr-none'
                       : 'bg-white/5 text-white border border-white/10 rounded-tl-none'
@@ -268,7 +268,7 @@ const ChatbotWidget = ({ initialOpen = false }: ChatbotWidgetProps) => {
                     {/* CSAT Rating buttons for the last bot message when stream finishes */}
                     {!loading && i === messages.length - 1 && msg.role === 'bot' && msg.content.length > 5 && i > 0 && (
                       <div className="flex items-center gap-3 mt-3 pt-3 border-t border-white/10">
-                        <p className="text-[11px] text-white/40 uppercase tracking-wider font-bold">Foi Útil?</p>
+                        <p className="text-[11px] text-white/40 uppercase tracking-wider font-medium">Foi Útil?</p>
                         <div className="flex gap-1.5">
                           <button
                             onClick={() => handleCsat(1)}
@@ -301,19 +301,19 @@ const ChatbotWidget = ({ initialOpen = false }: ChatbotWidgetProps) => {
                 <button
                   type="button"
                   onClick={() => setModo('qualificando')}
-                  className="whitespace-nowrap px-4 py-2 bg-primary-container/10 border border-primary-container/30 text-primary-container text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-primary-container hover:text-on-primary transition-all snap-start shadow-xl shadow-primary-container/5">
+                  className="whitespace-nowrap px-4 py-2 bg-primary-container/10 border border-primary-container/30 text-primary-container text-[11px] font-medium uppercase tracking-widest rounded-full hover:bg-primary-container hover:text-on-primary transition-all snap-start shadow-xl shadow-primary-container/5">
                   {t('chatbot.quick_specialist', 'falar com especialista')}
                 </button>
                 <button
                   type="button"
                   onClick={() => { setIsOpen(false); navigate(BRAND === 'trustness' ? '/assessment/lgpd' : '/assessment/cyber'); }}
-                  className="whitespace-nowrap px-4 py-2 bg-white/5 border border-white/10 text-on-surface-variant text-[11px] font-bold uppercase tracking-widest rounded-full hover:text-white transition-all snap-start">
+                  className="whitespace-nowrap px-4 py-2 bg-white/5 border border-white/10 text-on-surface-variant text-[11px] font-medium uppercase tracking-widest rounded-full hover:text-white transition-all snap-start">
                   {t('chatbot.quick_assessment', 'diagnóstico gratuito')}
                 </button>
                 <button
                   type="button"
                   onClick={() => { setIsOpen(false); navigate('/solucoes/cirt'); }}
-                  className="whitespace-nowrap px-4 py-2 bg-red-500/10 border border-red-500/30 text-red-400 text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-red-500 hover:text-white transition-all snap-start shadow-xl shadow-red-500/5">
+                  className="whitespace-nowrap px-4 py-2 bg-red-500/10 border border-red-500/30 text-red-400 text-[11px] font-medium uppercase tracking-widest rounded-full hover:bg-red-500 hover:text-white transition-all snap-start shadow-xl shadow-red-500/5">
                   {t('chatbot.quick_incident', 'incidente 24×7')}
                 </button>
               </div>
@@ -346,7 +346,7 @@ const ChatbotWidget = ({ initialOpen = false }: ChatbotWidgetProps) => {
               <button
                 type="submit"
                 aria-label={t('a11y.send')}
-                className="w-12 h-12 text-[#0a0a0a] rounded-xl flex items-center justify-center hover:brightness-110 transition-all font-bold"
+                className="w-12 h-12 text-[#0a0a0a] rounded-xl flex items-center justify-center hover:brightness-110 transition-all font-medium"
                 style={{ backgroundColor: primaryColor }}
               >
                 <Send size={18} />

@@ -48,8 +48,6 @@
     "title": "nuestras soluciones",
     "subtitle": "tecnología de élite para empresas que no aceptan fallos.",
     "technical_view_toggle": "visión de ingeniería",
-    "active_resilience": "resiliencia activa",
-    "intelligence_flow": "flujo de inteligencia",
     "secops": {
       "title": "n.secops",
       "fullTitle": "resiliencia operativa & continuidad",
@@ -85,13 +83,9 @@
       "longDesc": "n.cirt es la élite de la respuesta a incidentes. cuando ocurre lo impensable, nuestro equipo entra en acción para contener, remediar y reconstruir con precisión quirúrgica.",
       "cta": "hablar con el equipo de respuesta"
     },
-    "strategic_solutions": "soluciones estratégicas",
     "use_cases": "casos de uso",
-    "business_value": "valor del negocio",
-    "technical_arsenal": "arsenal técnico",
-    "onboarding_journey": "jornada de activación",
     "cta_title": "su empresa en un nuevo nivel",
-    "cta_desc": "descubra cómo ness transforma su operación con seguridad de élite.",
+    "cta_desc": "descubra cómo la ness. transforma su operación con seguridad de élite.",
     "tech_engine": "motor de resiliencia",
     "tech_desc": "los cimientos técnicos detrás de nuestra entrega de valor.",
     "impact_portfolio": "portafolio de impacto"
@@ -243,7 +237,7 @@
     "subtitle": "contacte a nuestro equipo de expertos para transformar su operación digital.",
     "form": {
       "name": "nombre",
-      "name_placeholder": "su nombre o dejar en blanco",
+      "name_placeholder": "su nombre",
       "company": "empresa",
       "company_placeholder": "su empresa",
       "email": "correo corporativo",
@@ -284,7 +278,7 @@
       },
       "desc_placeholder": "detalle la ocurrencia con tanta información como sea posible..."
     },
-    "badge": "get in touch — ness. precision",
+    "badge": "hable con nosotros — ness. precision",
     "info": {
       "email": "email",
       "phone": "teléfono",
@@ -295,7 +289,7 @@
   },
   "cta": {
     "title": "¿listo para el siguiente nivel?",
-    "subtitle": "hable con nuestros expertos y descubra cómo ness puede elevar el nivel de inteligencia, seguridad y eficiencia de su operación.",
+    "subtitle": "hable con nuestros expertos y descubra cómo la ness. puede elevar el nivel de inteligencia, seguridad y eficiencia de su operación.",
     "button": "programar consultoría",
     "support": "soporte especializado inmediato."
   },
@@ -313,7 +307,7 @@
       "msg2_user": "Sí, por favor. Use el modelo estándar de 2024.",
       "msg2_bot": "Entendido. Procesando borradores... ¡Listo! Los 3 borradores han sido generados y enviados a su carpeta de borradores en Teams. ¿Algo más?"
     },
-    "open": "abrir chat con Gabi"
+    "open": "hablar con Gabi"
   },
   "common": {
     "see_all": "ver todo",
@@ -327,7 +321,8 @@
     "tag": "etiqueta",
     "back": "volver",
     "all": "todos",
-    "privacy_consent": "He leído e acepto la política de privacidad y los términos de uso."
+    "privacy_consent": "He leído e acepto la política de privacidad y los términos de uso.",
+    "privacy_consent_links": "he leído y acepto la <privacidade>política de privacidad</privacidade> y los <termos>términos de uso</termos>."
   },
   "compliance": {
     "eyebrow": "compliance — ness. precision",

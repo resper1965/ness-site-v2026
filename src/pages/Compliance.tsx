@@ -4,12 +4,9 @@ import { m as motion } from "motion/react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { routeMeta } from '../utils/meta';
-import { encryptZeroTrustPayload } from '../utils/crypto';
-import { CANAL_BASE } from '../config/api';
 import { canalApi } from '../services/canal';
 import { useBrand } from '../config/brand';
-import { 
-AlertTriangle} from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 import Turnstile from '../components/Turnstile';
 
 
@@ -103,14 +100,14 @@ const Compliance = () => {
           <motion.div
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            className="text-primary-container font-mono text-xs uppercase tracking-[0.3em] mb-6"
+            className="text-primary-container font-mono text-xs lowercase tracking-[0.3em] mb-6"
           >
             {t('compliance.eyebrow')}
           </motion.div>
           <h1 className="text-4xl md:text-6xl font-display font-semibold text-white tracking-tighter mb-6 lowercase-all">
             {current.title}<BlueDot />
           </h1>
-          <p className="text-xl text-on-surface-variant font-light">
+          <p className="text-xl text-on-surface-variant font-normal">
             {current.desc}
           </p>
         </div>
@@ -120,7 +117,7 @@ const Compliance = () => {
             <Link
               key={key}
               to={`/compliance/${key}`}
-              className={`text-[11px] uppercase tracking-widest font-bold px-6 py-2 rounded-full transition-all whitespace-nowrap ${
+              className={`text-[11px] uppercase tracking-widest font-medium px-6 py-2 rounded-full transition-all whitespace-nowrap ${
                 type === key ? "bg-primary-container text-on-primary" : "text-on-surface-variant hover:text-white"
               }`}
             >
@@ -138,8 +135,8 @@ const Compliance = () => {
               transition={{ delay: i * 0.1 }}
               className="space-y-4"
             >
-              <h3 className="text-lg font-medium text-white lowercase-all">{section.h}</h3>
-              <p className="text-on-surface-variant font-light leading-relaxed">
+              <h2 className="text-lg font-medium text-white lowercase-all">{section.h}</h2>
+              <p className="text-on-surface-variant font-normal leading-relaxed">
                 {section.p}
               </p>
             </motion.div>
@@ -159,8 +156,8 @@ const Compliance = () => {
               <AlertTriangle size={120} className="text-primary-container" />
             </div>
             <div className="relative z-10 max-w-2xl">
-              <h3 className="text-2xl font-display font-bold text-white mb-4 lowercase-all">{t('contact.whistleblower.title')}<BlueDot /></h3>
-              <p className="text-on-surface-variant font-light leading-relaxed mb-8">
+              <h3 className="text-2xl font-display font-medium text-white mb-4 lowercase-all">{t('contact.whistleblower.title')}<BlueDot /></h3>
+              <p className="text-on-surface-variant font-normal leading-relaxed mb-8">
                 {t('contact.whistleblower.desc')}
               </p>
               
@@ -198,12 +195,12 @@ const Compliance = () => {
               >
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.name_optional')}</label>
-                    <input name="name" type="text" placeholder={t('contact.form.name_placeholder', 'seu nome ou deixe em branco')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('contact.form.name_optional')} />
+                    <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-medium ml-4">{t('contact.form.name_optional')}</label>
+                    <input name="name" type="text" placeholder={t('contact.form.name_placeholder', 'seu nome ou deixe em branco')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all" aria-label={t('contact.form.name_optional')} />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.form.contact_optional')}</label>
-                    <input name="email" type="text" placeholder={t('contact.form.email_placeholder', 'email ou telefone para retorno')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" aria-label={t('contact.form.contact_optional')} />
+                    <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-medium ml-4">{t('contact.form.contact_optional')}</label>
+                    <input name="email" type="text" placeholder={t('contact.form.email_placeholder', 'email ou telefone para retorno')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all" aria-label={t('contact.form.contact_optional')} />
                   </div>
                 </div>
                 {/* Armadilha: fora da tela e fora do teclado. */}
@@ -213,8 +210,8 @@ const Compliance = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.whistleblower.occurrence_type')}</label>
-                  <select name="subject" required className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all appearance-none" aria-label={t('contact.whistleblower.occurrence_type')}>
+                  <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-medium ml-4">{t('contact.whistleblower.occurrence_type')}</label>
+                  <select name="subject" required className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all appearance-none" aria-label={t('contact.whistleblower.occurrence_type')}>
                     <option value="" className="bg-surface">{t('contact.whistleblower.category_select')}</option>
                     <option value="etica" className="bg-surface">{t('contact.whistleblower.categories.ethics')}</option>
                     <option value="assédio" className="bg-surface">{t('contact.whistleblower.categories.harassment')}</option>
@@ -224,21 +221,21 @@ const Compliance = () => {
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold ml-4">{t('contact.whistleblower.description')}</label>
-                  <textarea name="message" required rows={6} placeholder={t('contact.whistleblower.desc_placeholder', 'detalhe o ocorrido com o máximo de informações possíveis (datas, locais, envolvidos)...')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-primary-container transition-all resize-none" aria-label={t('contact.whistleblower.description')}></textarea>
+                  <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-medium ml-4">{t('contact.whistleblower.description')}</label>
+                  <textarea name="message" required rows={6} placeholder={t('contact.whistleblower.desc_placeholder', 'detalhe o ocorrido com o máximo de informações possíveis (datas, locais, envolvidos)...')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all resize-none" aria-label={t('contact.whistleblower.description')}></textarea>
                 </div>
 
                 {submitStatus === 'success' && caseCode && (
-                  <div className="bg-primary-container/10 border border-primary-container/20 text-primary-container p-6 rounded-2xl text-xs font-light mt-4 space-y-3">
-                    <p className="text-white font-bold">{t('contact.whistleblower.form.success', 'Denúncia enviada com sucesso de forma anônima!')}</p>
+                  <div className="bg-primary-container/10 border border-primary-container/20 text-primary-container p-6 rounded-2xl text-xs font-normal mt-4 space-y-3">
+                    <p className="text-white font-medium">{t('contact.whistleblower.form.success', 'Denúncia enviada com sucesso de forma anônima!')}</p>
                     <p>Guarde este código para acompanhar o andamento da sua manifestação:</p>
-                    <div className="bg-white/5 border border-white/10 px-4 py-3 rounded-xl font-mono text-center text-base font-bold text-white tracking-widest select-all">
+                    <div className="bg-white/5 border border-white/10 px-4 py-3 rounded-xl font-mono text-center text-base font-medium text-white tracking-widest select-all">
                       {caseCode}
                     </div>
                   </div>
                 )}
                 {submitStatus === 'error' && (
-                  <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-6 py-4 rounded-2xl text-xs font-light mt-4">
+                  <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-6 py-4 rounded-2xl text-xs font-normal mt-4">
                     {t('contact.whistleblower.form.error')}
                   </div>
                 )}
@@ -248,7 +245,7 @@ const Compliance = () => {
                 <button 
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-primary-container text-on-primary py-5 rounded-2xl font-display font-bold uppercase tracking-widest text-sm hover:brightness-110 transition-all shadow-xl shadow-primary-container/20 disabled:opacity-50"
+                  className="w-full bg-primary-container text-on-primary py-5 rounded-2xl font-display font-medium uppercase tracking-widest text-sm hover:brightness-110 transition-all shadow-xl shadow-primary-container/20 disabled:opacity-50"
                 >
                   {isSubmitting ? t('common.sending', 'enviando...') : t('contact.whistleblower.form.send_button')}
                 </button>
@@ -259,7 +256,7 @@ const Compliance = () => {
         )}
 
         <div className="mt-24 p-8 rounded-3xl bg-surface-container-low/30 border border-white/5">
-          <p className="text-sm text-on-surface-variant font-light italic">
+          <p className="text-sm text-on-surface-variant font-normal italic">
             {t('contact.whistleblower.last_update')}
           </p>
         </div>

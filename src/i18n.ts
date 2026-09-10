@@ -54,8 +54,6 @@ const ptResources = {
         "title": "nossas soluções",
         "subtitle": "tecnologia de elite para empresas que não aceitam falhas.",
         "technical_view_toggle": "visão para engenharia & ctos",
-        "active_resilience": "resiliência ativa",
-        "intelligence_flow": "o fluxo de inteligência",
         "secops": {
           "title": "n.secops",
           "fullTitle": "resiliência operacional & continuidade",
@@ -91,13 +89,9 @@ const ptResources = {
           "longDesc": "o n.cirt é a elite da resposta a incidentes. quando o impensável acontece, nosso time entra em campo para conter, remediar e reconstruir com precisão cirúrgica.",
           "cta": "falar com time de resposta"
         },
-        "strategic_solutions": "soluções estratégicas",
         "use_cases": "casos de uso reais",
-        "business_value": "valor para o negócio",
-        "technical_arsenal": "o arsenal em operação",
-        "onboarding_journey": "jornada de ativação",
         "cta_title": "sua empresa em um novo nível",
-        "cta_desc": "descubra como a ness pode transformar sua operação com inteligência e segurança de elite.",
+        "cta_desc": "descubra como a ness. pode transformar sua operação com inteligência e segurança de elite.",
         "tech_engine": "o motor da resiliência",
         "tech_desc": "para os interessados na engenharia por trás da proteção, aqui estão os pilares técnicos que sustentam nossa entrega de valor.",
         "impact_portfolio": "portfólio de impacto"
@@ -254,7 +248,7 @@ const ptResources = {
         },
         "form": {
           "name": "nome",
-          "name_placeholder": "seu nome ou deixe em branco",
+          "name_placeholder": "seu nome",
           "name_optional": "nome (opcional)",
           "contact_optional": "contato (opcional)",
           "company": "empresa",
@@ -295,13 +289,13 @@ const ptResources = {
           },
           "desc_placeholder": "detalhe o ocorrido com o máximo de informações possíveis (datas, locais, envolvidos)..."
         },
-        "badge": "get in touch — ness. precision",
+        "badge": "fale conosco — ness. precision",
         "meta_title": "contato — fale com um especialista",
         "meta_description": "Fale com a ness.: diagnóstico de segurança, infraestrutura, engenharia de software, LGPD e perícia digital. Resposta em até 1 dia útil. +55 (11) 2504-7650."
       },
       "cta": {
         "title": "pronto para o próximo nível?",
-        "subtitle": "fale com nossos especialistas e descubra como a ness pode elevar o nível de inteligência, segurança e eficiência da sua operação.",
+        "subtitle": "fale com nossos especialistas e descubra como a ness. pode elevar o nível de inteligência, segurança e eficiência da sua operação.",
         "button": "agendar consultoria",
         "support": "atendimento especializado imediato."
       },
@@ -319,7 +313,7 @@ const ptResources = {
           "msg2_user": "Sim, por favor. Use o modelo padrão de 2024.",
           "msg2_bot": "Entendido. Processando minutas... Pronto! As 3 minutas foram geradas e enviadas para sua pasta de rascunhos no Teams. Algo mais?"
         },
-        "open": "abrir chat com a Gabi"
+        "open": "falar com a Gabi"
       },
       "common": {
         "see_all": "ver tudo",
@@ -333,7 +327,8 @@ const ptResources = {
         "tag": "tag",
         "back": "voltar",
         "all": "todos",
-        "privacy_consent": "Eu li e aceito a política de privacidade e os termos de uso."
+        "privacy_consent": "Eu li e aceito a política de privacidade e os termos de uso.",
+        "privacy_consent_links": "li e aceito a <privacidade>política de privacidade</privacidade> e os <termos>termos de uso</termos>."
       },
       "compliance": {
         "eyebrow": "compliance — ness. precision",

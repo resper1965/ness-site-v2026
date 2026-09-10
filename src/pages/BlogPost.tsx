@@ -5,7 +5,6 @@ import { Link, useLoaderData, useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, Calendar, Tag, FileText } from "lucide-react";
 import ReactMarkdown from 'react-markdown';
-import { CANAL_BASE } from '../config/api';
 import SchemaOrg from '../components/SchemaOrg';
 import { BRAND_DOMAINS, useBrand } from '../config/brand';
 import { buscarInsight, type D1 } from '../../workers/content';
@@ -79,7 +78,7 @@ const BlogPost = () => {
         {/* Back */}
         <Link
           to="/blog"
-          className="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-xs uppercase tracking-widest font-bold mb-12"
+          className="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-xs uppercase tracking-widest font-medium mb-12"
         >
           <ArrowLeft size={14} /> {t('blog.back', 'blog')}
         </Link>
@@ -88,7 +87,7 @@ const BlogPost = () => {
         <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="space-y-6 mb-12">
           <div className="flex items-center gap-4 flex-wrap">
             {post.tag && (
-              <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container text-[11px] uppercase tracking-widest font-bold">
+              <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container text-[11px] uppercase tracking-widest font-medium">
                 <Tag size={10} /> {post.tag}
               </span>
             )}
@@ -98,11 +97,11 @@ const BlogPost = () => {
               </span>
             )}
           </div>
-          <h1 className="text-3xl md:text-4xl font-display font-bold text-white leading-tight lowercase-all">
+          <h1 className="text-3xl md:text-4xl font-display font-medium text-white leading-tight lowercase-all">
             {post.title}<BlueDot />
           </h1>
           {post.desc && (
-            <p className="text-base text-on-surface-variant font-light leading-relaxed">{post.desc}</p>
+            <p className="text-base text-on-surface-variant font-normal leading-relaxed">{post.desc}</p>
           )}
         </motion.div>
 
@@ -136,13 +135,13 @@ const BlogPost = () => {
         <div className="mt-16 pt-8 border-t border-white/5 flex items-center justify-between">
           <Link
             to="/blog"
-            className="inline-flex items-center gap-2 text-xs text-on-surface-variant hover:text-primary transition-colors uppercase tracking-widest font-bold"
+            className="inline-flex items-center gap-2 text-xs text-on-surface-variant hover:text-primary transition-colors uppercase tracking-widest font-medium"
           >
             <ArrowLeft size={12} /> {t('blog.all_insights', 'todos os insights')}
           </Link>
           <Link
             to="/contato"
-            className="px-6 py-2 rounded-full bg-primary-container text-on-primary text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform"
+            className="px-6 py-2 rounded-full bg-primary-container text-on-primary text-xs font-medium uppercase tracking-widest hover:scale-105 transition-transform"
           >
             {t('blog.talk_expert', 'falar com especialista')}
           </Link>

@@ -55,15 +55,15 @@ const Hero = () => {
             <Link
               onClick={() => evento('cta_click', { cta: 'hero_primario', destino: '/contato' })}
               to="/contato?ref=home"
-              className="bg-linear-to-r from-primary-container to-primary text-on-primary px-8 md:px-10 py-4 rounded-full font-display font-semibold text-sm shadow-xl shadow-primary-container/20 hover:scale-105 transition-transform focus-visible:ring-2 focus-visible:ring-white"
+              className="bg-primary-container text-on-primary px-8 md:px-10 py-4 rounded-full font-display font-semibold text-sm shadow-xl shadow-primary-container/25 transition-all hover:brightness-110 hover:shadow-[0_0_28px_rgba(0,173,232,0.4)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest"
             >
               {t('hero.cta_primary', 'falar com um especialista')}
             </Link>
             <Link
               to="/solucoes"
-              className="flex items-center gap-2 text-white font-display font-medium text-sm hover:text-primary transition-colors group"
+              className="group inline-flex items-center gap-2 py-2 font-display text-sm font-medium text-white transition-colors hover:text-primary focus-visible:ring-2 focus-visible:ring-primary-container focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest"
             >
-              {t('hero.explore')}<BlueDot />
+              {t('hero.explore')}
               <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} aria-hidden="true" />
             </Link>
           </div>

@@ -489,3 +489,100 @@ test.describe('orçamento de performance', () => {
     await expect(page.locator('label[for="contact-email"]')).toBeVisible();
   });
 });
+
+test.describe('marca e alvo de toque', () => {
+  // O ponto das marcas do ecossistema e sempre #00ade8, qualquer que seja a
+  // cor do texto ao lado. E a regra que o guia chama de inegociavel, e ja foi
+  // quebrada uma vez: o ponto de forense.io saia branco no seletor de marcas.
+  test('todo ponto de marca sai no azul da marca', async ({ page }) => {
+    await page.goto('/');
+    const pontos = page.locator('header .text-primary-container, nav .text-primary-container').filter({ hasText: /^\.$/ });
+    const total = await pontos.count();
+    expect(total, 'a marca do topo precisa ter um ponto').toBeGreaterThan(0);
+    for (let i = 0; i < total; i++) {
+      await expect(pontos.nth(i)).toHaveCSS('color', 'rgb(0, 173, 232)');
+    }
+  });
+
+  // WCAG 2.2 (2.5.8) pede 24x24 px de alvo. A excecao e o link dentro de uma
+  // frase, cuja altura e limitada pela entrelinha do texto ao redor — por isso
+  // os links da frase de consentimento ficam de fora.
+  for (const rota of ['/', '/contato', '/carreiras']) {
+    test(`nenhum controle de ${rota} fica abaixo de 24 px`, async ({ page }) => {
+      await page.goto(rota);
+      await page.evaluate(() => document.fonts.ready);
+      const pequenos = await page.evaluate(() => {
+        const achados: string[] = [];
+        const alvos = document.querySelectorAll('button, a[href], input[type="checkbox"], [role="button"]');
+        for (const el of alvos) {
+          const r = el.getBoundingClientRect();
+          const s = getComputedStyle(el);
+          if (r.width === 0 || r.height === 0 || s.visibility === 'hidden' || s.display === 'none') continue;
+          // sr-only: recortado ate receber foco, quando vira um alvo de verdade.
+          if (s.clipPath !== 'none' || s.clip !== 'auto') continue;
+          if (el.closest('label')) continue; // link dentro de frase: excecao da norma
+          if (Math.min(r.width, r.height) < 24) {
+            const nome = (el.getAttribute('aria-label') || el.textContent || '').trim().slice(0, 40);
+            achados.push(`${Math.round(r.width)}x${Math.round(r.height)} ${nome}`);
+          }
+        }
+        return achados;
+      });
+      expect(pequenos, 'controles menores que 24 px').toEqual([]);
+    });
+  }
+
+  // O consentimento e o unico texto do site com efeito juridico. Ja esteve no
+  // ar dizendo "li e aceito a politica de privacidade" sem link para ela.
+  test('o consentimento aponta para a politica e para os termos', async ({ page }) => {
+    await page.goto('/contato');
+    const rotulo = page.locator('label[for="privacy-consent"]');
+    await expect(rotulo.locator('a[href="/compliance/privacidade"]')).toHaveCount(1);
+    await expect(rotulo.locator('a[href="/compliance/termos"]')).toHaveCount(1);
+    await expect(page.locator('#privacy-consent')).toHaveAttribute('required', '');
+  });
+});
+
+test.describe('página de produto', () => {
+  // Enquanto a ficha do produto nao volta, a secao 1 cai para o `workflow`,
+  // que ja esta publicado. O que nao pode e ficar titulo com vazio embaixo.
+  test('a resposta a incidente aparece, por severidade ou por fluxo', async ({ page }) => {
+    await page.goto('/solucoes/secops');
+    const secao = page.locator('#resposta');
+    await expect(secao).toBeVisible();
+    await expect(secao.getByRole('heading', { level: 3 })).toContainText(/acontece/i);
+    // ou a tabela de severidade, ou a lista do fluxo — nunca as duas, nunca nenhuma
+    const tabela = await secao.locator('table').count();
+    const lista = await secao.locator('ol > li').count();
+    expect(tabela > 0 || lista > 0).toBe(true);
+    expect(tabela > 0 && lista > 0).toBe(false);
+  });
+
+  // Secao sem dado nao pode deixar titulo orfao — foi o erro que a home
+  // cometia com o blog.
+  test('seção sem dado não deixa título órfão', async ({ page }) => {
+    await page.goto('/solucoes/secops');
+    for (const id of ['#escopo', '#entregaveis', '#operacao']) {
+      const secao = page.locator(id);
+      if (await secao.count()) {
+        const itens = await secao.locator('li, dd').count();
+        expect(itens, `${id} existe mas está vazia`).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  // A ordem e a decisao do desenho: cada secao responde uma pergunta, na
+  // ordem em que o comprador a faz. Trocar a ordem sem trocar o spec e bug.
+  test('as seções aparecem na ordem do desenho', async ({ page }) => {
+    await page.goto('/solucoes/secops');
+    const esperada = ['#resposta', '#escopo', '#entregaveis', '#operacao', '#ferramentas', '#situacoes', '#portfolio'];
+    const posicoes: number[] = [];
+    for (const id of esperada) {
+      const el = page.locator(id);
+      if (!(await el.count())) continue;
+      posicoes.push((await el.boundingBox())!.y);
+    }
+    expect(posicoes).toEqual([...posicoes].sort((a, b) => a - b));
+    expect(posicoes.length).toBeGreaterThanOrEqual(3);
+  });
+});
