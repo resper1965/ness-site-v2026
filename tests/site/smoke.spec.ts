@@ -606,13 +606,20 @@ test.describe('aviso de consentimento', () => {
   // O preview roda em workers.dev, fora das zones, entao nao tem Zaraz — e o
   // aviso so aparece quando a API dela existe. Aqui ela e simulada antes do
   // carregamento, que e a unica forma de exercitar isto sem producao.
+  // O mock imita a Zaraz COMO ELA E, nao como a documentacao sugere: medido em
+  // producao, `getAll()` devolve `{ analytics: false }` para quem nunca
+  // respondeu — negar por padrao e indistinguivel de recusar por essa API. Quem
+  // responde e o cookie. A primeira versao deste mock devolvia `undefined` para
+  // "nao respondeu", entao o teste passava confirmando a minha suposicao errada
+  // enquanto o componente nao aparecia em producao.
   const simularZaraz = (jaRespondeu: boolean) => `
     window.__setAll = [];
+    ${jaRespondeu ? "document.cookie = 'zaraz-consent=%7B%22analytics%22%3Atrue%7D; path=/';" : ''}
     window.zaraz = {
       track: () => {},
       consent: {
         modal: true,
-        getAll: () => (${jaRespondeu} ? { analytics: true } : { analytics: undefined }),
+        getAll: () => ({ analytics: false }),
         setAll: (v) => window.__setAll.push(v),
         sendQueuedEvents: () => { window.__enviou = true; },
       },

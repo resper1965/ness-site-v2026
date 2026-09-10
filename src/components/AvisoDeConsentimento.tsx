@@ -24,6 +24,23 @@ import { Link } from 'react-router-dom';
  * Sem Zaraz na página — preview em workers.dev, desenvolvimento local — o
  * componente não renderiza nada.
  */
+/**
+ * O cookie é o único sinal confiável de que a pessoa já respondeu.
+ *
+ * A primeira versão disto perguntava ao `getAll()` da Zaraz e tratava
+ * `undefined` como "ainda não respondeu", que é o que a documentação sugere.
+ * Medido em produção, `getAll()` devolve `{ analytics: false }` para quem
+ * nunca respondeu — a Zaraz nega por padrão, e por essa API "negado por
+ * padrão" é indistinguível de "recusou". O aviso nunca aparecia.
+ *
+ * O cookie não tem essa ambiguidade: ou existe, e houve resposta, ou não
+ * existe. `zaraz-consent` é o nome configurado nas nossas zones; `cf_consent`
+ * é o padrão da Zaraz, aceito aqui para o caso de a configuração mudar.
+ */
+function jaRespondeu(): boolean {
+  return /(?:^|;\s*)(zaraz-consent|cf_consent)=/.test(document.cookie);
+}
+
 export default function AvisoDeConsentimento() {
   const { t } = useTranslation();
   const [visivel, setVisivel] = useState(false);
@@ -35,9 +52,7 @@ export default function AvisoDeConsentimento() {
       // Esconde o modal de fábrica também pelo cliente: se a configuração da
       // zone for revertida, o visitante não leva os dois avisos na cara.
       consent.modal = false;
-      const escolhas = consent.getAll?.() ?? {};
-      const jaRespondeu = Object.values(escolhas).some((v) => v !== undefined);
-      setVisivel(!jaRespondeu);
+      setVisivel(!jaRespondeu());
     };
 
     document.addEventListener('zarazConsentAPIReady', decidir);
