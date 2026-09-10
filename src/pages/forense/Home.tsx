@@ -34,20 +34,21 @@ export default function ForenseHome() {
   const situacoes = t('forense.quando.itens', { returnObjects: true }) as Situacao[];
 
   return (
-    <main className="bg-surface-container-lowest px-8 pb-24 pt-32">
-      <div className="mx-auto max-w-7xl">
-        <Abertura
-          marca={<>forense<BlueDot />io</>}
-          titulo={t('forense.hero.titulo')}
-          acoes={
-            <>
-              <Link to="/contato?ref=forense" className={BOTAO}>{t('forense.hero.cta')}</Link>
-              <a href="#cadeia" className={LINK}>{t('forense.hero.link')}</a>
-            </>
-          }
-        >
-          {t('forense.hero.lede')}
-        </Abertura>
+    <main className="bg-surface-container-lowest">
+      <Abertura
+        fundo="forense"
+        marca={<>forense<BlueDot />io</>}
+        titulo={t('forense.hero.titulo')}
+        acoes={
+          <>
+            <Link to="/contato?ref=forense" className={BOTAO}>{t('forense.hero.cta')}</Link>
+            <a href="#cadeia" className={LINK}>{t('forense.hero.link')}</a>
+          </>
+        }
+      >
+        {t('forense.hero.lede')}
+      </Abertura>
+      <div className="mx-auto box-content max-w-7xl px-8 pb-24">
 
         <section id="cadeia" aria-labelledby="t-cadeia" className="mb-24">
           <CabecalhoDeSecao id="t-cadeia" titulo={t('forense.cadeia.titulo')}>{t('forense.cadeia.intro')}</CabecalhoDeSecao>

@@ -668,19 +668,25 @@ test.describe('telas no desenho delicado', () => {
     await expect(page.locator('#dpo svg[role="img"]')).toHaveCount(1);
   });
 
-  // Pedido de 10/09: elegante e delicado, sem fontes grandes. O teto é o do
-  // título de abertura, 32 px; cabeçalho, rodapé e menu ficam de fora.
-  test('nenhum título das telas passa de 32 px', async ({ page }) => {
+  // Pedido de 10/09, em duas voltas: a 88 px a home era grosseira; a 32 px,
+  // pequena demais. A abertura fica no piso da faixa Display do brandbook —
+  // até 56 px, que é a da home — e os títulos de seção até 28 px. Cabeçalho,
+  // rodapé e menu ficam de fora.
+  test('títulos na escala: abertura até 56 px, seções até 28 px', async ({ page }) => {
     for (const path of ['/', '/solucoes', '/solucoes/secops', '/forense', '/trustness']) {
       await page.goto(path);
-      const maior = await page.evaluate(() =>
-        Math.max(
-          ...[...document.querySelectorAll('h1, h2, h3')]
-            .filter((h) => !h.closest('header, footer, nav'))
-            .map((h) => parseFloat(getComputedStyle(h).fontSize)),
-        ),
-      );
-      expect(maior, path).toBeLessThanOrEqual(32);
+      const tamanhos = await page.evaluate(() => {
+        const maior = (seletor: string) =>
+          Math.max(
+            0,
+            ...[...document.querySelectorAll(seletor)]
+              .filter((h) => !h.closest('header, footer, nav'))
+              .map((h) => parseFloat(getComputedStyle(h).fontSize)),
+          );
+        return { abertura: maior('h1'), secoes: maior('h2, h3') };
+      });
+      expect(tamanhos.abertura, `${path} abertura`).toBeLessThanOrEqual(56);
+      expect(tamanhos.secoes, `${path} seções`).toBeLessThanOrEqual(28);
     }
   });
 

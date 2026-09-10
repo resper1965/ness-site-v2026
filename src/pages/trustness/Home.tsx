@@ -70,20 +70,21 @@ export default function TrustnessHome() {
   const servicos = t('trustness.servicos.itens', { returnObjects: true }) as Servico[];
 
   return (
-    <main className="bg-surface-container-lowest px-8 pb-24 pt-32">
-      <div className="mx-auto max-w-7xl">
-        <Abertura
-          marca={<>trustness<BlueDot /></>}
-          titulo={t('trustness.hero.titulo')}
-          acoes={
-            <>
-              <Link to="/contato?ref=trustness" className={BOTAO}>{t('trustness.hero.cta')}</Link>
-              <a href="#auditoria" className={LINK}>{t('trustness.hero.link')}</a>
-            </>
-          }
-        >
-          {t('trustness.hero.lede')}
-        </Abertura>
+    <main className="bg-surface-container-lowest">
+      <Abertura
+        fundo="trustness"
+        marca={<>trustness<BlueDot /></>}
+        titulo={t('trustness.hero.titulo')}
+        acoes={
+          <>
+            <Link to="/contato?ref=trustness" className={BOTAO}>{t('trustness.hero.cta')}</Link>
+            <a href="#auditoria" className={LINK}>{t('trustness.hero.link')}</a>
+          </>
+        }
+      >
+        {t('trustness.hero.lede')}
+      </Abertura>
+      <div className="mx-auto box-content max-w-7xl px-8 pb-24">
 
         <section id="auditoria" aria-labelledby="t-auditoria" className="mb-24">
           <CabecalhoDeSecao id="t-auditoria" titulo={t('trustness.auditoria.titulo')}>{t('trustness.auditoria.intro')}</CabecalhoDeSecao>

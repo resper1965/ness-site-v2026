@@ -73,8 +73,26 @@ export const links = () => [
   { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
 ];
 
-// O preload da foto do hero saiu: no desenho delicado nenhuma das três homes
-// abre com foto, e pré-carregar imagem que ninguém usa só gasta banda.
+/**
+ * O hero é o candidato a LCP. O preload sai no HTML do servidor, que sabe a
+ * marca e a rota, e o preload scanner o encontra na primeira passada — sem
+ * depender de nenhum script carregar antes. Chegou a sair quando o desenho
+ * delicado tirou as fotos; voltou com elas.
+ */
+function PreloadDoHero({ brand, pathname }: { brand: Brand; pathname: string }) {
+  if (rotaSemIdioma(pathname) !== '/') return null;
+  const base = `/img/hero-${brand}`;
+  return (
+    <link
+      rel="preload"
+      as="image"
+      type="image/avif"
+      fetchPriority="high"
+      imageSrcSet={`${base}-640.avif 640w, ${base}-1024.avif 1024w, ${base}-1600.avif 1600w`}
+      imageSizes="100vw"
+    />
+  );
+}
 
 export function Layout({ children }: { children: ReactNode }) {
   const dados = useRouteLoaderData('root') as RootData | undefined;
@@ -88,6 +106,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <Meta />
         <Links />
+        {dados ? <PreloadDoHero brand={dados.brand} pathname={dados.pathnameCompleto} /> : null}
       </head>
       <body>
         {children}
