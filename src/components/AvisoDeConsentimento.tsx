@@ -23,6 +23,12 @@ import { Link } from 'react-router-dom';
  *
  * Sem Zaraz na página — preview em workers.dev, desenvolvimento local — o
  * componente não renderiza nada.
+ *
+ * `z-30`, um degrau abaixo do chat, não é detalhe: os dois moram no canto
+ * de baixo e no celular eles se sobrepõem. Em `z-40`, empatado com o chat e
+ * montado depois dele, este aviso ficava por cima e comia os cliques das
+ * respostas rápidas — medido em produção, o parágrafo daqui recebia o toque
+ * destinado ao botão "falar com especialista".
  */
 /**
  * O cookie é o único sinal confiável de que a pessoa já respondeu.
@@ -99,7 +105,7 @@ export default function AvisoDeConsentimento() {
     <section
       role="region"
       aria-label={t('consentimento.titulo', 'aviso de privacidade')}
-      className="glass anim-fade-up fixed bottom-24 left-4 right-4 z-40 rounded-3xl border-white/10 p-6 shadow-2xl shadow-black/40 sm:bottom-6 sm:right-auto sm:max-w-md"
+      className="glass anim-fade-up fixed bottom-24 left-4 right-4 z-30 rounded-3xl border-white/10 p-6 shadow-2xl shadow-black/40 sm:bottom-6 sm:right-auto sm:max-w-md"
     >
       <p className="text-sm leading-relaxed text-on-surface-variant">
         <Trans

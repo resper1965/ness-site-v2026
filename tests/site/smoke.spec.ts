@@ -694,6 +694,29 @@ test.describe('aviso de consentimento', () => {
     await expect(page.locator('nav')).toBeVisible();
   });
 
+  // O aviso e o chat moram os dois no canto de baixo, e no celular se
+  // sobrepoem. Com os dois em z-40 e o aviso montado depois, ele ficava por
+  // cima e comia o toque das respostas rapidas do chat: medido em producao,
+  // o paragrafo do aviso recebia o clique destinado a "falar com especialista".
+  test('o aviso nao rouba o clique do chat no celular', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'a sobreposicao so acontece na largura do celular');
+    await page.addInitScript(simularZaraz(false));
+    await page.goto('/');
+    await expect(page.getByRole('region', { name: /privacidade|privacy/i })).toBeVisible();
+
+    await page.getByRole('button', { name: /gabi/i }).click();
+    const chip = page.getByRole('button', { name: /especialista/i });
+    await expect(chip).toBeVisible();
+
+    // quem esta no ponto do botao tem que ser o proprio botao, nao o aviso
+    const dono = await chip.evaluate((el) => {
+      const r = el.getBoundingClientRect();
+      const alvo = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2);
+      return alvo === el || el.contains(alvo) ? 'o proprio botao' : (alvo?.tagName ?? '?');
+    });
+    expect(dono, 'outro elemento esta cobrindo a resposta rapida do chat').toBe('o proprio botao');
+  });
+
   test('nao aparece para quem ja respondeu', async ({ page }) => {
     await page.addInitScript(simularZaraz(true));
     await page.goto('/');
