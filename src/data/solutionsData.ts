@@ -10,34 +10,52 @@ interface TechnicalFeature { title: string; desc: string }
 interface PortfolioEntry { client: string; project: string; result: string }
 
 /**
- * Um nível do modelo de severidade. `quando` descreve ordem e não prazo:
- * "contém primeiro, avisa depois" entra; "em 15 minutos" não — número de SLA
- * fica na proposta comercial.
+ * Um nível do modelo de severidade, contado por quem age. `time` ausente
+ * significa que o time de segurança não precisa entrar naquele nível — e a
+ * página diz isso em vez de deixar a coluna vazia. `ordem` descreve sequência
+ * e não prazo: "contém primeiro, avisa em seguida" entra; "em 15 minutos" não —
+ * número de SLA fica na proposta comercial.
  */
 export interface NivelDeSeveridade {
   nivel: string;
-  exemploConcreto: string;
-  quemAge: string;
-  quando: string;
-  voceRecebe: string;
+  nome: string;
+  exemplo: string;
+  ordem: string;
+  agentes: string;
+  time?: string;
+  voce: { quando: string; recebe: string };
 }
 
-/** O que a ness. faz e o que explicitamente não faz. A segunda lista é a que
- *  constrói confiança: fornecedor que só diz o que faz não diz nada. */
-/** `fronteira` responde a pergunta que as duas listas deixam em aberto:
- *  onde acaba a responsabilidade da ness. e comeca a do cliente. */
-export interface EscopoDoServico { dentro: string[]; fora: string[]; fronteira?: string }
+/**
+ * Quem decide o quê, em três zonas separadas por duas linhas: o runbook e o
+ * contrato. `comAutorizacao` é a zona que as listas "dentro" e "fora" deixavam
+ * sem lugar — o que a ness. executa, mas só com autorização. `fora` fica com o
+ * cliente; `naoPromete` é o que ninguém garante. A coluna "fora" não é
+ * ressalva jurídica: é o que faz um CISO acreditar na coluna "dentro".
+ */
+export interface EscopoDoServico {
+  dentro: string[];
+  comAutorizacao: string[];
+  fora: string[];
+  naoPromete?: string;
+}
 
-/** O artefato que chega ao cliente e de quanto em quanto tempo. */
-export interface Entregavel { item: string; cadencia: string }
+/** Com que ritmo o entregável chega — é o que posiciona a marca no calendário. */
+export type Ritmo = 'continuo' | 'ocorrencia' | 'mensal' | 'ciclo';
 
-/** Como a operação roda por dentro. `cobertura` descreve o modelo (turnos,
- *  sobreaviso), não o número de pessoas. */
+/** O artefato que chega ao cliente, dito em poucas palavras, e o seu ritmo. */
+export interface Entregavel { nome: string; detalhe: string; ritmo: Ritmo }
+
+/**
+ * Como a operação roda por dentro. `escalacao` é a cadeia de acionamento, e o
+ * último passo é o desvio: o que acontece quando o contato não responde.
+ * `caso` é um exemplo ilustrativo do registro que passa o turno.
+ */
 export interface OperacaoDoServico {
-  cobertura: string;
-  passagemDePlantao: string;
-  escalacao: string;
-  tempoDeAtivacao: string;
+  escalacao: { titulo: string; texto: string }[];
+  caso: { severidade: string; campos: { rotulo: string; valor: string }[]; nota: string };
+  ativacao: string[];
+  ativacaoNota: string;
 }
 
 export interface SolutionData {
@@ -45,14 +63,24 @@ export interface SolutionData {
   metaTitle?: string;
   metaDescription?: string;
   overview?: string;
-  workflow: WorkflowStep[];
-  services: Service[];
+  /**
+   * Liga o desenho por diagramas: com `promessa`, o h1 da página é ela, e não
+   * o nome do produto. Só entra quando a ficha do produto volta preenchida — o
+   * teste de dados exige, junto, todas as partes do desenho.
+   */
+  promessa?: string;
+  apresentacao?: string;
+  /** Rótulos curtos das fontes de evento, no fluxo do topo da página. */
+  fontes?: string[];
+  fecho?: { titulo: string; texto: string };
+  workflow?: WorkflowStep[];
+  services?: Service[];
   ctaLabel: string;
   useCases?: UseCase[];
   features?: Feature[];
   onboarding?: OnboardingStep[];
   technicalFeatures?: TechnicalFeature[];
-  portfolio: PortfolioEntry[];
+  portfolio?: PortfolioEntry[];
   severidade?: NivelDeSeveridade[];
   escopo?: EscopoDoServico;
   entregaveis?: Entregavel[];
@@ -65,121 +93,118 @@ export const solutionsData: Record<string, SolutionData> = {
     icon: ShieldCheck,
     metaTitle: "n.secops — SOC 24×7, resposta a incidentes e GRC",
     metaDescription: "Centro de operações de segurança 24×7 com detecção, resposta imediata e gestão de riscos em um único contrato. Defesa contínua sem inflar sua equipe interna.",
-    overview: "Segurança de elite para sua infraestrutura. O n.secops consolida Monitoramento 24x7, Resposta Imediata e Gestão de Riscos (GRC) em um único contrato — entregando defesa contínua de escala global sem que você precise inflar sua equipe interna.",
-    // Preenchido a partir de docs/FICHA-runbook-por-produto.md, devolvida por
-    // Ricardo Esper em 10/09/2026. Nenhum prazo numérico: a decisão foi
-    // publicar o modelo de resposta e deixar o SLA na proposta comercial.
+    // Tudo abaixo sai de docs/FICHA-runbook-por-produto.md, devolvida por
+    // Ricardo Esper em 10/09/2026, e foi redesenhado em diagramas no mesmo dia.
+    // Nenhum prazo numérico: a decisão foi publicar o modelo de resposta e
+    // deixar o SLA na proposta comercial.
+    promessa: "segurança operada 24×7, com a resposta combinada antes do incidente",
+    apresentacao: "Agentes de IA vigiam e correlacionam tudo o que chega das suas fontes e agem dentro do que você já autorizou. O time de segurança entra quando é preciso julgar. Você fica sabendo do que precisa, pelo canal combinado.",
+    fontes: ["identidade", "servidores", "endpoints", "firewalls", "aplicações", "cloud"],
     severidade: [
       {
         nivel: "P1",
-        exemploConcreto: "Incidente crítico em andamento, com comprometimento confirmado ou forte evidência de impacto ao negócio — ransomware, movimentação lateral, credencial privilegiada comprometida ou exfiltração em curso.",
-        quemAge: "Agentes de IA executam triagem, correlação e as ações automatizadas previamente autorizadas. O incidente é escalado para o time de segurança e para os responsáveis que você definiu.",
-        quando: "Havendo ação de contenção previamente autorizada e segura, contém primeiro para limitar a propagação e comunica em seguida. Ação destrutiva ou de alto impacto depende de autorização definida no runbook.",
-        voceRecebe: "Acionamento imediato pelo canal operacional combinado, com o contexto do incidente, o que foi executado, as recomendações e o registro posterior da ocorrência.",
+        nome: "incidente crítico em andamento",
+        exemplo: "Ransomware, movimentação lateral, credencial privilegiada comprometida ou exfiltração em curso.",
+        ordem: "contém primeiro, avisa em seguida",
+        agentes: "Triagem, correlação e as ações automatizadas já autorizadas.",
+        time: "Assume o incidente escalado. Ação destrutiva ou de alto impacto só com a autorização prevista no runbook.",
+        voce: { quando: "na hora", recebe: "Acionamento no canal combinado: contexto, o que já foi feito e o que recomendamos." },
       },
       {
         nivel: "P2",
-        exemploConcreto: "Ameaça relevante confirmada ou atividade maliciosa com potencial de impacto, ainda sem evidência de comprometimento amplo.",
-        quemAge: "Agentes de IA analisam, enriquecem e priorizam. O time de segurança entra quando é preciso validar, decidir ou intervir com especialista.",
-        quando: "Valida e enriquece o evento, aciona os responsáveis e executa o que o playbook prevê, dentro da autorização existente.",
-        voceRecebe: "Notificação operacional com contexto, evidências, classificação e recomendação de tratamento.",
+        nome: "ameaça relevante confirmada",
+        exemplo: "Atividade maliciosa com potencial de impacto, ainda sem sinal de comprometimento amplo.",
+        ordem: "valida, aciona os responsáveis, executa o playbook",
+        agentes: "Analisam, enriquecem e priorizam.",
+        time: "Entra para validar, decidir ou intervir com especialista.",
+        voce: { quando: "notificação", recebe: "Contexto, evidências, classificação e recomendação de tratamento." },
       },
       {
         nivel: "P3",
-        exemploConcreto: "Evento suspeito que exige investigação, vulnerabilidade relevante ou desvio de segurança, sem evidência de exploração ativa.",
-        quemAge: "A operação automatizada faz a triagem e a consolidação; especialistas acompanham os casos que pedem investigação adicional.",
-        quando: "Investiga, correlaciona, registra e recomenda ação corretiva ou preventiva.",
-        voceRecebe: "Registro da ocorrência e recomendação, pelo canal operacional ou no acompanhamento periódico, conforme a relevância.",
+        nome: "evento suspeito",
+        exemplo: "Vulnerabilidade relevante ou desvio de segurança, sem exploração ativa.",
+        ordem: "investiga, registra, recomenda",
+        agentes: "Fazem a triagem e consolidam.",
+        time: "Acompanha os casos que pedem investigação adicional.",
+        voce: { quando: "no acompanhamento", recebe: "Registro e recomendação, no canal ou na reunião periódica, conforme a relevância." },
       },
       {
         nivel: "P4",
-        exemploConcreto: "Evento informativo, desvio de baixa criticidade ou recomendação de melhoria, sem evidência de ameaça ativa.",
-        quemAge: "Tratamento automatizado, com registro e consolidação para acompanhamento e melhoria contínua.",
-        quando: "Registra, classifica e incorpora o evento aos relatórios, às tendências e aos ajustes de detecção.",
-        voceRecebe: "Registro para acompanhamento, métricas e tendências.",
+        nome: "evento informativo",
+        exemplo: "Desvio de baixa criticidade ou melhoria sugerida, sem ameaça ativa.",
+        ordem: "registra, classifica, alimenta as tendências",
+        agentes: "Tratam, registram e ajustam a detecção.",
+        voce: { quando: "no relatório", recebe: "Métricas e tendências do mês." },
       },
     ],
     escopo: {
       dentro: [
-        "Monitoramento e correlação de eventos de segurança em ambientes on-premise e cloud",
-        "Logs de identidade e autenticação, servidores, endpoints, firewalls, aplicações e demais fontes integradas",
-        "Integração com as ferramentas de proteção de endpoint que você já usa — EDR, antivírus e antimalware",
-        "Detecção comportamental, threat hunting e cobertura de ameaças emergentes",
-        "Identificação de desvios de compliance nos frameworks acompanhados",
-        "Gestão de vulnerabilidades, inventário de ativos, hardening e patch management",
-        "Monitoramento e gestão remota (RMM) dos ativos",
-        "Automação e orquestração de resposta, e resposta a incidentes",
-        "Threat intelligence",
-        "Geração de evidências e relatórios operacionais e executivos",
+        "Monitoramento e correlação em on-premise e cloud",
+        "Integração com o EDR e o antivírus que você já usa",
+        "Detecção comportamental e threat hunting",
+        "Contenção já autorizada",
+        "Gestão de vulnerabilidades, inventário e hardening",
+        "Monitoramento e gestão remota dos ativos (RMM)",
+        "Threat intelligence, evidências e relatórios",
+      ],
+      comAutorizacao: [
+        "Mudança com impacto relevante em produção",
+        "Ação com risco de indisponibilidade ou risco operacional",
+        "Alteração de regra de negócio",
+        "Ação destrutiva ou de alto impacto em incidente",
+        "Patch e ação remota, só nas janelas e políticas de mudança acordadas",
       ],
       fora: [
-        "Administração funcional das suas aplicações de negócio",
-        "Correção de código-fonte e desenvolvimento de software",
-        "Decisões de continuidade de negócio, que são suas",
-        "Mudanças de alto impacto que não foram previamente autorizadas",
-        "Substituição automática das ferramentas de segurança que você já tem",
-        "Garantia de eliminação integral de risco, vulnerabilidade ou incidente",
+        "Decisões de continuidade de negócio",
+        "Administração funcional das suas aplicações",
+        "Correção de código-fonte e desenvolvimento",
       ],
-      fronteira:
-        "O n.secops detecta, investiga, prioriza, recomenda e executa as ações técnicas previamente autorizadas no runbook. Mudança com impacto relevante em produção, risco de indisponibilidade, alteração de regra de negócio ou risco operacional passa pela governança e pelas autorizações combinadas com você. Patch e ação remota são executados pelo n.secops quando estão no escopo contratado e dentro das janelas e políticas de mudança acordadas.",
+      naoPromete: "O contrato também não promete substituir as ferramentas de segurança que você já tem, nem eliminar todo risco, vulnerabilidade ou incidente.",
     },
     entregaveis: [
-      { item: "Portal com a visão consolidada da operação: eventos, vulnerabilidades, ativos, postura e o andamento das tratativas", cadencia: "contínuo" },
-      { item: "Notificação e acionamento dos incidentes e eventos que exigem o seu conhecimento ou a sua ação", cadencia: "conforme a ocorrência e a severidade" },
-      { item: "Relatório executivo: principais eventos, vulnerabilidades, evolução da postura, o que foi feito e o que recomendamos", cadencia: "mensal" },
-      { item: "Relatório de vulnerabilidades com o acompanhamento das correções", cadencia: "mensal" },
-      { item: "Inventário e visão dos ativos monitorados", cadencia: "contínuo, com consolidação periódica" },
-      { item: "Evidências para auditoria e compliance: registros, eventos e controles dos frameworks acompanhados", cadencia: "conforme os ciclos de governança e auditoria" },
+      { nome: "portal da operação", detalhe: "contínuo: eventos, vulnerabilidades, ativos, postura e tratativas", ritmo: "continuo" },
+      { nome: "inventário dos ativos", detalhe: "contínuo, consolidado de tempos em tempos", ritmo: "continuo" },
+      { nome: "notificações e acionamentos", detalhe: "quando acontece, conforme a severidade", ritmo: "ocorrencia" },
+      { nome: "relatório executivo", detalhe: "mensal: o que aconteceu, o que foi feito, o que recomendamos", ritmo: "mensal" },
+      { nome: "relatório de vulnerabilidades", detalhe: "mensal, com o andamento das correções", ritmo: "mensal" },
+      { nome: "evidências para auditoria", detalhe: "no ritmo do seu ciclo de governança e auditoria", ritmo: "ciclo" },
     ],
     operacao: {
-      cobertura:
-        "Monitoramento contínuo 24×7 por agentes de IA, que fazem triagem, correlação, enriquecimento, priorização e executam as automações já definidas. O que exige julgamento, autorização ou investigação especializada sobe para o time de segurança e para os responsáveis que você definiu.",
-      passagemDePlantao:
-        "O contexto fica registrado no próprio caso — evento, evidências, enriquecimentos, ações automatizadas, decisões, comunicação e pendências. Um turno não depende do outro para saber onde parou.",
-      escalacao:
-        "Você tem um canal de mensageria direto com a operação. O evento sobe conforme a severidade, o playbook e a matriz de contatos definida no onboarding. Se o contato principal não responder, segue a cadeia de escalação combinada.",
-      tempoDeAtivacao:
-        "Implantação por etapas: diagnóstico do ambiente, instalação ou integração dos componentes, conexão das fontes de evento e das ferramentas que você já usa, inventário e baseline, configuração de RMM, regras, playbooks e automações, ajuste fino, e entrada em operação contínua. A duração depende do porte, da quantidade de ativos, das fontes de log e das integrações.",
+      escalacao: [
+        { titulo: "o evento ganha severidade", texto: "Os agentes de IA classificam. A severidade e o playbook dizem quem precisa saber." },
+        { titulo: "a matriz aponta o responsável", texto: "A matriz de contatos definida no onboarding diz quem responde por aquele tipo de evento." },
+        { titulo: "o contato principal é acionado", texto: "No canal direto com a operação, com o contexto do caso." },
+        { titulo: "sem resposta, a escalação segue", texto: "Vai para o próximo contato da cadeia combinada, e depois para o seguinte." },
+      ],
+      caso: {
+        severidade: "P2",
+        campos: [
+          { rotulo: "evento", valor: "Login de conta administrativa às 02:10, de um país sem histórico" },
+          { rotulo: "evidências", valor: "Logs do provedor de identidade e alerta do EDR no mesmo host" },
+          { rotulo: "enriquecimento", valor: "IP em lista de ameaças; MFA desativado na conta" },
+          { rotulo: "ações automatizadas", valor: "Sessão encerrada, dentro do que o playbook autoriza" },
+          { rotulo: "decisões", valor: "Time de segurança confirmou; você autorizou o reset da credencial" },
+          { rotulo: "comunicação", valor: "Notificação no canal combinado às 02:14" },
+          { rotulo: "pendências", valor: "Reativar o MFA e revisar o acesso condicional" },
+        ],
+        nota: "É assim que o turno passa: quem chega lê o caso e continua dali, sem depender de quem saiu.",
+      },
+      ativacao: [
+        "diagnóstico do ambiente",
+        "instalação ou integração dos componentes",
+        "conexão das fontes e das ferramentas que você já usa",
+        "inventário e baseline",
+        "RMM, regras, playbooks e automações",
+        "ajuste fino",
+        "operação contínua",
+      ],
+      ativacaoNota: "A duração depende do porte, da quantidade de ativos, das fontes de log e das integrações. O prazo do seu ambiente sai do diagnóstico.",
     },
-    workflow: [
-      { step: "01", name: "Visibilidade Total 24/7", desc: "Monitoramos continuamente o ambiente para identificar e priorizar comportamentos suspeitos assim que os sinais relevantes são recebidos e correlacionados pela operação." },
-      { step: "02", name: "Resposta Imediata", desc: "Se um ataque for detectado, nossa equipe age na hora. Isolamos a ameaça antes que ela se espalhe e avisamos você diretamente em canais de resposta rápida, como Teams ou WhatsApp." },
-      { step: "03", name: "Pronto para Auditorias", desc: "Tudo o que defendemos vira um relatório claro. Traduzimos ataques em evidências organizadas que garantem sua aprovação em processos rígidos como ISO 27001 e LGPD." }
-    ],
-    services: [
-      { name: "Motor SOC 24x7 (MDR)", desc: "Vigilância ininterrupta sobre eventos e comportamentos suspeitos em toda a sua rede. Nossa equipe realiza a triagem e neutraliza ameaças instantaneamente antes que elas escalem." },
-      { name: "Gestão Contínua de Vulnerabilidades", desc: "Não focamos apenas em achar buracos críticos, mas em fechá-los. Realizamos varreduras recorrentes no seu ambiente e aplicamos os patches necessários de forma cadenciada." },
-      { name: "Threat Intelligence e Forense", desc: "Estudo contínuo do cibercrime focado no seu setor de mercado para prever ataques. Se o pior acontecer, conduzimos extrações forenses completas para propósitos legais." }
-    ],
-    ctaLabel: "Fale com a ness.",
-    useCases: [
-      { title: "Empresa sofreu ransomware e quer prevenir recorrência", desc: "SOC 24×7 monitora ameaças, EDR bloqueia processos maliciosos antes de propagação, e patching reduz superfície de ataque." },
-      { title: "Startup precisa ISO 27001/SOC 2 em 6 meses", desc: "A empresa já sai com as evidências mandatórias prontas para a auditoria: logs centralizados, scan contínuo de vulnerabilidades, relatórios trimestrais de patch e inventário unificado." },
-      { title: "TI enxuta não consegue acompanhar CVEs críticos", desc: "Nosso motor assume a máquina. Triagem automatizada de vulnerabilidades + ciclo de patch aplicado de forma orquestrada durante janelas silenciosas, sem causar downtime não planejado." },
-      { title: "Gestor quer visibilidade exata de quem acessou o quê", desc: "O SIEM proprietário correlaciona logs infinitos de AD, firewalls, EDR e aplicações em nuvem, entregando dashboards centralizados e irrevogáveis para controle e compliance direto." }
-    ],
-    features: [
-      { name: "Motor SOC 24×7", category: "Monitoramento Ativo" },
-      { name: "Correlação SIEM Avançada", category: "Visibilidade" },
-      { name: "EDR/AV Next-Gen com ML", category: "Combate de Ponto" },
-      { name: "Gestão Contínua de Vulnerabilidades", category: "Prevenção" },
-      { name: "Application Patch Management", category: "Higiene Tática" },
-      { name: "Security Hardening (CIS/NIST)", category: "Fundação" },
-      { name: "Inventário Discovery de Ativos", category: "Governança" },
-      { name: "Orquestração Incident Response", category: "Contenção" },
-      { name: "Feeds de Threat Intelligence", category: "Capacidade Cíclica" },
-      { name: "Reportes Táticos Executivos", category: "Auditoria" }
-    ],
-    onboarding: [
-      { step: "01", title: "Diagnóstico Completo", desc: "Mapeamento em profundidade do ambiente, assessment de stack tecnológico atual frente às ameaças globais operantes." },
-      { step: "02", title: "Baseline e Instalação", desc: "Deploy silencioso de sensores EDR, conexões criptografadas ao SIEM e centralização dos dados do tenant." },
-      { step: "03", title: "Tuning e Ajuste Fino", desc: "Calibração aguda das regras de detecção da Inteligência para reduzir fadiga de alertas e focar apenas no ruído que derruba negócios." },
-      { step: "04", title: "Operação 24x7 Ativada", desc: "O n.secops assume a vigília ininterrupta com emissão agendada de relatórios evolutivos sem gap de feriado." }
-    ],
-    technicalFeatures: [],
-    portfolio: [
-      { client: "Global Fintech", project: "SOC Enterprise", result: "Prevenção estimada de US$ 2.5M em fraudes anuais." }
-    ]
+    fecho: {
+      titulo: "comece pelo diagnóstico",
+      texto: "Mapeamos o ambiente, as fontes de evento e as ferramentas que você já usa. É a primeira etapa da ativação, e dela sai o prazo.",
+    },
+    ctaLabel: "solicitar diagnóstico de segurança",
   },
   "infraops": {
     icon: Cloud,

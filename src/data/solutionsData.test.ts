@@ -25,8 +25,24 @@ function textos(valor: unknown): string[] {
 const PRAZO_DE_COMPROMISSO = /SLA de \d|em at[ée] \d+\s*(minuto|hora)/i;
 const CAMPOS_DE_COMPROMISSO = ['metaTitle', 'metaDescription', 'overview'] as const;
 
+/**
+ * Produto que volta com a ficha preenchida passa ao desenho por diagramas, e o
+ * desenho precisa de todas as partes: diagrama pela metade é pior que o card
+ * antigo. `promessa` é o que liga o desenho novo na página.
+ */
+const PARTES_DO_DESENHO = ['apresentacao', 'fontes', 'severidade', 'escopo', 'entregaveis', 'operacao', 'fecho'] as const;
+
 describe('conteúdo das soluções', () => {
+  it('o n.secops já está no desenho por diagramas', () => {
+    expect(solutionsData.secops.promessa).toBeTruthy();
+  });
+
   for (const [slug, dados] of Object.entries(solutionsData)) {
+    it(`${slug}, se está no desenho novo, tem todas as partes`, () => {
+      if (!dados.promessa) return;
+      expect(PARTES_DO_DESENHO.filter((parte) => !dados[parte])).toEqual([]);
+    });
+
     it(`${slug} não publica absoluto sem fonte`, () => {
       const ofensores = textos(dados).filter((t) => ABSOLUTOS.test(t));
       expect(ofensores).toEqual([]);

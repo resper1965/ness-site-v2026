@@ -1,12 +1,14 @@
-import BlueDot from '../components/BlueDot';
+import BlueDot, { NomeDeProduto } from '../components/BlueDot';
 import ChatPreview from '../components/ChatPreview';
 import EmergencyChatModal from '../components/EmergencyChatModal';
 import SolutionHeroBackground from '../components/solutions/SolutionHeroBackground';
 import SolutionServicesGrid from '../components/solutions/SolutionServicesGrid';
+import FluxoDoEvento from '../components/solutions/FluxoDoEvento';
 import RespostaAIncidente from '../components/solutions/RespostaAIncidente';
 import Escopo from '../components/solutions/Escopo';
 import Entregaveis from '../components/solutions/Entregaveis';
 import Operacao from '../components/solutions/Operacao';
+import Ativacao from '../components/solutions/Ativacao';
 import LeadMagnet from '../components/LeadMagnet';
 import NotFound from './NotFound';
 import React, { useEffect, useState } from "react";
@@ -40,17 +42,26 @@ const SolutionPage = () => {
 
   if (!solution) return <NotFound />;
 
+  // O n.cirt abre a sala de emergência; os demais levam ao contato.
+  const acionar = () => {
+    if (slug === 'cirt') {
+      setIsEmergencyChatOpen(true);
+    } else {
+      navigate(`/contato?ref=${slug}`);
+    }
+  };
+
   return (
     <>
-      <SchemaOrg 
-        type="service" 
+      <SchemaOrg
+        type="service"
         data={{
           name: solution.metaTitle || t(`solutions.${slug}.title`),
-          description: solution.overview || '',
-          url: `${BRAND_DOMAINS[BRAND]}/solucoes/${slug}` 
-        }} 
+          description: solution.apresentacao || solution.overview || '',
+          url: `${BRAND_DOMAINS[BRAND]}/solucoes/${slug}`
+        }}
       />
-      <motion.div 
+      <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -63,8 +74,35 @@ const SolutionPage = () => {
         {/* O schema já sai do shell; aqui é só a trilha visível. */}
         <Breadcrumbs semSchema />
 
+        {/* Com a ficha preenchida, o produto passa ao desenho por diagramas: o h1
+            é a promessa, e o nome do produto vira a marca acima dela. */}
+        {solution.promessa ? (
+          <div className="mb-16 max-w-4xl space-y-6">
+            <p className="font-brand text-2xl font-medium text-white lowercase-all">
+              <NomeDeProduto nome={t(`solutions.${slug}.title`)} />
+            </p>
+            <h1 className="max-w-[22ch] text-balance font-display text-4xl font-semibold leading-[1.08] tracking-tight text-white md:text-6xl">
+              {solution.promessa}<BlueDot />
+            </h1>
+            <p className="max-w-[60ch] text-lg leading-relaxed text-on-surface-variant">{solution.apresentacao}</p>
+            <div className="flex flex-wrap items-center gap-x-7 gap-y-4 pt-2">
+              <button
+                onClick={acionar}
+                className="bg-primary-container text-on-primary px-8 py-3 rounded-full font-display font-semibold text-sm hover:brightness-110 transition-all"
+              >
+                {t(`solutions.${slug}.cta`)}
+              </button>
+              <a
+                href="#resposta"
+                className="inline-block py-1 font-display text-sm font-medium text-white underline decoration-surface-container-highest underline-offset-[5px] transition-colors hover:decoration-primary-container"
+              >
+                ver quem age em cada nível
+              </a>
+            </div>
+          </div>
+        ) : (
         <div className={`mb-24 grid items-center gap-16 ${slug === 'autoops' ? 'lg:grid-cols-2' : 'max-w-3xl'}`}>
-          <motion.div 
+          <motion.div
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
@@ -85,14 +123,8 @@ const SolutionPage = () => {
               {solution.overview || t(`solutions.${slug}.longDesc`)}
             </p>
             <div className="flex gap-4 pt-4">
-              <button 
-                onClick={() => {
-                  if (slug === 'cirt') {
-                    setIsEmergencyChatOpen(true);
-                  } else {
-                    navigate(`/contato?ref=${slug}`);
-                  }
-                }}
+              <button
+                onClick={acionar}
                 className="bg-primary-container text-on-primary px-8 py-3 rounded-full font-display font-semibold text-sm hover:brightness-110 transition-all">
                 {t(`solutions.${slug}.cta`)}
               </button>
@@ -110,14 +142,21 @@ const SolutionPage = () => {
             </motion.div>
           )}
         </div>
+        )}
+
+        {/* A ordem é a das perguntas do comprador: como funciona, quem age,
+            até onde vai, quem é chamado, o que recebo, como começa. */}
+        <FluxoDoEvento fontes={solution.fontes} />
 
         <RespostaAIncidente severidade={solution.severidade} workflow={solution.workflow} />
 
         <Escopo escopo={solution.escopo} />
 
+        <Operacao operacao={solution.operacao} onboarding={solution.onboarding} />
+
         <Entregaveis entregaveis={solution.entregaveis} />
 
-        <Operacao operacao={solution.operacao} onboarding={solution.onboarding} />
+        <Ativacao produto={t(`solutions.${slug}.title`)} etapas={solution.operacao?.ativacao} nota={solution.operacao?.ativacaoNota} />
 
         {/* NEW Soluções Estratégicas (Full Width SaaS Modules) */}
         <SolutionServicesGrid services={solution.services} icon={PageIcon} />
@@ -182,7 +221,21 @@ const SolutionPage = () => {
           </div>
         )}
 
-        {/* Modular CTA Banner */}
+        {/* No desenho novo o fecho diz qual é o primeiro passo; no antigo fica o banner. */}
+        {solution.fecho ? (
+          <section id="fecho" className="mb-24 grid justify-items-start gap-5 border-t border-white/10 pt-24">
+            <h2 className="font-display text-3xl font-semibold lowercase tracking-tight text-white md:text-4xl">
+              {solution.fecho.titulo}<BlueDot />
+            </h2>
+            <p className="max-w-[60ch] text-lg leading-relaxed text-on-surface-variant">{solution.fecho.texto}</p>
+            <button
+              onClick={acionar}
+              className="rounded-full bg-primary-container px-8 py-4 font-display text-sm font-semibold text-on-primary transition-all hover:brightness-110 hover:shadow-[0_0_20px_rgba(0,173,232,0.25)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest"
+            >
+              {solution.ctaLabel}
+            </button>
+          </section>
+        ) : (
         <div className="mb-24 p-12 lg:p-16 rounded-[4rem] bg-surface-container-low border border-white/5 nebula-shadow relative overflow-hidden group text-center">
           <div className="absolute inset-0 bg-linear-to-br from-primary/10 to-primary-container/10 opacity-50 backdrop-blur-md"></div>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 scale-150 group-hover:scale-110 transition-transform duration-1000">
@@ -191,24 +244,19 @@ const SolutionPage = () => {
           <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
             <h4 className="text-3xl lg:text-5xl font-display font-medium text-white mb-6 tracking-tight lowercase">{t('solutions.cta_title', 'sua empresa em um novo nível')}<BlueDot /></h4>
             <p className="text-lg text-on-surface-variant font-normal leading-relaxed mb-10">{t('solutions.cta_desc', 'descubra como a ness. pode transformar sua operação com inteligência e segurança de elite.')}</p>
-            <button 
-              onClick={() => {
-                if (slug === 'cirt') {
-                  setIsEmergencyChatOpen(true);
-                } else {
-                  navigate(`/contato?ref=${slug}`);
-                }
-              }}
+            <button
+              onClick={acionar}
               className="whitespace-nowrap rounded-full bg-primary-container px-10 py-5 font-display text-sm font-semibold uppercase tracking-widest text-on-primary shadow-lg shadow-primary-container/25 transition-all hover:brightness-110 hover:shadow-[0_0_28px_rgba(0,173,232,0.4)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-low">
               {solution.ctaLabel}
             </button>
           </div>
         </div>
+        )}
 
         {solution.technicalFeatures && solution.technicalFeatures.length > 0 && (
           <section id="tecnologia" className="mb-24 pt-12 border-t border-white/5">
             <div className="flex justify-center mb-8">
-              <button 
+              <button
                 onClick={() => setShowTech(!showTech)}
                 className="flex items-center gap-3 px-8 py-4 rounded-full bg-surface-container-low border border-white/10 hover:bg-surface-container-low/80 hover:border-primary/20 transition-all text-on-surface-variant text-xs font-medium uppercase tracking-[0.2em] shadow-lg shadow-black/20"
               >
@@ -218,10 +266,10 @@ const SolutionPage = () => {
                 </motion.div>
               </button>
             </div>
-            
+
             <AnimatePresence>
               {showTech && (
-                <motion.div 
+                <motion.div
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
@@ -250,30 +298,32 @@ const SolutionPage = () => {
           </section>
         )}
 
-        <section id="portfolio">
-          <h3 className="text-xl md:text-2xl font-display font-semibold text-white mb-10 tracking-tight lowercase">{t('solutions.impact_portfolio', 'portfólio de impacto')}<BlueDot /></h3>
-          <div className="grid md:grid-cols-2 gap-8">
-            {solution.portfolio.map((item: { client: string; project: string; result: string }, i: number) => (
-              <div key={i} className="p-8 rounded-4xl border border-white/5 bg-linear-to-br from-surface-container-low to-surface-container-lowest">
-                <div className="flex justify-between items-start mb-6">
-                  <div>
-                    <span className="text-[11px] uppercase tracking-widest text-primary font-medium">{item.client}</span>
-                    <h4 className="text-xl text-white mt-1 font-medium">{item.project}</h4>
+        {solution.portfolio?.length ? (
+          <section id="portfolio">
+            <h3 className="text-xl md:text-2xl font-display font-semibold text-white mb-10 tracking-tight lowercase">{t('solutions.impact_portfolio', 'portfólio de impacto')}<BlueDot /></h3>
+            <div className="grid md:grid-cols-2 gap-8">
+              {solution.portfolio.map((item: { client: string; project: string; result: string }, i: number) => (
+                <div key={i} className="p-8 rounded-4xl border border-white/5 bg-linear-to-br from-surface-container-low to-surface-container-lowest">
+                  <div className="flex justify-between items-start mb-6">
+                    <div>
+                      <span className="text-[11px] uppercase tracking-widest text-primary font-medium">{item.client}</span>
+                      <h4 className="text-xl text-white mt-1 font-medium">{item.project}</h4>
+                    </div>
+                    <ExternalLink className="text-on-surface-variant/60" size={20} />
                   </div>
-                  <ExternalLink className="text-on-surface-variant/60" size={20} />
+                  <div className="p-4 rounded-xl bg-primary-container/5 border border-primary-container/10">
+                    <p className="text-primary-container text-sm font-medium">{t('common.result')}: {item.result}</p>
+                  </div>
                 </div>
-                <div className="p-4 rounded-xl bg-primary-container/5 border border-primary-container/10">
-                  <p className="text-primary-container text-sm font-medium">{t('common.result')}: {item.result}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+              ))}
+            </div>
+          </section>
+        ) : null}
       </div>
-      
-      <EmergencyChatModal 
-        isOpen={isEmergencyChatOpen} 
-        onClose={() => setIsEmergencyChatOpen(false)} 
+
+      <EmergencyChatModal
+        isOpen={isEmergencyChatOpen}
+        onClose={() => setIsEmergencyChatOpen(false)}
       />
     </motion.div>
     </>

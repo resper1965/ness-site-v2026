@@ -8,11 +8,12 @@ interface ServiceItem {
 }
 
 interface SolutionServicesGridProps {
-  services: ServiceItem[];
+  services?: ServiceItem[];
   icon: React.ElementType;
 }
 
 const SolutionServicesGrid: React.FC<SolutionServicesGridProps> = ({ services, icon: Icon }) => {
+  if (!services?.length) return null;
   return (
     <section id="ferramentas" className="mb-24">
       <div className="mb-12">
