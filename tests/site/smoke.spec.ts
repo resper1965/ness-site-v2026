@@ -473,12 +473,18 @@ test.describe('orçamento de performance', () => {
 
     const scriptSrc = csp.match(/script-src ([^;]*)/)?.[1] ?? '';
     expect(scriptSrc, `script-src: ${scriptSrc}`).not.toContain("'unsafe-inline'");
-    expect(scriptSrc).toMatch(/'nonce-[a-f0-9]+'/);
-    const nonce = scriptSrc.match(/'nonce-([a-f0-9]+)'/)?.[1];
+
+    // Em produção a Zaraz injeta um script próprio e a Cloudflare acrescenta o
+    // nonce dela ao cabeçalho — formato UUID, ao lado do nosso, hexadecimal. A
+    // propriedade que interessa não é "todo script tem O NOSSO nonce", e sim
+    // "todo script inline está autorizado por ALGUM nonce da política". Exigir
+    // só o nosso reprovava uma resposta perfeitamente segura.
+    const autorizados = [...csp.matchAll(/'nonce-([A-Za-z0-9+/=_-]+)'/g)].map((m) => m[1]);
+    expect(autorizados.length, `nenhum nonce em script-src: ${scriptSrc}`).toBeGreaterThan(0);
 
     const semNonce = (html.match(/<script(?![^>]*\ssrc=)[^>]*>/g) || [])
-      .filter((tag) => !tag.includes(`nonce="${nonce}"`));
-    expect(semNonce, `scripts inline sem nonce: ${semNonce.join(' ')}`).toHaveLength(0);
+      .filter((tag) => !autorizados.some((n) => tag.includes(`nonce="${n}"`)));
+    expect(semNonce, `scripts inline sem nonce autorizado: ${semNonce.join(' ')}`).toHaveLength(0);
 
   });
 

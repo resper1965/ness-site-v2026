@@ -315,6 +315,12 @@ const ptResources = {
         },
         "open": "falar com a Gabi"
       },
+      "consentimento": {
+        "titulo": "aviso de privacidade",
+        "texto": "Medimos audiência para entender como o site é usado. Nada é compartilhado com anunciantes, e você pode recusar sem perder nenhuma função. <politica>Como tratamos seus dados</politica>.",
+        "aceitar": "aceitar",
+        "recusar": "recusar"
+      },
       "common": {
         "see_all": "ver tudo",
         "view_all": "ver tudo",

@@ -710,5 +710,11 @@
   "clients": {
     "eyebrow": "who trusts ness.",
     "title": "companies we transformed"
+  },
+  "consentimento": {
+    "titulo": "privacy notice",
+    "texto": "We measure audience to understand how the site is used. Nothing is shared with advertisers, and you can decline without losing any functionality. <politica>How we handle your data</politica>.",
+    "aceitar": "accept",
+    "recusar": "decline"
   }
 }

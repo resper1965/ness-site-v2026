@@ -11,9 +11,25 @@
  */
 type Parametros = Record<string, string | number | boolean | undefined>;
 
+/**
+ * A API de consentimento da Zaraz. `modal = false` esconde o aviso de fabrica
+ * dela, que trava a pagina; o nosso fica em AvisoDeConsentimento.tsx.
+ */
+type ConsentimentoZaraz = {
+  modal: boolean;
+  get?: (finalidade: string) => boolean | undefined;
+  getAll?: () => Record<string, boolean | undefined>;
+  set?: (escolhas: Record<string, boolean>) => void;
+  setAll?: (aceitou: boolean) => void;
+  sendQueuedEvents?: () => void;
+};
+
 declare global {
   interface Window {
-    zaraz?: { track: (nome: string, parametros?: Parametros) => void };
+    zaraz?: {
+      track: (nome: string, parametros?: Parametros) => void;
+      consent?: ConsentimentoZaraz;
+    };
   }
 }
 
