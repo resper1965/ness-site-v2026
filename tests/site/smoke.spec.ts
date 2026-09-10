@@ -522,7 +522,7 @@ test.describe('marca e alvo de toque', () => {
   // WCAG 2.2 (2.5.8) pede 24x24 px de alvo. A excecao e o link dentro de uma
   // frase, cuja altura e limitada pela entrelinha do texto ao redor — por isso
   // os links da frase de consentimento ficam de fora.
-  for (const rota of ['/', '/contato', '/carreiras']) {
+  for (const rota of ['/', '/contato', '/carreiras', '/solucoes/secops']) {
     test(`nenhum controle de ${rota} fica abaixo de 24 px`, async ({ page }) => {
       await page.goto(rota);
       await page.evaluate(() => document.fonts.ready);
@@ -559,25 +559,57 @@ test.describe('marca e alvo de toque', () => {
 });
 
 test.describe('página de produto', () => {
-  // Enquanto a ficha do produto nao volta, a secao 1 cai para o `workflow`,
-  // que ja esta publicado. O que nao pode e ficar titulo com vazio embaixo.
-  test('a resposta a incidente aparece, por severidade ou por fluxo', async ({ page }) => {
+  // O n.secops foi o primeiro a devolver a ficha e passou ao desenho por
+  // diagramas: quem age em cada nivel vira coluna, nao paragrafo.
+  test('a severidade do n.secops mostra os três atores em cada nível', async ({ page }) => {
     await page.goto('/solucoes/secops');
     const secao = page.locator('#resposta');
-    await expect(secao).toBeVisible();
+    await expect(secao.getByRole('heading', { level: 2 })).toContainText(/quem age/i);
+    const niveis = secao.locator('article');
+    await expect(niveis).toHaveCount(4);
+    for (let i = 0; i < 4; i++) {
+      await expect(niveis.nth(i).locator('dt')).toHaveText([/agentes de IA/, /time de segurança/, /você/]);
+    }
+    // Em P4 o time nao entra, e a pagina diz isso em vez de deixar o vazio.
+    await expect(niveis.nth(3).locator('dd').nth(1)).toContainText(/não precisa entrar/i);
+  });
+
+  // Enquanto a ficha do produto nao volta, a secao cai para o `workflow`,
+  // que ja esta publicado. O que nao pode e ficar titulo com vazio embaixo.
+  test('produto sem ficha cai para o fluxo de três passos', async ({ page }) => {
+    await page.goto('/solucoes/cirt');
+    const secao = page.locator('#resposta');
     await expect(secao.getByRole('heading', { level: 3 })).toContainText(/acontece/i);
-    // ou a tabela de severidade, ou a lista do fluxo — nunca as duas, nunca nenhuma
-    const tabela = await secao.locator('table').count();
-    const lista = await secao.locator('ol > li').count();
-    expect(tabela > 0 || lista > 0).toBe(true);
-    expect(tabela > 0 && lista > 0).toBe(false);
+    await expect(secao.locator('ol > li')).toHaveCount(3);
+    await expect(secao.locator('article')).toHaveCount(0);
+  });
+
+  // A tabela de cinco colunas que veio antes cortava "quem age" e "voce
+  // recebe" no celular, sem nada indicando que dava para rolar.
+  test('nenhuma seção do n.secops rola de lado', async ({ page }) => {
+    await page.goto('/solucoes/secops');
+    const vazando = await page.evaluate(() =>
+      ['#fluxo', '#resposta', '#escopo', '#operacao', '#entregaveis', '#ativacao']
+        .map((id) => document.querySelector(id))
+        .filter((el): el is Element => !!el && el.scrollWidth > el.clientWidth + 1)
+        .map((el) => el.id),
+    );
+    expect(vazando).toEqual([]);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  });
+
+  // O fluxo tem um desenho horizontal e um vertical. No mockup os dois
+  // apareceram juntos por especificidade de CSS: o leitor ve um, nunca dois.
+  test('o fluxo do evento aparece uma vez só', async ({ page }) => {
+    await page.goto('/solucoes/secops');
+    await expect(page.locator('#fluxo svg[role="img"]:visible')).toHaveCount(1);
   });
 
   // Secao sem dado nao pode deixar titulo orfao — foi o erro que a home
   // cometia com o blog.
   test('seção sem dado não deixa título órfão', async ({ page }) => {
     await page.goto('/solucoes/secops');
-    for (const id of ['#escopo', '#entregaveis', '#operacao']) {
+    for (const id of ['#escopo', '#entregaveis', '#operacao', '#ativacao']) {
       const secao = page.locator(id);
       if (await secao.count()) {
         const itens = await secao.locator('li, dd').count();
@@ -590,7 +622,7 @@ test.describe('página de produto', () => {
   // ordem em que o comprador a faz. Trocar a ordem sem trocar o spec e bug.
   test('as seções aparecem na ordem do desenho', async ({ page }) => {
     await page.goto('/solucoes/secops');
-    const esperada = ['#resposta', '#escopo', '#entregaveis', '#operacao', '#ferramentas', '#situacoes', '#portfolio'];
+    const esperada = ['#fluxo', '#resposta', '#escopo', '#operacao', '#entregaveis', '#ativacao', '#ferramentas', '#situacoes', '#portfolio'];
     const posicoes: number[] = [];
     for (const id of esperada) {
       const el = page.locator(id);
