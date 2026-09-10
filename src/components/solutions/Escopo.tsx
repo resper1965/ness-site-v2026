@@ -9,7 +9,7 @@ import type { EscopoDoServico } from '../../data/solutionsData';
  * coluna "dentro". As duas listas têm o mesmo peso visual de propósito.
  */
 export default function Escopo({ escopo }: { escopo?: EscopoDoServico }) {
-  if (!escopo?.dentro?.length && !escopo?.fora?.length) return null;
+  if (!escopo?.dentro?.length && !escopo?.fora?.length && !escopo?.fronteira) return null;
 
   const colunas = [
     { titulo: 'dentro', itens: escopo?.dentro ?? [], Icone: Check, cor: 'text-primary-container' },
@@ -38,6 +38,14 @@ export default function Escopo({ escopo }: { escopo?: EscopoDoServico }) {
           </div>
         ))}
       </div>
+      {escopo?.fronteira && (
+        <p className="mt-8 max-w-3xl text-sm leading-relaxed text-on-surface-variant">
+          <span className="mr-2 text-[11px] font-medium uppercase tracking-widest text-primary-container">
+            onde acaba a nossa parte
+          </span>
+          {escopo.fronteira}
+        </p>
+      )}
     </section>
   );
 }
