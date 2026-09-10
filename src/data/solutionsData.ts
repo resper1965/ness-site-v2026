@@ -21,7 +21,7 @@ export interface NivelDeSeveridade {
   nome: string;
   exemplo: string;
   ordem: string;
-  agentes: string;
+  aiops: string;
   time?: string;
   voce: { quando: string; recebe: string };
 }
@@ -98,7 +98,7 @@ export const solutionsData: Record<string, SolutionData> = {
     // Nenhum prazo numérico: a decisão foi publicar o modelo de resposta e
     // deixar o SLA na proposta comercial.
     promessa: "segurança operada 24×7, com a resposta combinada antes do incidente",
-    apresentacao: "Agentes de IA vigiam e correlacionam tudo o que chega das suas fontes e agem dentro do que você já autorizou. O time de segurança entra quando é preciso julgar. Você fica sabendo do que precisa, pelo canal combinado.",
+    apresentacao: "O AIOps vigia e correlaciona tudo o que chega das suas fontes e age dentro do que você já autorizou. O time de segurança entra quando é preciso julgar. Você fica sabendo do que precisa, pelo canal combinado.",
     fontes: ["identidade", "servidores", "endpoints", "firewalls", "aplicações", "cloud"],
     severidade: [
       {
@@ -106,7 +106,7 @@ export const solutionsData: Record<string, SolutionData> = {
         nome: "incidente crítico em andamento",
         exemplo: "Ransomware, movimentação lateral, credencial privilegiada comprometida ou exfiltração em curso.",
         ordem: "contém primeiro, avisa em seguida",
-        agentes: "Triagem, correlação e as ações automatizadas já autorizadas.",
+        aiops: "Triagem, correlação e as ações automatizadas já autorizadas.",
         time: "Assume o incidente escalado. Ação destrutiva ou de alto impacto só com a autorização prevista no runbook.",
         voce: { quando: "na hora", recebe: "Acionamento no canal combinado: contexto, o que já foi feito e o que recomendamos." },
       },
@@ -115,7 +115,7 @@ export const solutionsData: Record<string, SolutionData> = {
         nome: "ameaça relevante confirmada",
         exemplo: "Atividade maliciosa com potencial de impacto, ainda sem sinal de comprometimento amplo.",
         ordem: "valida, aciona os responsáveis, executa o playbook",
-        agentes: "Analisam, enriquecem e priorizam.",
+        aiops: "Analisa, enriquece e prioriza.",
         time: "Entra para validar, decidir ou intervir com especialista.",
         voce: { quando: "notificação", recebe: "Contexto, evidências, classificação e recomendação de tratamento." },
       },
@@ -124,7 +124,7 @@ export const solutionsData: Record<string, SolutionData> = {
         nome: "evento suspeito",
         exemplo: "Vulnerabilidade relevante ou desvio de segurança, sem exploração ativa.",
         ordem: "investiga, registra, recomenda",
-        agentes: "Fazem a triagem e consolidam.",
+        aiops: "Faz a triagem e consolida.",
         time: "Acompanha os casos que pedem investigação adicional.",
         voce: { quando: "no acompanhamento", recebe: "Registro e recomendação, no canal ou na reunião periódica, conforme a relevância." },
       },
@@ -133,7 +133,7 @@ export const solutionsData: Record<string, SolutionData> = {
         nome: "evento informativo",
         exemplo: "Desvio de baixa criticidade ou melhoria sugerida, sem ameaça ativa.",
         ordem: "registra, classifica, alimenta as tendências",
-        agentes: "Tratam, registram e ajustam a detecção.",
+        aiops: "Trata, registra e ajusta a detecção.",
         voce: { quando: "no relatório", recebe: "Métricas e tendências do mês." },
       },
     ],
@@ -171,7 +171,7 @@ export const solutionsData: Record<string, SolutionData> = {
     ],
     operacao: {
       escalacao: [
-        { titulo: "o evento ganha severidade", texto: "Os agentes de IA classificam. A severidade e o playbook dizem quem precisa saber." },
+        { titulo: "o evento ganha severidade", texto: "O AIOps classifica. A severidade e o playbook dizem quem precisa saber." },
         { titulo: "a matriz aponta o responsável", texto: "A matriz de contatos definida no onboarding diz quem responde por aquele tipo de evento." },
         { titulo: "o contato principal é acionado", texto: "No canal direto com a operação, com o contexto do caso." },
         { titulo: "sem resposta, a escalação segue", texto: "Vai para o próximo contato da cadeia combinada, e depois para o seguinte." },
