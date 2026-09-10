@@ -191,11 +191,11 @@ test.describe('navegação', () => {
 
     await botao.click();
     await expect(botao).toHaveAttribute('aria-expanded', 'true');
-    // Cinco produtos, serviços, verticais e o diagnóstico.
-    await expect(page.locator('#menu-solucoes a')).toHaveCount(8);
-    // Serviços e Verticais saíram da home: sem isto, só se chega por URL.
-    await expect(page.locator('#menu-solucoes a[href="/servicos"]')).toHaveCount(1);
-    await expect(page.locator('#menu-solucoes a[href="/verticais"]')).toHaveCount(1);
+    // Cinco produtos, o mapa das soluções e o diagnóstico.
+    await expect(page.locator('#menu-solucoes a')).toHaveCount(7);
+    // Serviços e verticais viraram o mapa: nenhum link leva mais a eles.
+    await expect(page.locator('#menu-solucoes a[href="/solucoes"]')).toHaveCount(1);
+    await expect(page.locator('#menu-solucoes a[href="/servicos"], #menu-solucoes a[href="/verticais"]')).toHaveCount(0);
 
     await page.keyboard.press('Escape');
     await expect(botao).toHaveAttribute('aria-expanded', 'false');
@@ -231,7 +231,8 @@ test.describe('navegação', () => {
     test.skip(!isMobile, 'somente mobile');
     await page.goto('/');
     await page.getByRole('button', { name: /abrir menu/i }).click();
-    await expect(page.locator('#solucoes-mobile a')).toHaveCount(7);
+    // Os cinco produtos; serviços e verticais viraram o mapa de soluções.
+    await expect(page.locator('#solucoes-mobile a')).toHaveCount(5);
   });
 
   test('a página de solução mostra a trilha; a de blog, não', async ({ page }) => {
@@ -362,6 +363,10 @@ test.describe('rotas espelho e www', () => {
     ['/contact', '/contato'],
     ['/about', '/sobre'],
     ['/portf%C3%B3lio', '/portfolio'],
+    // Serviços e verticais viraram o mapa de soluções.
+    ['/servicos', '/solucoes'],
+    ['/verticais', '/solucoes'],
+    ['/en/servicos', '/en/solucoes'],
   ];
 
   for (const [de, para] of espelhos) {
@@ -522,7 +527,7 @@ test.describe('marca e alvo de toque', () => {
   // WCAG 2.2 (2.5.8) pede 24x24 px de alvo. A excecao e o link dentro de uma
   // frase, cuja altura e limitada pela entrelinha do texto ao redor — por isso
   // os links da frase de consentimento ficam de fora.
-  for (const rota of ['/', '/contato', '/carreiras', '/solucoes/secops']) {
+  for (const rota of ['/', '/contato', '/carreiras', '/solucoes', '/solucoes/secops', '/forense', '/trustness']) {
     test(`nenhum controle de ${rota} fica abaixo de 24 px`, async ({ page }) => {
       await page.goto(rota);
       await page.evaluate(() => document.fonts.ready);
@@ -595,7 +600,7 @@ test.describe('página de produto', () => {
         .map((el) => el.id),
     );
     expect(vazando).toEqual([]);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
   });
 
   // O fluxo tem um desenho horizontal e um vertical. No mockup os dois
@@ -631,6 +636,59 @@ test.describe('página de produto', () => {
     }
     expect(posicoes).toEqual([...posicoes].sort((a, b) => a - b));
     expect(posicoes.length).toBeGreaterThanOrEqual(3);
+  });
+});
+
+test.describe('telas no desenho delicado', () => {
+  // O mapa de soluções: cinco momentos, sete produtos. A passagem entre as
+  // marcas só aparece na página; na home, a seção mostra só o ciclo.
+  test('soluções mostra o ciclo e a passagem; a home, só o ciclo', async ({ page }) => {
+    await page.goto('/solucoes');
+    const ciclo = page.locator('#soluções figure');
+    await expect(ciclo.getByRole('heading', { level: 2 })).toHaveCount(5);
+    await expect(ciclo.locator('li a')).toHaveCount(7);
+    await expect(page.locator('#passagem ol > li')).toHaveCount(4);
+    await page.goto('/');
+    await expect(page.locator('#soluções figure li a')).toHaveCount(7);
+    await expect(page.locator('#passagem')).toHaveCount(0);
+  });
+
+  // A cadeia de custódia afirma uma coisa só: o hash é o mesmo em todas as
+  // etapas. Um hash diferente numa delas desmentiria o desenho.
+  test('na forense.io o hash é o mesmo em todas as etapas da cadeia', async ({ page }) => {
+    await page.goto('/forense');
+    const hashes = await page.locator('#cadeia li code').allTextContents();
+    expect(hashes).toHaveLength(5);
+    expect(new Set(hashes).size).toBe(1);
+  });
+
+  test('a trustness. mostra a auditoria em fases e o ciclo do dpo', async ({ page }) => {
+    await page.goto('/trustness');
+    await expect(page.locator('#auditoria ol > li')).toHaveCount(5);
+    await expect(page.locator('#dpo svg[role="img"]')).toHaveCount(1);
+  });
+
+  // Pedido de 10/09: elegante e delicado, sem fontes grandes. O teto é o do
+  // título de abertura, 32 px; cabeçalho, rodapé e menu ficam de fora.
+  test('nenhum título das telas passa de 32 px', async ({ page }) => {
+    for (const path of ['/solucoes', '/solucoes/secops', '/forense', '/trustness']) {
+      await page.goto(path);
+      const maior = await page.evaluate(() =>
+        Math.max(
+          ...[...document.querySelectorAll('h1, h2, h3')]
+            .filter((h) => !h.closest('header, footer, nav'))
+            .map((h) => parseFloat(getComputedStyle(h).fontSize)),
+        ),
+      );
+      expect(maior, path).toBeLessThanOrEqual(32);
+    }
+  });
+
+  test('nenhuma das telas rola de lado', async ({ page }) => {
+    for (const path of ['/solucoes', '/forense', '/trustness']) {
+      await page.goto(path);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth), path).toBe(true);
+    }
   });
 });
 

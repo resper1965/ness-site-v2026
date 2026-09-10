@@ -3,6 +3,7 @@ import { m as motion, AnimatePresence } from "motion/react";
 import { X, Download, CheckCircle2, FileText } from "lucide-react";
 import { CANAL_BASE } from "../config/api";
 import BlueDot from "./BlueDot";
+import { BOTAO } from "./Abertura";
 
 interface LeadMagnetProps {
   slug: string;
@@ -12,6 +13,12 @@ interface LeadMagnetProps {
   ctaLabel?: string;
 }
 
+/**
+ * Material gratuito em troca de contato. No desenho delicado: moldura de 1 px,
+ * título a 17 px e o mesmo botão contido das outras telas. O botão não é mais
+ * `whitespace-nowrap` em caixa alta espaçada — era a largura mínima dele que
+ * empurrava a página para o lado no celular.
+ */
 export default function LeadMagnet({
   slug,
   title,
@@ -55,27 +62,22 @@ export default function LeadMagnet({
   return (
     <>
       {/* Inline CTA Card */}
-      <div className="p-8 md:p-10 rounded-3xl bg-primary-container/5 border border-primary-container/20 flex flex-col md:flex-row items-center gap-8">
-        <div className="flex-1 space-y-3">
-          <div className="flex items-center gap-3">
-            <FileText className="text-primary-container" size={24} />
-            <span className="text-[11px] text-primary-container font-medium uppercase tracking-widest">
-              material gratuito
-            </span>
-          </div>
-          <h3 className="text-xl md:text-2xl font-display text-white tracking-tight lowercase">
+      <div className="flex flex-col items-start gap-6 rounded-2xl border border-white/10 p-6 md:flex-row md:items-center md:p-8">
+        <div className="min-w-0 flex-1 space-y-2">
+          <p className="flex items-center gap-2 text-[12.5px] text-primary-container">
+            <FileText size={16} aria-hidden="true" />
+            material gratuito
+          </p>
+          <h3 className="font-display text-[17px] font-medium lowercase tracking-tight text-white">
             {title}
             <BlueDot />
           </h3>
-          <p className="text-sm text-on-surface-variant font-normal leading-relaxed max-w-lg">
+          <p className="max-w-lg text-[13.5px] leading-relaxed text-on-surface-variant">
             {description}
           </p>
         </div>
-        <button
-          onClick={() => setIsOpen(true)}
-          className="bg-primary-container text-on-primary px-8 py-4 rounded-full font-display font-medium text-sm uppercase tracking-widest hover:brightness-110 transition-all whitespace-nowrap shrink-0 flex items-center gap-2"
-        >
-          <Download size={16} />
+        <button onClick={() => setIsOpen(true)} className={`${BOTAO} shrink-0 gap-2`}>
+          <Download size={15} aria-hidden="true" />
           {ctaLabel}
         </button>
       </div>
@@ -110,10 +112,10 @@ export default function LeadMagnet({
               {!isSubmitted ? (
                 <>
                   <div>
-                    <span className="text-[11px] text-primary-container font-medium uppercase tracking-widest block mb-2">
+                    <span className="mb-2 block text-[12.5px] text-primary-container">
                       download gratuito
                     </span>
-                    <h3 className="text-2xl font-display text-white tracking-tight lowercase mb-2">
+                    <h3 className="mb-2 font-display text-lg font-medium lowercase tracking-tight text-white">
                       {title}
                       <BlueDot />
                     </h3>
@@ -169,7 +171,7 @@ export default function LeadMagnet({
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="w-full bg-primary-container text-on-primary py-3.5 rounded-xl font-display font-medium uppercase tracking-widest text-xs hover:brightness-110 transition-all disabled:opacity-50"
+                      className="w-full rounded-xl bg-primary-container py-3 font-display text-[13.5px] font-medium text-on-primary transition-all hover:brightness-110 disabled:opacity-50"
                     >
                       {isLoading ? "enviando..." : "receber material"}
                     </button>
@@ -202,7 +204,7 @@ export default function LeadMagnet({
                       setIsOpen(false);
                       setIsSubmitted(false);
                     }}
-                    className="text-primary-container font-display font-medium text-sm uppercase tracking-widest hover:brightness-110"
+                    className="font-display text-[13.5px] font-medium text-primary-container hover:brightness-110"
                   >
                     fechar
                   </button>

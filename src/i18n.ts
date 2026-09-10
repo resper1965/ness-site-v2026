@@ -12,7 +12,6 @@ const ptResources = {
         "blog": "blog",
         "careers": "carreiras",
         "contact": "contato",
-        "services": "serviços",
         "cta": "começar agora",
         "celebration": {
           "label": "{{years}} Anos",
@@ -57,37 +56,63 @@ const ptResources = {
         "secops": {
           "title": "n.secops",
           "fullTitle": "resiliência operacional & continuidade",
-          "desc": "silenciando alarmes e bloqueando incidentes na fonte com IA e abstração total.",
+          "desc": "SOC 24×7: detecção, resposta e gestão de riscos num contrato.",
           "longDesc": "o n.secops não é apenas sobre tecnologia; é sobre a sobrevivência do seu negócio. protegemos sua reputação e sua operação através de um centro de operações de segurança (SOC) de elite que monitora, detecta e neutraliza ameaças antes que causem impacto.",
           "cta": "solicitar diagnóstico de segurança"
         },
         "infraops": {
           "title": "n.infraops",
           "fullTitle": "infraestrutura inteligente & suporte global",
-          "desc": "arquitetura finops: nuvem invisível, elástica e com uptime cravado em pedra.",
+          "desc": "Infraestrutura e cloud: service desk, ITIL, backup e recuperação.",
           "longDesc": "o n.infraops redefine o suporte técnico tradicional. unimos a robustez do framework ITIL à agilidade de um sistema de IA aplicada que atua como copiloto das nossas operações.",
           "cta": "otimizar minha infraestrutura"
         },
         "devarch": {
           "title": "n.devarch",
           "fullTitle": "arquitetura orientada ao desenvolvedor & escala segura",
-          "desc": "fim do débito técnico: engenharia hexagonal focada em longevidade sem breaks.",
+          "desc": "Engenharia e arquitetura de software, com segurança desde o código.",
           "longDesc": "no n.devarch, transformamos o desenvolvimento em uma vantagem competitiva. criamos nossas próprias soluções e capacitamos empresas a alcançarem escala extrema.",
           "cta": "escalar meu desenvolvimento"
         },
         "autoops": {
           "title": "n.autoops",
           "fullTitle": "eficiência operacional & automação estratégica",
-          "desc": "agentes neuro-digitais e LLMs privados triturando fluxos corporativos manuais.",
+          "desc": "Automação de processos e operações com agentes de IA.",
           "longDesc": "o n.autoops é o braço de inteligência da ness. que coloca sua empresa à frente da concorrência. desenvolvemos assistentes personalizados (copilotos) que assumem tarefas repetitivas.",
           "cta": "agendar demo da gabi.os"
         },
         "cirt": {
           "title": "n.cirt",
           "fullTitle": "resposta estratégica a incidentes críticos",
-          "desc": "resposta estratégica a incidentes críticos e inteligência avançada de ameaças.",
+          "desc": "Coordenação de incidentes críticos, da sala de guerra à retomada.",
           "longDesc": "o n.cirt é a elite da resposta a incidentes. quando o impensável acontece, nosso time entra em campo para conter, remediar e reconstruir com precisão cirúrgica.",
           "cta": "falar com time de resposta"
+        },
+        "ciclo": {
+          "titulo": "cinco soluções e duas marcas, cada uma para um momento do seu ambiente",
+          "lede": "Comece pelo momento em que você está. Quando um incidente atravessa esses momentos, o caso passa de uma equipe para a outra com o contexto junto.",
+          "estagios": {
+            "construir": "construir",
+            "operar": "operar",
+            "proteger": "proteger",
+            "responder": "responder",
+            "comprovar": "comprovar"
+          },
+          "forense": "Perícia digital, com cadeia de custódia preservada.",
+          "trustness": "Auditoria, conformidade e DPO como serviço.",
+          "legenda": "Onde cada solução atua. As n. são soluções da ness.; forense.io e trustness. são marcas próprias, com equipe e método dedicados.",
+          "ver_mapa": "ver o mapa das soluções",
+          "passagem": {
+            "titulo": "quando um incidente atravessa o ecossistema",
+            "intro": "Cada passagem só acontece quando o caso pede. Um incidente sem dado pessoal, por exemplo, não chega à trustness.",
+            "secops": "Detecta e contém o que já está autorizado no runbook.",
+            "cirt": "Abre a sala de guerra e coordena TI, jurídico e comunicação.",
+            "forense": "Preserva e analisa a evidência, com laudo defensável em juízo.",
+            "trustness": "Conduz a comunicação à ANPD e aos titulares.",
+            "para_cirt": "incidente crítico",
+            "para_forense": "precisa de perícia",
+            "para_trustness": "envolve dado pessoal"
+          }
         },
         "use_cases": "casos de uso reais",
         "cta_title": "sua empresa em um novo nível",
@@ -95,59 +120,6 @@ const ptResources = {
         "tech_engine": "o motor da resiliência",
         "tech_desc": "para os interessados na engenharia por trás da proteção, aqui estão os pilares técnicos que sustentam nossa entrega de valor.",
         "impact_portfolio": "portfólio de impacto"
-      },
-      "services": {
-        "title": "serviços profissionais",
-        "subtitle": "expertise técnica e estratégica para acelerar sua jornada de transformação e segurança.",
-        "items": [
-          {
-            "title": "Consultoria em IA & Dados",
-            "desc": "Estratégia para implementação de copilotos e orquestração de conhecimento corporativo.",
-            "tags": [
-              "RAG",
-              "LLM Ops",
-              "Data Strategy"
-            ]
-          },
-          {
-            "title": "Resposta a Incidentes (IR)",
-            "desc": "Atuação tática em crises cibernéticas, contenção de danos e recuperação de ambientes.",
-            "tags": [
-              "War Room",
-              "Forensics",
-              "Crisis Mgmt"
-            ]
-          },
-          {
-            "title": "Engenharia de Plataforma",
-            "desc": "Design de arquiteturas escaláveis e pipelines de entrega contínua de alta performance.",
-            "tags": [
-              "Cloud Native",
-              "DevOps",
-              "Scalability"
-            ]
-          },
-          {
-            "title": "Governança & Compliance",
-            "desc": "Automação de GRC e adequação dinâmica a normas globais e regulamentações.",
-            "tags": [
-              "ISO 27001",
-              "LGPD",
-              "Risk Audit"
-            ]
-          }
-        ]
-      },
-      "verticals": {
-        "title": "unidades verticais de negócio",
-        "subtitle": "ecossistemas dedicados que potencializam a inteligência e confiança digital.",
-        "forense": {
-          "desc": "líder em investigação digital e resposta a incidentes complexos. unimos tecnologia proprietária e expertise humana para desvendar o invisível."
-        },
-        "trustness": {
-          "desc": "consultoria estratégica em governança, riscos e conformidade. criando alicerces sólidos para que sua empresa cresça com segurança e ética."
-        },
-        "cta": "explorar unidade"
       },
       "blog": {
         "title": "conhecimento técnico",
@@ -422,293 +394,187 @@ const ptResources = {
         "title": "forense.io",
         "tabTitle": "análise forense digital & incident response",
         "hero": {
-          "tag": "cadeia de custódia",
-          "tag2": "preservada",
-          "subtitle": "especialização em forense digital seguindo ISO 27037/27042 — perícia judicial, investigação corporativa e resposta a incidentes.",
-          "cta1": "solicitar perícia",
-          "cta2": "ver recursos forenses"
+          "titulo": "a evidência chega ao processo do jeito que saiu do equipamento",
+          "lede": "Perícia em computadores, celulares, redes e contas em nuvem. Cada etapa fica registrada, e o hash da cópia é conferido de ponta a ponta, da coleta ao laudo.",
+          "cta": "falar com um perito",
+          "link": "ver a cadeia de custódia"
         },
-        "why": {
-          "title": "por que importa",
-          "desc": "Evidências digitais são voláteis e podem ser destruídas em minutos. Forense digital é essencial para investigações judiciais, resposta a incidentes e compliance. forense.io realiza perícias com metodologia ISO 27037/27042, preservando cadeia de custódia e produzindo laudos defensáveis em juízo.",
-          "items": {
-            "ransomware": {
-              "title": "ransomware",
-              "subtitle": "Determinar ponto de entrada e escopo do comprometimento",
-              "desc": "Forense de memória (RAM), discos (clonagem bit-a-bit) e logs para mapear TTPs do atacante e extensão do incidente."
+        "cadeia": {
+          "titulo": "a cadeia de custódia",
+          "intro": "O hash é a impressão digital da cópia. Calculado na coleta, ele é conferido em cada etapa seguinte: se um único bit mudar, o hash muda, e a cadeia mostra onde.",
+          "legenda": "O mesmo hash em todas as etapas é o que prova que a evidência não mudou. Hash ilustrativo. Coleta e preservação seguem a ISO/IEC 27037.",
+          "etapas": [
+            {
+              "nome": "coleta",
+              "texto": "Cópia bit a bit, com bloqueio de escrita no original.",
+              "estado": "calculado"
             },
-            "datalen": {
-              "title": "vazamento de dados",
-              "subtitle": "Rastrear como dados sensíveis saíram da empresa",
-              "desc": "Análise de acesso a BD, logs de rede, e-mails e dispositivos para identificar vetor de exfiltração e autoria."
+            {
+              "nome": "preservação",
+              "texto": "Original lacrado, com registro de quem teve acesso e quando.",
+              "estado": "conferido"
             },
-            "judicial": {
-              "title": "processo judicial",
-              "subtitle": "Perícia de dispositivo apreendido (notebook, smartphone)",
-              "desc": "Perito judicial credenciado realiza exame técnico com relatório estruturado e defesa oral em audiência."
+            {
+              "nome": "análise",
+              "texto": "Sempre na cópia. Linha do tempo, arquivos apagados, memória e rede.",
+              "estado": "conferido"
             },
-            "corp": {
-              "title": "investigação corporativa",
-              "subtitle": "Fraude interna ou violação de propriedade intelectual",
-              "desc": "Forense de endpoints (e-mails, WhatsApp, Drive) com respeito a LGPD e cadeia de custódia preservada."
+            {
+              "nome": "laudo",
+              "texto": "Método reproduzível, conforme a ISO/IEC 27042.",
+              "estado": "conferido"
+            },
+            {
+              "nome": "defesa",
+              "texto": "O perito explica o laudo em audiência, em linguagem de juízo.",
+              "estado": "conferido"
             }
-          }
+          ]
         },
-        "resources": {
-          "title": "recursos principais",
-          "desc": "expertise forense completo seguindo padrões internacionais",
-          "items": {
-            "disk": {
-              "title": "Análise de Discos",
-              "desc": "Clonagem bit-a-bit, recuperação de arquivos deletados, análise de filesystem (NTFS, ext4, APFS)."
+        "quando": {
+          "titulo": "quando chamar a perícia",
+          "itens": [
+            {
+              "titulo": "ransomware ou invasão",
+              "texto": "Descobrir por onde entraram, até onde chegaram e o que levaram."
             },
-            "ram": {
-              "title": "Forense de Memória (RAM)",
-              "desc": "Análise de processos, conexões de rede, malware em memória e credenciais voláteis."
+            {
+              "titulo": "vazamento de dados",
+              "texto": "Rastrear como a informação saiu da empresa, e por quem."
             },
-            "mobile": {
-              "title": "Mobile Forensics",
-              "desc": "Extração lógica/física de smartphones (iOS/Android), análise de apps, WhatsApp, Telegram."
+            {
+              "titulo": "processo judicial",
+              "texto": "Exame do dispositivo apreendido, com laudo e defesa em audiência."
             },
-            "network": {
-              "title": "Network Forensics",
-              "desc": "Análise de PCAP, logs de firewall, IDS/IPS, reconstrução de sessões HTTP/HTTPS."
+            {
+              "titulo": "fraude interna",
+              "texto": "E-mails, mensagens e arquivos analisados com respeito à LGPD."
             },
-            "timeline": {
-              "title": "Timeline Analysis",
-              "desc": "Reconstrução cronológica de eventos (file system, registry, logs) para entender sequência do ataque."
+            {
+              "titulo": "laudo da outra parte",
+              "texto": "Contraprova: análise crítica do método e das conclusões de um laudo de terceiros."
             },
-            "custodian": {
-              "title": "Cadeia de Custódia",
-              "desc": "Documentação completa da preservação, coleta, transporte e análise de evidências (ISO 27037)."
-            },
-            "report": {
-              "title": "Relatórios Periciais",
-              "desc": "Laudos técnicos estruturados com metodologia ISO 27042, reprodutíveis e defensáveis em juízo."
-            },
-            "testimony": {
-              "title": "Testemunho Especializado",
-              "desc": "Defesa oral de laudo em audiências judiciais com linguagem acessível ao jurídico."
-            },
-            "counter": {
-              "title": "Contraprova e Reexame",
-              "desc": "Análise crítica de laudos de terceiros e identificação de falhas metodológicas."
-            },
-            "preservation": {
-              "title": "Preservação de Evidências",
-              "desc": "Coleta on-site ou remota com ferramentas certificadas e hash criptográfico para integridade."
+            {
+              "titulo": "antes que a prova suma",
+              "texto": "Coleta preventiva, no local ou remota, com o hash calculado na hora."
             }
-          }
-        },
-        "metrics": {
-          "title": "métricas forenses",
-          "checks": [
-            "Track record de excelência pericial",
-            "Cadeia de custódia preservada via ISO 27037",
-            "Metodologia ISO 27042 para laudos defensáveis",
-            "Atendimento a incidentes críticos em tempo recorde"
-          ],
-          "stats": {
-            "pericias": {
-              "label": "perícias",
-              "value": "450+"
-            },
-            "laudos": {
-              "label": "laudos aceitos",
-              "value": "100%"
-            },
-            "iso": {
-              "label": "preservação",
-              "value": "ISO"
-            },
-            "assitencia": {
-              "label": "resposta",
-              "value": "24/7"
-            }
-          }
-        },
-        "process": {
-          "title": "processo pericial",
-          "desc": "De contato inicial a laudo final em 2-4 semanas, seguindo rigorosos protocolos de preservação.",
-          "steps": {
-            "s1": {
-              "step": "01",
-              "title": "Triagem",
-              "desc": "Entendimento do caso, tipo de evidência, urgência e objetivos."
-            },
-            "s2": {
-              "step": "02",
-              "title": "Coleta",
-              "desc": "Preservação on-site ou remota com ferramentas certificadas."
-            },
-            "s3": {
-              "step": "03",
-              "title": "Análise",
-              "desc": "Exame técnico seguindo metodologia ISO 27042 e NIST."
-            },
-            "s4": {
-              "step": "04",
-              "title": "Laudo",
-              "desc": "Relatório técnico estruturado com achados e conclusões."
-            },
-            "s5": {
-              "step": "05",
-              "title": "Defesa",
-              "desc": "Apresentação executiva ou testemunho especializado em juízo."
-            }
-          }
+          ]
         },
         "cta": {
           "title": "precisa de perícia ou investigação?",
-          "desc": "solicite análise forense especializada para incidentes, processos judiciais ou investigações corporativas.",
-          "btn": "falar com perito"
+          "desc": "Conte o caso: o tipo de evidência, a urgência e para que o laudo vai servir.",
+          "btn": "falar com um perito"
         }
       },
       "trustness": {
         "title": "trustness",
         "tabTitle": "auditoria e conformidade",
         "hero": {
-          "tag": "auditoria e conformidade",
-          "subtitle": "auditorias independentes, assessments de segurança e consultoria em conformidade (ISO 27001, LGPD, SOC 2) — com relatórios executivos e roadmaps acionáveis.",
-          "cta1": "solicitar assessment",
-          "cta2": "falar com especialista"
+          "titulo": "você chega à auditoria sabendo o que ela vai encontrar",
+          "lede": "Auditoria independente, implementação da ISO 27001 e programa de privacidade da LGPD, com relatório executivo e um plano de correção em ordem de prioridade.",
+          "cta": "solicitar assessment",
+          "link": "ver como a auditoria anda"
         },
-        "why": {
-          "title": "por que importa",
-          "desc": "Clientes B2B, investidores e reguladores exigem evidências de conformidade. ISO 27001 e SOC 2 viraram pré-requisitos para fechar grandes contratos. trustness. realiza auditorias independentes com metodologia reconhecida, relatórios executivos e roadmaps priorizados — entregando confiança demonstrável.",
-          "items": {
-            "sgsi": {
-              "title": "SGSI estruturado",
-              "subtitle": "Startup quer ISO 27001 mas não tem SGSI estruturado",
-              "desc": "Implementamos SGSI completo: políticas, procedimentos, avaliação de riscos, controles técnicos e organizacionais — pronto para auditoria."
+        "auditoria": {
+          "titulo": "a auditoria, semana a semana",
+          "intro": "A ordem das fases é fixa. A duração de cada uma depende do escopo.",
+          "semanas": "semanas",
+          "legenda": "Do kickoff ao plano de correção: 4 semanas no escopo menor, até 8 no maior.",
+          "fases": [
+            {
+              "nome": "kickoff e escopo",
+              "texto": "O que entra, com quem falar, que evidência pedir."
             },
-            "lgpd": {
-              "title": "adequação LGPD",
-              "subtitle": "Empresa precisa auditoria LGPD independente antes da ANPD",
-              "desc": "Gap analysis LGPD, ROPA, DPIAs, políticas e relatório executivo com roadmap de adequação priorizado."
+            {
+              "nome": "coleta de evidências",
+              "texto": "Documentos, configurações e entrevistas."
             },
-            "exec": {
-              "title": "visibilidade executiva",
-              "subtitle": "Board quer visibilidade de postura de segurança mas TI só fala técnico",
-              "desc": "Assessment executivo com score de maturidade, benchmarks de mercado e roadmap de investimento."
+            {
+              "nome": "análise de gaps",
+              "texto": "Cada controle contra o que o framework exige."
             },
-            "gap": {
-              "title": "remediação de gaps",
-              "subtitle": "Auditoria externa encontrou achados críticos e empresa quer remediação",
-              "desc": "Consultoria para implementação de controles, remediação de gaps e preparação para re-auditoria."
+            {
+              "nome": "relatório e apresentação",
+              "texto": "Para o time técnico e para a diretoria."
             },
-            "dpo": {
-              "title": "DPOaaS.online",
-              "subtitle": "Conformidade demonstrável para LGPD/GDPR/CCPA",
-              "desc": "DPO certificado dedicado + plataforma n.privacy incluída para gestão contínua de privacidade."
+            {
+              "nome": "plano de correção",
+              "texto": "Os achados em ordem de risco e de esforço."
             }
+          ]
+        },
+        "dpo": {
+          "titulo": "dpo como serviço",
+          "texto": "A trustness. assume o papel de encarregado da LGPD. Diagnóstico e adequação acontecem uma vez, na entrada. Depois, manutenção e auditoria se alternam, e o que a auditoria encontra volta para a operação.",
+          "aegis": "A plataforma Aegis, própria, está incluída: ROPA, titulares, DPIA, incidentes e painéis.",
+          "link": "conhecer o dpo como serviço",
+          "diagrama": {
+            "descricao": "Diagnóstico e adequação acontecem uma vez; depois, manutenção e auditoria se alternam num ciclo contínuo.",
+            "diagnostico": "diagnóstico",
+            "diagnostico_sub": "mapeamento e análise de gaps",
+            "adequacao": "adequação",
+            "adequacao_sub": "políticas, contratos e controles",
+            "entrada": [
+              "uma vez,",
+              "na entrada"
+            ],
+            "manutencao": "manutenção",
+            "manutencao_sub": [
+              "titulares, ROPA",
+              "e incidentes"
+            ],
+            "auditoria": "auditoria",
+            "auditoria_sub": "controles e DPIA",
+            "ida": "auditoria periódica",
+            "volta": "achados voltam para a operação"
           }
         },
-        "resources": {
-          "title": "recursos principais",
-          "desc": "suite completo de auditoria e consultoria em conformidade",
-          "items": {
-            "ass": {
-              "title": "Assessments de Segurança",
-              "desc": "Avaliação de maturidade em cibersegurança com frameworks reconhecidos (NIST CSF, CIS, ISO 27001)."
+        "servicos": {
+          "titulo": "serviços",
+          "itens": [
+            {
+              "titulo": "assessment de segurança",
+              "texto": "Maturidade em cibersegurança medida contra NIST CSF, CIS ou ISO 27001."
             },
-            "audit": {
-              "title": "Auditorias de Conformidade",
-              "desc": "Auditorias independentes ISO 27001, ISO 27701, SOC 2, PCI-DSS, LGPD com relatórios executivos."
+            {
+              "titulo": "auditoria de conformidade",
+              "texto": "ISO 27001, ISO 27701, SOC 2, PCI-DSS e LGPD, com relatório executivo."
             },
-            "iso": {
-              "title": "Implementação ISO 27001",
-              "desc": "Projeto estruturado para certificação ISO 27001: SGSI, políticas, controles e preparação para auditoria."
+            {
+              "titulo": "implementação da ISO 27001",
+              "texto": "SGSI, políticas, controles e preparação para a certificação."
             },
-            "pen": {
-              "title": "Penetration Testing",
-              "desc": "Pentest externo/interno, web apps, APIs, infraestrutura e social engineering com relatórios técnicos."
+            {
+              "titulo": "teste de intrusão",
+              "texto": "Pentest externo e interno, aplicações web, APIs e engenharia social."
             },
-            "vuln": {
-              "title": "Vulnerability Assessment",
-              "desc": "Varredura e análise de vulnerabilidades com priorização por criticidade e impacto no negócio."
+            {
+              "titulo": "gestão de vulnerabilidades",
+              "texto": "Varredura e análise, priorizadas por criticidade e impacto no negócio."
             },
-            "gov": {
-              "title": "Governança de Segurança",
-              "desc": "Estruturação de comitês de segurança, políticas, procedimentos e frameworks de governança."
+            {
+              "titulo": "governança de segurança",
+              "texto": "Comitês, políticas, procedimentos e frameworks de governança."
             },
-            "due": {
-              "title": "Due Diligence de Fornecedores",
-              "desc": "Avaliação de segurança e privacidade de vendors críticos com questionários e evidências."
+            {
+              "titulo": "due diligence de fornecedores",
+              "texto": "Segurança e privacidade dos fornecedores críticos, com questionário e evidência."
             },
-            "train": {
-              "title": "Treinamentos e Awareness",
-              "desc": "Programas de conscientização em segurança e privacidade customizados para diferentes públicos."
+            {
+              "titulo": "treinamento e conscientização",
+              "texto": "Programas de segurança e privacidade para cada público da empresa."
             },
-            "reg": {
-              "title": "Assessoria Regulatória",
-              "desc": "Consultoria para conformidade com regulamentações setoriais (BACEN, SUSEP, ANS, ANATEL)."
+            {
+              "titulo": "assessoria regulatória",
+              "texto": "Conformidade com BACEN, SUSEP, ANS e ANATEL."
             }
-          }
-        },
-        "metrics": {
-          "title": "métricas de excelência",
-          "checks": [
-            "Track record de auditorias e certificações",
-            "Metodologia reconhecida internacionalmente",
-            "Relatórios executivos e roadmaps priorizados",
-            "Foco em confiança demonstrável para stakeholders"
-          ],
-          "stats": {
-            "fw": {
-              "label": "frameworks",
-              "value": "15+"
-            },
-            "cert": {
-              "label": "certificações",
-              "value": "100%"
-            },
-            "comp": {
-              "label": "compliance score",
-              "value": "A+"
-            },
-            "stake": {
-              "label": "stakeholders",
-              "value": "800+"
-            }
-          }
-        },
-        "process": {
-          "title": "processo de auditoria",
-          "desc": "De kickoff a relatório final em 4–8 semanas, garantindo conformidade e confiança.",
-          "steps": {
-            "s1": {
-              "step": "01",
-              "title": "Kickoff e Escopo",
-              "desc": "Alinhamento de objetivos, escopo e timeline do projeto."
-            },
-            "s2": {
-              "step": "02",
-              "title": "Coleta de Evidências",
-              "desc": "Questionários, entrevistas e análise documental rigorosa."
-            },
-            "s3": {
-              "step": "03",
-              "title": "Análise e Gap Analysis",
-              "desc": "Comparação com frameworks e identificação de riscos."
-            },
-            "s4": {
-              "step": "04",
-              "title": "Relatório e Apresentação",
-              "desc": "Score de maturidade e roadmap de recomendações."
-            },
-            "s5": {
-              "step": "05",
-              "title": "Plano de Remediação",
-              "desc": "Acompanhamento até a certificação ou adequação total."
-            }
-          }
+          ]
         },
         "cta": {
           "title": "precisa de auditoria ou certificação?",
-          "desc": "solicite assessment de segurança, auditoria de conformidade ou consultoria especializada para certificação ISO ou SOC 2.",
+          "desc": "Conte o objetivo: certificação, adequação à LGPD ou uma avaliação independente antes da auditoria.",
           "btn1": "solicitar assessment",
-          "btn2": "falar com consultor"
+          "btn2": "falar com um consultor"
         }
       },
       "celebration": {

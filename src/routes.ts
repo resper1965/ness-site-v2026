@@ -25,8 +25,7 @@ function siteRoutes(lang = ''): RouteConfigEntry[] {
     layout('routes/somente-ness.tsx', { id: id('somente-ness') }, [
       route('solucoes', 'pages/Solutions.tsx', { id: id('solucoes') }),
       ...(traduzido ? [route('solucoes/:slug', 'pages/SolutionPage.tsx', { id: id('solucao') })] : []),
-      route('servicos', 'pages/Services.tsx', { id: id('servicos') }),
-      route('verticais', 'pages/Verticals.tsx', { id: id('verticais') }),
+      // /servicos e /verticais viraram o mapa de soluções: o Worker redireciona.
     ]),
 
     // Páginas das sub-marcas, acessíveis a partir de qualquer domínio.

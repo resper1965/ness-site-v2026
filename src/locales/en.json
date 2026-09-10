@@ -6,7 +6,6 @@
     "blog": "blog",
     "careers": "careers",
     "contact": "contact",
-    "services": "services",
     "cta": "get started",
     "celebration": {
       "label": "{{years}} Years",
@@ -51,35 +50,35 @@
     "secops": {
       "title": "n.secops",
       "fullTitle": "operational resilience & continuity",
-      "desc": "silencing alarms and blocking incidents at the source with AI and total abstraction.",
+      "desc": "24×7 SOC: detection, response and risk management in one contract.",
       "longDesc": "n.secops is not just about technology; it's about the survival of your business. we protect your reputation and your operation through an elite security operations center (SOC) that monitors, detects, and neutralizes threats before they cause impact.",
       "cta": "request security diagnosis"
     },
     "infraops": {
       "title": "n.infraops",
       "fullTitle": "intelligent infrastructure & global support",
-      "desc": "finops architecture: invisible, elastic cloud with rock-solid, non-negotiable uptime.",
+      "desc": "Infrastructure and cloud: service desk, ITIL, backup and recovery.",
       "longDesc": "n.infraops redefines traditional technical support. we combine the robustness of the ITIL framework with the agility of an applied AI system that acts as a co-pilot for our operations.",
       "cta": "optimize my infrastructure"
     },
     "devarch": {
       "title": "n.devarch",
       "fullTitle": "developer-oriented architecture & secure scale",
-      "desc": "the end of technical debt: hexagonal engineering focused on break-free longevity.",
+      "desc": "Software engineering and architecture, secure from the code up.",
       "longDesc": "at n.devarch, we transform development into a competitive advantage. we create our own solutions and empower companies to achieve extreme scale.",
       "cta": "scale my development"
     },
     "autoops": {
       "title": "n.autoops",
       "fullTitle": "operational efficiency & strategic automation",
-      "desc": "neuro-digital agents and private LLMs crushing manual corporate workflows.",
+      "desc": "Process and operations automation with AI agents.",
       "longDesc": "n.autoops is the intelligence arm of ness. that puts your company ahead of the competition. we develop personalized assistants (co-pilots) that take over repetitive tasks.",
       "cta": "schedule gabi.os demo"
     },
     "cirt": {
       "title": "n.cirt",
       "fullTitle": "strategic response to critical incidents",
-      "desc": "strategic response to critical incidents and advanced threat intelligence.",
+      "desc": "Coordination of critical incidents, from the war room to recovery.",
       "longDesc": "n.cirt is the elite of incident response. when the unthinkable happens, our team takes the field to contain, remedy, and rebuild with surgical precision.",
       "cta": "talk to response team"
     },
@@ -88,60 +87,33 @@
     "cta_desc": "discover how ness. can transform your operation with elite intelligence and security.",
     "tech_engine": "resilience engine",
     "tech_desc": "for those interested in the engineering behind our protection, here are the technical pillars of our value delivery.",
-    "impact_portfolio": "impact portfolio"
-  },
-  "services": {
-    "title": "professional services",
-    "subtitle": "technical and strategic expertise to accelerate your transformation and security journey.",
-    "items": [
-      {
-        "title": "AI & Data Consulting",
-        "desc": "Strategy for implementing copilots and corporate knowledge orchestration.",
-        "tags": [
-          "RAG",
-          "LLM Ops",
-          "Data Strategy"
-        ]
+    "impact_portfolio": "impact portfolio",
+    "ciclo": {
+      "titulo": "five solutions and two brands, each for a moment in the life of your environment",
+      "lede": "Start from where you are. When an incident crosses these moments, the case moves from one team to the next with its context attached.",
+      "estagios": {
+        "construir": "build",
+        "operar": "operate",
+        "proteger": "protect",
+        "responder": "respond",
+        "comprovar": "prove"
       },
-      {
-        "title": "Incident Response (IR)",
-        "desc": "Tactical response to cyber crises, damage containment, and environment recovery.",
-        "tags": [
-          "War Room",
-          "Forensics",
-          "Crisis Mgmt"
-        ]
-      },
-      {
-        "title": "Platform Engineering",
-        "desc": "Design of scalable architectures and high-performance continuous delivery pipelines.",
-        "tags": [
-          "Cloud Native",
-          "DevOps",
-          "Scalability"
-        ]
-      },
-      {
-        "title": "Governance & Compliance",
-        "desc": "GRC automation and dynamic adaptation to global standards and regulations.",
-        "tags": [
-          "ISO 27001",
-          "GDPR",
-          "Risk Audit"
-        ]
+      "forense": "Digital forensics, with the chain of custody preserved.",
+      "trustness": "Audit, compliance and DPO as a service.",
+      "legenda": "Where each solution works. The n. solutions are ness.'s own; forense.io and trustness. are brands in their own right, with dedicated teams and methods.",
+      "ver_mapa": "see the solutions map",
+      "passagem": {
+        "titulo": "when an incident crosses the ecosystem",
+        "intro": "Each handoff happens only when the case calls for it. An incident without personal data, for instance, never reaches trustness.",
+        "secops": "Detects and contains what the runbook already authorizes.",
+        "cirt": "Opens the war room and coordinates IT, legal and communications.",
+        "forense": "Preserves and analyzes the evidence, with a report that stands up in court.",
+        "trustness": "Handles the notice to the ANPD and to data subjects.",
+        "para_cirt": "critical incident",
+        "para_forense": "needs forensics",
+        "para_trustness": "involves personal data"
       }
-    ]
-  },
-  "verticals": {
-    "title": "vertical business units",
-    "subtitle": "dedicated ecosystems that enhance digital intelligence and trust.",
-    "forense": {
-      "desc": "leader in digital investigation and response to complex incidents. we combine proprietary technology and human expertise to uncover the invisible."
-    },
-    "trustness": {
-      "desc": "strategic consulting in governance, risk, and compliance. building solid foundations for your company to grow with security and ethics."
-    },
-    "cta": "explore unit"
+    }
   },
   "blog": {
     "title": "technical knowledge",

@@ -1,4 +1,5 @@
 import BlueDot, { NomeDeProduto } from '../components/BlueDot';
+import Abertura, { BOTAO, LINK } from '../components/Abertura';
 import ChatPreview from '../components/ChatPreview';
 import EmergencyChatModal from '../components/EmergencyChatModal';
 import SolutionHeroBackground from '../components/solutions/SolutionHeroBackground';
@@ -77,29 +78,18 @@ const SolutionPage = () => {
         {/* Com a ficha preenchida, o produto passa ao desenho por diagramas: o h1
             é a promessa, e o nome do produto vira a marca acima dela. */}
         {solution.promessa ? (
-          <div className="mb-16 max-w-4xl space-y-6">
-            <p className="font-brand text-2xl font-medium text-white lowercase-all">
-              <NomeDeProduto nome={t(`solutions.${slug}.title`)} />
-            </p>
-            <h1 className="max-w-[22ch] text-balance font-display text-4xl font-semibold leading-[1.08] tracking-tight text-white md:text-6xl">
-              {solution.promessa}<BlueDot />
-            </h1>
-            <p className="max-w-[60ch] text-lg leading-relaxed text-on-surface-variant">{solution.apresentacao}</p>
-            <div className="flex flex-wrap items-center gap-x-7 gap-y-4 pt-2">
-              <button
-                onClick={acionar}
-                className="bg-primary-container text-on-primary px-8 py-3 rounded-full font-display font-semibold text-sm hover:brightness-110 transition-all"
-              >
-                {t(`solutions.${slug}.cta`)}
-              </button>
-              <a
-                href="#resposta"
-                className="inline-block py-1 font-display text-sm font-medium text-white underline decoration-surface-container-highest underline-offset-[5px] transition-colors hover:decoration-primary-container"
-              >
-                ver quem age em cada nível
-              </a>
-            </div>
-          </div>
+          <Abertura
+            marca={<NomeDeProduto nome={t(`solutions.${slug}.title`)} />}
+            titulo={solution.promessa}
+            acoes={
+              <>
+                <button onClick={acionar} className={BOTAO}>{t(`solutions.${slug}.cta`)}</button>
+                <a href="#resposta" className={LINK}>ver quem age em cada nível</a>
+              </>
+            }
+          >
+            {solution.apresentacao}
+          </Abertura>
         ) : (
         <div className={`mb-24 grid items-center gap-16 ${slug === 'autoops' ? 'lg:grid-cols-2' : 'max-w-3xl'}`}>
           <motion.div
@@ -223,17 +213,12 @@ const SolutionPage = () => {
 
         {/* No desenho novo o fecho diz qual é o primeiro passo; no antigo fica o banner. */}
         {solution.fecho ? (
-          <section id="fecho" className="mb-24 grid justify-items-start gap-5 border-t border-white/10 pt-24">
-            <h2 className="font-display text-3xl font-semibold lowercase tracking-tight text-white md:text-4xl">
+          <section id="fecho" className="mb-24 grid justify-items-start gap-4 border-t border-white/10 pt-16">
+            <h2 className="font-display text-xl font-medium lowercase tracking-tight text-white">
               {solution.fecho.titulo}<BlueDot />
             </h2>
-            <p className="max-w-[60ch] text-lg leading-relaxed text-on-surface-variant">{solution.fecho.texto}</p>
-            <button
-              onClick={acionar}
-              className="rounded-full bg-primary-container px-8 py-4 font-display text-sm font-semibold text-on-primary transition-all hover:brightness-110 hover:shadow-[0_0_20px_rgba(0,173,232,0.25)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest"
-            >
-              {solution.ctaLabel}
-            </button>
+            <p className="max-w-[60ch] text-[15px] leading-relaxed text-on-surface-variant">{solution.fecho.texto}</p>
+            <button onClick={acionar} className={BOTAO}>{solution.ctaLabel}</button>
           </section>
         ) : (
         <div className="mb-24 p-12 lg:p-16 rounded-[4rem] bg-surface-container-low border border-white/5 nebula-shadow relative overflow-hidden group text-center">
