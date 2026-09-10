@@ -9,11 +9,10 @@ interface ServiceItem {
 
 interface SolutionServicesGridProps {
   services: ServiceItem[];
-  t: (key: string, defaultString: string) => string;
   icon: React.ElementType;
 }
 
-const SolutionServicesGrid: React.FC<SolutionServicesGridProps> = ({ services, t, icon: Icon }) => {
+const SolutionServicesGrid: React.FC<SolutionServicesGridProps> = ({ services, icon: Icon }) => {
   return (
     <section id="ferramentas" className="mb-24">
       <div className="mb-12">

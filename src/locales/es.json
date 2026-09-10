@@ -48,8 +48,6 @@
     "title": "nuestras soluciones",
     "subtitle": "tecnología de élite para empresas que no aceptan fallos.",
     "technical_view_toggle": "visión de ingeniería",
-    "active_resilience": "resiliencia activa",
-    "intelligence_flow": "flujo de inteligencia",
     "secops": {
       "title": "n.secops",
       "fullTitle": "resiliencia operativa & continuidad",
@@ -85,11 +83,7 @@
       "longDesc": "n.cirt es la élite de la respuesta a incidentes. cuando ocurre lo impensable, nuestro equipo entra en acción para contener, remediar y reconstruir con precisión quirúrgica.",
       "cta": "hablar con el equipo de respuesta"
     },
-    "strategic_solutions": "soluciones estratégicas",
     "use_cases": "casos de uso",
-    "business_value": "valor del negocio",
-    "technical_arsenal": "arsenal técnico",
-    "onboarding_journey": "jornada de activación",
     "cta_title": "su empresa en un nuevo nivel",
     "cta_desc": "descubra cómo la ness. transforma su operación con seguridad de élite.",
     "tech_engine": "motor de resiliencia",

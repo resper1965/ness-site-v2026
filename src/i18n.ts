@@ -54,8 +54,6 @@ const ptResources = {
         "title": "nossas soluções",
         "subtitle": "tecnologia de elite para empresas que não aceitam falhas.",
         "technical_view_toggle": "visão para engenharia & ctos",
-        "active_resilience": "resiliência ativa",
-        "intelligence_flow": "o fluxo de inteligência",
         "secops": {
           "title": "n.secops",
           "fullTitle": "resiliência operacional & continuidade",
@@ -91,11 +89,7 @@ const ptResources = {
           "longDesc": "o n.cirt é a elite da resposta a incidentes. quando o impensável acontece, nosso time entra em campo para conter, remediar e reconstruir com precisão cirúrgica.",
           "cta": "falar com time de resposta"
         },
-        "strategic_solutions": "soluções estratégicas",
         "use_cases": "casos de uso reais",
-        "business_value": "valor para o negócio",
-        "technical_arsenal": "o arsenal em operação",
-        "onboarding_journey": "jornada de ativação",
         "cta_title": "sua empresa em um novo nível",
         "cta_desc": "descubra como a ness. pode transformar sua operação com inteligência e segurança de elite.",
         "tech_engine": "o motor da resiliência",

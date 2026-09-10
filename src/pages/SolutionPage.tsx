@@ -120,7 +120,7 @@ const SolutionPage = () => {
         <Operacao operacao={solution.operacao} onboarding={solution.onboarding} />
 
         {/* NEW Soluções Estratégicas (Full Width SaaS Modules) */}
-        <SolutionServicesGrid services={solution.services} t={t} icon={PageIcon} />
+        <SolutionServicesGrid services={solution.services} icon={PageIcon} />
 
         {solution.features && solution.features.length > 0 && (
           <div className="mb-24 -mt-8">

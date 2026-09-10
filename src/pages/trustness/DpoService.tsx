@@ -143,13 +143,13 @@ export default function DpoService() {
             <div className="flex flex-wrap items-center gap-8 pt-4">
               <Link
                 to="/contato?ref=dpo"
-                className="bg-primary-container text-on-primary px-10 py-4 rounded-full font-display font-semibold text-sm shadow-xl shadow-primary-container/20 hover:scale-105 transition-transform"
+                className="bg-primary-container text-on-primary px-10 py-4 rounded-full font-display font-semibold text-sm shadow-xl shadow-primary-container/20 transition-all hover:brightness-110 hover:shadow-[0_0_28px_rgba(0,173,232,0.4)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest"
               >
                 agendar diagnóstico gratuito
               </Link>
               <a
                 href="#como-funciona"
-                className="flex items-center gap-2 text-white font-display font-medium text-sm hover:text-primary transition-colors group"
+                className="flex items-center gap-2 py-1 text-white font-display font-medium text-sm hover:text-primary transition-colors group"
               >
                 como funciona<BlueDot />
                 <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
@@ -389,7 +389,7 @@ export default function DpoService() {
           <div className="pt-4 flex flex-wrap justify-center gap-6">
             <Link
               to="/contato?ref=dpo"
-              className="bg-primary-container text-on-primary px-12 py-5 rounded-full font-display font-medium text-sm uppercase tracking-widest hover:brightness-110 transition-all"
+              className="bg-primary-container text-on-primary px-12 py-5 rounded-full font-display font-medium text-sm uppercase tracking-widest transition-all hover:brightness-110 hover:shadow-[0_0_28px_rgba(0,173,232,0.4)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest"
             >
               agendar diagnóstico gratuito
             </Link>

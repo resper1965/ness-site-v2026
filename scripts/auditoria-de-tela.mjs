@@ -33,6 +33,9 @@ const ROTAS = [
   '/portfolio',
   '/brandbook',
   '/compliance/privacidade',
+  '/trustness',
+  '/forense',
+  '/dpo-as-a-service',
 ];
 
 const auditar = () => {
