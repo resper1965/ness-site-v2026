@@ -24,7 +24,9 @@ export interface NivelDeSeveridade {
 
 /** O que a ness. faz e o que explicitamente não faz. A segunda lista é a que
  *  constrói confiança: fornecedor que só diz o que faz não diz nada. */
-export interface EscopoDoServico { dentro: string[]; fora: string[] }
+/** `fronteira` responde a pergunta que as duas listas deixam em aberto:
+ *  onde acaba a responsabilidade da ness. e comeca a do cliente. */
+export interface EscopoDoServico { dentro: string[]; fora: string[]; fronteira?: string }
 
 /** O artefato que chega ao cliente e de quanto em quanto tempo. */
 export interface Entregavel { item: string; cadencia: string }
@@ -64,8 +66,83 @@ export const solutionsData: Record<string, SolutionData> = {
     metaTitle: "n.secops — SOC 24×7, resposta a incidentes e GRC",
     metaDescription: "Centro de operações de segurança 24×7 com detecção, resposta imediata e gestão de riscos em um único contrato. Defesa contínua sem inflar sua equipe interna.",
     overview: "Segurança de elite para sua infraestrutura. O n.secops consolida Monitoramento 24x7, Resposta Imediata e Gestão de Riscos (GRC) em um único contrato — entregando defesa contínua de escala global sem que você precise inflar sua equipe interna.",
+    // Preenchido a partir de docs/FICHA-runbook-por-produto.md, devolvida por
+    // Ricardo Esper em 10/09/2026. Nenhum prazo numérico: a decisão foi
+    // publicar o modelo de resposta e deixar o SLA na proposta comercial.
+    severidade: [
+      {
+        nivel: "P1",
+        exemploConcreto: "Incidente crítico em andamento, com comprometimento confirmado ou forte evidência de impacto ao negócio — ransomware, movimentação lateral, credencial privilegiada comprometida ou exfiltração em curso.",
+        quemAge: "Agentes de IA executam triagem, correlação e as ações automatizadas previamente autorizadas. O incidente é escalado para o time de segurança e para os responsáveis que você definiu.",
+        quando: "Havendo ação de contenção previamente autorizada e segura, contém primeiro para limitar a propagação e comunica em seguida. Ação destrutiva ou de alto impacto depende de autorização definida no runbook.",
+        voceRecebe: "Acionamento imediato pelo canal operacional combinado, com o contexto do incidente, o que foi executado, as recomendações e o registro posterior da ocorrência.",
+      },
+      {
+        nivel: "P2",
+        exemploConcreto: "Ameaça relevante confirmada ou atividade maliciosa com potencial de impacto, ainda sem evidência de comprometimento amplo.",
+        quemAge: "Agentes de IA analisam, enriquecem e priorizam. O time de segurança entra quando é preciso validar, decidir ou intervir com especialista.",
+        quando: "Valida e enriquece o evento, aciona os responsáveis e executa o que o playbook prevê, dentro da autorização existente.",
+        voceRecebe: "Notificação operacional com contexto, evidências, classificação e recomendação de tratamento.",
+      },
+      {
+        nivel: "P3",
+        exemploConcreto: "Evento suspeito que exige investigação, vulnerabilidade relevante ou desvio de segurança, sem evidência de exploração ativa.",
+        quemAge: "A operação automatizada faz a triagem e a consolidação; especialistas acompanham os casos que pedem investigação adicional.",
+        quando: "Investiga, correlaciona, registra e recomenda ação corretiva ou preventiva.",
+        voceRecebe: "Registro da ocorrência e recomendação, pelo canal operacional ou no acompanhamento periódico, conforme a relevância.",
+      },
+      {
+        nivel: "P4",
+        exemploConcreto: "Evento informativo, desvio de baixa criticidade ou recomendação de melhoria, sem evidência de ameaça ativa.",
+        quemAge: "Tratamento automatizado, com registro e consolidação para acompanhamento e melhoria contínua.",
+        quando: "Registra, classifica e incorpora o evento aos relatórios, às tendências e aos ajustes de detecção.",
+        voceRecebe: "Registro para acompanhamento, métricas e tendências.",
+      },
+    ],
+    escopo: {
+      dentro: [
+        "Monitoramento e correlação de eventos de segurança em ambientes on-premise e cloud",
+        "Logs de identidade e autenticação, servidores, endpoints, firewalls, aplicações e demais fontes integradas",
+        "Integração com as ferramentas de proteção de endpoint que você já usa — EDR, antivírus e antimalware",
+        "Detecção comportamental, threat hunting e cobertura de ameaças emergentes",
+        "Identificação de desvios de compliance nos frameworks acompanhados",
+        "Gestão de vulnerabilidades, inventário de ativos, hardening e patch management",
+        "Monitoramento e gestão remota (RMM) dos ativos",
+        "Automação e orquestração de resposta, e resposta a incidentes",
+        "Threat intelligence",
+        "Geração de evidências e relatórios operacionais e executivos",
+      ],
+      fora: [
+        "Administração funcional das suas aplicações de negócio",
+        "Correção de código-fonte e desenvolvimento de software",
+        "Decisões de continuidade de negócio, que são suas",
+        "Mudanças de alto impacto que não foram previamente autorizadas",
+        "Substituição automática das ferramentas de segurança que você já tem",
+        "Garantia de eliminação integral de risco, vulnerabilidade ou incidente",
+      ],
+      fronteira:
+        "O n.secops detecta, investiga, prioriza, recomenda e executa as ações técnicas previamente autorizadas no runbook. Mudança com impacto relevante em produção, risco de indisponibilidade, alteração de regra de negócio ou risco operacional passa pela governança e pelas autorizações combinadas com você. Patch e ação remota são executados pelo n.secops quando estão no escopo contratado e dentro das janelas e políticas de mudança acordadas.",
+    },
+    entregaveis: [
+      { item: "Portal com a visão consolidada da operação: eventos, vulnerabilidades, ativos, postura e o andamento das tratativas", cadencia: "contínuo" },
+      { item: "Notificação e acionamento dos incidentes e eventos que exigem o seu conhecimento ou a sua ação", cadencia: "conforme a ocorrência e a severidade" },
+      { item: "Relatório executivo: principais eventos, vulnerabilidades, evolução da postura, o que foi feito e o que recomendamos", cadencia: "mensal" },
+      { item: "Relatório de vulnerabilidades com o acompanhamento das correções", cadencia: "mensal" },
+      { item: "Inventário e visão dos ativos monitorados", cadencia: "contínuo, com consolidação periódica" },
+      { item: "Evidências para auditoria e compliance: registros, eventos e controles dos frameworks acompanhados", cadencia: "conforme os ciclos de governança e auditoria" },
+    ],
+    operacao: {
+      cobertura:
+        "Monitoramento contínuo 24×7 por agentes de IA, que fazem triagem, correlação, enriquecimento, priorização e executam as automações já definidas. O que exige julgamento, autorização ou investigação especializada sobe para o time de segurança e para os responsáveis que você definiu.",
+      passagemDePlantao:
+        "O contexto fica registrado no próprio caso — evento, evidências, enriquecimentos, ações automatizadas, decisões, comunicação e pendências. Um turno não depende do outro para saber onde parou.",
+      escalacao:
+        "Você tem um canal de mensageria direto com a operação. O evento sobe conforme a severidade, o playbook e a matriz de contatos definida no onboarding. Se o contato principal não responder, segue a cadeia de escalação combinada.",
+      tempoDeAtivacao:
+        "Implantação por etapas: diagnóstico do ambiente, instalação ou integração dos componentes, conexão das fontes de evento e das ferramentas que você já usa, inventário e baseline, configuração de RMM, regras, playbooks e automações, ajuste fino, e entrada em operação contínua. A duração depende do porte, da quantidade de ativos, das fontes de log e das integrações.",
+    },
     workflow: [
-      { step: "01", name: "Visibilidade Total 24/7", desc: "Monitoramos todos os seus dispositivos, servidores e ambientes em nuvem sem pausas. Se houver qualquer comportamento estranho ou brecha de segurança, nós detectamos no mesmo segundo." },
+      { step: "01", name: "Visibilidade Total 24/7", desc: "Monitoramos continuamente o ambiente para identificar e priorizar comportamentos suspeitos assim que os sinais relevantes são recebidos e correlacionados pela operação." },
       { step: "02", name: "Resposta Imediata", desc: "Se um ataque for detectado, nossa equipe age na hora. Isolamos a ameaça antes que ela se espalhe e avisamos você diretamente em canais de resposta rápida, como Teams ou WhatsApp." },
       { step: "03", name: "Pronto para Auditorias", desc: "Tudo o que defendemos vira um relatório claro. Traduzimos ataques em evidências organizadas que garantem sua aprovação em processos rígidos como ISO 27001 e LGPD." }
     ],
