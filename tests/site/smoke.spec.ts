@@ -641,8 +641,57 @@ test.describe('aviso de consentimento', () => {
     await expect(botao).toBeVisible();
     await botao.click({ timeout: 5_000 });
 
-    // e escondeu o modal de fabrica, caso a configuracao da zone seja revertida
-    expect(await page.evaluate(() => window.zaraz?.consent?.modal)).toBe(false);
+    // A rede de seguranca: se a configuracao da zone for revertida e o modal de
+    // fabrica voltar a existir, ele e desligado para o visitante nao levar os
+    // dois avisos. So desligamos quando ele existe de verdade — tentar desligar
+    // um modal inexistente foi o que derrubou a arvore em producao.
+    await page.evaluate(() => {
+      const falso = document.createElement("div");
+      falso.className = "cf_modal_container";
+      document.body.appendChild(falso);
+      document.dispatchEvent(new Event("zarazConsentAPIReady"));
+    });
+    await expect.poll(() => page.evaluate(() => window.zaraz?.consent?.modal)).toBe(false);
+  });
+
+  // O teste que faltava. Em producao, `consent.modal = false` chamava o
+  // hideConsentModal() da Zaraz, que tentava remover um modal que a propria
+  // configuracao `hideModal: true` tinha impedido de existir. O TypeError subiu
+  // ate o ErrorBoundary e derrubou a arvore: o site ficou sem nav, sem rodape e
+  // sem h1 para quem tinha JavaScript. Nenhum teste tocava nesse caminho porque
+  // todos os mocks eram de uma Zaraz que funciona.
+  test('a pagina sobrevive quando a API da Zaraz quebra', async ({ page }) => {
+    await page.addInitScript(`
+      window.zaraz = {
+        track: () => {},
+        consent: {
+          get modal() { return true; },
+          set modal(v) { throw new TypeError("Failed to execute 'removeChild' on 'Node'"); },
+          getAll: () => ({ analytics: false }),
+          setAll: () => { throw new TypeError('quebrou'); },
+          sendQueuedEvents: () => { throw new TypeError('quebrou'); },
+        },
+      };
+      document.addEventListener('DOMContentLoaded', () => {
+        document.dispatchEvent(new Event('zarazConsentAPIReady'));
+      });
+    `);
+    await page.goto('/');
+    await page.waitForTimeout(2_000);
+
+    // o site continua de pe
+    await expect(page.locator('nav')).toBeVisible();
+    await expect(page.locator('footer')).toBeVisible();
+    await expect(page.locator('h1').first()).toBeVisible();
+
+    // e o aviso ainda aparece, porque so o que fala com o terceiro falhou
+    const aviso = page.getByRole('region', { name: /privacidade|privacy/i });
+    await expect(aviso).toBeVisible();
+
+    // clicar continua funcionando mesmo com setAll explodindo
+    await page.getByRole('button', { name: /^aceitar$|^accept$|^aceptar$/i }).click();
+    await expect(aviso).toHaveCount(0);
+    await expect(page.locator('nav')).toBeVisible();
   });
 
   test('nao aparece para quem ja respondeu', async ({ page }) => {
