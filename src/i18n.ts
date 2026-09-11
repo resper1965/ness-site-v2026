@@ -71,7 +71,7 @@ const ptResources = {
           "fullTitle": "eficiência operacional & automação estratégica",
           "desc": "Automação de processos e operações com agentes de IA.",
           "longDesc": "o n.autoops é o braço de inteligência da ness. que coloca sua empresa à frente da concorrência. desenvolvemos assistentes personalizados (copilotos) que assumem tarefas repetitivas.",
-          "cta": "agendar demo da gabi.os"
+          "cta": "agendar demo da Gabi"
         },
         "cirt": {
           "title": "n.cirt",
