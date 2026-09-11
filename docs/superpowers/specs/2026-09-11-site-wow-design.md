@@ -54,11 +54,25 @@ Ponto de partida, medido em produção:
 | **forense.io** | forense.io | perícia digital (`pericia`), assistência técnica e contraprova (`contraprova`), coleta preventiva (`coleta-preventiva`) |
 
 - **n.cirt é produto da ness., não vertical.**
-- **ness.OS** é a plataforma que o cliente usa para ver e operar infraestrutura
-  e segurança juntas: ativos, eventos, vulnerabilidades, postura e tratativas.
-  É o "portal da operação" que hoje aparece como entregável do n.secops; o
-  n.secops e o n.infraops o citam. Grafia: **"OS" em maiúsculo**, a única
-  exceção à marca em caixa baixa, com o ponto azul.
+- **ness.OS** é a plataforma própria de operações de segurança da ness., usada
+  pelo cliente e pelo time, que une infraestrutura e segurança numa esteira só,
+  em três camadas:
+  1. **ingestão e triagem 24×7:** telemetria de firewalls, identidades em
+     nuvem, estações, servidores e EDR, normalizada e correlacionada pelo
+     AIOps, que agrupa o que é o mesmo incidente e abre o registro com
+     contexto;
+  2. **ação controlada:** RMM integrado (patch, contenção, bloqueio de
+     credencial), só no que o runbook já autoriza;
+  3. **decisão humana e governança:** ação de alto impacto espera aprovação
+     formal (GMUD) do time e do cliente, e toda ação fica numa trilha de
+     auditoria imutável.
+
+  Opera em nuvem, sem infraestrutura local no cliente, com os controles
+  mapeados no CIS Controls v8 e na ISO/IEC 27001:2022, e recebe os achados dos
+  testes de intrusão para monitorar a superfície corrigida. **O n.secops e o
+  n.infraops rodam sobre ele**: é o "portal da operação" que hoje aparece como
+  entregável do n.secops. Grafia: **"OS" em maiúsculo**, a única exceção à
+  marca em caixa baixa, com o ponto azul.
 - "ISO 27001 e governança" inclui implementação, políticas, treinamento,
   assessoria regulatória (BACEN, SUSEP, ANS, ANATEL) e due diligence de
   fornecedores.
@@ -66,9 +80,17 @@ Ponto de partida, medido em produção:
   27701, usado por terceiros ou pelo time da trustness. com o cliente que quer
   se certificar. A página tem duas entradas: "com a trustness." e "com o seu
   time". O produto "ISO 27001 e governança" cita o n.iso como a ferramenta do
-  acompanhamento.
+  acompanhamento. O que ele cobre: declaração de aplicabilidade dos 93
+  controles do Anexo A da ISO 27001:2022, com a migração da versão de 2013;
+  riscos em matriz 5×5 com planos de tratamento e o inventário de ativos
+  ligado a vulnerabilidades e ameaças; cofre de evidências com integridade
+  conferida por SHA-256 e trilha de auditoria por documento; ROPA, DPIA,
+  ações corretivas e preventivas e auditorias; portal de ciência das
+  políticas (controle A.6.3); portal do auditor, somente leitura, com
+  credencial temporária. **A página não menciona IA, integração por MCP nem
+  como o produto é construído.**
 - A plataforma de privacidade do DPO é descrita pelo que faz. **Não tem nome
-  público** (ver 6.2).
+  público** e não é o n.iso (ver 6.2).
 - Os demais produtos da trustness. e da forense.io têm **nomes descritivos**.
 
 ### 3.2 Endereços
@@ -130,17 +152,17 @@ Todas seguem a mesma dinâmica, a da abertura atual (`Abertura`):
 
 | Produto | Tipo | O leitor escolhe | A página mostra | Conteúdo |
 |---|---|---|---|---|
-| n.secops | `severidade` | P1–P4 | o caminho do evento (fontes → AIOps → time de segurança → você) aceso conforme o nível, fundido com a escada de severidade | ficha pronta |
+| n.secops | `severidade` | P1–P4 | o caminho do evento (fontes → AIOps, no ness.OS → time de segurança → você) aceso conforme o nível, fundido com a escada de severidade | ficha pronta |
 | n.cirt | `mesa-de-crise` | a fase (acionamento, contenção, retomada, lições) | quem está à mesa e o que cada um faz (comando da ness., TI, jurídico, comunicação, perícia) | rascunho a validar |
-| n.infraops | `responsabilidade` | a camada (aplicação, banco e SO, rede e acesso, custo) | provedor, ness. e você, com filete de intensidade | rascunho a validar |
+| n.infraops | `responsabilidade` | a camada (aplicação, banco e SO, rede e acesso, custo) | provedor, ness. e você, com filete de intensidade; patch e correção passam pelo ness.OS | rascunho a validar |
 | n.devarch | `portoes` | o portão (revisão, segurança, homologação, produção) | o que é conferido e o que fica de evidência | rascunho a validar |
 | n.autoops | `antes-depois` | o processo (conceder acesso, aplicar patch, abrir chamado) | hoje à mão × com n.autoops, com a linha "← humano" onde a automação para | rascunho a validar |
-| ness.OS | `tela-real` | a visão (ativos, eventos, vulnerabilidades, tratativas) | captura real do ness.OS com a etiqueta "dados de exemplo" | **aguarda as capturas** |
+| ness.OS | `fronteira` | a ação (aplicar patch crítico em servidor de produção, isolar estação com malware, bloquear credencial anômala, atualizar aplicativo nas estações) | em que camada ela cai (ingestão e triagem, ação por runbook ou decisão humana) e se espera aprovação (GMUD); abaixo, a captura real com a etiqueta "dados de exemplo" quando chegar | texto do produto (11/09); captura aguarda |
 | auditoria e assessment | `regua` | o ponto de partida | as fases sobre a régua de 4 a 8 semanas | texto no ar |
 | ISO 27001 e governança | `rastreabilidade` | um controle do Anexo A da ISO 27001:2022 (5.15, 8.13, 6.3) | política → procedimento → controle → evidência que o auditor pede | rascunho a validar |
 | DPO como serviço | `ciclo` | um acontecimento (pedido de titular, incidente com dado pessoal, fornecedor novo) | por onde passa no ciclo, quem responde e onde fica registrado | texto no ar |
 | testes e vulnerabilidades | `matriz` | um achado | o quadrante de criticidade técnica × impacto no negócio, quem corrige e o reteste | rascunho a validar |
-| n.iso | `tela-real` | a etapa da implementação | captura real do n.iso com a etiqueta "dados de exemplo" | **aguarda as capturas** |
+| n.iso | `jornada` | um controle do Anexo A (5.15, 8.13, 6.3) | aplicabilidade na declaração → risco ligado → evidência no cofre com o hash conferido → o que o auditor vê no portal; abaixo, a captura real com a etiqueta "dados de exemplo" quando chegar | texto do produto (11/09); captura aguarda |
 | perícia digital | `cadeia` | "alterar 1 bit na cópia" / "restaurar" | o hash deixa de bater no elo seguinte e a cadeia mostra onde quebrou | texto no ar |
 | assistência técnica e contraprova | `conferencia` | um ponto do laudo (cadeia, hash, método, conclusão) | o que o laudo diz × o que se confere × o achado, conforme a ISO/IEC 27037 e a 27042 | rascunho a validar |
 | coleta preventiva | `volatilidade` | a fonte (memória, conexões e logs, disco, backup e nuvem) | a posição na ordem de volatilidade (RFC 3227) e o que a coleta fixa na hora, com o hash | rascunho a validar |
@@ -178,8 +200,8 @@ SLA; o prazo fica na proposta.
 - **Celular:** o desenho tem versão própria quando o horizontal não cabe, e
   nunca rola para o lado.
 
-**Ordem:** n.secops (piloto) → perícia digital e auditoria (conteúdo no ar) →
-os demais conforme as fichas forem validadas → n.iso e ness.OS quando as capturas
+**Ordem:** n.secops (piloto) e ness.OS, que dividem o mesmo fluxo → perícia digital, auditoria e n.iso (conteúdo pronto) →
+os demais conforme as fichas forem validadas ; as capturas reais do n.iso e do ness.OS entram quando
 chegarem.
 
 ## 6. Conteúdo e integridade
@@ -206,11 +228,20 @@ chegarem.
 - **Toda alegação tem fonte** registrada em `docs/PESQUISA-metricas.md`.
   Presença global: *clientes atendidos em Brasil, Portugal, Chile, Peru,
   Colômbia e Estados Unidos, confirmado por Ricardo Esper em 11/09/2026, com
-  base na carteira de clientes.*
+  base na carteira de clientes.* ness.OS: *trilha de auditoria imutável e
+  nenhuma infraestrutura local no cliente, confirmado por Ricardo Esper em
+  11/09/2026.*
 - **Codinome de projeto nunca aparece**: nem no texto, nem em chave de i18n,
   identificador, rota, alt, branch, commit ou PR. O teste de integridade
   guarda só o SHA-256 dos codinomes, inclusive os escritos com ponto (PR #44).
-- No n.secops, o ator automatizado é **AIOps**. "Agentes de IA" descreve só
+- **Nada de cliente real** vem de proposta, relatório ou pentest para o site:
+  nem nome, nem achado, nem exemplo.
+- **Como um produto é construído** (stack, linguagem, provedor, modelo) não
+  aparece no site. A página do n.iso não menciona IA nem a integração por MCP.
+- Do texto de produto do ness.OS ficam fora, até haver medição: "em minutos",
+  "quase imediato", "redução drástica de ruído", "autônoma" como absoluto e
+  a tabela comparativa com SOC e RMM "tradicionais".
+- No n.secops e no ness.OS, o ator automatizado é **AIOps**; "agentic" não aparece no site. "Agentes de IA" descreve só
   o n.autoops.
 - **Marca no meio da frase sai desenhada** (`ComMarcas`), inclusive a ness.OS,`n  com "OS" em maiúsculo.
 - O assessment de privacidade se chama **"maturidade em privacidade"**.
@@ -275,7 +306,8 @@ Ricardo decide antes de seguir.
 
 1. **`PRODUCT.md`** passa a registrar as três empresas e os portfólios, a
    regra dos codinomes, "maturidade em privacidade" e a presença global com a
-   fonte. A linha da fonte entra também em `docs/PESQUISA-metricas.md`.
+   fonte, o ness.OS e as duas alegações técnicas dele. As fontes entram também
+   em `docs/PESQUISA-metricas.md`.
 2. **`DESIGN.md`**, na raiz, ao lado do `PRODUCT.md`, é gerado por `/impeccable document` a partir do que está no
    ar: escala, tipografia, filetes, marcadores por ator e desvios do guia. O
    `docs/DESIGN.md` de 24/04 e o `docs/DESIGN-SYSTEM.md` passam a apontar para
@@ -366,7 +398,7 @@ Cada frente tem o seu plano de implementação e sai em PR com preview. Merge em
 
 - **Desempenho:** LCP no celular de até 2,5 s em todas as rotas migradas,
   medido no Lighthouse da CI.
-- **Momentos:** os 14 no ar com ficha validada. O n.iso e o ness.OS dependem das capturas.
+- **Momentos:** os 14 no ar com ficha validada. O n.iso e o ness.OS saem com o momento desenhado e ganham a captura real depois.
 - **Qualidade:** nenhuma violação no axe, nenhuma rolagem lateral a 390 px e
   nenhuma alegação sem fonte, com os testes verdes.
 - **Auditoria:** a `/impeccable audit` final registrada e comparada com os
