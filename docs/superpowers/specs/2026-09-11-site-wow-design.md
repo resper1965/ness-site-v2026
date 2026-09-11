@@ -54,7 +54,17 @@ Ponto de partida, medido em produção:
 | **trustness.** | trustness.com.br | auditoria e assessment (`auditoria`), ISO 27001 e governança (`iso-27001`), DPO como serviço (`dpo`), testes e vulnerabilidades (`testes`); plataformas: **n.iso** (`n-iso`), **n.privacy** (`n-privacy`), **n.training** (`n-training`) e **n.pentest** (página na ness.) |
 | **forense.io** | forense.io | perícia digital (`pericia`), assistência técnica e contraprova (`contraprova`), coleta preventiva (`coleta-preventiva`) |
 
-- **n.cirt é produto da ness., não vertical.**
+- **n.cirt é produto da ness., não vertical:** o serviço de comando da crise
+  cibernética, com o seu cockpit. A ness. assume o comando (comandante do
+  incidente, prontidão contratada, coordenação de fornecedores), e o comitê do
+  cliente acompanha no cockpit, que organiza cinco células sob o comandante:
+  perícia e custódia (com a forense.io), resposta tática e contenção,
+  reestruturação e retomada, boletins e comunicação, e jurídico e regulatório.
+  Tem papéis definidos, livro de decisões imutável (quem autorizou o quê, e
+  quando), operação fora de banda, em infraestrutura independente da rede da
+  empresa, e roteiros para decisões sensíveis. **Fica acima do n.csirt:** o
+  n.csirt é a operação técnica do CSIRT; o n.cirt é o comando e puxa dele o que
+  a perícia e o jurídico precisam.
 - **n.infraops são três serviços:** atendimento (o suporte a quem usa),
   sustentação técnica (manter o ambiente de pé: operação, manutenção, correção e
   patch, que correm no ness.OS) e arquitetura de infraestrutura (desenhar e
@@ -118,8 +128,8 @@ Ponto de partida, medido em produção:
   transbordo para TO/SCADA, malware, defacement, zero-day), gera a cadeia de
   custódia (pacote STIX 2.1, relatório com SHA-256, marcação TLP) e despacha a
   notificação regulatória ao CTIR Gov/GSI (Decreto 10.748/2021), ao
-  CARCCiber/ONS (Submódulo 5.13 / RO-CB.BR.01) e à ANPD. **O n.cirt roda sobre
-  ele**, que também é vendido a CSIRTs de terceiros. As referências regulatórias
+  CARCCiber/ONS (Submódulo 5.13 / RO-CB.BR.01) e à ANPD. **O n.cirt fica acima
+  dele**, no comando da crise; o n.csirt também é vendido a CSIRTs de terceiros. As referências regulatórias
   entram na ficha como "a conferir".
 - **n.training** é a plataforma de treinamento corporativo em segurança da
   informação e privacidade. Pertence às duas empresas: a página mora na
@@ -197,7 +207,7 @@ Todas seguem a mesma dinâmica, a da abertura atual (`Abertura`):
 | Produto | Tipo | O leitor escolhe | A página mostra | Conteúdo |
 |---|---|---|---|---|
 | n.secops | `severidade` | P1–P4 | o caminho do evento (fontes → AIOps, no ness.OS → time de segurança → você) aceso conforme o nível, fundido com a escada de severidade | ficha pronta |
-| n.cirt | `mesa-de-crise` | a fase (acionamento, contenção, retomada, lições) | quem está à mesa e o que cada um faz (comando da ness., TI, jurídico, comunicação, perícia); o registro e a notificação correm no n.csirt | rascunho a validar |
+| n.cirt | `mesa-de-crise` | a fase (acionamento, contenção, retomada, lições) | as cinco células sob o comandante acendem conforme a fase (perícia e custódia, resposta tática, reestruturação, boletins e comunicação, jurídico e regulatório), com o que cada uma faz e a decisão que vai para o livro; a operação técnica e a notificação correm no n.csirt | texto do produto (11/09); a validar |
 | n.infraops | `demanda` | a demanda (usuário sem acesso, alerta de disco no servidor, patch do mês, nova filial precisa de rede) | qual frente cuida (atendimento, sustentação ou arquitetura), o caminho e o que chega para você; a sustentação corre no ness.OS | rascunho a validar |
 | n.devarch | `portoes` | o portão (arquitetura, código, testes, homologação, produção) | o que é conferido em cada um (desenho revisado; revisão e análise de segurança do código e das dependências; testes automatizados e de segurança) e o que fica de evidência | rascunho a validar |
 | n.autoops | `quebra` | a falha (a tela do ERP mudou, a credencial venceu, a fila parou) | o cockpit detecta, o alerta sai, a sustentação corrige e a trilha registra com hash: construir o robô é o começo, não o fim | rascunho a validar |
@@ -278,7 +288,9 @@ chegarem.
   Colômbia e Estados Unidos, confirmado por Ricardo Esper em 11/09/2026, com
   base na carteira de clientes.* ness.OS: *trilha de auditoria imutável e
   nenhuma infraestrutura local no cliente, confirmado por Ricardo Esper em
-  11/09/2026.*
+  11/09/2026.* n.cirt: *livro de decisões imutável e operação fora de banda,
+  em infraestrutura independente da rede da empresa, confirmado por Ricardo
+  Esper em 11/09/2026.*
 - **Codinome de projeto nunca aparece**: nem no texto, nem em chave de i18n,
   identificador, rota, alt, branch, commit ou PR. O teste de integridade
   guarda só o SHA-256 dos codinomes, inclusive os escritos com ponto (PR #44).
@@ -294,9 +306,13 @@ chegarem.
 - Do texto de produto do ness.OS ficam fora, até haver medição: "em minutos",
   "quase imediato", "redução drástica de ruído", "autônoma" como absoluto e
   a tabela comparativa com SOC e RMM "tradicionais".
+- Do texto do n.cirt ficam fora "multas milionárias", "minutos custam
+  milhões", "cadeia de custódia incontestável", "em um clique", "todas as
+  obrigações" e a comparação com ferramentas de chamados.
 - No n.secops e no ness.OS, o ator automatizado é **AIOps**; "agentic" não aparece no site. "Agentes de IA" também não aparece:
   nenhum produto do portfólio é vendido como agente.
-- **Marca no meio da frase sai desenhada** (`ComMarcas`), inclusive a ness.OS,`n  com "OS" em maiúsculo.
+- **Marca no meio da frase sai desenhada** (`ComMarcas`), inclusive a ness.OS,
+  com "OS" em maiúsculo.
 - O assessment de privacidade se chama **"maturidade em privacidade"**.
 - Rótulos em caixa normal, sem caixa alta espaçada.
 
@@ -305,7 +321,8 @@ chegarem.
 O guia do ecossistema (Montserrat 600 em títulos, produtos grafados como
 `nShield`, microcopy em caixa alta) diverge do que o repositório já fixou:
 **Montserrat 500, `n.secops` com o ponto azul e caixa normal**. Vale o
-repositório. A marca **ness.OS** é a exceção deliberada à caixa baixa: "OS" em maiúsculo,`ncom o ponto azul. O `DESIGN.md` registra os três desvios e essa exceção.
+repositório. A marca **ness.OS** é a exceção deliberada à caixa baixa: "OS" em maiúsculo,
+com o ponto azul. O `DESIGN.md` registra os três desvios e essa exceção.
 
 ## 7. Arquitetura de renderização (frentes 2 e 3)
 
