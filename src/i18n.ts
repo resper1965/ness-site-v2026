@@ -541,7 +541,7 @@ const ptResources = {
         "dpo": {
           "titulo": "dpo como serviço",
           "texto": "A trustness. assume o papel de encarregado da LGPD. Diagnóstico e adequação acontecem uma vez, na entrada. Depois, manutenção e auditoria se alternam, e o que a auditoria encontra volta para a operação.",
-          "aegis": "A plataforma Aegis, própria, está incluída: ROPA, titulares, DPIA, incidentes e painéis.",
+          "plataforma": "A plataforma própria de gestão de privacidade está incluída: ROPA, titulares, DPIA, incidentes e painéis.",
           "link": "conhecer o dpo como serviço",
           "diagrama": {
             "descricao": "Diagnóstico e adequação acontecem uma vez; depois, manutenção e auditoria se alternam num ciclo contínuo.",

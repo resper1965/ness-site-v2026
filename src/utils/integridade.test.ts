@@ -64,4 +64,23 @@ describe('integridade do que vai ao ar', () => {
   it('nenhum recurso de terceiro fora da Cloudflare', () => {
     expect(ofensores(/transparenttextures\.com/)).toEqual([]);
   });
+
+  // Codinome de projeto não é marca: nunca vai ao ar, nem em identificador ou
+  // chave de i18n. O teste guarda só o SHA-256 de cada codinome, para que o
+  // próprio nome não more no repositório — e acusa o arquivo, não a palavra.
+  it('nenhum codinome interno de projeto', async () => {
+    const { createHash } = await import('node:crypto');
+    const codinomes = new Set(['598f7a741a1e3a05654d346033571fda567af6dc2bf099b34b930171519d995f']);
+    const sha256 = (palavra: string) => createHash('sha256').update(palavra).digest('hex');
+
+    const achados = Object.entries(arquivos)
+      .filter(([, texto]) => {
+        // camelCase vira palavras separadas: "fooBar" → "foo bar".
+        const palavras = new Set(texto.replace(/(\p{Ll})(\p{Lu})/gu, '$1 $2').toLowerCase().match(/\p{L}+/gu));
+        return [...palavras].some((palavra) => codinomes.has(sha256(palavra)));
+      })
+      .map(([caminho]) => caminho);
+
+    expect(achados).toEqual([]);
+  });
 });
