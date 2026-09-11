@@ -2,7 +2,7 @@ import { Outlet } from 'react-router';
 import { detectBrandFromHost } from '../config/brand';
 
 /**
- * Soluções, serviços e verticais existem só na ness. Nos outros domínios a
+ * As soluções existem só na ness. Nos outros domínios a
  * resposta precisa ser 404 de verdade — um 200 com "não encontrado" é
  * soft-404 e o Google indexa.
  *

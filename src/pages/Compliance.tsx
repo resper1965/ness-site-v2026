@@ -1,6 +1,5 @@
 import BlueDot from '../components/BlueDot';
 import React, { useState } from "react";
-import { m as motion } from "motion/react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { routeMeta } from '../utils/meta';
@@ -11,6 +10,10 @@ import Turnstile from '../components/Turnstile';
 
 
 
+
+/** Foco no protocolo quando ele aparece. Estável: com uma função nova a cada
+    render, o foco voltaria para cá a cada tecla digitada depois do envio. */
+const focar = (el: HTMLElement | null) => el?.focus();
 
 const Compliance = () => {
   const BRAND = useBrand();
@@ -72,10 +75,6 @@ const Compliance = () => {
         {
           h: t('compliance.ethics.sec2.h', "2. canal de denúncias"),
           p: t('compliance.ethics.sec2.p', "mantemos um canal independente e anônimo para relato de violacões ao nosso código de conduta ou legislações vigentes.")
-        },
-        {
-          h: t('compliance.ethics.sec3.h', "3. certificações"),
-          p: t('compliance.ethics.sec3.p', "nossas operações são auditadas e seguem frameworks internacionais como ISO 27001 e SOC2, garantindo governança de classe mundial.")
         }
       ]
     }
@@ -84,12 +83,7 @@ const Compliance = () => {
   const current = content[type as keyof typeof content] || content.termos;
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen"
-    >
+    <div className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen">
       {/* Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className="absolute inset-0 bg-linear-to-b from-surface-container-lowest/40 via-surface-container-lowest/90 to-surface-container-lowest z-10"></div>
@@ -97,13 +91,9 @@ const Compliance = () => {
 
       <div className="max-w-4xl mx-auto relative z-20">
         <div className="mb-16">
-          <motion.div
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            className="text-primary-container font-mono text-xs lowercase tracking-[0.3em] mb-6"
-          >
+          <div className="text-primary-container font-mono text-xs lowercase tracking-[0.3em] mb-6">
             {t('compliance.eyebrow')}
-          </motion.div>
+          </div>
           <h1 className="text-4xl md:text-6xl font-display font-semibold text-white tracking-tighter mb-6 lowercase-all">
             {current.title}<BlueDot />
           </h1>
@@ -128,30 +118,19 @@ const Compliance = () => {
 
         <div className="space-y-12">
           {current.sections.map((section, i) => (
-            <motion.div
-              key={i}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: i * 0.1 }}
-              className="space-y-4"
-            >
+            <div key={i} className="space-y-4">
               <h2 className="text-lg font-medium text-white lowercase-all">{section.h}</h2>
               <p className="text-on-surface-variant font-normal leading-relaxed">
                 {section.p}
               </p>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {type === "etica" && (
           <>
             <div className="h-px bg-white/5 w-full mt-24"></div>
-            <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="mt-16 p-12 rounded-[2.5rem] bg-primary-container/5 border border-primary-container/10 relative overflow-hidden group"
-          >
+            <div className="mt-16 p-12 rounded-[2.5rem] bg-primary-container/5 border border-primary-container/10 relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
               <AlertTriangle size={120} className="text-primary-container" />
             </div>
@@ -195,12 +174,12 @@ const Compliance = () => {
               >
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-medium ml-4">{t('contact.form.name_optional')}</label>
-                    <input name="name" type="text" placeholder={t('contact.form.name_placeholder', 'seu nome ou deixe em branco')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all" aria-label={t('contact.form.name_optional')} />
+                    <label htmlFor="denuncia-nome" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-medium ml-4">{t('contact.form.name_optional')}</label>
+                    <input id="denuncia-nome" name="name" type="text" placeholder={t('contact.form.name_placeholder', 'seu nome ou deixe em branco')} className="w-full bg-white/5 border border-white/35 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all" aria-label={t('contact.form.name_optional')} />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-medium ml-4">{t('contact.form.contact_optional')}</label>
-                    <input name="email" type="text" placeholder={t('contact.form.email_placeholder', 'email ou telefone para retorno')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all" aria-label={t('contact.form.contact_optional')} />
+                    <label htmlFor="denuncia-contato" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-medium ml-4">{t('contact.form.contact_optional')}</label>
+                    <input id="denuncia-contato" name="email" type="text" placeholder={t('contact.form.email_placeholder', 'email ou telefone para retorno')} className="w-full bg-white/5 border border-white/35 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all" aria-label={t('contact.form.contact_optional')} />
                   </div>
                 </div>
                 {/* Armadilha: fora da tela e fora do teclado. */}
@@ -210,8 +189,8 @@ const Compliance = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-medium ml-4">{t('contact.whistleblower.occurrence_type')}</label>
-                  <select name="subject" required className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all appearance-none" aria-label={t('contact.whistleblower.occurrence_type')}>
+                  <label htmlFor="denuncia-tipo" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-medium ml-4">{t('contact.whistleblower.occurrence_type')}</label>
+                  <select id="denuncia-tipo" name="subject" required className="w-full bg-white/5 border border-white/35 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all appearance-none" aria-label={t('contact.whistleblower.occurrence_type')}>
                     <option value="" className="bg-surface">{t('contact.whistleblower.category_select')}</option>
                     <option value="etica" className="bg-surface">{t('contact.whistleblower.categories.ethics')}</option>
                     <option value="assédio" className="bg-surface">{t('contact.whistleblower.categories.harassment')}</option>
@@ -221,21 +200,27 @@ const Compliance = () => {
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[11px] uppercase tracking-widest text-on-surface-variant font-medium ml-4">{t('contact.whistleblower.description')}</label>
-                  <textarea name="message" required rows={6} placeholder={t('contact.whistleblower.desc_placeholder', 'detalhe o ocorrido com o máximo de informações possíveis (datas, locais, envolvidos)...')} className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all resize-none" aria-label={t('contact.whistleblower.description')}></textarea>
+                  <label htmlFor="denuncia-descricao" className="text-[11px] uppercase tracking-widest text-on-surface-variant font-medium ml-4">{t('contact.whistleblower.description')}</label>
+                  <textarea id="denuncia-descricao" name="message" required rows={6} placeholder={t('contact.whistleblower.desc_placeholder', 'detalhe o ocorrido com o máximo de informações possíveis (datas, locais, envolvidos)...')} className="w-full bg-white/5 border border-white/35 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all resize-none" aria-label={t('contact.whistleblower.description')}></textarea>
                 </div>
 
-                {submitStatus === 'success' && caseCode && (
-                  <div className="bg-primary-container/10 border border-primary-container/20 text-primary-container p-6 rounded-2xl text-xs font-normal mt-4 space-y-3">
+                {/* O código é a única forma de acompanhar a denúncia: o foco vai
+                    para ele, e o leitor de tela anuncia. */}
+                {submitStatus === 'success' && (
+                  <div role="alert" tabIndex={-1} ref={focar} className="bg-primary-container/10 border border-primary-container/20 text-primary-container p-6 rounded-2xl text-xs font-normal mt-4 space-y-3 focus:outline-none">
                     <p className="text-white font-medium">{t('contact.whistleblower.form.success', 'Denúncia enviada com sucesso de forma anônima!')}</p>
-                    <p>Guarde este código para acompanhar o andamento da sua manifestação:</p>
-                    <div className="bg-white/5 border border-white/10 px-4 py-3 rounded-xl font-mono text-center text-base font-medium text-white tracking-widest select-all">
+                    {caseCode && (
+                      <>
+                        <p>{t('formulario.protocolo', 'Guarde este código para acompanhar o andamento da sua manifestação:')}</p>
+                        <div className="bg-white/5 border border-white/10 px-4 py-3 rounded-xl font-mono text-center text-base font-medium text-white tracking-widest select-all">
                       {caseCode}
                     </div>
+                      </>
+                    )}
                   </div>
                 )}
                 {submitStatus === 'error' && (
-                  <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-6 py-4 rounded-2xl text-xs font-normal mt-4">
+                  <div role="alert" className="bg-red-500/10 border border-red-500/20 text-red-400 px-6 py-4 rounded-2xl text-xs font-normal mt-4">
                     {t('contact.whistleblower.form.error')}
                   </div>
                 )}
@@ -251,7 +236,7 @@ const Compliance = () => {
                 </button>
               </form>
             </div>
-          </motion.div>
+          </div>
           </>
         )}
 
@@ -261,7 +246,7 @@ const Compliance = () => {
           </p>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

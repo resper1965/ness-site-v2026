@@ -1,233 +1,108 @@
-import React from "react";
-import { m as motion } from "motion/react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ShieldAlert, Fingerprint, HardDrive, Smartphone, Network, Clock, FileCheck, Scale, Activity, ShieldCheck, MessageSquare, Search, Lock, CheckCircle2 } from "lucide-react";
-import BlueDot from "../../components/BlueDot";
-import HeroPicture from "../../components/HeroPicture";
-import { homeMeta, routeMeta } from '../../utils/meta';
 import { useTranslation } from "react-i18next";
+import BlueDot from "../../components/BlueDot";
+import Abertura, { BOTAO, CabecalhoDeSecao, LINK } from "../../components/Abertura";
+import { homeMeta, routeMeta } from '../../utils/meta';
+
+/**
+ * A home da forense.io abre com o que só a perícia tem: a cadeia de custódia.
+ * O hash é ilustrativo — o que o desenho afirma é que ele é o mesmo em todas
+ * as etapas, e é isso que prova que a evidência não mudou.
+ */
+const HASH = 'sha-256 9f2c…a41b';
+
+type Etapa = { nome: string; texto: string; estado: string };
+type Situacao = { titulo: string; texto: string };
+
+/** O elo entre duas etapas: dois anéis que se cruzam. */
+function Elo() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 28 12"
+      className="absolute -left-[9.5px] bottom-[-24px] h-3 w-7 rotate-90 lg:-top-0.5 lg:bottom-auto lg:left-[calc(100%+6px)] lg:rotate-0"
+    >
+      <rect x="1" y="1" width="15" height="10" rx="5" className="fill-none stroke-primary/70" />
+      <rect x="12" y="1" width="15" height="10" rx="5" className="fill-none stroke-primary/70" />
+    </svg>
+  );
+}
 
 export default function ForenseHome() {
   const { t } = useTranslation();
-  
+  const etapas = t('forense.cadeia.etapas', { returnObjects: true }) as Etapa[];
+  const situacoes = t('forense.quando.itens', { returnObjects: true }) as Situacao[];
+
   return (
-    <main>
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-surface-container-lowest">
-        <div className="absolute inset-0 z-0">
-          <HeroPicture brand="forense" opacity={0.4} priority grayscale />
-          <div className="absolute inset-0 bg-linear-to-b from-surface-container-lowest/50 via-surface-container-lowest/90 to-surface-container-lowest z-10"></div>
-          {/* Intense blue glow to contrast with blue dot */}
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-container/10 blur-[120px] rounded-full z-10" />
-        </div>
-        
-        <div className="relative z-20 max-w-7xl mx-auto px-8 w-full">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-5xl space-y-10"
-          >
-            {/* A marca sai do corpo do h1 e vira sobrancelha, como na home da
-                ness.: o nome ja esta no topo da pagina, e no mesmo tamanho da
-                frase ele disputava a leitura com o que a marca faz. */}
-            <span className="marca inline-flex items-center rounded-full border border-primary-container/20 bg-primary-container/10 px-5 py-2 text-base text-white md:text-lg">
-              forense<BlueDot />io
-            </span>
-            <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-display font-medium text-white leading-[1.05] tracking-tighter lowercase-all">
-              <span className="text-white/90 drop-shadow-[0_0_20px_rgba(0,173,232,0.4)]">{t("forense.hero.tag")}</span> {t("forense.hero.tag2")}
-            </h1>
-            <p className="text-lg md:text-2xl text-on-surface-variant max-w-3xl leading-relaxed font-normal">
-              {t("forense.hero.subtitle")}
-            </p>
-            <div className="flex flex-wrap items-center gap-8 pt-4">
-              <Link
-                to="/contato?ref=forense"
-                className="bg-primary-container text-on-primary px-8 md:px-10 py-4 rounded-full font-display font-semibold text-sm shadow-xl shadow-primary-container/25 transition-all hover:brightness-110 hover:shadow-[0_0_28px_rgba(0,173,232,0.4)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest"
-              >
-                {t("forense.hero.cta1")}
-              </Link>
-              <a
-                href="#resources"
-                className="group inline-flex items-center gap-2 py-2 font-display text-sm font-medium text-white transition-colors hover:text-primary focus-visible:ring-2 focus-visible:ring-primary-container focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-lowest"
-              >
-                {t("forense.hero.cta2")}
-                <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+    <div className="bg-surface-container-lowest">
+      <Abertura
+        fundo="forense"
+        marca={<>forense<BlueDot />io</>}
+        titulo={t('forense.hero.titulo')}
+        acoes={
+          <>
+            <Link to="/contato?ref=forense" className={BOTAO}>{t('forense.hero.cta')}</Link>
+            <a href="#cadeia" className={LINK}>{t('forense.hero.link')}</a>
+          </>
+        }
+      >
+        {t('forense.hero.lede')}
+      </Abertura>
+      <div className="mx-auto box-content max-w-7xl px-8 pb-24">
 
-      {/* Por que importa */}
-      <section className="py-24 px-8 bg-surface-container-lowest">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-16">
-             <h2 className="text-3xl md:text-5xl font-display font-medium text-white lowercase-all tracking-tighter">
-                {t("forense.why.title")}<BlueDot />
-             </h2>
-             <p className="mt-6 text-on-surface-variant max-w-2xl leading-relaxed font-normal">
-                {t("forense.why.desc")}
-             </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                title: t("forense.why.items.ransomware.title"),
-                subtitle: t("forense.why.items.ransomware.subtitle"),
-                description: t("forense.why.items.ransomware.desc"),
-                icon: ShieldAlert,
-                className: 'lg:col-span-2'
-              },
-              {
-                title: t("forense.why.items.datalen.title"),
-                subtitle: t("forense.why.items.datalen.subtitle"),
-                description: t("forense.why.items.datalen.desc"),
-                icon: Network,
-              },
-              {
-                title: t("forense.why.items.judicial.title"),
-                subtitle: t("forense.why.items.judicial.subtitle"),
-                description: t("forense.why.items.judicial.desc"),
-                icon: Scale,
-              },
-              {
-                title: t("forense.why.items.corp.title"),
-                subtitle: t("forense.why.items.corp.subtitle"),
-                description: t("forense.why.items.corp.desc"),
-                icon: Fingerprint,
-                className: 'lg:col-span-2'
-              }
-            ].map((feature, i) => (
-              <div key={i} className={`p-8 rounded-3xl bg-surface-container border border-white/5 hover:border-primary-container/30 transition-colors group ${feature.className}`}>
-                <feature.icon className="text-primary-container mb-6 group-hover:scale-110 transition-transform" size={32} />
-                <span className="text-[11px] text-primary-container font-medium uppercase tracking-widest block mb-2">{feature.title}</span>
-                <h3 className="text-lg font-display text-white mb-3 tracking-tight leading-tight">{feature.subtitle}</h3>
-                <p className="text-sm text-on-surface-variant font-normal leading-relaxed">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-
-      {/* Recursos Principais */}
-      <section id="resources" className="py-24 px-8 bg-surface border-t border-white/5">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-16">
-             <h2 className="text-3xl md:text-4xl font-display font-medium text-white lowercase-all tracking-tighter">
-                {t("forense.resources.title")}<BlueDot />
-             </h2>
-             <p className="mt-4 text-on-surface-variant max-w-2xl font-normal">{t("forense.resources.desc")}</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { icon: HardDrive, title: t("forense.resources.items.disk.title"), desc: t("forense.resources.items.disk.desc") },
-              { icon: Activity, title: t("forense.resources.items.ram.title"), desc: t("forense.resources.items.ram.desc") },
-              { icon: Smartphone, title: t("forense.resources.items.mobile.title"), desc: t("forense.resources.items.mobile.desc") },
-              { icon: Network, title: t("forense.resources.items.network.title"), desc: t("forense.resources.items.network.desc") },
-              { icon: Clock, title: t("forense.resources.items.timeline.title"), desc: t("forense.resources.items.timeline.desc") },
-              { icon: ShieldCheck, title: t("forense.resources.items.custodian.title"), desc: t("forense.resources.items.custodian.desc") },
-              { icon: FileCheck, title: t("forense.resources.items.report.title"), desc: t("forense.resources.items.report.desc") },
-              { icon: MessageSquare, title: t("forense.resources.items.testimony.title"), desc: t("forense.resources.items.testimony.desc") },
-              { icon: Search, title: t("forense.resources.items.counter.title"), desc: t("forense.resources.items.counter.desc") },
-              { icon: Lock, title: t("forense.resources.items.preservation.title"), desc: t("forense.resources.items.preservation.desc") },
-            ].map((feature, i) => (
-              <div key={i} className="p-8 rounded-3xl bg-surface-container border border-white/5 hover:border-primary-container/30 transition-colors group">
-                <feature.icon className="text-primary-container mb-6 group-hover:scale-110 transition-transform" size={32} />
-                <h3 className="text-xl font-display text-white mb-3 tracking-tight">{feature.title}</h3>
-                <p className="text-sm text-on-surface-variant font-normal leading-relaxed">{feature.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Métricas Forenses */}
-      <section className="py-24 px-8 bg-surface-container border-t border-white/5">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-3xl md:text-5xl font-display font-medium text-white lowercase-all tracking-tighter mb-8">
-                {t("forense.metrics.title")}<BlueDot />
-              </h2>
-              <div className="space-y-6">
-                {[0, 1, 2, 3].map((item, i) => (
-                  <div key={i} className="flex items-center gap-4 text-white/80 font-display">
-                    <CheckCircle2 size={24} className="text-primary-container" />
-                    <span>{t(`forense.metrics.checks.${item}`)}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { label: t("forense.metrics.stats.pericias.label"), value: t("forense.metrics.stats.pericias.value") },
-                { label: t("forense.metrics.stats.laudos.label"), value: t("forense.metrics.stats.laudos.value") },
-                { label: t("forense.metrics.stats.iso.label"), value: t("forense.metrics.stats.iso.value") },
-                { label: t("forense.metrics.stats.assitencia.label"), value: t("forense.metrics.stats.assitencia.value") }
-              ].map((m, i) => (
-                <div key={i} className="p-8 rounded-3xl bg-surface-container-lowest border border-white/5 text-center">
-                  <div className="text-3xl font-display text-white mb-2">{m.value}</div>
-                  <div className="text-[11px] text-primary-container font-medium uppercase tracking-widest">{m.label}</div>
-                </div>
+        <section id="cadeia" aria-labelledby="t-cadeia" className="mb-24">
+          <CabecalhoDeSecao id="t-cadeia" titulo={t('forense.cadeia.titulo')}>{t('forense.cadeia.intro')}</CabecalhoDeSecao>
+          <figure>
+            <ol className="grid gap-y-9 lg:grid-cols-5 lg:gap-x-10">
+              {etapas.map((etapa, i) => (
+                <li key={etapa.nome} className="relative flex flex-col gap-1.5 pl-7 lg:pl-0 lg:pt-7">
+                  <span
+                    aria-hidden="true"
+                    className="absolute left-0 top-1.5 h-[9px] w-[9px] rounded-full border border-primary-container bg-surface-container-lowest lg:top-0"
+                  />
+                  {i < etapas.length - 1 && (
+                    <>
+                      <span
+                        aria-hidden="true"
+                        className="absolute bottom-[-30px] left-1 top-5 w-px bg-white/20 lg:bottom-auto lg:left-[17px] lg:right-[-6px] lg:top-1 lg:h-px lg:w-auto"
+                      />
+                      <Elo />
+                    </>
+                  )}
+                  <h3 className="font-display text-[15px] font-medium text-white">{etapa.nome}</h3>
+                  <p className="text-[13px] leading-relaxed text-on-surface-variant">{etapa.texto}</p>
+                  <p className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1 border-t border-dashed border-white/10 pt-2.5 lg:mt-auto">
+                    <code className="font-mono text-[11.5px] text-on-surface">{HASH}</code>
+                    <span className="text-[11.5px] text-primary-container">{etapa.estado}</span>
+                  </p>
+                </li>
               ))}
-            </div>
-          </div>
-        </div>
-      </section>
+            </ol>
+            <figcaption className="mt-6 max-w-[72ch] text-[13px] leading-relaxed text-on-surface-variant">
+              {t('forense.cadeia.legenda')}
+            </figcaption>
+          </figure>
+        </section>
 
-      {/* Processo Pericial */}
-      <section className="py-24 px-8 bg-surface-container-lowest border-t border-white/5">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-16">
-             <h2 className="text-3xl md:text-5xl font-display font-medium text-white lowercase-all tracking-tighter">
-                {t("forense.process.title")}<BlueDot />
-             </h2>
-             <p className="mt-6 text-on-surface-variant max-w-2xl leading-relaxed font-normal">
-                {t("forense.process.desc")}
-             </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            {[
-              { step: t("forense.process.steps.s1.step"), title: t("forense.process.steps.s1.title"), desc: t("forense.process.steps.s1.desc") },
-              { step: t("forense.process.steps.s2.step"), title: t("forense.process.steps.s2.title"), desc: t("forense.process.steps.s2.desc") },
-              { step: t("forense.process.steps.s3.step"), title: t("forense.process.steps.s3.title"), desc: t("forense.process.steps.s3.desc") },
-              { step: t("forense.process.steps.s4.step"), title: t("forense.process.steps.s4.title"), desc: t("forense.process.steps.s4.desc") },
-              { step: t("forense.process.steps.s5.step"), title: t("forense.process.steps.s5.title"), desc: t("forense.process.steps.s5.desc") },
-            ].map((s, i) => (
-              <div key={i} className="p-6 rounded-2xl bg-surface-container/50 border border-white/5">
-                <span className="text-primary-container font-display text-xs font-medium block mb-4 tracking-widest">{s.step}</span>
-                <h3 className="text-lg font-display text-white mb-2 leading-tight">{s.title}</h3>
-                <p className="text-xs text-on-surface-variant font-normal">{s.desc}</p>
+        <section id="quando" aria-labelledby="t-quando" className="mb-24">
+          <CabecalhoDeSecao id="t-quando" titulo={t('forense.quando.titulo')} />
+          <dl className="grid gap-x-12 md:grid-cols-2">
+            {situacoes.map((s) => (
+              <div key={s.titulo} className="border-t border-white/10 py-4">
+                <dt className="font-display text-sm font-medium text-white">{s.titulo}</dt>
+                <dd className="mt-1 text-[13.5px] leading-relaxed text-on-surface-variant">{s.texto}</dd>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
+          </dl>
+        </section>
 
-      {/* CTA Final */}
-      <section className="py-24 px-8 bg-surface">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          <h2 className="text-4xl md:text-6xl font-display font-medium text-white lowercase-all tracking-tighter">
-            {t("forense.cta.title")}<BlueDot />
-          </h2>
-          <p className="text-on-surface-variant text-lg font-normal leading-relaxed">
-            {t("forense.cta.desc")}
-          </p>
-          <div className="pt-4 flex flex-wrap justify-center gap-6">
-            <Link
-              to="/contato"
-              className="inline-block bg-primary-container text-on-primary px-12 py-5 rounded-full font-display font-medium text-sm uppercase tracking-widest hover:brightness-110 transition-all"
-            >
-              {t("forense.cta.btn")}
-            </Link>
-          </div>
-        </div>
-      </section>
-    </main>
+        <section aria-labelledby="t-fecho" className="grid justify-items-start gap-4 border-t border-white/10 pt-16">
+          <h2 id="t-fecho" className="font-display text-xl font-medium lowercase tracking-tight text-white">{t('forense.cta.title')}</h2>
+          <p className="max-w-[60ch] text-[15px] leading-relaxed text-on-surface-variant">{t('forense.cta.desc')}</p>
+          <Link to="/contato?ref=forense" className={BOTAO}>{t('forense.cta.btn')}</Link>
+        </section>
+      </div>
+    </div>
   );
 }
 

@@ -1,5 +1,5 @@
 import { useMemo, type ReactNode } from 'react';
-import { I18nextProvider } from 'react-i18next';
+import { I18nextProvider, useTranslation } from 'react-i18next';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, isRouteErrorResponse, useRouteLoaderData } from 'react-router';
 import { LazyMotion, MotionConfig } from 'motion/react';
 
@@ -76,7 +76,8 @@ export const links = () => [
 /**
  * O hero é o candidato a LCP. O preload sai no HTML do servidor, que sabe a
  * marca e a rota, e o preload scanner o encontra na primeira passada — sem
- * depender de nenhum script carregar antes.
+ * depender de nenhum script carregar antes. Chegou a sair quando o desenho
+ * delicado tirou as fotos; voltou com elas.
  */
 function PreloadDoHero({ brand, pathname }: { brand: Brand; pathname: string }) {
   if (rotaSemIdioma(pathname) !== '/') return null;
@@ -124,6 +125,7 @@ export function Layout({ children }: { children: ReactNode }) {
 const loadMotionFeatures = () => import('motion/react').then((mod) => mod.domMax);
 
 function Shell({ brand, children }: { brand: Brand; children: ReactNode }) {
+  const { t } = useTranslation();
   return (
     <BrandProvider value={brand}>
       <RenderErrorBoundary>
@@ -131,7 +133,7 @@ function Shell({ brand, children }: { brand: Brand; children: ReactNode }) {
           <MotionConfig reducedMotion="user">
             <div className="min-h-screen">
               <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:inline-flex focus:min-h-11 focus:items-center focus:rounded-lg focus:bg-primary-container focus:px-5 focus:py-3 focus:font-display focus:font-semibold focus:text-on-primary focus:outline-none focus:ring-2 focus:ring-white">
-                Pular para o conteúdo principal
+                {t('a11y.skip', 'pular para o conteúdo principal')}
               </a>
               <SchemaOrg type="organization" />
               <ScrollToTop />
@@ -198,12 +200,19 @@ export function ErrorBoundary({ error }: { error: unknown }) {
   console.error(error);
   return (
     <Shell brand={brand}>
-      <div className="min-h-screen flex items-center justify-center px-8 text-center">
-        <div>
-          <h1 className="text-3xl font-medium mb-4">algo deu errado</h1>
-          <p className="opacity-70">tente recarregar a página em instantes.</p>
-        </div>
-      </div>
+      <ErroGenerico />
     </Shell>
+  );
+}
+
+function ErroGenerico() {
+  const { t } = useTranslation();
+  return (
+    <div className="min-h-screen flex items-center justify-center px-8 text-center">
+      <div>
+        <h1 className="text-3xl font-medium mb-4">{t('a11y.error_title', 'algo deu errado')}</h1>
+        <p className="text-on-surface-variant">{t('a11y.error_text', 'tente recarregar a página em instantes.')}</p>
+      </div>
+    </div>
   );
 }

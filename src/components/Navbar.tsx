@@ -1,5 +1,5 @@
 import BlueDot, { NomeDeProduto } from '../components/BlueDot';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import { Menu, X, ChevronDown } from "lucide-react";
@@ -53,6 +53,8 @@ const Navbar = () => {
   // O idioma vive na URL: trocar de idioma é navegar. Assim a escolha é
   // compartilhável, indexável e sobrevive a um recarregamento.
   const [menuSolucoes, setMenuSolucoes] = useState(false);
+  const caixaSolucoes = useRef<HTMLDivElement>(null);
+  const hamburguer = useRef<HTMLButtonElement>(null);
 
   // O menu de soluções fecha ao navegar e no Esc — abrir é fácil, sair tem
   // que ser mais fácil ainda.
@@ -60,8 +62,16 @@ const Navbar = () => {
   useEffect(() => {
     if (!menuSolucoes) return;
     const aoTeclar = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenuSolucoes(false); };
+    // Clicar fora fecha, como no seletor de marcas.
+    const aoClicarFora = (e: MouseEvent) => {
+      if (caixaSolucoes.current && !caixaSolucoes.current.contains(e.target as Node)) setMenuSolucoes(false);
+    };
     document.addEventListener('keydown', aoTeclar);
-    return () => document.removeEventListener('keydown', aoTeclar);
+    document.addEventListener('mousedown', aoClicarFora);
+    return () => {
+      document.removeEventListener('keydown', aoTeclar);
+      document.removeEventListener('mousedown', aoClicarFora);
+    };
   }, [menuSolucoes]);
 
   const changeLanguage = (lng: string) => {
@@ -76,9 +86,17 @@ const Navbar = () => {
     document.addEventListener('keydown', onKey);
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    // O que fica atrás do menu sai do teclado e do leitor de tela enquanto
+    // ele está aberto: sem isso o Tab passeava pela página escondida.
+    const fundo = [document.getElementById('main-content'), document.querySelector('footer')]
+      .filter((el): el is HTMLElement => !!el);
+    fundo.forEach((el) => el.setAttribute('inert', ''));
+    document.querySelector<HTMLElement>('#mobile-menu a, #mobile-menu button')?.focus();
     return () => {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = prev;
+      fundo.forEach((el) => el.removeAttribute('inert'));
+      hamburguer.current?.focus();
     };
   }, [isOpen]);
 
@@ -90,7 +108,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav aria-label="Principal" className="fixed top-3 md:top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl glass rounded-full flex justify-between items-center px-5 md:px-8 py-2.5 md:py-3 z-50 nebula-shadow">
+      <nav aria-label={t('a11y.nav_main', 'principal')} className="fixed top-3 md:top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl glass rounded-full flex justify-between items-center px-5 md:px-8 py-2.5 md:py-3 z-50 nebula-shadow">
         <Link to="/" className="marca text-2xl text-white">
           {brandMark}
         </Link>
@@ -112,7 +130,7 @@ const Navbar = () => {
             // "segurança" não sabe que o produto se chama n.secops.
             if (item.key === 'solutions') {
               return (
-                <div key={item.key} className="relative">
+                <div key={item.key} ref={caixaSolucoes} className="relative">
                   <button
                     type="button"
                     aria-expanded={menuSolucoes}
@@ -146,16 +164,13 @@ const Navbar = () => {
                             <span className="block text-[11px] text-on-surface-variant leading-snug">{solucao.resumo}</span>
                           </Link>
                         ))}
-                        {/* Serviços e Verticais saíram da home: sem lugar no
-                            menu, só se chegaria neles pela URL. */}
-                        <div className="mt-1 pt-2 border-t border-white/10 flex gap-2">
-                          <Link to="/servicos" className="flex-1 px-3 py-2 rounded-xl text-[11px] text-on-surface-variant hover:text-white hover:bg-white/5 transition-colors text-center lowercase-all">
-                            {t('nav.services', 'serviços')}
-                          </Link>
-                          <Link to="/verticais" className="flex-1 px-3 py-2 rounded-xl text-[11px] text-on-surface-variant hover:text-white hover:bg-white/5 transition-colors text-center lowercase-all">
-                            verticais
-                          </Link>
-                        </div>
+                        {/* Serviços e verticais viraram o mapa de soluções. */}
+                        <Link
+                          to="/solucoes"
+                          className="block mt-1 pt-2.5 pb-2 px-4 border-t border-white/10 text-[11px] text-on-surface-variant hover:text-white transition-colors"
+                        >
+                          {t('solutions.ciclo.ver_mapa', 'ver o mapa das soluções')}
+                        </Link>
 
                         <Link
                           to="/assessment/cyber"
@@ -194,7 +209,7 @@ const Navbar = () => {
                 key={lng}
                 type="button"
                 onClick={() => changeLanguage(lng)}
-                aria-label={`Alterar idioma para ${lng.toUpperCase()}`}
+                aria-label={t('a11y.change_language', { idioma: lng.toUpperCase(), defaultValue: 'mudar o idioma para {{idioma}}' })}
                 aria-pressed={i18n.language.startsWith(lng)}
                 className={`px-3 py-2 rounded-full text-[11px] uppercase font-medium tracking-wide transition-all focus-visible:ring-2 focus-visible:ring-primary-container ${
                   i18n.language.startsWith(lng)
@@ -220,7 +235,8 @@ const Navbar = () => {
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
-            aria-label={isOpen ? "Fechar menu de navegação" : "Abrir menu de navegação"}
+            ref={hamburguer}
+            aria-label={isOpen ? t('a11y.menu_close', 'fechar menu de navegação') : t('a11y.menu_open', 'abrir menu de navegação')}
             aria-expanded={isOpen}
             aria-controls="mobile-menu"
             className="md:hidden text-white p-2 hover:bg-white/5 rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-primary-container"
@@ -248,7 +264,7 @@ const Navbar = () => {
                       : "bg-white/5 text-on-surface-variant"
                   }`}
                 >
-                  {lng === 'pt' ? 'Português' : lng === 'en' ? 'English' : 'Español'}
+                  <span lang={lng}>{lng === 'pt' ? 'Português' : lng === 'en' ? 'English' : 'Español'}</span>
                 </button>
               ))}
             </div>
@@ -282,12 +298,6 @@ const Navbar = () => {
                           <NomeDeProduto nome={solucao.nome} />
                         </Link>
                       ))}
-                      <Link to="/servicos" onClick={() => setIsOpen(false)} className="text-sm text-on-surface-variant hover:text-primary-container transition-colors lowercase-all">
-                        {t('nav.services', 'serviços')}
-                      </Link>
-                      <Link to="/verticais" onClick={() => setIsOpen(false)} className="text-sm text-on-surface-variant hover:text-primary-container transition-colors lowercase-all">
-                        verticais
-                      </Link>
                     </div>
                   )}
                 </div>

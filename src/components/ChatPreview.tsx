@@ -23,10 +23,7 @@ const ChatPreview = () => {
           </div>
           <div>
             <div className="text-white font-medium text-sm">Gabi</div>
-            <div className="text-[11px] text-green-500 uppercase tracking-widest font-medium flex items-center gap-1">
-              <div className="w-1 h-1 rounded-full bg-green-500 animate-pulse"></div>
-              online
-            </div>
+            <div className="text-[11px] text-on-surface-variant font-medium">{t('a11y.chat_example', 'exemplo de conversa')}</div>
           </div>
         </div>
         <div className="flex gap-2">
@@ -36,7 +33,7 @@ const ChatPreview = () => {
         </div>
       </div>
 
-      <div className="flex-1 space-y-4 overflow-y-auto pr-2 custom-scrollbar">
+      <div tabIndex={0} role="region" aria-label={t('a11y.chat_example', 'exemplo de conversa')} className="flex-1 space-y-4 overflow-y-auto pr-2 custom-scrollbar">
         {messages.map((msg, i) => (
           <motion.div
             key={i}
@@ -58,7 +55,7 @@ const ChatPreview = () => {
 
       <div className="mt-6 pt-4 border-t border-white/5">
         <div className="bg-white/5 rounded-full px-4 py-3 flex items-center justify-between border border-white/10">
-          <span className="text-on-surface-variant/60 text-xs">{t('chatbot.placeholder')}</span>
+          <span className="text-on-surface-variant/80 text-xs">{t('chatbot.placeholder')}</span>
           <Send size={16} className="text-primary-container" />
         </div>
       </div>

@@ -1,6 +1,5 @@
 import BlueDot from '../components/BlueDot';
 import React, { useState, useMemo } from "react";
-import { m as motion } from "motion/react";
 import { Link, useLoaderData } from "react-router";
 import { useTranslation } from "react-i18next";
 import { ShieldCheck, Cloud, Cpu, Brain, Lock, Workflow, FileText, ArrowUpRight } from "lucide-react";
@@ -51,21 +50,12 @@ const Blog = () => {
   const filtered = activeTag === 'all' ? articles : articles.filter((a) => a.tag === activeTag);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen"
-    >
+    <div className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen">
       <div className="max-w-7xl mx-auto relative z-20">
         <div className="mb-12">
-          <motion.div
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            className="text-primary-container font-mono text-xs lowercase tracking-[0.3em] mb-6"
-          >
+          <div className="text-primary-container font-mono text-xs lowercase tracking-[0.3em] mb-6">
             {t('blog.badge', 'blog — ness. insights')}
-          </motion.div>
+          </div>
           <h1 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight mb-6 lowercase">
             {t('blog.title')}<BlueDot />
           </h1>
@@ -111,39 +101,33 @@ const Blog = () => {
               const Icon = getIcon(art.icon);
               const slug = art.slug ?? String(i);
               return (
-                <motion.article
-                  key={art.id ?? i}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.08 }}
-                  className="group border border-white/5 p-8 rounded-3xl bg-surface-container-low/30 hover:bg-surface-container-low/50 transition-all flex flex-col h-full"
-                >
+                <article key={art.id ?? i} className="group border border-white/5 p-8 rounded-3xl bg-surface-container-low/30 hover:bg-surface-container-low/50 transition-all flex flex-col h-full">
                   <div className="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center mb-6">
                     <Icon className="text-primary-container" size={24} />
                   </div>
                   <div className="flex justify-between items-center mb-4">
                     <span className="text-primary-container text-[11px] uppercase tracking-widest font-medium">{art.tag}</span>
-                    <span className="text-on-surface-variant/60 text-[11px] font-mono">{art.date}</span>
+                    <span className="text-on-surface-variant/80 text-[11px] font-mono">{art.date}</span>
                   </div>
-                  <h3 className="text-2xl mb-4 text-white group-hover:text-primary transition-colors lowercase-all leading-tight">
+                  <h2 className="text-2xl mb-4 text-white group-hover:text-primary transition-colors lowercase-all leading-tight">
                     {art.title}
-                  </h3>
+                  </h2>
                   <p className="text-on-surface-variant text-sm font-normal leading-relaxed mb-8 flex-1">
                     {art.desc}
                   </p>
                   <Link
                     to={`/blog/${slug}`}
-                    className="flex items-center gap-2 text-[11px] text-primary-container uppercase tracking-widest font-medium opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="inline-flex min-h-11 items-center gap-2 text-[11px] text-primary-container uppercase tracking-widest font-medium"
                   >
                     {t('blog.read_article', 'ler artigo completo')} <ArrowUpRight size={14} />
                   </Link>
-                </motion.article>
+                </article>
               );
             })
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

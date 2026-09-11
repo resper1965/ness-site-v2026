@@ -191,11 +191,11 @@ test.describe('navegação', () => {
 
     await botao.click();
     await expect(botao).toHaveAttribute('aria-expanded', 'true');
-    // Cinco produtos, serviços, verticais e o diagnóstico.
-    await expect(page.locator('#menu-solucoes a')).toHaveCount(8);
-    // Serviços e Verticais saíram da home: sem isto, só se chega por URL.
-    await expect(page.locator('#menu-solucoes a[href="/servicos"]')).toHaveCount(1);
-    await expect(page.locator('#menu-solucoes a[href="/verticais"]')).toHaveCount(1);
+    // Cinco produtos, o mapa das soluções e o diagnóstico.
+    await expect(page.locator('#menu-solucoes a')).toHaveCount(7);
+    // Serviços e verticais viraram o mapa: nenhum link leva mais a eles.
+    await expect(page.locator('#menu-solucoes a[href="/solucoes"]')).toHaveCount(1);
+    await expect(page.locator('#menu-solucoes a[href="/servicos"], #menu-solucoes a[href="/verticais"]')).toHaveCount(0);
 
     await page.keyboard.press('Escape');
     await expect(botao).toHaveAttribute('aria-expanded', 'false');
@@ -231,7 +231,8 @@ test.describe('navegação', () => {
     test.skip(!isMobile, 'somente mobile');
     await page.goto('/');
     await page.getByRole('button', { name: /abrir menu/i }).click();
-    await expect(page.locator('#solucoes-mobile a')).toHaveCount(7);
+    // Os cinco produtos; serviços e verticais viraram o mapa de soluções.
+    await expect(page.locator('#solucoes-mobile a')).toHaveCount(5);
   });
 
   test('a página de solução mostra a trilha; a de blog, não', async ({ page }) => {
@@ -294,10 +295,14 @@ test.describe('formulário de contato', () => {
     test.skip(!process.env.SITE_BASE_URL, 'precisa da sitekey, que só existe no preview');
 
     await page.goto('/contato');
+    // O widget só carrega perto da tela: é preciso chegar até o formulário.
+    await page.locator('[data-turnstile]').first().scrollIntoViewIfNeeded();
     await expect(page.locator('form input[name="cf-turnstile-response"]').first()).toHaveCount(1, { timeout: 15_000 });
 
     // A ouvidoria também: sem widget lá, a denúncia seria recusada.
     await page.goto('/compliance/etica');
+    // O widget só carrega perto da tela: é preciso chegar até o formulário.
+    await page.locator('[data-turnstile]').first().scrollIntoViewIfNeeded();
     await expect(page.locator('form input[name="cf-turnstile-response"]').first()).toHaveCount(1, { timeout: 15_000 });
 
     await page.goto('/');
@@ -362,6 +367,10 @@ test.describe('rotas espelho e www', () => {
     ['/contact', '/contato'],
     ['/about', '/sobre'],
     ['/portf%C3%B3lio', '/portfolio'],
+    // Serviços e verticais viraram o mapa de soluções.
+    ['/servicos', '/solucoes'],
+    ['/verticais', '/solucoes'],
+    ['/en/servicos', '/en/solucoes'],
   ];
 
   for (const [de, para] of espelhos) {
@@ -522,7 +531,7 @@ test.describe('marca e alvo de toque', () => {
   // WCAG 2.2 (2.5.8) pede 24x24 px de alvo. A excecao e o link dentro de uma
   // frase, cuja altura e limitada pela entrelinha do texto ao redor — por isso
   // os links da frase de consentimento ficam de fora.
-  for (const rota of ['/', '/contato', '/carreiras', '/solucoes/secops']) {
+  for (const rota of ['/', '/contato', '/carreiras', '/solucoes', '/solucoes/secops', '/forense', '/trustness']) {
     test(`nenhum controle de ${rota} fica abaixo de 24 px`, async ({ page }) => {
       await page.goto(rota);
       await page.evaluate(() => document.fonts.ready);
@@ -595,7 +604,7 @@ test.describe('página de produto', () => {
         .map((el) => el.id),
     );
     expect(vazando).toEqual([]);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
   });
 
   // O fluxo tem um desenho horizontal e um vertical. No mockup os dois
@@ -631,6 +640,86 @@ test.describe('página de produto', () => {
     }
     expect(posicoes).toEqual([...posicoes].sort((a, b) => a - b));
     expect(posicoes.length).toBeGreaterThanOrEqual(3);
+  });
+});
+
+test.describe('telas no desenho delicado', () => {
+  // O mapa de soluções: cinco momentos, sete produtos. A passagem entre as
+  // marcas só aparece na página; na home, a seção mostra só o ciclo.
+  test('soluções mostra o ciclo e a passagem; a home, só o ciclo', async ({ page }) => {
+    await page.goto('/solucoes');
+    const ciclo = page.locator('#soluções figure');
+    await expect(ciclo.getByRole('heading', { level: 2 })).toHaveCount(5);
+    await expect(ciclo.locator('li a')).toHaveCount(7);
+    await expect(page.locator('#passagem ol > li')).toHaveCount(4);
+    await page.goto('/');
+    await expect(page.locator('#soluções figure li a')).toHaveCount(7);
+    await expect(page.locator('#passagem')).toHaveCount(0);
+  });
+
+  // A cadeia de custódia afirma uma coisa só: o hash é o mesmo em todas as
+  // etapas. Um hash diferente numa delas desmentiria o desenho.
+  test('na forense.io o hash é o mesmo em todas as etapas da cadeia', async ({ page }) => {
+    await page.goto('/forense');
+    const hashes = await page.locator('#cadeia li code').allTextContents();
+    expect(hashes).toHaveLength(5);
+    expect(new Set(hashes).size).toBe(1);
+  });
+
+  test('a trustness. mostra a auditoria em fases e o ciclo do dpo', async ({ page }) => {
+    await page.goto('/trustness');
+    await expect(page.locator('#auditoria ol > li')).toHaveCount(5);
+    await expect(page.locator('#dpo svg[role="img"]')).toHaveCount(1);
+  });
+
+  // Pedido de 10/09, em duas voltas: a 88 px a home era grosseira; a 32 px,
+  // pequena demais. A abertura fica no piso da faixa Display do brandbook —
+  // até 56 px, que é a da home — e os títulos de seção até 28 px. Cabeçalho,
+  // rodapé e menu ficam de fora.
+  test('títulos na escala: abertura até 56 px, seções até 28 px', async ({ page }) => {
+    for (const path of ['/', '/solucoes', '/solucoes/secops', '/forense', '/trustness']) {
+      await page.goto(path);
+      const tamanhos = await page.evaluate(() => {
+        const maior = (seletor: string) =>
+          Math.max(
+            0,
+            ...[...document.querySelectorAll(seletor)]
+              .filter((h) => !h.closest('header, footer, nav'))
+              .map((h) => parseFloat(getComputedStyle(h).fontSize)),
+          );
+        return { abertura: maior('h1'), secoes: maior('h2, h3') };
+      });
+      expect(tamanhos.abertura, `${path} abertura`).toBeLessThanOrEqual(56);
+      expect(tamanhos.secoes, `${path} seções`).toBeLessThanOrEqual(28);
+    }
+  });
+
+  // O ponto das marcas é sempre azul, também no meio de uma frase: "a ness."
+  // num parágrafo, com o ponto cinza, foi o exemplo mandado em 10/09. Todo texto
+  // das telas com nome de marca precisa sair desenhado como marca.
+  test('nenhuma marca aparece como texto comum nas telas', async ({ page }) => {
+    for (const path of ['/', '/solucoes', '/solucoes/secops', '/forense', '/trustness']) {
+      await page.goto(path);
+      const soltas = await page.evaluate(() => {
+        const marca = /(n\.(secops|infraops|devarch|autoops|cirt)|forense\.io|trustness\.|(?<![\p{L}\p{N}])ness\.)(?![\p{L}\p{N}])/u;
+        const achados: string[] = [];
+        const passo = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        for (let no = passo.nextNode(); no; no = passo.nextNode()) {
+          const pai = no.parentElement;
+          if (!pai || pai.closest('header, footer, nav, script, style, svg, [role="dialog"], .marca')) continue;
+          if (marca.test(no.textContent ?? '')) achados.push((no.textContent ?? '').trim().slice(0, 70));
+        }
+        return achados;
+      });
+      expect(soltas, path).toEqual([]);
+    }
+  });
+
+  test('nenhuma das telas rola de lado', async ({ page }) => {
+    for (const path of ['/', '/solucoes', '/forense', '/trustness']) {
+      await page.goto(path);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth), path).toBe(true);
+    }
   });
 });
 

@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChevronDown } from 'lucide-react';
 import BlueDot from './BlueDot';
 import { BRAND_DOMAINS, useBrand, type Brand } from '../config/brand';
 
 // `nome` é a parte antes do ponto e `sufixo` o que vem depois: o ponto é
 // sempre o BlueDot, nunca a cor do texto — inclusive em forense.io.
-const MARCAS: { marca: Brand; nome: string; sufixo?: string; descricao: string }[] = [
-  { marca: 'ness', nome: 'ness', descricao: 'infraestrutura, segurança e engenharia' },
-  { marca: 'trustness', nome: 'trustness', descricao: 'governança, risco e compliance' },
-  { marca: 'forense', nome: 'forense', sufixo: 'io', descricao: 'perícia digital e investigação' },
+const MARCAS: { marca: Brand; nome: string; sufixo?: string }[] = [
+  { marca: 'ness', nome: 'ness' },
+  { marca: 'trustness', nome: 'trustness' },
+  { marca: 'forense', nome: 'forense', sufixo: 'io' },
 ];
 
 /**
@@ -17,8 +18,12 @@ const MARCAS: { marca: Brand; nome: string; sufixo?: string; descricao: string }
  * Cada marca tem domínio próprio, então trocar é sair do site — por isso são
  * âncoras, não Links: o Worker de destino é outro. Fica no lugar do selo de
  * longevidade, que dizia uma coisa só e não levava a lugar nenhum.
+ *
+ * O nome acessível começa pelo texto visível ("ecossistema"): quem comanda
+ * por voz fala o que vê, e um rótulo diferente do texto não era encontrado.
  */
 export default function EcosystemSwitcher() {
+  const { t } = useTranslation();
   const atual = useBrand();
   const [aberto, setAberto] = useState(false);
   const caixa = useRef<HTMLDivElement>(null);
@@ -43,13 +48,13 @@ export default function EcosystemSwitcher() {
         type="button"
         aria-expanded={aberto}
         aria-controls="ecossistema"
-        aria-label="trocar de marca"
+        aria-label={t('a11y.brand_switch', 'ecossistema: trocar de marca')}
         onClick={() => setAberto((a) => !a)}
         className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-white/5 border border-white/10 hover:border-primary-container/40 transition-colors focus-visible:ring-2 focus-visible:ring-primary-container"
       >
         {/* Não repete o nome da marca: o logo ao lado já diz onde se está. */}
         <span className="text-[11px] font-medium text-on-surface-variant uppercase tracking-widest">
-          ecossistema
+          {t('footer.ecosystem', 'ecossistema')}
         </span>
         <ChevronDown size={11} aria-hidden="true" className={`text-on-surface-variant ${aberto ? 'rotate-180' : ''} transition-transform`} />
       </button>
@@ -69,7 +74,7 @@ export default function EcosystemSwitcher() {
                 <span className="marca block text-sm text-white">
                   {m.nome}<BlueDot />{m.sufixo}
                 </span>
-                <span className="block text-[11px] text-on-surface-variant leading-snug">{m.descricao}</span>
+                <span className="block text-[11px] text-on-surface-variant leading-snug">{t(`ecossistema.${m.marca}`)}</span>
               </a>
             ))}
           </div>

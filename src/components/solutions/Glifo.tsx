@@ -13,10 +13,10 @@ export const NOME_DO_ATOR: Record<Ator, string> = {
 
 const FORMA: Record<Ator, string> = {
   ia: 'bg-primary-container',
-  time: 'border-2 border-primary',
+  time: 'border-[1.5px] border-primary',
   voce: 'bg-on-surface',
 };
 
 export default function Glifo({ ator }: { ator: Ator }) {
-  return <span aria-hidden="true" className={`inline-block h-3 w-3 shrink-0 rounded-full ${FORMA[ator]}`} />;
+  return <span aria-hidden="true" className={`inline-block h-2 w-2 shrink-0 rounded-full ${FORMA[ator]}`} />;
 }

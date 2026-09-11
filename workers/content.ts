@@ -71,6 +71,9 @@ export async function listarCases(db: D1, lang: string): Promise<D1Row[]> {
       `SELECT ${CAMPOS_CASE}
        ${DE_COLECAO}
        WHERE col.slug = 'cases' AND e.locale = ? AND e.status = 'published'
+         -- A página do case exige o projeto (sem ele, 404). Listar um case sem
+         -- projeto publicava um cartão vazio que levava a uma página inexistente.
+         AND json_extract(e.data, '$.project') IS NOT NULL
        ORDER BY featured DESC, e.id ASC`,
     )
     .bind(lang)

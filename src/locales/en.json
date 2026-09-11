@@ -6,7 +6,6 @@
     "blog": "blog",
     "careers": "careers",
     "contact": "contact",
-    "services": "services",
     "cta": "get started",
     "celebration": {
       "label": "{{years}} Years",
@@ -23,15 +22,7 @@
     "know_ness": "know ness",
     "since": "since {{year}}",
     "subtitle_clear": "24×7 security operations, infrastructure, software engineering, data privacy and digital forensics for companies that cannot stop. {{years}} years delivering with precision.",
-    "cta_primary": "talk to a specialist",
-    "pillars": {
-      "label": "what we do",
-      "secops": "24×7 security",
-      "infra": "infrastructure & cloud",
-      "software": "software engineering",
-      "privacy": "privacy & compliance",
-      "forensics": "digital forensics"
-    }
+    "cta_primary": "talk to a specialist"
   },
   "presence": {
     "global": "global presence",
@@ -46,102 +37,74 @@
   },
   "solutions": {
     "title": "our solutions",
-    "subtitle": "elite technology for companies that don't accept failure.",
+    "subtitle": "five solutions, each for a moment of your operation.",
     "technical_view_toggle": "engineering & ctos view",
     "secops": {
       "title": "n.secops",
       "fullTitle": "operational resilience & continuity",
-      "desc": "silencing alarms and blocking incidents at the source with AI and total abstraction.",
-      "longDesc": "n.secops is not just about technology; it's about the survival of your business. we protect your reputation and your operation through an elite security operations center (SOC) that monitors, detects, and neutralizes threats before they cause impact.",
+      "desc": "24×7 SOC: detection, response and risk management in one contract.",
+      "longDesc": "n.secops is not just about technology; it's about the survival of your business. we protect your reputation and your operation through a security operations center (SOC) that monitors, detects, and neutralizes threats before they cause impact.",
       "cta": "request security diagnosis"
     },
     "infraops": {
       "title": "n.infraops",
       "fullTitle": "intelligent infrastructure & global support",
-      "desc": "finops architecture: invisible, elastic cloud with rock-solid, non-negotiable uptime.",
+      "desc": "Infrastructure and cloud: service desk, ITIL, backup and recovery.",
       "longDesc": "n.infraops redefines traditional technical support. we combine the robustness of the ITIL framework with the agility of an applied AI system that acts as a co-pilot for our operations.",
       "cta": "optimize my infrastructure"
     },
     "devarch": {
       "title": "n.devarch",
       "fullTitle": "developer-oriented architecture & secure scale",
-      "desc": "the end of technical debt: hexagonal engineering focused on break-free longevity.",
+      "desc": "Software engineering and architecture, secure from the code up.",
       "longDesc": "at n.devarch, we transform development into a competitive advantage. we create our own solutions and empower companies to achieve extreme scale.",
       "cta": "scale my development"
     },
     "autoops": {
       "title": "n.autoops",
       "fullTitle": "operational efficiency & strategic automation",
-      "desc": "neuro-digital agents and private LLMs crushing manual corporate workflows.",
+      "desc": "Process and operations automation with AI agents.",
       "longDesc": "n.autoops is the intelligence arm of ness. that puts your company ahead of the competition. we develop personalized assistants (co-pilots) that take over repetitive tasks.",
       "cta": "schedule gabi.os demo"
     },
     "cirt": {
       "title": "n.cirt",
       "fullTitle": "strategic response to critical incidents",
-      "desc": "strategic response to critical incidents and advanced threat intelligence.",
-      "longDesc": "n.cirt is the elite of incident response. when the unthinkable happens, our team takes the field to contain, remedy, and rebuild with surgical precision.",
+      "desc": "Coordination of critical incidents, from the war room to recovery.",
+      "longDesc": "n.cirt coordinates the response to critical incidents. when the unthinkable happens, the team takes the field to contain, remediate and rebuild, from the war room to recovery.",
       "cta": "talk to response team"
     },
     "use_cases": "real use cases",
-    "cta_title": "your company to the next level",
-    "cta_desc": "discover how ness. can transform your operation with elite intelligence and security.",
+    "cta_title": "talk to the team that runs it",
+    "cta_desc": "tell us the scenario: you leave the conversation knowing what is in scope and what is not.",
     "tech_engine": "resilience engine",
     "tech_desc": "for those interested in the engineering behind our protection, here are the technical pillars of our value delivery.",
-    "impact_portfolio": "impact portfolio"
-  },
-  "services": {
-    "title": "professional services",
-    "subtitle": "technical and strategic expertise to accelerate your transformation and security journey.",
-    "items": [
-      {
-        "title": "AI & Data Consulting",
-        "desc": "Strategy for implementing copilots and corporate knowledge orchestration.",
-        "tags": [
-          "RAG",
-          "LLM Ops",
-          "Data Strategy"
-        ]
+    "impact_portfolio": "impact portfolio",
+    "ciclo": {
+      "titulo": "five solutions and two brands, each for a moment in the life of your environment",
+      "lede": "Start from where you are. When an incident crosses these moments, the case moves from one team to the next with its context attached.",
+      "estagios": {
+        "construir": "build",
+        "operar": "operate",
+        "proteger": "protect",
+        "responder": "respond",
+        "comprovar": "prove"
       },
-      {
-        "title": "Incident Response (IR)",
-        "desc": "Tactical response to cyber crises, damage containment, and environment recovery.",
-        "tags": [
-          "War Room",
-          "Forensics",
-          "Crisis Mgmt"
-        ]
-      },
-      {
-        "title": "Platform Engineering",
-        "desc": "Design of scalable architectures and high-performance continuous delivery pipelines.",
-        "tags": [
-          "Cloud Native",
-          "DevOps",
-          "Scalability"
-        ]
-      },
-      {
-        "title": "Governance & Compliance",
-        "desc": "GRC automation and dynamic adaptation to global standards and regulations.",
-        "tags": [
-          "ISO 27001",
-          "GDPR",
-          "Risk Audit"
-        ]
+      "forense": "Digital forensics, with the chain of custody preserved.",
+      "trustness": "Audit, compliance and DPO as a service.",
+      "ver_mapa": "see the solutions map",
+      "passagem": {
+        "titulo": "when an incident crosses the ecosystem",
+        "intro": "Each handoff happens only when the case calls for it. An incident without personal data, for instance, never reaches trustness.",
+        "secops": "Detects and contains what the runbook already authorizes.",
+        "cirt": "Opens the war room and coordinates IT, legal and communications.",
+        "forense": "Preserves and analyzes the evidence, with a report that stands up in court.",
+        "trustness": "Handles the notice to the ANPD and to data subjects.",
+        "para_cirt": "critical incident",
+        "para_forense": "needs forensics",
+        "para_trustness": "involves personal data"
       }
-    ]
-  },
-  "verticals": {
-    "title": "vertical business units",
-    "subtitle": "dedicated ecosystems that enhance digital intelligence and trust.",
-    "forense": {
-      "desc": "leader in digital investigation and response to complex incidents. we combine proprietary technology and human expertise to uncover the invisible."
-    },
-    "trustness": {
-      "desc": "strategic consulting in governance, risk, and compliance. building solid foundations for your company to grow with security and ethics."
-    },
-    "cta": "explore unit"
+    }
   },
   "blog": {
     "title": "technical knowledge",
@@ -164,7 +127,6 @@
       "title": "no cases found.",
       "subtitle": "our team is preparing new cases. come back soon."
     },
-    "confidentiality": "100% confidentiality",
     "case": {
       "back": "portfolio",
       "all": "all cases",
@@ -218,22 +180,16 @@
       "2026": "Launch of AI and Agents operation, consolidating ness. as a leader in intelligent knowledge orchestration."
     },
     "values_desc": "Non-negotiable technical excellence, constant applied innovation, true and transparent partnership, real and measurable results.",
-    "cred": {
-      "global": "Global presence",
-      "security": "Security & Privacy",
-      "ai": "AI & Agents"
-    },
     "years_label": "years of excellence",
     "metrics": {
       "legacy": "years in operation",
-      "countries": "countries served",
-      "projects": "global projects",
-      "uptime": "sla / uptime"
+      "projects": "projects",
+      "clients": "active clients"
     },
     "history_sub": "years building the technological foundation of large corporations and global events."
   },
   "contact": {
-    "title": "let's build the future together",
+    "title": "talk to the team that runs it",
     "subtitle": "contact our team of experts to transform your digital operation.",
     "info": {
       "email": "email",
@@ -288,10 +244,10 @@
     "meta_description": "Talk to ness.: security diagnostics, infrastructure, software engineering, privacy (LGPD/GDPR) and digital forensics. Reply within 1 business day. +55 (11) 2504-7650."
   },
   "cta": {
-    "title": "ready for the next level?",
-    "subtitle": "talk to our experts and discover how ness. can elevate the level of intelligence, security, and efficiency of your operation.",
+    "title": "tell us what you need to solve",
+    "subtitle": "the team that runs the operation replies with what is in scope, what is out, and how onboarding starts.",
     "button": "schedule consultancy",
-    "support": "immediate specialized support."
+    "support": "we reply within 1 business day."
   },
   "chatbot": {
     "welcome": "hello! I am Gabi, ness. intelligence. how can I help your operation today?",
@@ -372,10 +328,6 @@
       "sec2": {
         "h": "2. whistleblower channel",
         "p": "we maintain an independent and anonymous channel for reporting violations of our code of conduct or current laws."
-      },
-      "sec3": {
-        "h": "3. certifications",
-        "p": "our operations are audited and follow international frameworks such as ISO 27001 and SOC2, ensuring world-class governance."
       }
     }
   },
@@ -388,7 +340,8 @@
     "newsletter": "insights on digital security.",
     "rights": "all rights reserved.",
     "updates": "updates",
-    "status": "system live status: optimal",
+    "newsletter_ok": "subscribed.",
+    "newsletter_error": "could not subscribe. please try again.",
     "ecosystem": "ecosystem",
     "email_placeholder": "your email",
     "locations": [
@@ -400,11 +353,65 @@
       "united states"
     ]
   },
+  "ecossistema": {
+    "ness": "infrastructure, security and engineering",
+    "trustness": "governance, risk and compliance",
+    "forense": "digital forensics and investigation"
+  },
+  "chatlead": {
+    "intro": "to reach the right person, I need three details:",
+    "nome": "name",
+    "email": "work email",
+    "empresa": "company",
+    "erro": "I couldn't register this now. please use the contact form.",
+    "enviar": "I want to talk to a specialist"
+  },
+  "leadmagnet": {
+    "rotulo": "free material",
+    "baixar": "download for free",
+    "nome": "name",
+    "email": "work email",
+    "empresa": "company",
+    "enviar": "get the material",
+    "erro": "we couldn't register your request now. try again or write to contato@ness.com.br.",
+    "privacidade": "we don't share your data.",
+    "enviado": "material sent",
+    "enviado_texto": "check your email: the material is on its way to your inbox.",
+    "mais_itens": "+{{n}} items",
+    "lgpd_titulo": "lgpd checklist — 30 essential compliance items",
+    "lgpd_desc": "Quickly check how your organization meets the requirements of the LGPD, Brazil's data protection law. A practical checklist with the 30 most critical points.",
+    "lgpd_itens": [
+      "DPO appointment and notice to the ANPD",
+      "ROPA documented and up to date",
+      "Privacy policy published",
+      "Data subject consent management",
+      "DPAs signed with suppliers"
+    ],
+    "quiz_titulo": "find your lgpd maturity in 3 minutes",
+    "quiz_desc": "A free 10-question quiz on governance, processes, technology and people. You get your score and recommendations (in Portuguese).",
+    "quiz_botao": "start assessment"
+  },
+  "formulario": {
+    "erro_detalhe": "Check your connection or try again in a moment. If the problem persists, write to contato@ness.com.br.",
+    "protocolo": "Keep this code to follow up on your report:"
+  },
   "a11y": {
     "close": "close",
     "subscribe": "subscribe",
     "send": "send",
-    "language": "language"
+    "language": "language",
+    "skip": "skip to main content",
+    "nav_main": "main",
+    "menu_open": "open navigation menu",
+    "menu_close": "close navigation menu",
+    "change_language": "change language to {{idioma}}",
+    "brand_switch": "ecosystem: switch brand",
+    "useful": "was this answer useful?",
+    "useful_yes": "yes, useful",
+    "useful_no": "not useful",
+    "error_title": "something went wrong",
+    "error_text": "try reloading the page in a moment.",
+    "chat_example": "example conversation"
   },
   "forense": {
     "title": "forense.io",
@@ -708,8 +715,7 @@
     "cta": "back to home"
   },
   "clients": {
-    "eyebrow": "who trusts ness.",
-    "title": "companies we transformed"
+    "title": "who trusts ness"
   },
   "consentimento": {
     "titulo": "privacy notice",

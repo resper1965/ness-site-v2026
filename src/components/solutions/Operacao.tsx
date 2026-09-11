@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import BlueDot from '../BlueDot';
+import { CabecalhoDeSecao } from '../Abertura';
 import type { OnboardingStep, OperacaoDoServico } from '../../data/solutionsData';
 
 /**
@@ -41,15 +42,10 @@ function Escalacao({ operacao }: { operacao: OperacaoDoServico }) {
 
   return (
     <section id="operacao" className="mb-24">
-      <div className="mb-10 max-w-3xl space-y-3">
-        <h2 className="font-display text-3xl font-semibold lowercase tracking-tight text-white md:text-4xl">
-          quando alguém precisa ser acionado<BlueDot />
-        </h2>
-        <p className="text-base leading-relaxed text-on-surface-variant md:text-lg">
-          Você tem um canal de mensageria direto com a operação. Quem é chamado, e em que ordem, foi decidido antes, no
-          onboarding.
-        </p>
-      </div>
+      <CabecalhoDeSecao titulo="quando alguém precisa ser acionado">
+        Você tem um canal de mensageria direto com a operação. Quem é chamado, e em que ordem, foi decidido antes, no
+        onboarding.
+      </CabecalhoDeSecao>
 
       <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-14">
         <ol>
@@ -58,30 +54,30 @@ function Escalacao({ operacao }: { operacao: OperacaoDoServico }) {
             // então o traço que leva a ele e o marcador dele são tracejados.
             const desvio = i === escalacao.length - 1;
             return (
-              <li key={passo.titulo} className={`relative pl-10 ${desvio ? '' : 'pb-7'}`}>
+              <li key={passo.titulo} className={`relative pl-8 ${desvio ? '' : 'pb-6'}`}>
                 <span
                   aria-hidden="true"
-                  className={`absolute left-[5px] top-1.5 h-3.5 w-3.5 rounded-full border-2 bg-surface-container-lowest ${desvio ? 'border-dashed border-on-surface-variant' : 'border-primary-container'}`}
+                  className={`absolute left-0 top-1.5 h-[9px] w-[9px] rounded-full border bg-surface-container-lowest ${desvio ? 'border-dashed border-on-surface-variant' : 'border-primary-container'}`}
                 />
                 {!desvio && (
                   <span
                     aria-hidden="true"
-                    className={`absolute bottom-0 left-[11px] top-6 border-l-2 border-surface-container-highest ${i === escalacao.length - 2 ? 'border-dashed' : ''}`}
+                    className={`absolute bottom-0 left-1 top-5 border-l border-white/20 ${i === escalacao.length - 2 ? 'border-dashed' : ''}`}
                   />
                 )}
-                <strong className="block font-display text-base font-medium text-white">{passo.titulo}</strong>
-                <p className="mt-1 max-w-[52ch] text-[14.5px] leading-relaxed text-on-surface-variant">{passo.texto}</p>
+                <strong className="block font-display text-sm font-medium text-white">{passo.titulo}</strong>
+                <p className="mt-1 max-w-[52ch] text-[13.5px] leading-relaxed text-on-surface-variant">{passo.texto}</p>
               </li>
             );
           })}
         </ol>
 
-        <aside aria-label="Exemplo de caso" className="rounded-2xl border border-white/10 bg-surface-container-low/60 p-6">
-          <div className="flex items-baseline justify-between gap-4 border-b border-white/10 pb-3.5">
-            <strong className="font-display text-[15px] font-medium text-white">um caso, por dentro</strong>
-            <span className="font-display text-[13px] font-semibold text-primary-container">{caso.severidade}</span>
+        <aside aria-label="Exemplo de caso" className="rounded-2xl border border-white/10 p-6">
+          <div className="flex items-baseline justify-between gap-4 border-b border-white/10 pb-3">
+            <strong className="font-display text-sm font-medium text-white">um caso, por dentro</strong>
+            <span className="font-display text-[12.5px] font-medium text-primary-container">{caso.severidade}</span>
           </div>
-          <dl className="mt-4 grid grid-cols-[9.5em_minmax(0,1fr)] gap-x-4 gap-y-3 text-sm">
+          <dl className="mt-4 grid grid-cols-[9em_minmax(0,1fr)] gap-x-4 gap-y-2.5 text-[13px] leading-relaxed">
             {caso.campos.map((c) => (
               <Fragment key={c.rotulo}>
                 <dt className="text-on-surface-variant">{c.rotulo}</dt>
@@ -89,8 +85,8 @@ function Escalacao({ operacao }: { operacao: OperacaoDoServico }) {
               </Fragment>
             ))}
           </dl>
-          <p className="mt-4 text-sm leading-relaxed text-on-surface-variant">{caso.nota}</p>
-          <p className="mt-2 text-[13px] text-on-surface-variant/80">Exemplo ilustrativo.</p>
+          <p className="mt-4 text-[13px] leading-relaxed text-on-surface-variant">{caso.nota}</p>
+          <p className="mt-2 text-[12px] text-on-surface-variant/80">Exemplo ilustrativo.</p>
         </aside>
       </div>
     </section>

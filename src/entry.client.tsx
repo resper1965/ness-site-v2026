@@ -2,6 +2,7 @@ import { StrictMode, startTransition } from 'react';
 import { hydrateRoot } from 'react-dom/client';
 import { HydratedRouter } from 'react-router/dom';
 import i18n from './i18n';
+import { idiomaDaRota } from './utils/lang';
 
 // O <html lang> sai do servidor como pt-BR; o cliente acompanha a troca.
 const syncLang = (lang: string) => {
@@ -9,14 +10,22 @@ const syncLang = (lang: string) => {
 };
 i18n.on('languageChanged', syncLang);
 
-startTransition(() => {
-  hydrateRoot(
-    document,
-    <StrictMode>
-      <HydratedRouter />
-    </StrictMode>,
-  );
-});
+const hidratar = () =>
+  startTransition(() => {
+    hydrateRoot(
+      document,
+      <StrictMode>
+        <HydratedRouter />
+      </StrictMode>,
+    );
+  });
+
+// O HTML de /en e /es sai do servidor no idioma da rota. Hidratar com o i18n
+// ainda em pt — o bundle en/es só chegava depois — fazia o primeiro render do
+// cliente divergir do servidor (React #418, medido em produção em /en e /es).
+const idioma = idiomaDaRota(window.location.pathname);
+if (idioma === 'pt') hidratar();
+else i18n.changeLanguage(idioma).finally(hidratar);
 
 // ── Observabilidade fora do caminho crítico ───────────────────────────
 // O SDK do Sentry (~70 kB gz) só é carregado depois do `load`, em idle,

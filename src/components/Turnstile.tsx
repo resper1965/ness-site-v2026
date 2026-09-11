@@ -43,6 +43,11 @@ function carregarApi(): Promise<void> {
  * produção. Aqui a div nasce vazia no HTML, o React assume, e só então o
  * Turnstile preenche.
  *
+ * Só carrega quando o formulário chega perto da tela. Script, iframe e desafio
+ * somam ~530 KB, e o rodapé tem um widget em toda página: carregado de cara,
+ * era metade do peso de cada página e disputava a banda com o conteúdo — o
+ * LCP no celular ficava entre 5 e 10 s (Lighthouse, 10/09/2026).
+ *
  * Sem `VITE_TURNSTILE_SITEKEY` não renderiza nada e o formulário segue
  * funcionando — o servidor só exige token quando o segredo existe.
  */
@@ -56,34 +61,49 @@ export default function Turnstile({ action, tamanho = 'normal' }: { action: stri
   const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!SITEKEY || !container.current) return;
+    const alvo = container.current;
+    if (!SITEKEY || !alvo) return;
 
     let cancelado = false;
     let idWidget: string | undefined;
 
-    carregarApi()
-      .then(() => {
-        if (cancelado || !container.current || !window.turnstile) return;
-        idWidget = window.turnstile.render(container.current, {
-          sitekey: SITEKEY,
-          // Amarra o token à superfície: um token do chat não vale no contato.
-          action,
-          theme: 'dark',
-          language: 'auto',
-          size: tamanho,
+    const montar = () => {
+      carregarApi()
+        .then(() => {
+          if (cancelado || !container.current || !window.turnstile) return;
+          idWidget = window.turnstile.render(container.current, {
+            sitekey: SITEKEY,
+            // Amarra o token à superfície: um token do chat não vale no contato.
+            action,
+            theme: 'dark',
+            language: 'auto',
+            size: tamanho,
+          });
+        })
+        .catch(() => {
+          /* sem widget, o servidor recusa — melhor que aceitar qualquer coisa */
         });
-      })
-      .catch(() => {
-        /* sem widget, o servidor recusa — melhor que aceitar qualquer coisa */
-      });
+    };
+
+    // 400 px de folga: o token fica pronto antes de o visitante chegar ao campo.
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        if (!entradas.some((entrada) => entrada.isIntersecting)) return;
+        observador.disconnect();
+        montar();
+      },
+      { rootMargin: '400px' },
+    );
+    observador.observe(alvo);
 
     return () => {
       cancelado = true;
+      observador.disconnect();
       if (idWidget && window.turnstile) window.turnstile.remove(idWidget);
     };
   }, [action, tamanho]);
 
   if (!SITEKEY) return null;
 
-  return <div ref={container} className="w-0 min-w-full max-w-full overflow-x-auto" />;
+  return <div ref={container} data-turnstile={action} className="w-0 min-w-full max-w-full overflow-x-auto" />;
 }

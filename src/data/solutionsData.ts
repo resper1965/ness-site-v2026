@@ -327,7 +327,7 @@ export const solutionsData: Record<string, SolutionData> = {
       { step: "03", name: "Orquestração de Retomada e Forense", desc: "Gerenciamos a recuperação. Acionamos parceiros especialistas e peritos externos (ex: forense.io) para análise profunda, enquanto guiamos seus DBAs na homologação e subida limpa dos backups essenciais." }
     ],
     services: [
-      { name: "Incident Response Management", desc: "Liderança ativa de elite em cenários de violação. Assumimos a posição de Incident Commander, gerenciando seus provedores de tecnologia e ditando prioridades críticas minuto a minuto." },
+      { name: "Incident Response Management", desc: "Liderança ativa em cenários de violação. Assumimos a posição de Incident Commander, gerenciando seus provedores de tecnologia e ditando prioridades críticas minuto a minuto." },
       { name: "Modo Standby (Retainer Ativo)", desc: "Seu seguro-comandante contratado antes da falência. Uma liderança sênior à espreita, garantindo a subida do comitê de crise à primeira confirmação do seu NOC de que as barreiras caíram." },
       { name: "Post-Incident Forensic Review", desc: "Após apagar o incêndio, centralizamos auditorias. Contratamos especialistas forenses para rastrear a origem da porta arrombada e devolvemos um roadmap gerencial de Security inaleável." }
     ],

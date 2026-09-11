@@ -52,8 +52,6 @@ export default function Breadcrumbs({ items, semTrilhaVisivel, semSchema }: Brea
 
   const ROTULOS: Record<string, string> = {
     solucoes: t("nav.solutions", "soluções"),
-    servicos: t("nav.services", "serviços"),
-    verticais: "verticais",
     sobre: t("nav.about", "sobre"),
     portfolio: t("nav.portfolio", "portfólio"),
     blog: t("nav.blog", "insights"),

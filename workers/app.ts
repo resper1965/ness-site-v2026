@@ -50,6 +50,14 @@ const ESPELHOS: Record<string, string> = {
   '/contact': '/contato',
   '/about': '/sobre',
   '/portfólio': '/portfolio',
+  // Serviços e verticais repetiam soluções e sub-marcas; o mapa de soluções
+  // passou a mostrar os dois. As URLs antigas levam para ele, sem 404.
+  '/servicos': '/solucoes',
+  '/verticais': '/solucoes',
+  '/en/servicos': '/en/solucoes',
+  '/en/verticais': '/en/solucoes',
+  '/es/servicos': '/es/solucoes',
+  '/es/verticais': '/es/solucoes',
 };
 
 /**

@@ -1,10 +1,10 @@
 import type { CSSProperties } from 'react';
-import BlueDot from '../BlueDot';
+import { CabecalhoDeSecao } from '../Abertura';
 import type { Entregavel, Ritmo } from '../../data/solutionsData';
 
 /**
  * O que chega até o cliente, e quando: um mês de operação visto do lado dele.
- * O ritmo de cada entregável decide a marca no calendário — linha para o
+ * O ritmo de cada entregável decide a marca no calendário — filete para o
  * contínuo, losango para o mensal, tracejado para o que segue o ciclo de
  * auditoria dele. Notificação não tem data, acontece quando acontece: os
  * pontos são ilustrativos, e a página diz isso.
@@ -17,33 +17,33 @@ const OCORRENCIAS: { dia: number; nivel?: 'P1' | 'P2' }[] = [
   { dia: 18, nivel: 'P1' },
   { dia: 24 },
 ];
-const TAMANHO = { P1: 'h-4 w-4', P2: 'h-3 w-3' };
+const TAMANHO = { P1: 'h-3 w-3', P2: 'h-2.5 w-2.5' };
 
 // Uma linha fina a cada semana: 4 colunas de 25 %.
 const SEMANAS: CSSProperties = {
-  backgroundImage: 'linear-gradient(to right, var(--color-surface-container-high) 1px, transparent 1px)',
+  backgroundImage: 'linear-gradient(to right, rgba(218, 226, 253, 0.08) 1px, transparent 1px)',
   backgroundSize: '25% 100%',
 };
 
 function Marca({ ritmo }: { ritmo: Ritmo }) {
   switch (ritmo) {
     case 'continuo':
-      return <span className="absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-primary-container/70" />;
+      return <span className="absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-primary-container/80" />;
     case 'ciclo':
-      return <span className="absolute inset-x-0 top-1/2 border-t-2 border-dashed border-primary" />;
+      return <span className="absolute inset-x-0 top-1/2 border-t border-dashed border-primary" />;
     case 'mensal':
-      return <span className="absolute right-0.5 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 bg-on-surface" />;
+      return <span className="absolute right-0.5 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rotate-45 bg-on-surface" />;
     case 'ocorrencia':
       return (
         <>
           {OCORRENCIAS.map((o) => (
             <span
               key={o.dia}
-              className={`absolute top-[60%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-container ${o.nivel ? TAMANHO[o.nivel] : 'h-2.5 w-2.5'}`}
+              className={`absolute top-[60%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-container ${o.nivel ? TAMANHO[o.nivel] : 'h-2 w-2'}`}
               style={{ left: `${((o.dia - 0.5) / 30) * 100}%` }}
             >
               {o.nivel && (
-                <b className="absolute bottom-full left-1/2 mb-1 -translate-x-1/2 font-display text-[11px] font-semibold text-on-surface">{o.nivel}</b>
+                <b className="absolute bottom-full left-1/2 mb-1 -translate-x-1/2 font-display text-[10.5px] font-medium text-on-surface">{o.nivel}</b>
               )}
             </span>
           ))}
@@ -57,37 +57,32 @@ export default function Entregaveis({ entregaveis }: { entregaveis?: Entregavel[
 
   return (
     <section id="entregaveis" className="mb-24">
-      <div className="mb-10 max-w-3xl space-y-3">
-        <h2 className="font-display text-3xl font-semibold lowercase tracking-tight text-white md:text-4xl">
-          o que chega até você, e quando<BlueDot />
-        </h2>
-        <p className="text-base leading-relaxed text-on-surface-variant md:text-lg">Um mês de operação, visto do seu lado.</p>
-      </div>
+      <CabecalhoDeSecao titulo="o que chega até você, e quando">Um mês de operação, visto do seu lado.</CabecalhoDeSecao>
 
       <div className="border-t border-white/10">
-        <div aria-hidden="true" className="grid gap-6 border-b border-white/10 py-3 md:grid-cols-[260px_minmax(0,1fr)]">
+        <div aria-hidden="true" className="grid gap-6 border-b border-white/10 py-3 md:grid-cols-[240px_minmax(0,1fr)]">
           <span className="hidden md:block" />
-          <div className="grid grid-cols-4 text-[13px] text-on-surface-variant">
+          <div className="grid grid-cols-4 text-[12px] text-on-surface-variant">
             {[1, 2, 3, 4].map((s) => (
-              <span key={s} className="border-l border-surface-container-highest pl-2">semana {s}</span>
+              <span key={s} className="border-l border-white/10 pl-2">semana {s}</span>
             ))}
           </div>
         </div>
         <ul>
           {entregaveis.map((e) => (
-            <li key={e.nome} className="grid items-center gap-2.5 border-b border-white/10 py-4 md:grid-cols-[260px_minmax(0,1fr)] md:gap-6">
+            <li key={e.nome} className="grid items-center gap-2 border-b border-white/10 py-4 md:grid-cols-[240px_minmax(0,1fr)] md:gap-6">
               <div>
-                <strong className="block font-display text-[15px] font-medium text-white">{e.nome}</strong>
-                <span className="text-[13.5px] text-on-surface-variant">{e.detalhe}</span>
+                <strong className="block font-display text-sm font-medium text-white">{e.nome}</strong>
+                <span className="text-[12.5px] leading-relaxed text-on-surface-variant">{e.detalhe}</span>
               </div>
-              <div aria-hidden="true" className="relative h-9" style={SEMANAS}>
+              <div aria-hidden="true" className="relative h-8" style={SEMANAS}>
                 <Marca ritmo={e.ritmo} />
               </div>
             </li>
           ))}
         </ul>
       </div>
-      <p className="mt-4 text-sm text-on-surface-variant">Os eventos no calendário são ilustrativos.</p>
+      <p className="mt-4 text-[13px] text-on-surface-variant">Os eventos no calendário são ilustrativos.</p>
     </section>
   );
 }

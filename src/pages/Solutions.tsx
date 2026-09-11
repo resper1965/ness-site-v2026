@@ -1,103 +1,144 @@
-import BlueDot, { NomeDeProduto } from '../components/BlueDot';
-import { m as motion } from "motion/react";
+import { NomeDeProduto } from '../components/BlueDot';
+import Abertura, { CabecalhoDeSecao } from '../components/Abertura';
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { routeMeta, traduzir } from '../utils/meta';
-import { ShieldCheck, Cloud, Cpu, Brain, ArrowRight, Gavel } from "lucide-react";
-
-
-
+import { BRAND_DOMAINS } from '../config/brand';
 
 /**
- * Serve as duas: e a rota /solucoes e a secao de solucoes da home. Como pagina
- * precisa de h1 proprio — sem ele /solucoes ia ao ar sem titulo de primeiro
- * nivel; como secao da home o h1 ja e o do hero, entao vira h2.
+ * As soluções no ciclo de vida do ambiente — construir, operar, proteger,
+ * responder, comprovar — em vez de cinco cards iguais: o visitante escolhe pelo
+ * momento em que está, e as duas marcas próprias entram no mesmo mapa (é o que
+ * as páginas de serviços e de verticais tentavam dizer separadas).
+ *
+ * Serve as duas: e a rota /solucoes e a secao de solucoes da home. O nivel do
+ * titulo vem da URL, nao de uma prop: o React Router instancia modulo de rota do
+ * seu jeito — a prop nao chegava. Como pagina o titulo e h1 e a passagem entre
+ * as marcas aparece; dentro da home o h1 ja e o do hero.
  */
+
+type Produto = { nome: string; resumo: string; href: string; externo?: boolean };
+
 const Solutions = () => {
   const { t } = useTranslation();
-  // O nivel do titulo vem da URL, nao de uma prop: este mesmo arquivo e o
-  // modulo da rota /solucoes e a secao de solucoes da home, e o React Router
-  // instancia modulo de rota do seu jeito — a prop nao chegava. Como pagina o
-  // titulo e h1; dentro da home o h1 ja e o do hero, entao desce um nivel.
   const comoPagina = /\/solucoes\/?$/.test(useLocation().pathname);
-  const Titulo = comoPagina ? "h1" : "h2";
-  const TituloDoCard = comoPagina ? "h2" : "h3";
-  const solutions = [
+  const Estagio = comoPagina ? "h2" : "h3";
+
+  const produto = (slug: string): Produto => ({
+    nome: `n.${slug}`,
+    resumo: t(`solutions.${slug}.desc`),
+    href: `/solucoes/${slug}`,
+  });
+  const ciclo: { chave: string; produtos: Produto[] }[] = [
+    { chave: 'construir', produtos: [produto('devarch')] },
+    { chave: 'operar', produtos: [produto('infraops'), produto('autoops')] },
+    { chave: 'proteger', produtos: [produto('secops')] },
     {
-      slug: "secops",
-      title: "n.secops",
-      desc: t('solutions.secops.desc'),
-      icon: ShieldCheck,
-      highlight: true,
-      colSpan: "md:col-span-2 lg:col-span-2"
+      chave: 'responder',
+      produtos: [produto('cirt'), { nome: 'forense.io', resumo: t('solutions.ciclo.forense'), href: BRAND_DOMAINS.forense, externo: true }],
     },
     {
-      slug: "infraops",
-      title: "n.infraops",
-      desc: t('solutions.infraops.desc'),
-      icon: Cloud,
-      colSpan: "md:col-span-2 lg:col-span-2"
+      chave: 'comprovar',
+      produtos: [{ nome: 'trustness.', resumo: t('solutions.ciclo.trustness'), href: BRAND_DOMAINS.trustness, externo: true }],
     },
-    {
-      slug: "devarch",
-      title: "n.devarch",
-      desc: t('solutions.devarch.desc'),
-      icon: Cpu,
-      colSpan: "md:col-span-2 lg:col-span-2"
-    },
-    {
-      slug: "autoops",
-      title: "n.autoops",
-      desc: t('solutions.autoops.desc'),
-      icon: Brain,
-      colSpan: "md:col-span-2 lg:col-span-3"
-    },
-    {
-      slug: "cirt",
-      title: "n.cirt",
-      desc: t('solutions.cirt.desc'),
-      icon: Gavel,
-      accent: true,
-      colSpan: "md:col-span-2 lg:col-span-3"
-    }
   ];
 
   return (
-    <section id="soluções" className="py-24 bg-surface px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-16">
-          <Titulo className="text-4xl font-display font-semibold text-white tracking-tighter lowercase-all">
-            {t('nav.solutions')}<BlueDot />
-          </Titulo>
-          <div className="w-16 h-px bg-primary-container mt-4"></div>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6">
-          {solutions.map((s, i) => (
-            <Link
-              key={i}
-              to={`/solucoes/${s.slug}`}
-              className={`${s.colSpan} ${s.highlight ? 'border-l-2 border-primary-container' : 'border-white/5'} ${s.accent ? 'bg-primary-container/5 border-primary-container/20' : 'bg-surface-container-low/50 border-white/5'} p-8 rounded-3xl border flex flex-col justify-between hover:bg-surface-container-high transition-all group cursor-pointer`}
-            >
-              <motion.div whileHover={{ y: -5 }}>
-                <s.icon className="text-primary-container mb-6" size={32} />
-                <TituloDoCard className="text-2xl mb-4 text-white font-brand font-medium lowercase-all">
-                  <NomeDeProduto nome={s.title} />
-                </TituloDoCard>
-                <p className="text-on-surface-variant text-sm leading-relaxed font-normal">
-                  {s.desc}
-                </p>
-                <div className="mt-8 flex items-center gap-2 text-[11px] text-primary-container uppercase tracking-widest font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                  ver detalhes <ArrowRight size={14} />
-                </div>
-              </motion.div>
-            </Link>
-          ))}
-        </div>
+    <section id="soluções" className={`bg-surface px-8 ${comoPagina ? 'pb-24 pt-32' : 'py-24'}`}>
+      <div className="mx-auto max-w-7xl">
+        {comoPagina ? (
+          <Abertura titulo={t('solutions.ciclo.titulo')}>{t('solutions.ciclo.lede')}</Abertura>
+        ) : (
+          <CabecalhoDeSecao titulo={t('nav.solutions')} />
+        )}
+
+        <figure>
+          <div className="grid lg:grid-cols-5">
+            {ciclo.map(({ chave, produtos }) => (
+              <div
+                key={chave}
+                className="relative border-l border-white/20 pb-8 pl-6 last:pb-0 lg:border-l-0 lg:border-t lg:pb-0 lg:pl-0 lg:pr-6 lg:pt-7"
+              >
+                <span
+                  aria-hidden="true"
+                  className="absolute -left-[5px] top-1 h-[9px] w-[9px] rounded-full border border-primary-container bg-surface lg:-top-[5px] lg:left-0"
+                />
+                <Estagio className="mb-5 font-display text-[13px] font-medium text-on-surface-variant">
+                  {t(`solutions.ciclo.estagios.${chave}`)}
+                </Estagio>
+                <ul className="grid gap-6">
+                  {produtos.map((p) => {
+                    const conteudo = (
+                      <>
+                        <span className="marca block text-[15px] text-white transition-colors group-hover:text-primary">
+                          <NomeDeProduto nome={p.nome} />
+                        </span>
+                        <span className="mt-1 block text-[13px] leading-relaxed text-on-surface-variant">{p.resumo}</span>
+                      </>
+                    );
+                    return (
+                      <li key={p.nome}>
+                        {p.externo ? (
+                          <a href={p.href} className="group block">{conteudo}</a>
+                        ) : (
+                          <Link to={p.href} className="group block">{conteudo}</Link>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </figure>
+
+        {comoPagina && <Passagem />}
       </div>
     </section>
   );
 };
+
+/**
+ * O caminho de um incidente entre as marcas. Cada seta diz a condição da
+ * passagem — é o que impede ler o desenho como "todo incidente vai até o fim".
+ */
+function Passagem() {
+  const { t } = useTranslation();
+  const p = (chave: string) => t(`solutions.ciclo.passagem.${chave}`);
+  const passos = [
+    { nome: 'n.secops', texto: p('secops'), seta: p('para_cirt') },
+    { nome: 'n.cirt', texto: p('cirt'), seta: p('para_forense') },
+    { nome: 'forense.io', texto: p('forense'), seta: p('para_trustness') },
+    { nome: 'trustness.', texto: p('trustness') },
+  ];
+
+  return (
+    <section id="passagem" aria-labelledby="t-passagem" className="pt-24">
+      <CabecalhoDeSecao id="t-passagem" titulo={p('titulo')}>{p('intro')}</CabecalhoDeSecao>
+      <ol className="grid lg:grid-cols-4 lg:gap-x-28">
+        {passos.map((passo) => (
+          <li key={passo.nome} className="relative grid content-start gap-1.5">
+            <span className="marca text-[15px] text-white"><NomeDeProduto nome={passo.nome} /></span>
+            <p className="text-[13px] leading-relaxed text-on-surface-variant">{passo.texto}</p>
+            {passo.seta && (
+              <span className="flex items-center gap-3 py-3 text-xs leading-snug text-on-surface-variant lg:absolute lg:left-full lg:top-0 lg:w-28 lg:flex-col lg:gap-1.5 lg:px-3 lg:py-0 lg:text-center">
+                <svg aria-hidden="true" width="8" height="28" viewBox="0 0 8 28" className="shrink-0 lg:hidden">
+                  <line x1="4" y1="0" x2="4" y2="21" className="stroke-white/25" />
+                  <path d="M0.5,21 L4,28 L7.5,21 z" className="fill-on-surface-variant" />
+                </svg>
+                <span>{passo.seta}</span>
+                <svg aria-hidden="true" width="88" height="8" viewBox="0 0 88 8" className="hidden lg:block">
+                  <line x1="0" y1="4" x2="81" y2="4" className="stroke-white/25" />
+                  <path d="M81,0.5 L88,4 L81,7.5 z" className="fill-on-surface-variant" />
+                </svg>
+              </span>
+            )}
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
 
 
 export default Solutions;
