@@ -66,9 +66,13 @@ typography:
     fontSize: "17px"
     fontWeight: 500
     letterSpacing: "-0.025em"
-  brand:
+  title-inline:
     fontFamily: "Montserrat, Montserrat Fallback, ui-sans-serif, system-ui, sans-serif"
     fontSize: "15px"
+    fontWeight: 500
+    letterSpacing: "-0.025em"
+  brand:
+    fontFamily: "Montserrat, Montserrat Fallback, ui-sans-serif, system-ui, sans-serif"
     fontWeight: 500
     letterSpacing: "-0.01em"
   body:
@@ -147,7 +151,7 @@ components:
   nav-bar:
     backgroundColor: "rgba(51, 60, 82, 0.6)"
     rounded: "{rounded.full}"
-    padding: "12px 32px"
+    padding: "10px 20px"
 ---
 
 # Design System: ness., trustness. e forense.io
@@ -173,16 +177,20 @@ ele, a tipografia é contida — Montserrat 500 em títulos e marcas, Inter no
 corpo — e a escala é baixa de propósito: a maior linha do desenho novo tem 56 px.
 A abertura já esteve a 88 px, e a 88 px o site ficava grosseiro; a 32 px ficava
 pequeno demais. O tamanho de hoje é o piso da faixa Display do guia de marca. A
-página do DPO ainda abre com um título herdado de 88 px (`5.5rem`): é a última
-tela fora do desenho novo, e ela desce para 48 px quando for redesenhada.
+página do DPO ainda abre com um título herdado de 88 px (`5.5rem`), com uma
+sobrancelha em caixa alta logo acima dele: é o ponto mais alto da dívida, e ela
+desce para 48 px quando a tela for redesenhada.
 
 A cor aparece pouco. O azul da marca (`#00ade8`) é assinatura, não tinta: ele
 mora no ponto que fecha um nome, no marcador do ator automatizado, no botão de
 ação e no fio que indica sequência. Quando uma zona precisa de preenchimento,
 ela fica entre 4 % e 8 % de opacidade — ou não tem preenchimento nenhum. O que
 foi rejeitado tem nome: bloco cheio no lugar de filete, caixa com gradiente no
-lugar de linha, palavra pintada de azul dentro de um título, etiqueta em caixa
-alta acima da abertura e painel de exemplo apresentado como dado real.
+lugar de linha, palavra pintada de azul dentro de um título, sobrancelha em
+caixa alta acima da abertura e painel de exemplo apresentado como dado real.
+Rejeitado quer dizer que não se escreve mais — não que já tenha sumido do site:
+as telas ainda não redesenhadas carregam parte disso, e a seção de tipografia
+diz quanto.
 
 **Key Characteristics:**
 
@@ -287,7 +295,13 @@ que o texto não salte quando a fonte real chega.
   fechado com o ponto azul, sobre um bloco de no máximo 62 caracteres.
 - **Brand** (Montserrat 500, caixa baixa, `letter-spacing: -0.01em`): a
   assinatura de marca, a classe `.marca`. Vale para a marca na navegação, no
-  rodapé, acima da abertura e no meio de um parágrafo.
+  rodapé, acima da abertura e no meio de um parágrafo. A classe não declara
+  tamanho — ele vem do contexto, e no ar vai de 14 px (o produto no menu
+  suspenso) a 24 px (a marca na navegação), passando por 15, 16, 18 e 20 px.
+- **Title inline** (15 px, Montserrat 500 no título e Inter no corpo): o título
+  de um bloco dentro de uma seção — a zona do escopo, a etapa da cadeia de
+  custódia, o nome do produto na lista de soluções, o cliente na lista — e o
+  parágrafo de fecho de página.
 - **Body** (Inter 400, 16 px, entrelinha 1.625, no máximo 58–72 caracteres por
   linha): o texto corrente. O lede da abertura sobe para 18 px em `md`.
 - **Body small** (Inter 400, 13,5 px / 13 px): item de lista, legenda de figura,
@@ -308,10 +322,13 @@ página do DPO. Nenhum desenho novo o usa.
 ### Named Rules
 
 **A regra do 500.** Título e marca são Montserrat 500. Não existe 600 no desenho
-novo — o peso 600 que ainda aparece em blocos herdados (a grade de ferramentas
-das páginas de produto sem ficha, o menu do celular, os títulos de fallback de
-`Operacao` e `RespostaAIncidente`) é resto do desenho anterior, e sai quando o
-bloco for redesenhado. Peso novo escrito a 600 é regressão.
+novo, e peso novo escrito a 600 é regressão. O 600 que ainda está no ar é
+dívida, e ela é grande: cerca de 28 ocorrências em 17 arquivos — entre outras,
+na grade de ferramentas das páginas de produto sem ficha, no menu do celular,
+nos títulos de fallback de `Operacao` e `RespostaAIncidente`, no rodapé, e nas
+páginas ainda não redesenhadas (contato, carreiras, portfólio e o caso, blog,
+sobre, conformidade, o estado vazio, o erro e a página do DPO). Não é um resto
+de quatro blocos: sai tela a tela, conforme cada uma for redesenhada.
 
 **A regra da marca desenhada.** Nome de marca no meio de um texto nunca sai como
 texto comum: passa por `ComMarcas`, que o escreve em Montserrat 500 com o ponto
@@ -319,9 +336,13 @@ no azul da marca. Um `ness.` com o ponto cinza dentro de um parágrafo é a regr
 quebrada, e há teste e2e que reprova.
 
 **A regra da caixa baixa.** Título de seção e nome de marca são escritos em
-caixa baixa. Micro-rótulo em caixa alta com `tracking-widest` só sobrevive nos
-blocos herdados (navegação, rótulo de métrica, rótulo de campo do formulário);
-não se escreve um novo.
+caixa baixa, e nenhum texto novo nasce em caixa alta. A dívida aqui é maior que
+a do peso: `uppercase` aparece cerca de 95 vezes em 22 arquivos — no
+micro-rótulo da navegação, no rótulo de métrica e no de campo de formulário, no
+rótulo de botão de várias telas ainda não redesenhadas (contato, carreiras,
+portfólio, a página de produto, o erro) e na sobrancelha em caixa alta acima da
+abertura de carreiras, sobre, brandbook e da página do DPO. Não se escreve um
+novo; os que existem saem com o redesenho de cada tela.
 
 ### Desvios deliberados do guia do ecossistema
 
@@ -459,7 +480,8 @@ opera. Linha cheia é o que sempre acontece.
 ### Navigation
 
 Barra flutuante em vidro: 95 % da largura, no máximo 1280 px, centrada a 12 px
-do topo (16 px em `md`), fundo da superfície mais alta a 60 % com
+do topo (16 px em `md`), com recuo interno de 10 px por 20 px (12 px por 32 px
+em `md`), fundo da superfície mais alta a 60 % com
 `backdrop-filter: blur(24px)`, borda de 1 px a 10 % de branco e a sombra
 `nebula-shadow`. A marca fica à esquerda, em `.marca` a 24 px, e muda com o
 domínio. O item ativo é escrito no azul da marca. No celular a barra vira um
@@ -526,8 +548,10 @@ rotulado como exemplo, na própria figura.
 ### Don't:
 
 - **Don't** escrever título em Montserrat 600 — o desenho é 500.
-- **Don't** pintar uma palavra de azul dentro de um título, nem pôr etiqueta em
-  caixa alta acima da abertura.
+- **Don't** pintar uma palavra de azul dentro de um título, nem pôr sobrancelha
+  em caixa alta acima da abertura — as quatro que ainda estão no ar (carreiras,
+  sobre, brandbook e a página do DPO) são dívida nomeada na regra da caixa
+  baixa, não precedente.
 - **Don't** preencher uma zona acima de 8 % de opacidade.
 - **Don't** pôr sombra em superfície em repouso; sombra é resposta a estado.
 - **Don't** usar tracejado como decoração — ele significa condição ou limite.

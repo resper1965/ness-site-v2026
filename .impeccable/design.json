@@ -127,9 +127,13 @@
         "displayName": "Título de seção",
         "purpose": "h2 de seção, em caixa baixa, sempre fechado com o ponto azul."
       },
+      "title-inline": {
+        "displayName": "Título de linha",
+        "purpose": "O título de um bloco dentro de uma seção — a zona do escopo, a etapa da cadeia de custódia, o nome do produto na lista de soluções, o cliente na lista — e o parágrafo de fecho de página."
+      },
       "brand": {
         "displayName": "Marca",
-        "purpose": "A classe .marca: assinatura de marca e de produto, em caixa baixa, com o ponto no azul da marca. Nunca em título comum."
+        "purpose": "A classe .marca: assinatura de marca e de produto, em caixa baixa, com o ponto no azul da marca. Nunca em título comum. Não declara tamanho: ele vem do contexto, e no ar vai de 14 px a 24 px."
       },
       "body": {
         "displayName": "Corpo",
@@ -245,7 +249,7 @@
       "refersTo": "nav-bar",
       "description": "Barra flutuante em vidro, com a marca à esquerda e o item ativo no azul da marca. A marca muda com o domínio.",
       "html": "<nav class=\"ds-nav\"><span class=\"ds-nav-marca\">ness<span class=\"ds-ponto\">.</span></span><span class=\"ds-nav-itens\"><a class=\"ds-nav-item ds-nav-item-ativo\" href=\"#\">soluções</a><a class=\"ds-nav-item\" href=\"#\">sobre</a></span></nav>",
-      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 12px 32px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 9999px; background: rgba(51, 60, 82, 0.6); backdrop-filter: blur(24px); box-shadow: 0 20px 40px rgba(0, 173, 232, 0.08); } .ds-nav-marca { font-family: Montserrat, ui-sans-serif, system-ui, sans-serif; font-size: 24px; font-weight: 500; letter-spacing: -0.01em; text-transform: lowercase; color: #ffffff; } .ds-ponto { color: var(--color-primary-container, #00ade8); letter-spacing: 0; } .ds-nav-itens { display: flex; gap: 24px; } .ds-nav-item { font-family: Montserrat, ui-sans-serif, system-ui, sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none; color: var(--color-on-surface-variant, #9db0c0); transition: color 0.3s; } .ds-nav-item:hover { color: var(--color-primary, #7bd0ff); } .ds-nav-item-ativo { color: var(--color-primary-container, #00ade8); }"
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 10px 20px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 9999px; background: rgba(51, 60, 82, 0.6); backdrop-filter: blur(24px); box-shadow: 0 20px 40px rgba(0, 173, 232, 0.08); } .ds-nav-marca { font-family: Montserrat, ui-sans-serif, system-ui, sans-serif; font-size: 24px; font-weight: 500; letter-spacing: -0.01em; text-transform: lowercase; color: #ffffff; } .ds-ponto { color: var(--color-primary-container, #00ade8); letter-spacing: 0; } .ds-nav-itens { display: flex; gap: 24px; } .ds-nav-item { font-family: Montserrat, ui-sans-serif, system-ui, sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none; color: var(--color-on-surface-variant, #9db0c0); transition: color 0.3s; } .ds-nav-item:hover { color: var(--color-primary, #7bd0ff); } .ds-nav-item-ativo { color: var(--color-primary-container, #00ade8); } @media (min-width: 768px) { .ds-nav { padding: 12px 32px; } }"
     },
     {
       "name": "Glifos por ator",
@@ -272,7 +276,7 @@
   ],
   "narrative": {
     "northStar": "O desenho delicado",
-    "overview": "O site fala com um CISO que está comparando fornecedores e desconta tudo o que parece apresentação. Então a tela não convence pelo volume: convence porque o conteúdo tem forma. Um filete de 1 px separa; um círculo de 8 px diz quem age; um tracejado diz que existe uma condição ali. Nada é gritado, e nada é decorativo — todo traço na tela carrega uma informação que o texto teria de explicar em um parágrafo.\n\nO fundo é de meia-noite (#0b1326), sempre, nos três domínios: o tema é escuro por definição (color-scheme: dark), não por preferência do visitante. Sobre ele, a tipografia é contida — Montserrat 500 em títulos e marcas, Inter no corpo — e a escala é baixa de propósito: a maior linha do desenho novo tem 56 px. A abertura já esteve a 88 px, e a 88 px o site ficava grosseiro; a 32 px ficava pequeno demais. O tamanho de hoje é o piso da faixa Display do guia de marca. A página do DPO ainda abre com um título herdado de 88 px (5.5rem): é a última tela fora do desenho novo, e ela desce para 48 px quando for redesenhada.\n\nA cor aparece pouco. O azul da marca (#00ade8) é assinatura, não tinta: ele mora no ponto que fecha um nome, no marcador do ator automatizado, no botão de ação e no fio que indica sequência. Quando uma zona precisa de preenchimento, ela fica entre 4 % e 8 % de opacidade — ou não tem preenchimento nenhum. O que foi rejeitado tem nome: bloco cheio no lugar de filete, caixa com gradiente no lugar de linha, palavra pintada de azul dentro de um título, etiqueta em caixa alta acima da abertura e painel de exemplo apresentado como dado real.",
+    "overview": "O site fala com um CISO que está comparando fornecedores e desconta tudo o que parece apresentação. Então a tela não convence pelo volume: convence porque o conteúdo tem forma. Um filete de 1 px separa; um círculo de 8 px diz quem age; um tracejado diz que existe uma condição ali. Nada é gritado, e nada é decorativo — todo traço na tela carrega uma informação que o texto teria de explicar em um parágrafo.\n\nO fundo é de meia-noite (#0b1326), sempre, nos três domínios: o tema é escuro por definição (color-scheme: dark), não por preferência do visitante. Sobre ele, a tipografia é contida — Montserrat 500 em títulos e marcas, Inter no corpo — e a escala é baixa de propósito: a maior linha do desenho novo tem 56 px. A abertura já esteve a 88 px, e a 88 px o site ficava grosseiro; a 32 px ficava pequeno demais. O tamanho de hoje é o piso da faixa Display do guia de marca. A página do DPO ainda abre com um título herdado de 88 px (5.5rem), com uma sobrancelha em caixa alta logo acima dele: é o ponto mais alto da dívida, e ela desce para 48 px quando a tela for redesenhada.\n\nA cor aparece pouco. O azul da marca (#00ade8) é assinatura, não tinta: ele mora no ponto que fecha um nome, no marcador do ator automatizado, no botão de ação e no fio que indica sequência. Quando uma zona precisa de preenchimento, ela fica entre 4 % e 8 % de opacidade — ou não tem preenchimento nenhum. O que foi rejeitado tem nome: bloco cheio no lugar de filete, caixa com gradiente no lugar de linha, palavra pintada de azul dentro de um título, sobrancelha em caixa alta acima da abertura e painel de exemplo apresentado como dado real. Rejeitado quer dizer que não se escreve mais — não que já tenha sumido do site: as telas ainda não redesenhadas carregam parte disso, e a seção de tipografia diz quanto.",
     "keyCharacteristics": [
       "Fundo de meia-noite fixo, sem tema claro.",
       "Filete de 1 px como unidade de separação e de estrutura.",
@@ -300,7 +304,7 @@
       },
       {
         "name": "A regra do 500",
-        "body": "Título e marca são Montserrat 500. Não existe 600 no desenho novo — o peso 600 que ainda aparece em blocos herdados é resto do desenho anterior, e sai quando o bloco for redesenhado. Peso novo escrito a 600 é regressão.",
+        "body": "Título e marca são Montserrat 500. Não existe 600 no desenho novo, e peso novo escrito a 600 é regressão. O 600 que ainda está no ar é dívida, e ela é grande: cerca de 28 ocorrências em 17 arquivos — entre outras, na grade de ferramentas das páginas de produto sem ficha, no menu do celular, nos títulos de fallback de Operacao e RespostaAIncidente, no rodapé, e nas páginas ainda não redesenhadas. Não é um resto de quatro blocos: sai tela a tela, conforme cada uma for redesenhada.",
         "section": "typography"
       },
       {
@@ -310,7 +314,7 @@
       },
       {
         "name": "A regra da caixa baixa",
-        "body": "Título de seção e nome de marca são escritos em caixa baixa. Micro-rótulo em caixa alta com tracking-widest só sobrevive nos blocos herdados; não se escreve um novo.",
+        "body": "Título de seção e nome de marca são escritos em caixa baixa, e nenhum texto novo nasce em caixa alta. A dívida aqui é maior que a do peso: uppercase aparece cerca de 95 vezes em 22 arquivos — no micro-rótulo da navegação, no rótulo de métrica e no de campo de formulário, no rótulo de botão de várias telas ainda não redesenhadas e na sobrancelha em caixa alta acima da abertura de carreiras, sobre, brandbook e da página do DPO. Não se escreve um novo; os que existem saem com o redesenho de cada tela.",
         "section": "typography"
       },
       {
@@ -341,7 +345,7 @@
     ],
     "donts": [
       "Don't escrever título em Montserrat 600 — o desenho é 500.",
-      "Don't pintar uma palavra de azul dentro de um título, nem pôr etiqueta em caixa alta acima da abertura.",
+      "Don't pintar uma palavra de azul dentro de um título, nem pôr sobrancelha em caixa alta acima da abertura — as quatro que ainda estão no ar (carreiras, sobre, brandbook e a página do DPO) são dívida nomeada na regra da caixa baixa, não precedente.",
       "Don't preencher uma zona acima de 8 % de opacidade.",
       "Don't pôr sombra em superfície em repouso; sombra é resposta a estado.",
       "Don't usar tracejado como decoração — ele significa condição ou limite.",
