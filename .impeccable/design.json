@@ -129,7 +129,7 @@
       },
       "title-inline": {
         "displayName": "Título de linha",
-        "purpose": "O título de um bloco dentro de uma seção — a zona do escopo, a etapa da cadeia de custódia, o nome do produto na lista de soluções, o cliente na lista — e o parágrafo de fecho de página."
+        "purpose": "O título curto de um bloco dentro de uma seção — a zona do escopo, a etapa da cadeia de custódia, o item de insight — e o nome do cliente na lista. Não declara tracking: os três primeiros são h3 e recebem os −0,025em da regra de h1–h4; o nome do cliente é um span fora dela, com o tracking padrão. O nome do produto no mapa de soluções (.marca) e o parágrafo de fecho (Inter 400) têm 15 px mas não são deste papel."
       },
       "brand": {
         "displayName": "Marca",

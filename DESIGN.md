@@ -70,7 +70,6 @@ typography:
     fontFamily: "Montserrat, Montserrat Fallback, ui-sans-serif, system-ui, sans-serif"
     fontSize: "15px"
     fontWeight: 500
-    letterSpacing: "-0.025em"
   brand:
     fontFamily: "Montserrat, Montserrat Fallback, ui-sans-serif, system-ui, sans-serif"
     fontWeight: 500
@@ -298,12 +297,18 @@ que o texto não salte quando a fonte real chega.
   rodapé, acima da abertura e no meio de um parágrafo. A classe não declara
   tamanho — ele vem do contexto, e no ar vai de 14 px (o produto no menu
   suspenso) a 24 px (a marca na navegação), passando por 15, 16, 18 e 20 px.
-- **Title inline** (15 px, Montserrat 500 no título e Inter no corpo): o título
-  de um bloco dentro de uma seção — a zona do escopo, a etapa da cadeia de
-  custódia, o nome do produto na lista de soluções, o cliente na lista — e o
-  parágrafo de fecho de página.
+- **Title inline** (Montserrat 500, 15 px): o título curto de um bloco dentro de
+  uma seção — a zona do escopo, a etapa da cadeia de custódia, o item de
+  insight — e o nome do cliente na lista. O papel não declara tracking porque os
+  seus dois grupos não o compartilham: os três primeiros são `<h3>` e recebem os
+  −0,025em da regra de `h1, h2, h3, h4`; o nome do cliente é um `span` fora dela
+  e fica com o tracking padrão do navegador. Os outros 15 px da tela não são
+  deste papel — o nome do produto no mapa de soluções é `.marca`, e o parágrafo
+  de fecho é corpo.
 - **Body** (Inter 400, 16 px, entrelinha 1.625, no máximo 58–72 caracteres por
-  linha): o texto corrente. O lede da abertura sobe para 18 px em `md`.
+  linha): o texto corrente. O lede da abertura sobe para 18 px em `md`, e o
+  parágrafo de fecho de página desce a 15 px — ainda Inter 400, não o papel de
+  título de mesmo tamanho.
 - **Body small** (Inter 400, 13,5 px / 13 px): item de lista, legenda de figura,
   texto de apoio dentro de um bloco.
 - **Label** (Montserrat 500, 12,5 px, caixa normal): rótulo de coluna, de eixo e
