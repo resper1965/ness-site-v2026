@@ -54,23 +54,23 @@ const ptResources = {
         },
         "infraops": {
           "title": "n.infraops",
-          "fullTitle": "infraestrutura inteligente & suporte global",
-          "desc": "Infraestrutura e cloud: service desk, ITIL, backup e recuperação.",
-          "longDesc": "o n.infraops redefine o suporte técnico tradicional. unimos a robustez do framework ITIL à agilidade de um sistema de IA aplicada que atua como copiloto das nossas operações.",
+          "fullTitle": "atendimento, sustentação técnica e arquitetura de infraestrutura",
+          "desc": "Atendimento, sustentação técnica e arquitetura de infraestrutura, on-premises, em nuvem ou híbrida.",
+          "longDesc": "cuidamos da sua infraestrutura em três frentes: o atendimento a quem usa, a sustentação técnica que mantém o ambiente de pé e a arquitetura que o desenha e evolui.",
           "cta": "otimizar minha infraestrutura"
         },
         "devarch": {
           "title": "n.devarch",
-          "fullTitle": "arquitetura orientada ao desenvolvedor & escala segura",
-          "desc": "Engenharia e arquitetura de software, com segurança desde o código.",
-          "longDesc": "no n.devarch, transformamos o desenvolvimento em uma vantagem competitiva. criamos nossas próprias soluções e capacitamos empresas a alcançarem escala extrema.",
-          "cta": "escalar meu desenvolvimento"
+          "fullTitle": "desenvolvimento, arquitetura e segurança de software",
+          "desc": "Uma célula de desenvolvimento, arquitetura e segurança de software.",
+          "longDesc": "uma célula dedicada ao seu produto, com foco em arquitetura, segurança ao longo do ciclo de vida do desenvolvimento e testes.",
+          "cta": "solicitar revisão de arquitetura"
         },
         "autoops": {
           "title": "n.autoops",
-          "fullTitle": "eficiência operacional & automação estratégica",
-          "desc": "Automação de processos e operações com agentes de IA.",
-          "longDesc": "o n.autoops é o braço de inteligência da ness. que coloca sua empresa à frente da concorrência. desenvolvemos assistentes personalizados (copilotos) que assumem tarefas repetitivas.",
+          "fullTitle": "gestão de automações: governar, sustentar e provar o retorno",
+          "desc": "Gestão da sua frota de automações: governança, sustentação, segurança e retorno medido.",
+          "longDesc": "construir robô virou commodity. cuidamos da sua frota de automações inteira: governamos, sustentamos, protegemos e medimos o retorno de cada automação.",
           "cta": "conversar sobre a sua frota de automações"
         },
         "cirt": {

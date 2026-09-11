@@ -65,6 +65,13 @@ describe('integridade do que vai ao ar', () => {
     expect(ofensores(/transparenttextures\.com/)).toEqual([]);
   });
 
+  // Nenhum produto é vendido como agente ou copiloto: no n.secops e no ness.OS
+  // o ator automatizado é o AIOps, e o n.autoops é gestão de automações, sem IA
+  // (PRODUCT.md, 11/09).
+  it('nenhum produto vendido como agente de IA ou copiloto', () => {
+    expect(ofensores(/agentes (de IA|de intelig|autônomos|neuro)|AI agents?|co-?pilot|copiloto/i)).toEqual([]);
+  });
+
   // Codinome de projeto não é marca: nunca vai ao ar, nem em identificador ou
   // chave de i18n. O teste guarda só o SHA-256 de cada codinome, para que o
   // próprio nome não more no repositório — e acusa o arquivo, não a palavra.
