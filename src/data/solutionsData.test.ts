@@ -32,6 +32,14 @@ const CAMPOS_DE_COMPROMISSO = ['metaTitle', 'metaDescription', 'overview'] as co
  */
 const PARTES_DO_DESENHO = ['apresentacao', 'fontes', 'severidade', 'escopo', 'entregaveis', 'operacao', 'fecho'] as const;
 
+/**
+ * Produto no formato antigo (sem `promessa`) ainda não passou pela ficha
+ * validada pelo time: nele não vai ao ar número com unidade — prazo, ganho ou
+ * valor —, nem case, nem caso de uso. Quando a ficha voltar, o número entra
+ * com a fonte registrada em docs/PESQUISA-metricas.md.
+ */
+const NUMERO_COM_UNIDADE = /\d[\d.,]*\s*(?:-\s*\d+\s*)?(?:minutos?\b|min\b|horas?\b|h\b|semanas?\b|s\b|dias?\b|meses\b|milh|mil\b|%)|R\$\s*\d|<=\s*\d/i;
+
 describe('conteúdo das soluções', () => {
   it('o n.secops já está no desenho por diagramas', () => {
     expect(solutionsData.secops.promessa).toBeTruthy();
@@ -60,5 +68,22 @@ describe('conteúdo das soluções', () => {
       expect(dados).not.toHaveProperty('dashboard');
       expect(dados).not.toHaveProperty('benefits');
     });
+
+    it(`${slug}, sem ficha, não publica número com unidade`, () => {
+      if (dados.promessa) return;
+      expect(textos(dados).filter((t) => NUMERO_COM_UNIDADE.test(t))).toEqual([]);
+    });
+
+    it(`${slug}, sem ficha, não publica case nem caso de uso`, () => {
+      if (dados.promessa) return;
+      expect(dados.portfolio ?? []).toEqual([]);
+      expect(dados.useCases ?? []).toEqual([]);
+    });
   }
+
+  // O n.infraops é atendimento, sustentação técnica e arquitetura; o FinOps
+  // saiu do produto em 11/09.
+  it('o n.infraops não fala em FinOps', () => {
+    expect(textos(solutionsData.infraops).filter((t) => /finops/i.test(t))).toEqual([]);
+  });
 });
