@@ -11,3 +11,7 @@ playwright-report/
 test-results/
 .react-router/
 .wrangler/
+
+# Exceções privadas do detector do impeccable; as compartilhadas ficam em
+# .impeccable/config.json, versionado.
+.impeccable/config.local.json
