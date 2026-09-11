@@ -1,7 +1,7 @@
 # Redesenho do ecossistema: a operação vista por dentro
 
-**Data:** 11/09/2026 · **Status:** aprovado em conversa, aguardando revisão
-escrita · **Decisor:** Ricardo Esper
+**Data:** 11/09/2026 · **Status:** aprovado por Ricardo Esper em 11/09/2026 ·
+**Plano da frente 1:** [`../plans/2026-09-11-frente-1-fundacao.md`](../plans/2026-09-11-frente-1-fundacao.md)
 
 ## 1. Objetivo
 
