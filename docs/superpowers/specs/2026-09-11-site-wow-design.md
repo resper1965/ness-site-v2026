@@ -55,6 +55,11 @@ Ponto de partida, medido em produção:
 | **forense.io** | forense.io | perícia digital (`pericia`), assistência técnica e contraprova (`contraprova`), coleta preventiva (`coleta-preventiva`) |
 
 - **n.cirt é produto da ness., não vertical.**
+- **n.infraops são três serviços:** atendimento (o suporte a quem usa),
+  sustentação técnica (manter o ambiente de pé: operação, manutenção, correção e
+  patch, que correm no ness.OS) e arquitetura de infraestrutura (desenhar e
+  evoluir o ambiente on-premises, em nuvem ou híbrido). O FinOps sai do título
+  e da descrição.
 - **ness.OS** é a plataforma própria de operações de segurança da ness., usada
   pelo cliente e pelo time, que une infraestrutura e segurança numa esteira só,
   em três camadas:
@@ -182,7 +187,7 @@ Todas seguem a mesma dinâmica, a da abertura atual (`Abertura`):
 |---|---|---|---|---|
 | n.secops | `severidade` | P1–P4 | o caminho do evento (fontes → AIOps, no ness.OS → time de segurança → você) aceso conforme o nível, fundido com a escada de severidade | ficha pronta |
 | n.cirt | `mesa-de-crise` | a fase (acionamento, contenção, retomada, lições) | quem está à mesa e o que cada um faz (comando da ness., TI, jurídico, comunicação, perícia); o registro e a notificação correm no n.csirt | rascunho a validar |
-| n.infraops | `responsabilidade` | a camada (aplicação, banco e SO, rede e acesso, custo) | provedor, ness. e você, com filete de intensidade; patch e correção passam pelo ness.OS | rascunho a validar |
+| n.infraops | `demanda` | a demanda (usuário sem acesso, alerta de disco no servidor, patch do mês, nova filial precisa de rede) | qual frente cuida (atendimento, sustentação ou arquitetura), o caminho e o que chega para você; a sustentação corre no ness.OS | rascunho a validar |
 | n.devarch | `portoes` | o portão (revisão, segurança, homologação, produção) | o que é conferido e o que fica de evidência | rascunho a validar |
 | n.autoops | `antes-depois` | o processo (conceder acesso, aplicar patch, abrir chamado) | hoje à mão × com n.autoops, com a linha "← humano" onde a automação para | rascunho a validar |
 | ness.OS | `fronteira` | a ação (aplicar patch crítico em servidor de produção, isolar estação com malware, bloquear credencial anômala, atualizar aplicativo nas estações) | em que camada ela cai (ingestão e triagem, ação por runbook ou decisão humana) e se espera aprovação (GMUD); abaixo, a captura real com a etiqueta "dados de exemplo" quando chegar | texto do produto (11/09); captura aguarda |
@@ -273,6 +278,8 @@ chegarem.
   aparece no site. A página do n.iso não menciona IA nem a integração por MCP.
 - **Integração só aparece quando já funciona:** hoje, a exportação do n.pentest
   para o DefectDojo.
+- **Produto se descreve pelo serviço que presta**, não pelas ferramentas e
+  indicadores do setor (ITIL, CMDB, RPO e RTO, SLO e SLI). Isso é meio.
 - Do texto de produto do ness.OS ficam fora, até haver medição: "em minutos",
   "quase imediato", "redução drástica de ruído", "autônoma" como absoluto e
   a tabela comparativa com SOC e RMM "tradicionais".
@@ -355,7 +362,9 @@ Ricardo decide antes de seguir.
      10 KiB de script nas rotas migradas, **aviso** nas demais.
 4. **Limpeza imediata** das alegações sem fonte nos quatro produtos antigos da
    ness. e no portfólio: "sala de guerra em 15 minutos", "R$ 15 milhões",
-   "<= 15 minutos", "índice legal inabalado" e o jargão vazio. O teste de dados
+   "<= 15 minutos", "índice legal inabalado", "uptime garantido" (inclusive na meta
+   description do n.infraops), "MTTR 78% menor", "RTO e RPO matemáticos",
+   "agentes autônomos" e o jargão vazio. O FinOps sai do título do n.infraops. O teste de dados
    passa a reprovar número com unidade (minutos, horas, milhões, %) em ficha
    não validada.
 
