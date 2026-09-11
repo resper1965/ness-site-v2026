@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { m as motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { routeMeta } from '../utils/meta';
 import CTA from "../components/CTA";
@@ -65,37 +64,20 @@ export default function Brandbook() {
   ];
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen"
-    >
+    <div className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen">
       <div className="max-w-6xl mx-auto space-y-24">
         
         {/* Hero Section */}
         <div className="max-w-3xl">
-           <motion.p
-             initial={{ y: 10, opacity: 0 }}
-             animate={{ y: 0, opacity: 1 }}
-             className="text-primary-container font-mono text-[11px] uppercase tracking-[0.3em] mb-5"
-           >
+           <p className="text-primary-container font-mono text-[11px] uppercase tracking-[0.3em] mb-5">
              official guidelines
-           </motion.p>
-           <motion.h1
-             initial={{ y: 16, opacity: 0 }}
-             animate={{ y: 0, opacity: 1 }}
-             className="text-4xl md:text-5xl font-display font-medium text-white tracking-tight leading-[1.1] mb-6 lowercase"
-           >
+           </p>
+           <h1 className="text-4xl md:text-5xl font-display font-medium text-white tracking-tight leading-[1.1] mb-6 lowercase">
              brandbook<BlueDot />
-           </motion.h1>
-           <motion.p
-             initial={{ y: 16, opacity: 0 }}
-             animate={{ y: 0, opacity: 1 }}
-             className="text-base md:text-lg text-on-surface-variant font-normal leading-relaxed max-w-xl"
-           >
+           </h1>
+           <p className="text-base md:text-lg text-on-surface-variant font-normal leading-relaxed max-w-xl">
              Bem-vindo ao manual online da marca Ness. Aqui você encontra as diretrizes oficiais de uso do logotipo, paleta de cores institucionais e arquivos em alta resolução para aplicações corporativas.
-           </motion.p>
+           </p>
         </div>
 
         {/* Logo Section */}
@@ -113,7 +95,7 @@ export default function Brandbook() {
              {/* Dark Mode Application */}
              <div className="rounded-2xl border border-white/10 bg-[#0A0A0A] overflow-hidden flex flex-col group">
                 <div className="h-48 flex items-center justify-center border-b border-white/5 relative">
-                   <div className="absolute top-4 left-4 flex items-center gap-2 text-xs text-white/40">
+                   <div className="absolute top-4 left-4 flex items-center gap-2 text-xs text-white/70">
                      <Moon size={14} /> Fundo Escuro (Padrão)
                    </div>
                    <div className="flex items-center marca text-5xl text-white">
@@ -137,7 +119,7 @@ export default function Brandbook() {
              {/* Light Mode Application */}
              <div className="rounded-2xl border border-[#E5E5E5] bg-white overflow-hidden flex flex-col group">
                 <div className="h-48 flex items-center justify-center border-b border-black/5 relative">
-                   <div className="absolute top-4 left-4 flex items-center gap-2 text-xs text-black/40">
+                   <div className="absolute top-4 left-4 flex items-center gap-2 text-xs text-black/70">
                      <Sun size={14} /> Fundo Claro (Documentos)
                    </div>
                    <div className="flex items-center marca text-5xl text-black">
@@ -237,7 +219,7 @@ export default function Brandbook() {
 
         <CTA />
       </div>
-    </motion.div>
+    </div>
   );
 }
 

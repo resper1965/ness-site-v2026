@@ -295,10 +295,14 @@ test.describe('formulário de contato', () => {
     test.skip(!process.env.SITE_BASE_URL, 'precisa da sitekey, que só existe no preview');
 
     await page.goto('/contato');
+    // O widget só carrega perto da tela: é preciso chegar até o formulário.
+    await page.locator('[data-turnstile]').first().scrollIntoViewIfNeeded();
     await expect(page.locator('form input[name="cf-turnstile-response"]').first()).toHaveCount(1, { timeout: 15_000 });
 
     // A ouvidoria também: sem widget lá, a denúncia seria recusada.
     await page.goto('/compliance/etica');
+    // O widget só carrega perto da tela: é preciso chegar até o formulário.
+    await page.locator('[data-turnstile]').first().scrollIntoViewIfNeeded();
     await expect(page.locator('form input[name="cf-turnstile-response"]').first()).toHaveCount(1, { timeout: 15_000 });
 
     await page.goto('/');

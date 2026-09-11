@@ -1,6 +1,5 @@
 import BlueDot from '../components/BlueDot';
 import React from "react";
-import { m as motion } from "motion/react";
 import { Link, useLoaderData, useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, Calendar, Tag, FileText } from "lucide-react";
@@ -68,12 +67,7 @@ const BlogPost = () => {
           url: canonical 
         }} 
       />
-      <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen"
-    >
+      <div className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen">
       <div className="max-w-3xl mx-auto relative z-20">
         {/* Back */}
         <Link
@@ -84,7 +78,7 @@ const BlogPost = () => {
         </Link>
 
         {/* Meta */}
-        <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="space-y-6 mb-12">
+        <div className="space-y-6 mb-12">
           <div className="flex items-center gap-4 flex-wrap">
             {post.tag && (
               <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container text-[11px] uppercase tracking-widest font-medium">
@@ -92,7 +86,7 @@ const BlogPost = () => {
               </span>
             )}
             {post.date && (
-              <span className="flex items-center gap-1 text-on-surface-variant/60 text-xs font-mono">
+              <span className="flex items-center gap-1 text-on-surface-variant/80 text-xs font-mono">
                 <Calendar size={12} /> {post.date}
               </span>
             )}
@@ -103,24 +97,19 @@ const BlogPost = () => {
           {post.desc && (
             <p className="text-base text-on-surface-variant font-normal leading-relaxed">{post.desc}</p>
           )}
-        </motion.div>
+        </div>
 
         {/* Divider */}
         <div className="w-full h-px bg-white/5 mb-12" />
 
         {/* Content */}
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="prose prose-invert prose-sm max-w-none"
-        >
+        <div className="prose prose-invert prose-sm max-w-none">
           {(() => {
             const rawBody = post.body ?? post.content ?? '';
             if (!rawBody) return (
               <div className="flex flex-col items-center py-16 text-center">
                 <FileText size={40} className="text-on-surface-variant/70 mb-4" />
-                <p className="text-on-surface-variant/60 text-sm">{t('blog.comingSoon', 'conteúdo em breve.')}</p>
+                <p className="text-on-surface-variant/80 text-sm">{t('blog.comingSoon', 'conteúdo em breve.')}</p>
               </div>
             );
             return (
@@ -129,7 +118,7 @@ const BlogPost = () => {
               </div>
             );
           })()}
-        </motion.div>
+        </div>
 
         {/* CTA */}
         <div className="mt-16 pt-8 border-t border-white/5 flex items-center justify-between">
@@ -147,7 +136,7 @@ const BlogPost = () => {
           </Link>
         </div>
       </div>
-    </motion.div>
+    </div>
     </>
   );
 };

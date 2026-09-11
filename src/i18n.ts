@@ -43,13 +43,13 @@ const ptResources = {
       },
       "solutions": {
         "title": "nossas soluções",
-        "subtitle": "tecnologia de elite para empresas que não aceitam falhas.",
+        "subtitle": "cinco soluções, cada uma para um momento da sua operação.",
         "technical_view_toggle": "visão para engenharia & ctos",
         "secops": {
           "title": "n.secops",
           "fullTitle": "resiliência operacional & continuidade",
           "desc": "SOC 24×7: detecção, resposta e gestão de riscos num contrato.",
-          "longDesc": "o n.secops não é apenas sobre tecnologia; é sobre a sobrevivência do seu negócio. protegemos sua reputação e sua operação através de um centro de operações de segurança (SOC) de elite que monitora, detecta e neutraliza ameaças antes que causem impacto.",
+          "longDesc": "o n.secops não é apenas sobre tecnologia; é sobre a sobrevivência do seu negócio. protegemos sua reputação e sua operação através de um centro de operações de segurança (SOC) que monitora, detecta e neutraliza ameaças antes que causem impacto.",
           "cta": "solicitar diagnóstico de segurança"
         },
         "infraops": {
@@ -77,7 +77,7 @@ const ptResources = {
           "title": "n.cirt",
           "fullTitle": "resposta estratégica a incidentes críticos",
           "desc": "Coordenação de incidentes críticos, da sala de guerra à retomada.",
-          "longDesc": "o n.cirt é a elite da resposta a incidentes. quando o impensável acontece, nosso time entra em campo para conter, remediar e reconstruir com precisão cirúrgica.",
+          "longDesc": "o n.cirt coordena a resposta a incidentes críticos. quando o impensável acontece, o time entra em campo para conter, remediar e reconstruir, da sala de guerra à retomada.",
           "cta": "falar com time de resposta"
         },
         "ciclo": {
@@ -106,8 +106,8 @@ const ptResources = {
           }
         },
         "use_cases": "casos de uso reais",
-        "cta_title": "sua empresa em um novo nível",
-        "cta_desc": "descubra como a ness. pode transformar sua operação com inteligência e segurança de elite.",
+        "cta_title": "fale com o time que opera",
+        "cta_desc": "conte o cenário: você sai da conversa sabendo o que entra no escopo e o que fica de fora.",
         "tech_engine": "o motor da resiliência",
         "tech_desc": "para os interessados na engenharia por trás da proteção, aqui estão os pilares técnicos que sustentam nossa entrega de valor.",
         "impact_portfolio": "portfólio de impacto"
@@ -133,7 +133,6 @@ const ptResources = {
           "title": "nenhum case encontrado.",
           "subtitle": "nosso time está preparando novos cases. volte em breve."
         },
-        "confidentiality": "100% de confidencialidade",
         "case": {
           "back": "portfolio",
           "all": "todos os cases",
@@ -187,22 +186,16 @@ const ptResources = {
           "2026": "Início da operação de IA e Agentes, consolidando a ness. como líder em orquestração de conhecimento inteligente."
         },
         "values_desc": "Excelência técnica inegociável, inovação constante e aplicada, parceria verdadeira e transparente, resultados reais e mensuráveis.",
-        "cred": {
-          "global": "Presença global",
-          "security": "Seg. & Privacidade",
-          "ai": "IA & Agentes"
-        },
-        "years_label": "anos de excelência",
+        "years_label": "anos de operação",
         "metrics": {
           "legacy": "anos de operação",
-          "countries": "países atendidos",
-          "projects": "projetos globais",
-          "uptime": "sla / uptime"
+          "projects": "projetos",
+          "clients": "clientes ativos"
         },
         "history_sub": "anos construindo a base tecnológica de grandes corporações e eventos globais."
       },
       "contact": {
-        "title": "vamos construir o futuro juntos",
+        "title": "fale com quem opera",
         "subtitle": "entre em contato com nosso time de especialistas para transformar sua operação digital.",
         "info": {
           "email": "email",
@@ -257,10 +250,10 @@ const ptResources = {
         "meta_description": "Fale com a ness.: diagnóstico de segurança, infraestrutura, engenharia de software, LGPD e perícia digital. Resposta em até 1 dia útil. +55 (11) 2504-7650."
       },
       "cta": {
-        "title": "pronto para o próximo nível?",
-        "subtitle": "fale com nossos especialistas e descubra como a ness. pode elevar o nível de inteligência, segurança e eficiência da sua operação.",
+        "title": "conte o que precisa resolver",
+        "subtitle": "o time que opera responde com o que entra no escopo, o que fica de fora e como a ativação começa.",
         "button": "agendar consultoria",
-        "support": "atendimento especializado imediato."
+        "support": "respondemos em até 1 dia útil."
       },
       "chatbot": {
         "welcome": "olá! eu sou a Gabi, a inteligência da ness. como posso ajudar sua operação hoje?",
@@ -347,10 +340,6 @@ const ptResources = {
           "sec2": {
             "h": "2. canal de denúncias",
             "p": "mantemos um canal independente e anônimo para relato de violacões ao nosso código de conduta ou legislações vigentes."
-          },
-          "sec3": {
-            "h": "3. certificações",
-            "p": "nossas operações são auditadas e seguem frameworks internacionais como ISO 27001 e SOC2, garantindo governança de classe mundial."
           }
         }
       },
@@ -363,7 +352,8 @@ const ptResources = {
         "newsletter": "insights sobre segurança digital.",
         "rights": "todos os direitos reservados.",
         "updates": "updates",
-        "status": "system live status: optimal",
+        "newsletter_ok": "inscrição feita.",
+        "newsletter_error": "não foi possível inscrever. tente novamente.",
         "ecosystem": "ecossistema",
         "email_placeholder": "seu e-mail",
         "locations": [
@@ -375,11 +365,65 @@ const ptResources = {
           "estados unidos"
         ]
       },
+      "ecossistema": {
+        "ness": "infraestrutura, segurança e engenharia",
+        "trustness": "governança, risco e compliance",
+        "forense": "perícia digital e investigação"
+      },
+      "chatlead": {
+        "intro": "para chamar a pessoa certa, preciso de três dados:",
+        "nome": "nome",
+        "email": "e-mail corporativo",
+        "empresa": "empresa",
+        "erro": "não consegui registrar agora. tente pelo formulário de contato.",
+        "enviar": "quero falar com um especialista"
+      },
+      "leadmagnet": {
+        "rotulo": "material gratuito",
+        "baixar": "baixar gratuitamente",
+        "nome": "nome",
+        "email": "e-mail corporativo",
+        "empresa": "empresa",
+        "enviar": "receber material",
+        "erro": "não conseguimos registrar seu pedido agora. tente novamente ou escreva para contato@ness.com.br.",
+        "privacidade": "não compartilhamos seus dados.",
+        "enviado": "material enviado",
+        "enviado_texto": "confira seu e-mail: o material chega na sua caixa de entrada.",
+        "mais_itens": "+{{n}} itens",
+        "lgpd_titulo": "checklist lgpd — 30 itens essenciais de conformidade",
+        "lgpd_desc": "Avalie rapidamente a conformidade da sua organização com os requisitos da LGPD. Checklist prático com os 30 pontos mais críticos.",
+        "lgpd_itens": [
+          "Nomeação e comunicação do DPO à ANPD",
+          "ROPA documentado e atualizado",
+          "Política de privacidade publicada",
+          "Gestão de consentimento de titulares",
+          "Contratos DPA com fornecedores"
+        ],
+        "quiz_titulo": "descubra sua maturidade lgpd em 3 minutos",
+        "quiz_desc": "Quiz gratuito com 10 perguntas sobre governança, processos, tecnologia e pessoas. Você recebe o seu score e recomendações.",
+        "quiz_botao": "iniciar assessment"
+      },
+      "formulario": {
+        "erro_detalhe": "Verifique sua conexão ou tente novamente em alguns instantes. Se o problema continuar, escreva para contato@ness.com.br.",
+        "protocolo": "Guarde este código para acompanhar o andamento da sua manifestação:"
+      },
       "a11y": {
         "close": "fechar",
         "subscribe": "inscrever",
         "send": "enviar",
-        "language": "idioma"
+        "language": "idioma",
+        "skip": "pular para o conteúdo principal",
+        "nav_main": "principal",
+        "menu_open": "abrir menu de navegação",
+        "menu_close": "fechar menu de navegação",
+        "change_language": "mudar o idioma para {{idioma}}",
+        "brand_switch": "ecossistema: trocar de marca",
+        "useful": "a resposta foi útil?",
+        "useful_yes": "sim, foi útil",
+        "useful_no": "não foi útil",
+        "error_title": "algo deu errado",
+        "error_text": "tente recarregar a página em instantes.",
+        "chat_example": "exemplo de conversa"
       },
       "forense": {
         "title": "forense.io",
@@ -605,14 +649,6 @@ export async function ensureLanguage(lng: string) {
   i18n.addResourceBundle(base, 'translation', mod.default, true, true);
 }
 
-/**
- * Preferência salva pelo usuário. No servidor não existe `localStorage`: o
- * HTML da edge sai sempre em pt, e a troca acontece depois da hidratação
- * (abaixo). Iniciar o i18n direto em `storedLng` faria o primeiro render do
- * cliente divergir do HTML do servidor.
- */
-const storedLng = (typeof localStorage !== 'undefined' && localStorage.getItem('ness_lang')) || 'pt';
-
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -641,8 +677,8 @@ i18n.changeLanguage = ((lng?: string, cb?: Parameters<typeof originalChangeLangu
   return ensureLanguage(lng).then(() => originalChangeLanguage(lng, cb));
 }) as typeof i18n.changeLanguage;
 
-if (storedLng !== 'pt') {
-  ensureLanguage(storedLng).then(() => originalChangeLanguage(storedLng));
-}
+// O idioma vive na URL e a hidratação carrega o da rota (entry.client.tsx).
+// A preferência salva trocava o idioma de uma página já servida em pt — texto
+// em inglês num endereço em português — e divergia do HTML do servidor.
 
 export default i18n;

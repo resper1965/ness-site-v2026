@@ -1,6 +1,5 @@
 import BlueDot from '../components/BlueDot';
 import React from "react";
-import { m as motion } from "motion/react";
 import { Link, useLoaderData } from "react-router";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, ExternalLink } from "lucide-react";
@@ -49,12 +48,7 @@ const PortfolioCase = () => {
   const { item } = useLoaderData() as { item: Case };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen"
-    >
+    <div className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen">
       <div className="max-w-5xl mx-auto relative z-20">
         {/* Back */}
         <Link
@@ -66,11 +60,7 @@ const PortfolioCase = () => {
 
         {/* Hero image */}
         {item.image && (
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="w-full aspect-video rounded-4xl overflow-hidden mb-12 border border-white/10"
-          >
+          <div className="w-full aspect-video rounded-4xl overflow-hidden mb-12 border border-white/10">
             <img
               src={item.image}
               alt={item.project}
@@ -79,11 +69,11 @@ const PortfolioCase = () => {
               className="w-full h-full object-cover opacity-70"
               referrerPolicy="no-referrer"
             />
-          </motion.div>
+          </div>
         )}
 
         {/* Meta */}
-        <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }}>
+        <div>
           <div className="flex items-center gap-3 mb-4">
             {item.client && (
               <span className="text-[11px] uppercase tracking-widest text-primary font-medium">{item.client}</span>
@@ -109,19 +99,14 @@ const PortfolioCase = () => {
             {item.project}<BlueDot />
           </h1>
           <p className="text-base text-on-surface-variant font-normal leading-relaxed mb-12">{item.desc}</p>
-        </motion.div>
+        </div>
 
         {/* Result block */}
         {item.result && (
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="p-8 rounded-4xl bg-surface-container-low border border-white/5 mb-12"
-          >
-            <div className="text-[11px] uppercase tracking-widest text-on-surface-variant/60 font-medium mb-2">{t('portfolio.result')}</div>
+          <div className="p-8 rounded-4xl bg-surface-container-low border border-white/5 mb-12">
+            <div className="text-[11px] uppercase tracking-widest text-on-surface-variant/80 font-medium mb-2">{t('portfolio.result')}</div>
             <div className="text-white text-lg font-display font-semibold">{item.result}</div>
-          </motion.div>
+          </div>
         )}
 
         {/* CTA */}
@@ -140,7 +125,7 @@ const PortfolioCase = () => {
           </Link>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

@@ -1,5 +1,4 @@
 import React from "react";
-import { m as motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, ShieldCheck, Scale, Activity, Lock, Eye, Settings, BarChart3, Clock, CheckCircle2, Zap, Building2, Handshake } from "lucide-react";
@@ -70,8 +69,8 @@ export default function DpoService() {
     },
     {
       icon: Clock,
-      title: "SLA com resposta garantida",
-      desc: "Nomeação formal junto à ANPD, canal dedicado para titulares, resposta a incidentes em até 72h e relatórios mensais de atividade do DPO.",
+      title: "nomeação formal junto à ANPD",
+      desc: "O encarregado nomeado junto à ANPD, um canal dedicado para os titulares e o relatório mensal de atividade do DPO. O prazo de resposta fica no contrato.",
     },
   ];
 
@@ -105,7 +104,7 @@ export default function DpoService() {
   ];
 
   return (
-    <main>
+    <div>
       <SchemaOrg
         type="service"
         data={{
@@ -125,12 +124,7 @@ export default function DpoService() {
         </div>
 
         <div className="relative z-20 max-w-7xl mx-auto px-8 w-full">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-5xl space-y-10"
-          >
+          <div className="max-w-5xl space-y-10">
             <span className="inline-block px-5 py-2 rounded-full bg-primary-container/10 border border-primary-container/20 text-primary-container font-display text-xs tracking-[0.2em] uppercase">
               trustness. privacy operations
             </span>
@@ -155,7 +149,7 @@ export default function DpoService() {
                 <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
               </a>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -175,7 +169,7 @@ export default function DpoService() {
             {audiences.map((a, i) => (
               <div
                 key={i}
-                className="p-8 rounded-3xl bg-surface-container border border-white/5 hover:border-primary-container/30 transition-colors group"
+                className="p-8 rounded-3xl bg-surface-container-low border border-white/5 hover:border-primary-container/30 transition-colors group"
               >
                 <a.icon className="text-primary-container mb-6 group-hover:scale-110 transition-transform" size={32} />
                 <h3 className="text-xl font-display text-white mb-3 tracking-tight">{a.title}</h3>
@@ -202,34 +196,25 @@ export default function DpoService() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {phases.map((phase, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="p-8 rounded-3xl bg-surface-container border border-white/5 hover:border-primary-container/30 transition-colors group relative"
-              >
-                <span className="text-[64px] font-display font-medium text-primary-container/10 absolute top-4 right-6">
-                  {phase.step}
-                </span>
+              <div key={i}
+                className="p-8 rounded-3xl bg-surface-container-low border border-white/5 hover:border-primary-container/30 transition-colors group relative">
                 <phase.icon className="text-primary-container mb-6 group-hover:scale-110 transition-transform" size={32} />
                 <span className="text-[11px] text-primary-container font-medium uppercase tracking-widest block mb-2">
                   fase {phase.step}
                 </span>
                 <h3 className="text-xl font-display text-white mb-2 tracking-tight">{phase.title}</h3>
-                <p className="text-xs text-primary-container/70 font-medium mb-3">{phase.subtitle}</p>
+                <p className="text-xs text-primary-container font-medium mb-3">{phase.subtitle}</p>
                 <p className="text-sm text-on-surface-variant font-normal leading-relaxed">
                   {phase.desc}
                 </p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Por que trustness. */}
-      <section className="py-24 px-8 bg-surface-container border-t border-white/5">
+      <section className="py-24 px-8 bg-surface-container-low border-t border-white/5">
         <div className="max-w-7xl mx-auto">
           <div className="mb-16">
             <h2 className="text-3xl md:text-5xl font-display font-medium text-white lowercase-all tracking-tighter">
@@ -242,20 +227,14 @@ export default function DpoService() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {differentiators.map((d, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="p-8 rounded-3xl bg-surface-container-lowest border border-white/5 hover:border-primary-container/30 transition-colors group"
-              >
+              <div key={i}
+                className="p-8 rounded-3xl bg-surface-container-lowest border border-white/5 hover:border-primary-container/30 transition-colors group">
                 <d.icon className="text-primary-container mb-6 group-hover:scale-110 transition-transform" size={32} />
                 <h3 className="text-lg font-display text-white mb-3 tracking-tight">{d.title}</h3>
                 <p className="text-sm text-on-surface-variant font-normal leading-relaxed">
                   {d.desc}
                 </p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -282,17 +261,11 @@ export default function DpoService() {
 
             <div className="space-y-3">
               {aegisFeatures.map((feature, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-surface-container/50 border border-white/5"
-                >
+                <div key={i}
+                  className="flex items-center gap-4 p-4 rounded-2xl bg-surface-container-low/50 border border-white/5">
                   <CheckCircle2 size={20} className="text-primary-container shrink-0" />
                   <span className="text-white/90 font-display text-sm">{feature}</span>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -362,7 +335,7 @@ export default function DpoService() {
             ].map((faq, i) => (
               <details
                 key={i}
-                className="group p-6 rounded-2xl bg-surface-container border border-white/5 hover:border-primary-container/20 transition-colors"
+                className="group p-6 rounded-2xl bg-surface-container-low border border-white/5 hover:border-primary-container/20 transition-colors"
               >
                 <summary className="font-display text-white cursor-pointer list-none flex items-center justify-between">
                   <span>{faq.q}</span>
@@ -402,7 +375,7 @@ export default function DpoService() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
 

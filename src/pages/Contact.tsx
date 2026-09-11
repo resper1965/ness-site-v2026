@@ -1,7 +1,6 @@
 import BlueDot from '../components/BlueDot';
 import ConsentimentoPrivacidade from '../components/ConsentimentoPrivacidade';
 import React, { useState } from "react";
-import { m as motion } from "motion/react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router";
 import { useTranslation } from "react-i18next";
 import { routeMeta, traduzir } from '../utils/meta';
@@ -48,12 +47,7 @@ const Contact = () => {
   const assunto = refInfo?.subject || (BRAND === 'ness' ? 'outros' : BRAND);
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen"
-    >
+    <div className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen">
       {/* Immersive Background for Contact Page */}
       <div className="absolute inset-0 z-0 overflow-hidden bg-nebula" aria-hidden="true">
         <div className="absolute inset-0 bg-linear-to-b from-surface-container-lowest/40 via-surface-container-lowest/90 to-surface-container-lowest z-10"></div>
@@ -64,14 +58,9 @@ const Contact = () => {
           {/* Left Side: Info */}
           <div className="space-y-12">
             <div>
-              <motion.div
-                initial={{ x: -20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="text-primary-container font-mono text-xs lowercase tracking-[0.3em] mb-6"
-              >
+              <div className="text-primary-container font-mono text-xs lowercase tracking-[0.3em] mb-6">
                 {t('contact.badge', 'get in touch — ness. precision')}
-              </motion.div>
+              </div>
               <h1 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight leading-tight mb-6 lowercase">
                 {t('contact.title')}<BlueDot />
               </h1>
@@ -183,7 +172,7 @@ const Contact = () => {
                     type="text" 
                     required
                     placeholder={t('contact.form.name_placeholder')} 
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all"
+                    className="w-full bg-white/5 border border-white/35 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all"
                     aria-label={t('contact.form.name')} />
                 </div>
                 <div className="space-y-2">
@@ -194,7 +183,7 @@ const Contact = () => {
                     type="text" 
                     required
                     placeholder={t('contact.form.company_placeholder')} 
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all"
+                    className="w-full bg-white/5 border border-white/35 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all"
                     aria-label={t('contact.form.company')} />
                 </div>
               </div>
@@ -211,7 +200,7 @@ const Contact = () => {
                   aria-describedby={erroEmail ? 'contact-email-erro' : undefined}
                   onBlur={(e) => setErroEmail(validarEmail(e.target.value))}
                   onChange={() => erroEmail && setErroEmail(null)}
-                  className={`w-full bg-white/5 border rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all ${erroEmail ? 'border-red-500/60' : 'border-white/10'}`}
+                  className={`w-full bg-white/5 border rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all ${erroEmail ? 'border-red-500/60' : 'border-white/35'}`}
                   aria-label={t('contact.form.email')} />
                 {erroEmail && (
                   <p id="contact-email-erro" role="alert" className="text-[11px] text-red-400 ml-4">{erroEmail}</p>
@@ -231,17 +220,17 @@ const Contact = () => {
                   rows={4}
                   required
                   placeholder={t('contact.form.message_placeholder')} 
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all resize-none"
+                  className="w-full bg-white/5 border border-white/35 rounded-2xl px-6 py-4 text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-container transition-all resize-none"
                 ></textarea>
               </div>
               <ConsentimentoPrivacidade />
 
               {submitStatus === 'error' && (
-                <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-6 py-4 rounded-2xl text-xs font-normal mt-4 flex items-start gap-3">
+                <div role="alert" className="bg-red-500/10 border border-red-500/20 text-red-400 px-6 py-4 rounded-2xl text-xs font-normal mt-4 flex items-start gap-3">
                   <AlertTriangle size={16} className="shrink-0 mt-0.5" />
                   <div>
                     <p className="font-medium mb-1">{t('contact.form.error', 'Erro ao enviar mensagem.')}</p>
-                    <p className="text-red-400/80">Por favor, verifique sua conexão ou tente novamente em alguns instantes. Se o problema persistir, contate-nos diretamente pelo e-mail contato@ness.com.br.</p>
+                    <p className="text-red-300">{t('formulario.erro_detalhe', 'Verifique sua conexão ou tente novamente em alguns instantes. Se o problema continuar, escreva para contato@ness.com.br.')}</p>
                   </div>
                 </div>
               )}
@@ -263,12 +252,7 @@ const Contact = () => {
         </div>
 
         {/* Whistleblowing Callout on Contact Page */}
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="mt-24 p-8 md:p-12 rounded-[3rem] bg-surface-container-low/20 border border-white/5 flex flex-col md:flex-row items-center justify-between gap-8"
-        >
+        <div className="mt-24 p-8 md:p-12 rounded-[3rem] bg-surface-container-low/20 border border-white/5 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="flex items-center gap-6">
             <div className="w-16 h-16 rounded-3xl bg-primary-container/10 flex items-center justify-center shrink-0">
               <AlertTriangle className="text-primary-container" size={32} />
@@ -286,9 +270,9 @@ const Contact = () => {
           >
             {t('contact.whistleblower.cta')}
           </Link>
-        </motion.div>
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

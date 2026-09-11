@@ -1,11 +1,9 @@
 import BlueDot from '../components/BlueDot';
 import CTA from '../components/CTA';
-import AnimatedCounter from '../components/AnimatedCounter';
-import React from "react";
-import { m as motion } from "motion/react";
+import Metrica from '../components/Metrica';
 import { useTranslation, Trans } from "react-i18next";
 import { routeMeta } from '../utils/meta';
-import { Target, Eye, Heart, Shield, Globe, Cpu } from "lucide-react";
+import { Target, Eye, Heart } from "lucide-react";
 
 import { FOUNDATION_YEAR, anosDeLegado } from '../constants/brand';
 
@@ -31,19 +29,11 @@ const About = () => {
     { icon: Heart,  key: 'values',  title: t('about.values'),  desc: t('about.values_desc', "Excelência técnica inegociável, inovação constante e aplicada, parceria verdadeira e transparente, resultados reais e mensuráveis.") }
   ];
 
-  const credentials = [
-    { icon: Globe,  label: t('about.cred.global', "Presença global"), value: "30+" },
-    { icon: Shield, label: t('about.cred.security', "Seg. & Privacidade"), value: "ISO 27001" },
-    { icon: Cpu,    label: t('about.cred.ai', "IA & Agentes"), value: "2026" }
-  ];
-
+  // Sem entrada animada no topo: o texto saía do servidor em opacity 0 e só
+  // aparecia depois do JavaScript, o que atrasava o LCP e deixava a página em
+  // branco sem JS.
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen"
-    >
+    <div className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen">
       {/* Background image — subtle */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none bg-nebula" aria-hidden="true">
         <div className="absolute inset-0 bg-linear-to-b from-surface-container-lowest/50 via-surface-container-lowest/90 to-surface-container-lowest z-10" />
@@ -53,69 +43,29 @@ const About = () => {
 
         {/* ── Hero ────────────────────────────────────────────── */}
         <div className="max-w-3xl">
-          <motion.p
-            initial={{ y: 10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.15 }}
-            className="text-primary-container font-mono text-[11px] uppercase tracking-[0.3em] mb-5"
-          >
-            since {FOUNDATION_YEAR} — {anosDeLegado()} {t('about.years_label', 'anos de excelência')}
-          </motion.p>
+          <p className="text-primary-container font-mono text-[11px] uppercase tracking-[0.3em] mb-5">
+            since {FOUNDATION_YEAR} — {anosDeLegado()} {t('about.years_label', 'anos de operação')}
+          </p>
 
-          <motion.h1
-            initial={{ y: 16, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.25 }}
-            className="text-3xl md:text-4xl font-display font-medium text-white tracking-tight leading-[1.1] mb-6 lowercase"
-          >
+          <h1 className="text-3xl md:text-4xl font-display font-medium text-white tracking-tight leading-[1.1] mb-6 lowercase">
             <Trans
               i18nKey="about.subtitle"
-              components={{ highlight: <span className="text-primary-container drop-shadow-[0_0_15px_rgba(0,173,232,0.6)]" /> }}
+              components={{ highlight: <span className="text-primary-container" /> }}
             /><BlueDot />
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            initial={{ y: 16, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.35 }}
-            className="text-base md:text-lg text-on-surface-variant font-normal leading-relaxed max-w-xl"
-          >
+          <p className="text-base md:text-lg text-on-surface-variant font-normal leading-relaxed max-w-xl">
             {t('about.desc')}
-          </motion.p>
-
-          {/* Credential badges */}
-          <motion.div
-            initial={{ y: 16, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.45 }}
-            className="flex flex-wrap gap-3 mt-8"
-          >
-            {credentials.map(({ icon: Icon, label, value }) => (
-              <div
-                key={label}
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-low/40 border border-white/8 text-xs text-on-surface-variant"
-              >
-                <Icon size={13} className="text-primary-container shrink-0" />
-                <span className="font-medium text-white">{value}</span>
-                <span className="opacity-60">{label}</span>
-              </div>
-            ))}
-          </motion.div>
+          </p>
         </div>
 
         {/* ── Mission / Vision / Values ────────────────────────── */}
         <div className="grid md:grid-cols-3 gap-8 border-y border-white/5 py-16">
           {pillars.map(({ icon: Icon, key, title, desc }, i) => (
-            <motion.div
-              key={key}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="space-y-4"
-            >
+            <div key={key}
+              className="space-y-4">
               <div className="w-10 h-10 rounded-xl bg-primary-container/10 flex items-center justify-center">
-                <Icon className="text-primary-container" size={20} />
+                <Icon className="text-primary-container" size={20} aria-hidden="true" />
               </div>
               <h2 className="text-base font-display font-semibold text-white lowercase tracking-tight">
                 {title}<BlueDot />
@@ -123,16 +73,19 @@ const About = () => {
               <p className="text-sm text-on-surface-variant font-normal leading-relaxed">
                 {desc}
               </p>
-            </motion.div>
+            </div>
           ))}
         </div>
 
-        {/* ── Metrics ────────────────────────────────────────────── */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 border-t border-white/5 pt-16 mt-8 mb-16">
-          <AnimatedCounter value={anosDeLegado()} label={t('about.metrics.legacy', 'anos de operação')} suffix="+" duration={1500} />
-          <AnimatedCounter value={30} label={t('about.metrics.countries', 'países atendidos')} suffix="+" duration={2000} />
-          <AnimatedCounter value={500} label={t('about.metrics.projects', 'projetos globais')} suffix="+" duration={2500} />
-          <AnimatedCounter value={99} label={t('about.metrics.uptime', 'sla / uptime')} suffix="%" duration={3000} />
+        {/* ── Metrics ──────────────────────────────────────────────
+            Só os números confirmados em 09/09/2026 (docs/PESQUISA-metricas.md).
+            Saíram o número de países, sem fonte, e o de disponibilidade rotulado
+            como SLA: prazo e SLA ficam na proposta. O selo de certificação saiu
+            junto: certificação só vai ao ar com nome, escopo e ano. */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 border-t border-white/5 pt-16 mt-8 mb-16">
+          <Metrica value={anosDeLegado()} label={t('about.metrics.legacy', 'anos de operação')} suffix="+" />
+          <Metrica value={500} label={t('about.metrics.projects', 'projetos')} suffix="+" />
+          <Metrica value={200} label={t('about.metrics.clients', 'clientes ativos')} suffix="+" />
         </div>
 
         {/* ── Timeline ─────────────────────────────────────────── */}
@@ -149,24 +102,18 @@ const About = () => {
 
             <div className="md:w-2/3 space-y-10">
               {timeline.map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: 16 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.04 }}
-                  className="flex gap-10 group"
-                >
+                <div key={i}
+                  className="flex gap-10 group">
                   <div className="w-16 shrink-0 text-primary-container font-mono text-sm font-medium pt-0.5">
                     {item.year}
                   </div>
                   <div className="relative pb-10 border-l border-white/8 pl-10 group-last:border-transparent">
-                    <div className="absolute top-2.5 -left-[5px] w-2 h-2 rounded-full bg-primary-container shadow-[0_0_8px_rgba(0,173,232,0.4)]" />
+                    <div className="absolute top-2.5 -left-[5px] w-2 h-2 rounded-full bg-primary-container" aria-hidden="true" />
                     <p className="text-sm text-white font-normal leading-relaxed group-hover:text-primary-container transition-colors duration-200">
                       {item.desc}
                     </p>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -174,7 +121,7 @@ const About = () => {
 
         <CTA />
       </div>
-    </motion.div>
+    </div>
   );
 };
 

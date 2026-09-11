@@ -76,6 +76,19 @@ const ChatbotWidget = ({ initialOpen = false }: ChatbotWidgetProps) => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Esc fecha o painel e devolve o foco ao botão que o abriu.
+  const botao = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!isOpen) return;
+    const aoTeclar = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      setIsOpen(false);
+      botao.current?.focus();
+    };
+    document.addEventListener('keydown', aoTeclar);
+    return () => document.removeEventListener('keydown', aoTeclar);
+  }, [isOpen]);
+
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || loading) return;
@@ -217,7 +230,9 @@ const ChatbotWidget = ({ initialOpen = false }: ChatbotWidgetProps) => {
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="absolute bottom-20 right-0 w-[350px] md:w-[400px] h-[500px] bg-surface-container-low border border-primary-container/20 rounded-[2.5rem] nebula-shadow flex flex-col overflow-hidden"
+            role="dialog"
+            aria-label={botName}
+            className="absolute bottom-20 right-0 w-[min(350px,calc(100vw-3rem))] md:w-[400px] h-[min(500px,calc(100dvh-8rem))] bg-surface-container-low border border-primary-container/20 rounded-[2.5rem] nebula-shadow flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="p-6 bg-primary-container/10 border-b border-white/5 flex items-center justify-between" style={{ backgroundColor: `${primaryColor}20` }}>
@@ -245,7 +260,7 @@ const ChatbotWidget = ({ initialOpen = false }: ChatbotWidgetProps) => {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4 scrollbar-hide">
+            <div role="log" aria-live="polite" className="flex-1 overflow-y-auto p-6 space-y-4 scrollbar-hide">
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[80%] p-4 rounded-2xl text-sm font-normal leading-relaxed whitespace-pre-wrap ${
@@ -259,28 +274,32 @@ const ChatbotWidget = ({ initialOpen = false }: ChatbotWidgetProps) => {
                     {renderMessageContent(msg.content)}
                     {loading && i === messages.length - 1 && msg.role === 'bot' && msg.content === '' && (
                       <span className="inline-flex gap-1 ml-1">
-                        <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: primaryColor, animationDelay: '0ms' }} />
-                        <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: primaryColor, animationDelay: '150ms' }} />
-                        <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: primaryColor, animationDelay: '300ms' }} />
+                        <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: primaryColor, animationDelay: '0ms' }} />
+                        <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: primaryColor, animationDelay: '150ms' }} />
+                        <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: primaryColor, animationDelay: '300ms' }} />
                       </span>
                     )}
 
                     {/* CSAT Rating buttons for the last bot message when stream finishes */}
                     {!loading && i === messages.length - 1 && msg.role === 'bot' && msg.content.length > 5 && i > 0 && (
                       <div className="flex items-center gap-3 mt-3 pt-3 border-t border-white/10">
-                        <p className="text-[11px] text-white/40 uppercase tracking-wider font-medium">Foi Útil?</p>
+                        <p className="text-[11px] text-white/70 uppercase tracking-wider font-medium">{t('a11y.useful', 'a resposta foi útil?')}</p>
                         <div className="flex gap-1.5">
                           <button
                             onClick={() => handleCsat(1)}
+                            aria-label={t('a11y.useful_yes', 'sim, foi útil')}
+                            aria-pressed={csatGiven === 1}
                             disabled={csatGiven !== null}
-                            className={`p-1.5 rounded-md transition-colors ${csatGiven === 1 ? 'bg-emerald-500/20 text-emerald-400' : 'text-white/40 hover:text-white hover:bg-white/10 disabled:opacity-50'}`}
+                            className={`p-1.5 rounded-md transition-colors ${csatGiven === 1 ? 'bg-emerald-500/20 text-emerald-400' : 'text-white/70 hover:text-white hover:bg-white/10 disabled:opacity-50'}`}
                           >
                             <ThumbsUp size={14} />
                           </button>
                           <button
                             onClick={() => handleCsat(-1)}
+                            aria-label={t('a11y.useful_no', 'não foi útil')}
+                            aria-pressed={csatGiven === -1}
                             disabled={csatGiven !== null}
-                            className={`p-1.5 rounded-md transition-colors ${csatGiven === -1 ? 'bg-red-500/20 text-red-400' : 'text-white/40 hover:text-white hover:bg-white/10 disabled:opacity-50'}`}
+                            className={`p-1.5 rounded-md transition-colors ${csatGiven === -1 ? 'bg-red-500/20 text-red-400' : 'text-white/70 hover:text-white hover:bg-white/10 disabled:opacity-50'}`}
                           >
                             <ThumbsDown size={14} />
                           </button>
@@ -297,7 +316,7 @@ const ChatbotWidget = ({ initialOpen = false }: ChatbotWidgetProps) => {
                 qualifica aqui dentro, em vez de mandar o visitante recomeçar
                 num formulário: quem é mandado embora raramente volta. */}
             {modo === 'conversa' && (
-              <div className="px-4 pb-4 pt-2 flex gap-2 overflow-x-auto scrollbar-hide shrink-0 snap-x">
+              <div className="px-4 pb-4 pt-2 flex flex-wrap gap-2 shrink-0">
                 <button
                   type="button"
                   onClick={() => setModo('qualificando')}
@@ -340,7 +359,7 @@ const ChatbotWidget = ({ initialOpen = false }: ChatbotWidgetProps) => {
                 onChange={(e) => setInput(e.target.value)}
                 aria-label={t('chatbot.placeholder')}
                 placeholder={t('chatbot.placeholder')}
-                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition-all"
+                className="flex-1 bg-white/5 border border-white/35 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition-all"
                 style={{ '--tw-ring-color': primaryColor } as any}
               />
               <button
@@ -358,6 +377,7 @@ const ChatbotWidget = ({ initialOpen = false }: ChatbotWidgetProps) => {
       </AnimatePresence>
 
       <motion.button
+        ref={botao}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}

@@ -112,9 +112,7 @@ const Footer = () => {
           <div className="space-y-4 col-span-2 lg:col-span-1">
             <h2 className="text-[11px] uppercase tracking-widest text-white font-medium">{t('footer.updates')}</h2>
             <p className="text-sm text-on-surface-variant/85 font-normal">{t('footer.newsletter')}</p>
-            {newsletterStatus === 'ok' ? (
-              <p className="text-xs text-primary-container font-medium uppercase tracking-widest">✓ inscrito.</p>
-            ) : (
+            {newsletterStatus !== 'ok' && (
               <form onSubmit={handleNewsletter} className="flex flex-col gap-2">
                 {/* Armadilha: fora da tela e fora do teclado. */}
                 <div aria-hidden="true" className="absolute w-px h-px overflow-hidden -left-[9999px]">
@@ -130,13 +128,13 @@ const Footer = () => {
                   required
                   placeholder={t('footer.email_placeholder')}
                   aria-label={t('footer.email_placeholder')}
-                  className="bg-surface-container-low border border-white/10 rounded-full px-4 py-2 text-xs w-full focus:outline-none focus-visible:ring-2 focus:ring-primary text-white"
+                  className="bg-surface-container-low border border-white/35 rounded-full px-4 py-2 text-xs w-full focus:outline-none focus-visible:ring-2 focus:ring-primary text-white"
                 />
                 <button
                   type="submit"
                   disabled={newsletterStatus === 'sending'}
                   aria-label={t('a11y.subscribe')}
-                  className="bg-primary-container text-on-primary rounded-full p-2 flex items-center justify-center hover:brightness-110 transition-all disabled:opacity-50"
+                  className="bg-primary-container text-on-primary rounded-full h-11 w-11 shrink-0 flex items-center justify-center hover:brightness-110 transition-all disabled:opacity-50"
                 >
                   <Send size={14} />
                 </button>
@@ -145,8 +143,13 @@ const Footer = () => {
                 <Turnstile action="newsletter" tamanho="compact" />
               </form>
             )}
+            {/* A região de status existe desde o começo: leitor de tela só
+                anuncia a mudança de uma região que já estava na página. */}
+            <p role="status" className="text-xs text-primary-container font-medium">
+              {newsletterStatus === 'ok' ? t('footer.newsletter_ok', 'inscrição feita.') : ''}
+            </p>
             {newsletterStatus === 'error' && (
-              <p className="text-xs text-red-400">erro ao inscrever. tente novamente.</p>
+              <p role="alert" className="text-xs text-red-400">{t('footer.newsletter_error', 'não foi possível inscrever. tente novamente.')}</p>
             )}
           </div>
         </div>
@@ -163,26 +166,22 @@ const Footer = () => {
         </div>
       </div>
 
+      {/* Sem o selo de status do sistema que ficava aqui: nada o media, e ele
+          aparecia ao lado da marca em todas as páginas. */}
       <div className="max-w-7xl mx-auto mt-8 flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-sm text-on-surface-variant/70 font-normal">
-          © {FOUNDATION_YEAR}–{anoAtual()} {brandLabel} precision digital engineering. {t('footer.rights')}
+          © {FOUNDATION_YEAR}–{anoAtual()} {brandLabel} {t('footer.rights')}
         </p>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-primary-container" />
-            <span className="text-[11px] uppercase tracking-tighter text-on-surface-variant/70 font-semibold">{t('footer.status')}</span>
-          </div>
-          <a
-            href="https://canal.ness.com.br"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="canal (acesso restrito)"
-            aria-label="Canal CMS — acesso restrito"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full text-on-surface-variant/70 transition-colors hover:bg-white/5 hover:text-on-surface-variant focus-visible:ring-2 focus-visible:ring-primary-container"
-          >
-            <Lock size={12} />
-          </a>
-        </div>
+        <a
+          href="https://canal.ness.com.br"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="canal (acesso restrito)"
+          aria-label="Canal CMS — acesso restrito"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full text-on-surface-variant/70 transition-colors hover:bg-white/5 hover:text-on-surface-variant focus-visible:ring-2 focus-visible:ring-primary-container"
+        >
+          <Lock size={12} />
+        </a>
       </div>
     </footer>
   );

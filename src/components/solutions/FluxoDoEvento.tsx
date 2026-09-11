@@ -14,6 +14,8 @@ import ComMarcas from '../ComMarcas';
 
 const TEXTO = 'fill-on-surface text-[12px]';
 const ROTULO = 'fill-on-surface-variant text-[11.5px]';
+// No celular o desenho encolhe para ~88%: a 11,5 px o rótulo ficava com 10 px.
+const ROTULO_M = 'fill-on-surface-variant text-[13px]';
 const SETA = 'fill-none stroke-on-surface-variant';
 const MOLDURA = 'fill-none stroke-on-surface/20';
 
@@ -116,7 +118,7 @@ export default function FluxoDoEvento({ fontes }: { fontes?: string[] }) {
         <svg viewBox="0 0 372 580" role="img" aria-label={DESCRICAO} className="block h-auto w-full font-sans md:hidden">
           <Seta id="seta-v" />
           <rect x={16} y={8} width={340} height={104} rx={10} className={MOLDURA} />
-          <text x={28} y={30} className={ROTULO}>suas fontes</text>
+          <text x={28} y={30} className={ROTULO_M}>suas fontes</text>
           {fontes.map((fonte, i) => {
             const x = 28 + (i % 3) * 108;
             const y = 40 + Math.floor(i / 3) * 36;
@@ -141,14 +143,14 @@ export default function FluxoDoEvento({ fontes }: { fontes?: string[] }) {
             <path d="M78,232 H30 V116" markerEnd="url(#seta-v)" />
             <path d="M294,232 H348 V520 H298" markerEnd="url(#seta-v)" />
           </g>
-          <text x={198} y={152} className={ROTULO}>eventos e logs</text>
-          <text x={38} y={134} className={ROTULO}>contém, se</text>
-          <text x={38} y={148} className={ROTULO}>autorizado</text>
-          <text x={198} y={290} className={ROTULO}>precisa de</text>
-          <text x={198} y={303} className={ROTULO}>julgamento</text>
-          <text x={198} y={436} className={ROTULO}>aciona com</text>
-          <text x={198} y={449} className={ROTULO}>contexto</text>
-          <text x={362} y={376} textAnchor="middle" transform="rotate(-90 362 376)" className={ROTULO}>notificação e registro</text>
+          <text x={198} y={152} className={ROTULO_M}>eventos e logs</text>
+          <text x={38} y={134} className={ROTULO_M}>contém, se</text>
+          <text x={38} y={148} className={ROTULO_M}>autorizado</text>
+          <text x={198} y={290} className={ROTULO_M}>precisa de</text>
+          <text x={198} y={303} className={ROTULO_M}>julgamento</text>
+          <text x={198} y={436} className={ROTULO_M}>aciona com</text>
+          <text x={198} y={449} className={ROTULO_M}>contexto</text>
+          <text x={362} y={376} textAnchor="middle" transform="rotate(-90 362 376)" className={ROTULO_M}>notificação e registro</text>
         </svg>
 
         <figcaption className="mt-4 max-w-3xl text-[13px] leading-relaxed text-on-surface-variant">

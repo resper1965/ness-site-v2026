@@ -58,14 +58,14 @@ export default function Obrigado() {
 
         <p className="text-sm text-on-surface-variant">
           {copy.urgente}{' '}
-          <a href="tel:+551125047650" className="text-primary-container font-medium inline-flex items-center gap-1">
+          <a href="tel:+551125047650" className="text-primary-container font-medium inline-flex min-h-11 items-center gap-1">
             <Phone size={14} aria-hidden="true" /> {telefone}
           </a>
         </p>
 
         <Link
           to={rotaNoIdioma(pathname, idiomaDaRota(pathname)).replace('/obrigado', '') || '/'}
-          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-medium text-on-surface-variant hover:text-primary-container transition-colors"
+          className="inline-flex min-h-11 items-center gap-2 text-xs uppercase tracking-widest font-medium text-on-surface-variant hover:text-primary-container transition-colors"
         >
           <ArrowLeft size={12} aria-hidden="true" /> {copy.voltar}
         </Link>

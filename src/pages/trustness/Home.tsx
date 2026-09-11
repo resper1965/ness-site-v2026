@@ -22,7 +22,8 @@ function CicloDpo() {
   const entrada = t('trustness.dpo.diagrama.entrada', { returnObjects: true }) as string[];
   const manutencaoSub = t('trustness.dpo.diagrama.manutencao_sub', { returnObjects: true }) as string[];
   const TITULO = 'fill-white font-display text-[13px] font-medium';
-  const SUB = 'fill-on-surface-variant text-[11.5px]';
+  // 13 px: o desenho encolhe no celular, e a 11,5 px o rótulo ficava com 10 px.
+  const SUB = 'fill-on-surface-variant text-[13px]';
 
   return (
     <svg viewBox="0 0 360 430" role="img" aria-label={d('descricao')} className="block h-auto w-full max-w-[380px] font-sans">
@@ -70,7 +71,7 @@ export default function TrustnessHome() {
   const servicos = t('trustness.servicos.itens', { returnObjects: true }) as Servico[];
 
   return (
-    <main className="bg-surface-container-lowest">
+    <div className="bg-surface-container-lowest">
       <Abertura
         fundo="trustness"
         marca={<>trustness<BlueDot /></>}
@@ -161,25 +162,16 @@ export default function TrustnessHome() {
         <section className="mb-24 grid grid-cols-1 gap-8">
           <LeadMagnet
             slug="lgpd-checklist"
-            title="checklist lgpd — 30 itens essenciais de conformidade"
-            description="Avalie rapidamente a conformidade da sua organização com os requisitos da LGPD. Checklist prático com os 30 pontos mais críticos."
-            items={[
-              "Nomeação e comunicação do DPO à ANPD",
-              "ROPA documentado e atualizado",
-              "Política de privacidade publicada",
-              "Gestão de consentimento de titulares",
-              "Contratos DPA com fornecedores",
-            ]}
+            title={t('leadmagnet.lgpd_titulo')}
+            description={t('leadmagnet.lgpd_desc')}
+            items={t('leadmagnet.lgpd_itens', { returnObjects: true }) as string[]}
           />
           <div className="flex flex-col items-start gap-4 border-t border-white/10 pt-8 md:flex-row md:items-center md:justify-between">
             <div className="max-w-[60ch] space-y-1.5">
-              <h2 className="font-display text-lg font-medium lowercase text-white">descubra sua maturidade lgpd em 3 minutos<BlueDot /></h2>
-              <p className="text-[13.5px] leading-relaxed text-on-surface-variant">
-                Quiz gratuito com 10 perguntas sobre governança, processos, tecnologia e pessoas. Você recebe o seu score e
-                recomendações.
-              </p>
+              <h2 className="font-display text-lg font-medium lowercase text-white">{t('leadmagnet.quiz_titulo')}<BlueDot /></h2>
+              <p className="text-[13.5px] leading-relaxed text-on-surface-variant">{t('leadmagnet.quiz_desc')}</p>
             </div>
-            <Link to="/assessment/lgpd" className={BOTAO}>iniciar assessment</Link>
+            <Link to="/assessment/lgpd" className={BOTAO}>{t('leadmagnet.quiz_botao')}</Link>
           </div>
         </section>
 
@@ -192,7 +184,7 @@ export default function TrustnessHome() {
           </div>
         </section>
       </div>
-    </main>
+    </div>
   );
 }
 

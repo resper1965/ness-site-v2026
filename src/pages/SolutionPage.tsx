@@ -62,12 +62,7 @@ const SolutionPage = () => {
           url: `${BRAND_DOMAINS[BRAND]}/solucoes/${slug}`
         }}
       />
-      <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen overflow-hidden"
-    >
+      <div className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen overflow-hidden">
       {/* Immersive Background for Solution Page */}
       <SolutionHeroBackground slug={slug!} />
 
@@ -92,12 +87,7 @@ const SolutionPage = () => {
           </Abertura>
         ) : (
         <div className={`mb-24 grid items-center gap-16 ${slug === 'autoops' ? 'lg:grid-cols-2' : 'max-w-3xl'}`}>
-          <motion.div
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="space-y-8"
-          >
+          <div className="space-y-8">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-2xl bg-primary-container/10 border border-primary-container/20 flex items-center justify-center">
                 <PageIcon className="text-primary-container" size={32} />
@@ -119,17 +109,12 @@ const SolutionPage = () => {
                 {t(`solutions.${slug}.cta`)}
               </button>
             </div>
-          </motion.div>
+          </div>
 
           {slug === 'autoops' && (
-            <motion.div
-              initial={{ scale: 0.96, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="relative"
-            >
+            <div className="relative">
               <ChatPreview />
-            </motion.div>
+            </div>
           )}
         </div>
         )}
@@ -227,8 +212,8 @@ const SolutionPage = () => {
             <PageIcon size={400} />
           </div>
           <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
-            <h4 className="text-3xl lg:text-5xl font-display font-medium text-white mb-6 tracking-tight lowercase">{t('solutions.cta_title', 'sua empresa em um novo nível')}<BlueDot /></h4>
-            <p className="text-lg text-on-surface-variant font-normal leading-relaxed mb-10">{t('solutions.cta_desc', 'descubra como a ness. pode transformar sua operação com inteligência e segurança de elite.')}</p>
+            <h4 className="text-3xl lg:text-5xl font-display font-medium text-white mb-6 tracking-tight lowercase">{t('solutions.cta_title', 'fale com o time que opera')}<BlueDot /></h4>
+            <p className="text-lg text-on-surface-variant font-normal leading-relaxed mb-10">{t('solutions.cta_desc', 'conte o cenário: você sai da conversa sabendo o que entra no escopo e o que fica de fora.')}</p>
             <button
               onClick={acionar}
               className="whitespace-nowrap rounded-full bg-primary-container px-10 py-5 font-display text-sm font-semibold uppercase tracking-widest text-on-primary shadow-lg shadow-primary-container/25 transition-all hover:brightness-110 hover:shadow-[0_0_28px_rgba(0,173,232,0.4)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container-low">
@@ -294,7 +279,7 @@ const SolutionPage = () => {
                       <span className="text-[11px] uppercase tracking-widest text-primary font-medium">{item.client}</span>
                       <h4 className="text-xl text-white mt-1 font-medium">{item.project}</h4>
                     </div>
-                    <ExternalLink className="text-on-surface-variant/60" size={20} />
+                    <ExternalLink className="text-on-surface-variant/80" size={20} />
                   </div>
                   <div className="p-4 rounded-xl bg-primary-container/5 border border-primary-container/10">
                     <p className="text-primary-container text-sm font-medium">{t('common.result')}: {item.result}</p>
@@ -310,7 +295,7 @@ const SolutionPage = () => {
         isOpen={isEmergencyChatOpen}
         onClose={() => setIsEmergencyChatOpen(false)}
       />
-    </motion.div>
+    </div>
     </>
   );
 };

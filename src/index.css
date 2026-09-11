@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* O Tailwind v4 varre o repositório inteiro. Sem isto, 34% do CSS do site
+   (491 seletores) vinha do canal/, outro projeto versionado aqui. */
+@source not "../canal";
+@source not "../canal-saas";
+
 /* ── Fontes self-host (woff2 variável, subsets latin / latin-ext) ─────────
    Inter e Montserrat são fontes variáveis: um arquivo cobre todos os pesos.
    Montserrat é a fonte de marca definida no brandbook — trocar por outra faz

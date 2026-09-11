@@ -34,7 +34,7 @@ export default function ForenseHome() {
   const situacoes = t('forense.quando.itens', { returnObjects: true }) as Situacao[];
 
   return (
-    <main className="bg-surface-container-lowest">
+    <div className="bg-surface-container-lowest">
       <Abertura
         fundo="forense"
         marca={<>forense<BlueDot />io</>}
@@ -102,7 +102,7 @@ export default function ForenseHome() {
           <Link to="/contato?ref=forense" className={BOTAO}>{t('forense.cta.btn')}</Link>
         </section>
       </div>
-    </main>
+    </div>
   );
 }
 

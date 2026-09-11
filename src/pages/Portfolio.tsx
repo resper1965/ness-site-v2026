@@ -42,12 +42,7 @@ const Portfolio = () => {
   const filteredCases = filter === "todos" ? cases : cases.filter(c => c.category === filter);
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen"
-    >
+    <div className="relative pt-32 pb-24 px-8 bg-surface-container-lowest min-h-screen">
       {/* Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className="absolute inset-0 bg-linear-to-b from-surface-container-lowest/40 via-surface-container-lowest/90 to-surface-container-lowest z-10"></div>
@@ -55,13 +50,9 @@ const Portfolio = () => {
 
       <div className="max-w-7xl mx-auto relative z-20">
         <div className="mb-16">
-          <motion.div
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            className="text-primary-container font-mono text-xs lowercase tracking-[0.3em] mb-6"
-          >
+          <div className="text-primary-container font-mono text-xs lowercase tracking-[0.3em] mb-6">
             {t('portfolio.badge', 'portfólio de impacto — ness. precision')}
-          </motion.div>
+          </div>
           <h1 className="text-3xl md:text-4xl font-display font-semibold text-white tracking-tight mb-6 lowercase">
             {t('portfolio.title')}<BlueDot />
           </h1>
@@ -76,6 +67,7 @@ const Portfolio = () => {
             <button
               key={cat}
               onClick={() => setFilter(cat)}
+              aria-pressed={filter === cat}
               className={`px-8 py-3 rounded-full text-[11px] uppercase tracking-widest font-medium transition-all ${
                 filter === cat 
                   ? "bg-primary-container text-on-primary shadow-lg shadow-primary-container/20" 
@@ -164,7 +156,7 @@ const Portfolio = () => {
                           </div>
                           <p className="text-on-surface-variant text-sm font-normal leading-relaxed mb-8 flex-1">{item.desc}</p>
                           <div className="pt-6 border-t border-white/5 flex items-center justify-between">
-                            <div className="text-[11px] uppercase tracking-widest text-on-surface-variant/60 font-medium">Licença</div>
+                            <div className="text-[11px] uppercase tracking-widest text-on-surface-variant/80 font-medium">Licença</div>
                             <div className="text-xs text-primary-container font-medium uppercase font-mono tracking-widest">{item.result}</div>
                           </div>
                         </div>
@@ -213,7 +205,7 @@ const Portfolio = () => {
                           </div>
                           <p className="text-on-surface-variant text-sm font-normal leading-relaxed mb-8 flex-1">{item.desc}</p>
                           <div className="pt-6 border-t border-white/5 flex items-center justify-between">
-                            <div className="text-[11px] uppercase tracking-widest text-on-surface-variant/60 font-medium">{t('common.result')}</div>
+                            <div className="text-[11px] uppercase tracking-widest text-on-surface-variant/80 font-medium">{t('common.result')}</div>
                             <div className="text-xs text-primary-container font-medium">{item.result}</div>
                           </div>
                         </div>
@@ -227,12 +219,7 @@ const Portfolio = () => {
         </div>
 
         {/* CTA - Trust & Authority (UI/UX Pro Max) */}
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true }}
-          className="mt-32 rounded-[3rem] overflow-hidden relative bg-surface-container-low p-12 md:p-24 border border-white/5 nebula-shadow"
-        >
+        <div className="mt-32 rounded-[3rem] overflow-hidden relative bg-surface-container-low p-12 md:p-24 border border-white/5 nebula-shadow">
           <div className="absolute inset-0 bg-linear-to-br from-primary/10 to-primary-container/10 opacity-50 backdrop-blur-md"></div>
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
             <div className="max-w-xl text-center md:text-left">
@@ -250,15 +237,11 @@ const Portfolio = () => {
               >
                 {t('common.contact_expert')}
               </Link>
-              <div className="flex items-center gap-2 opacity-60">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
-                <p className="text-[11px] uppercase tracking-widest font-medium">{t('portfolio.confidentiality', '100% de confidencialidade')}</p>
-              </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
