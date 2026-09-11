@@ -60,6 +60,9 @@ Ponto de partida, medido em produção:
   patch, que correm no ness.OS) e arquitetura de infraestrutura (desenhar e
   evoluir o ambiente on-premises, em nuvem ou híbrido). O FinOps sai do título
   e da descrição.
+- **n.devarch é uma célula** de desenvolvimento, arquitetura e segurança de
+  software: um time dedicado ao cliente, com foco em arquitetura, segurança ao
+  longo do ciclo de vida do desenvolvimento e testes.
 - **ness.OS** é a plataforma própria de operações de segurança da ness., usada
   pelo cliente e pelo time, que une infraestrutura e segurança numa esteira só,
   em três camadas:
@@ -188,7 +191,7 @@ Todas seguem a mesma dinâmica, a da abertura atual (`Abertura`):
 | n.secops | `severidade` | P1–P4 | o caminho do evento (fontes → AIOps, no ness.OS → time de segurança → você) aceso conforme o nível, fundido com a escada de severidade | ficha pronta |
 | n.cirt | `mesa-de-crise` | a fase (acionamento, contenção, retomada, lições) | quem está à mesa e o que cada um faz (comando da ness., TI, jurídico, comunicação, perícia); o registro e a notificação correm no n.csirt | rascunho a validar |
 | n.infraops | `demanda` | a demanda (usuário sem acesso, alerta de disco no servidor, patch do mês, nova filial precisa de rede) | qual frente cuida (atendimento, sustentação ou arquitetura), o caminho e o que chega para você; a sustentação corre no ness.OS | rascunho a validar |
-| n.devarch | `portoes` | o portão (revisão, segurança, homologação, produção) | o que é conferido e o que fica de evidência | rascunho a validar |
+| n.devarch | `portoes` | o portão (arquitetura, código, testes, homologação, produção) | o que é conferido em cada um (desenho revisado; revisão e análise de segurança do código e das dependências; testes automatizados e de segurança) e o que fica de evidência | rascunho a validar |
 | n.autoops | `antes-depois` | o processo (conceder acesso, aplicar patch, abrir chamado) | hoje à mão × com n.autoops, com a linha "← humano" onde a automação para | rascunho a validar |
 | ness.OS | `fronteira` | a ação (aplicar patch crítico em servidor de produção, isolar estação com malware, bloquear credencial anômala, atualizar aplicativo nas estações) | em que camada ela cai (ingestão e triagem, ação por runbook ou decisão humana) e se espera aprovação (GMUD); abaixo, a captura real com a etiqueta "dados de exemplo" quando chegar | texto do produto (11/09); captura aguarda |
 | n.csirt | `a-quem-notificar` | o incidente (ransomware em órgão federal, vazamento de dado pessoal, incidente em TO do setor elétrico, defacement) | o runbook que abre, a marcação TLP e quais reguladores recebem a notificação (CTIR Gov, CARCCiber/ONS, ANPD) | texto do produto (11/09); fundamentos a conferir; captura aguarda |
