@@ -42,7 +42,7 @@ Ponto de partida, medido em produção:
 | D12 | Páginas comuns **por empresa onde o conteúdo muda** (sobre, contato, portfólio, assessment); do grupo onde não muda (carreiras, blog, compliance, brandbook) | todas por empresa; todas do grupo |
 | D13 | **Arquitetura B**: páginas de conteúdo **sem JavaScript**, momentos em HTML e CSS nativos | enxugar o pacote mantendo a hidratação (fica como contingência); React Server Components (experimental) |
 | D14 | Os dois assessments online moram na **trustness.**; o de privacidade se chama **"maturidade em privacidade"** | nos três domínios; "maturidade LGPD" |
-| D15 | **Cinco plataformas** de software ao lado dos serviços: ness.OS e n.csirt na ness., n.iso e n.privacy na trustness., n.training nas duas (página na trustness.). Os serviços que rodam sobre elas as citam | — |
+| D15 | **Seis plataformas** de software ao lado dos serviços: ness.OS e n.csirt na ness., n.iso e n.privacy na trustness., e duas nas duas empresas, n.training (página na trustness.) e n.pentest (página na ness.). Os serviços que rodam sobre elas as citam | — |
 
 ## 3. Arquitetura de informação
 
@@ -50,8 +50,8 @@ Ponto de partida, medido em produção:
 
 | Empresa | Domínio | Produtos (slug) |
 |---|---|---|
-| **ness.** | ness.com.br | n.secops (`secops`), n.infraops (`infraops`), n.devarch (`devarch`), n.autoops (`autoops`), n.cirt (`cirt`); plataformas: **ness.OS** (`ness-os`), **n.csirt** (`n-csirt`) e **n.training** (página na trustness.) |
-| **trustness.** | trustness.com.br | auditoria e assessment (`auditoria`), ISO 27001 e governança (`iso-27001`), DPO como serviço (`dpo`), testes e vulnerabilidades (`testes`); plataformas: **n.iso** (`n-iso`), **n.privacy** (`n-privacy`) e **n.training** (`n-training`) |
+| **ness.** | ness.com.br | n.secops (`secops`), n.infraops (`infraops`), n.devarch (`devarch`), n.autoops (`autoops`), n.cirt (`cirt`); plataformas: **ness.OS** (`ness-os`), **n.csirt** (`n-csirt`), **n.pentest** (`n-pentest`) e **n.training** (página na trustness.) |
+| **trustness.** | trustness.com.br | auditoria e assessment (`auditoria`), ISO 27001 e governança (`iso-27001`), DPO como serviço (`dpo`), testes e vulnerabilidades (`testes`); plataformas: **n.iso** (`n-iso`), **n.privacy** (`n-privacy`), **n.training** (`n-training`) e **n.pentest** (página na ness.) |
 | **forense.io** | forense.io | perícia digital (`pericia`), assistência técnica e contraprova (`contraprova`), coleta preventiva (`coleta-preventiva`) |
 
 - **n.cirt é produto da ness., não vertical.**
@@ -70,7 +70,7 @@ Ponto de partida, medido em produção:
 
   Opera em nuvem, sem infraestrutura local no cliente, com os controles
   mapeados no CIS Controls v8 e na ISO/IEC 27001:2022, e recebe os achados dos
-  testes de intrusão para monitorar a superfície corrigida. **O n.secops e o
+  testes de intrusão do n.pentest para monitorar a superfície corrigida. **O n.secops e o
   n.infraops rodam sobre ele**: é o "portal da operação" que hoje aparece como
   entregável do n.secops. Grafia: **"OS" em maiúsculo**, a única exceção à
   marca em caixa baixa, com o ponto azul.
@@ -109,7 +109,15 @@ Ponto de partida, medido em produção:
   informação e privacidade. Pertence às duas empresas: a página mora na
   trustness.com.br, onde o serviço "ISO 27001 e governança" (treinamento e
   conscientização) a cita, e a ness. a lista nas suas plataformas com link para
-  lá, sem duplicar a página.- Os demais produtos da trustness. e da forense.io têm **nomes descritivos**.
+  lá, sem duplicar a página.
+- **n.pentest** é a plataforma de testes de intrusão **operada pela ness.**, não
+  pelo cliente. O cliente consome os resultados nela ou os exporta para a
+  plataforma de gestão de vulnerabilidades que já usa (hoje, o DefectDojo). Os
+  achados corrigidos voltam ao ness.OS, que passa a monitorar a superfície
+  corrigida. Pertence às duas empresas: a página mora na ness.com.br, e o
+  serviço "testes e vulnerabilidades" da trustness. roda sobre ele e aponta
+  para lá.
+- Os demais produtos da trustness. e da forense.io têm **nomes descritivos**.
 
 ### 3.2 Endereços
 
@@ -134,6 +142,7 @@ Feitos no Worker (`workers/app.ts`) antes de qualquer render, no mesmo mapa de
 | `/trustness` em trustness.com.br e `/forense` em forense.io | `/` |
 | `/assessment/*` em ness.com.br e forense.io | o mesmo caminho em trustness.com.br |
 | `ness.com.br/solucoes/n-training` | `https://trustness.com.br/solucoes/n-training` |
+| `trustness.com.br/solucoes/n-pentest` | `https://ness.com.br/solucoes/n-pentest` |
 
 As rotas `/trustness`, `/forense` e `/dpo-as-a-service` saem de
 `src/routes.ts`. O sitemap de cada domínio (`workers/sitemap.ts`) lista só as
@@ -151,8 +160,8 @@ Todas seguem a mesma dinâmica, a da abertura atual (`Abertura`):
 
 | Home | Linha | Pontos |
 |---|---|---|
-| ness. | "uma casa, o ciclo inteiro", **por tempo** | antes: **trustness.** (auditoria, ISO 27001, LGPD e DPO) → todo dia: **ness.** (a operação e a resposta; lista os cinco produtos, n.cirt incluído, e as plataformas ness.OS, n.csirt e n.training à parte; marcador cheio) → quando é preciso provar: **forense.io** (perícia digital com cadeia de custódia) |
-| trustness. | "medir, estruturar, testar, manter" | auditoria e assessment → ISO 27001 e governança → testes e vulnerabilidades → DPO como serviço; n.iso, n.privacy e n.training num grupo à parte, "plataformas" |
+| ness. | "uma casa, o ciclo inteiro", **por tempo** | antes: **trustness.** (auditoria, ISO 27001, LGPD e DPO) → todo dia: **ness.** (a operação e a resposta; lista os cinco produtos, n.cirt incluído, e as plataformas ness.OS, n.csirt, n.pentest e n.training à parte; marcador cheio) → quando é preciso provar: **forense.io** (perícia digital com cadeia de custódia) |
+| trustness. | "medir, estruturar, testar, manter" | auditoria e assessment → ISO 27001 e governança → testes e vulnerabilidades → DPO como serviço; n.iso, n.privacy, n.training e n.pentest num grupo à parte, "plataformas" |
 | forense.io | "da prova ao processo" | antes que ela suma: coleta preventiva → quando é preciso saber: perícia digital → quando há outro laudo: assistência técnica e contraprova |
 
 - **Faixa de presença global**, só na ness.: "clientes atendidos em brasil ·
@@ -167,7 +176,7 @@ Todas seguem a mesma dinâmica, a da abertura atual (`Abertura`):
 
 ## 5. Os momentos marcantes (frente 6)
 
-### 5.1 Os 17 momentos
+### 5.1 Os 18 momentos
 
 | Produto | Tipo | O leitor escolhe | A página mostra | Conteúdo |
 |---|---|---|---|---|
@@ -178,10 +187,11 @@ Todas seguem a mesma dinâmica, a da abertura atual (`Abertura`):
 | n.autoops | `antes-depois` | o processo (conceder acesso, aplicar patch, abrir chamado) | hoje à mão × com n.autoops, com a linha "← humano" onde a automação para | rascunho a validar |
 | ness.OS | `fronteira` | a ação (aplicar patch crítico em servidor de produção, isolar estação com malware, bloquear credencial anômala, atualizar aplicativo nas estações) | em que camada ela cai (ingestão e triagem, ação por runbook ou decisão humana) e se espera aprovação (GMUD); abaixo, a captura real com a etiqueta "dados de exemplo" quando chegar | texto do produto (11/09); captura aguarda |
 | n.csirt | `a-quem-notificar` | o incidente (ransomware em órgão federal, vazamento de dado pessoal, incidente em TO do setor elétrico, defacement) | o runbook que abre, a marcação TLP e quais reguladores recebem a notificação (CTIR Gov, CARCCiber/ONS, ANPD) | texto do produto (11/09); fundamentos a conferir; captura aguarda |
+| n.pentest | `ciclo-do-achado` | um achado | encontrado → validado pelo time → entregue (na plataforma ou exportado ao DefectDojo) → corrigido → retestado → monitorado no ness.OS: o achado não morre no PDF | texto do produto (11/09); captura aguarda |
 | auditoria e assessment | `regua` | o ponto de partida | as fases sobre a régua de 4 a 8 semanas | texto no ar |
 | ISO 27001 e governança | `rastreabilidade` | um controle do Anexo A da ISO 27001:2022 (5.15, 8.13, 6.3) | política → procedimento → controle → evidência que o auditor pede | rascunho a validar |
 | DPO como serviço | `ciclo` | um acontecimento (pedido de titular, incidente com dado pessoal, fornecedor novo) | por onde passa no ciclo, quem responde e onde fica registrado no n.privacy | texto no ar |
-| testes e vulnerabilidades | `matriz` | um achado | o quadrante de criticidade técnica × impacto no negócio, quem corrige e o reteste | rascunho a validar |
+| testes e vulnerabilidades | `matriz` | um achado | o quadrante de criticidade técnica × impacto no negócio, quem corrige e o reteste; os achados vivem no n.pentest | rascunho a validar |
 | n.iso | `jornada` | um controle do Anexo A (5.15, 8.13, 6.3) | aplicabilidade na declaração → risco ligado → evidência no cofre com o hash conferido → o que o auditor vê no portal; abaixo, a captura real com a etiqueta "dados de exemplo" quando chegar | texto do produto (11/09); captura aguarda |
 | n.privacy | `duas-leis` | um direito do titular (acesso, correção, eliminação, portabilidade) | o fundamento lado a lado, LGPD (art. 18) e GDPR (arts. 15, 16, 17 e 20), e o que a plataforma registra | texto do produto (11/09); captura aguarda |
 | n.training | `trilha` | o público (colaboradores, TI, liderança, quem trata dado pessoal) | a trilha de módulos e o que fica de evidência de conclusão, a prova que o controle 6.3 da ISO 27001 e o programa de privacidade pedem | rascunho a validar; captura aguarda |
@@ -222,8 +232,8 @@ SLA; o prazo fica na proposta.
 - **Celular:** o desenho tem versão própria quando o horizontal não cabe, e
   nunca rola para o lado.
 
-**Ordem:** n.secops (piloto) e ness.OS, que dividem o mesmo fluxo → perícia digital, auditoria, n.iso, n.privacy e n.csirt (conteúdo pronto) →
-os demais conforme as fichas forem validadas ; as capturas reais das cinco plataformas entram quando
+**Ordem:** n.secops (piloto) e ness.OS, que dividem o mesmo fluxo → perícia digital, auditoria, n.iso, n.privacy, n.csirt e n.pentest (conteúdo pronto) →
+os demais conforme as fichas forem validadas ; as capturas reais das seis plataformas entram quando
 chegarem.
 
 ## 6. Conteúdo e integridade
@@ -256,10 +266,13 @@ chegarem.
 - **Codinome de projeto nunca aparece**: nem no texto, nem em chave de i18n,
   identificador, rota, alt, branch, commit ou PR. O teste de integridade
   guarda só o SHA-256 dos codinomes, inclusive os escritos com ponto (PR #44).
-- **Nada de cliente real** vem de proposta, relatório ou pentest para o site:
-  nem nome, nem achado, nem exemplo.
+- **Documento de cliente não vira conteúdo.** Texto de produto tirado de
+  proposta ou relatório de um cliente serve só como descrição genérica: o nome
+  do cliente, os achados e os dados do ambiente dele nunca vão para o site.
 - **Como um produto é construído** (stack, linguagem, provedor, modelo) não
   aparece no site. A página do n.iso não menciona IA nem a integração por MCP.
+- **Integração só aparece quando já funciona:** hoje, a exportação do n.pentest
+  para o DefectDojo.
 - Do texto de produto do ness.OS ficam fora, até haver medição: "em minutos",
   "quase imediato", "redução drástica de ruído", "autônoma" como absoluto e
   a tabela comparativa com SOC e RMM "tradicionais".
@@ -363,7 +376,7 @@ Ricardo decide antes de seguir.
 | 3 | Globais sem JS | 2 | cabeçalho, menu, seletor, rodapé, chat, aviso de cookies, reforço |
 | 4 | Uma casa por empresa | 2 | rotas, guarda, 301, sitemap, fichas tipadas, páginas comuns por empresa |
 | 5 | As três homes | 3, 4 | seção 4 |
-| 6 | Os 17 momentos | 4 | `Momento` e um PR por leva de momentos |
+| 6 | Os 18 momentos | 4 | `Momento` e um PR por leva de momentos |
 | 7 | Acabamento | 5, 6 | seção 9 |
 
 Cada frente tem o seu plano de implementação e sai em PR com preview. Merge em
@@ -403,7 +416,7 @@ Cada frente tem o seu plano de implementação e sai em PR com preview. Merge em
 
 - **Time que opera:** validar as fichas no link de preview de cada PR.
 - **Ricardo:**
-  - enviar as capturas das cinco plataformas (ness.OS, n.csirt, n.iso, n.privacy e n.training);
+  - enviar as capturas das seis plataformas (ness.OS, n.csirt, n.pentest, n.iso, n.privacy e n.training);
   - fazer o merge do PR #44 (codinome);
   - decidir o que fazer com o codinome que ainda aparece em `canal/`, o
     sistema interno.
@@ -420,7 +433,7 @@ Cada frente tem o seu plano de implementação e sai em PR com preview. Merge em
 
 - **Desempenho:** LCP no celular de até 2,5 s em todas as rotas migradas,
   medido no Lighthouse da CI.
-- **Momentos:** os 17 no ar com ficha validada. As cinco plataformas saem com o momento desenhado e ganham a captura real depois.
+- **Momentos:** os 18 no ar com ficha validada. As seis plataformas saem com o momento desenhado e ganham a captura real depois.
 - **Qualidade:** nenhuma violação no axe, nenhuma rolagem lateral a 390 px e
   nenhuma alegação sem fonte, com os testes verdes.
 - **Auditoria:** a `/impeccable audit` final registrada e comparada com os
