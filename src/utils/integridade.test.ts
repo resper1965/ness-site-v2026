@@ -12,6 +12,17 @@ const arquivos = import.meta.glob(['../**/*.{ts,tsx,json}', '!../**/*.test.*', '
   eager: true,
 }) as Record<string, string>;
 
+/**
+ * Os documentos entram só na varredura de codinome: PESQUISA-metricas.md cita
+ * "100%" de propósito, para registrar o que foi vetado, e reprovaria os outros
+ * testes sem estar errado.
+ */
+const documentos = import.meta.glob(['../../*.md', '../../docs/**/*.md'], {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
+
 function ofensores(padrao: RegExp): string[] {
   return Object.entries(arquivos)
     .filter(([, texto]) => padrao.test(texto))
@@ -84,7 +95,7 @@ describe('integridade do que vai ao ar', () => {
     ]);
     const sha256 = (palavra: string) => createHash('sha256').update(palavra).digest('hex');
 
-    const achados = Object.entries(arquivos)
+    const achados = Object.entries({ ...arquivos, ...documentos })
       .filter(([, texto]) => {
         const minusculo = texto.toLowerCase();
         // Três leituras, porque o codinome aparece em qualquer grafia: camelCase

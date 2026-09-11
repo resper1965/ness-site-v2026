@@ -321,7 +321,7 @@ src/
 │   ├── BlueDot.tsx      # Assinatura visual
 │   ├── Navbar.tsx       # Multi-brand navigation
 │   ├── Footer.tsx       # Multi-brand footer
-│   ├── ChatbotWidget.tsx # Gabi.OS chatbot
+│   ├── ChatbotWidget.tsx # Gabi chatbot
 │   ├── LeadMagnet.tsx   # Email capture modal
 │   ├── ClientLogos.tsx  # Social proof
 │   ├── SchemaOrg.tsx    # SEO structured data

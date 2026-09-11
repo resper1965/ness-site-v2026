@@ -23,6 +23,19 @@ a discussão: **de onde saiu cada número** (sistema, planilha ou relatório —
 nome e onde fica) e **quem confirma**. Me passe isso e eu registro aqui, no
 mesmo commit da próxima mudança.
 
+## Encerrado — alegações confirmadas em 11/09/2026
+
+| Onde | Alegação | Fonte | Quem confirma | Revalidar em |
+|---|---|---|---|---|
+| ness. (home) | clientes atendidos em Brasil, Portugal, Chile, Peru, Colômbia e Estados Unidos | carteira de clientes | Ricardo Esper | 11/09/2027 |
+| ness.OS | toda ação fica numa trilha de auditoria imutável | o produto | Ricardo Esper | 11/09/2027 |
+| ness.OS | não exige infraestrutura local no cliente | o produto | Ricardo Esper | 11/09/2027 |
+| n.cirt | livro de decisões imutável | o produto | Ricardo Esper | 11/09/2027 |
+| n.cirt | opera fora de banda, em infraestrutura independente da rede da empresa | o produto | Ricardo Esper | 11/09/2027 |
+
+O texto de presença global diz sempre **"clientes atendidos"**, nunca
+"escritórios" nem "operação em".
+
 ## Aberto — as três que não têm denominador
 
 Estas não entram no encerramento acima porque a objeção não é sobre exatidão:

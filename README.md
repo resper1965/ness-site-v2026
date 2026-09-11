@@ -75,7 +75,7 @@ cd canal && npx wrangler deploy  # Worker → Cloudflare
 
 ### Site Público
 - **Design Imersivo** — Dark mode, glassmorphism, microanimações (Framer Motion)
-- **Gabi.OS Chatbot** — IA generativa com RAG (BGE embeddings + Vectorize + Llama 3)
+- **Gabi Chatbot** — IA generativa com RAG (BGE embeddings + Vectorize + Llama 3)
 - **SEO Agressivo** — JSON-LD, sitemap, robots.txt, OG images, canonical URLs
 - **Lead Magnets** — LGPD checklist, DevSecOps checklist, quiz interativo
 - **i18n** — Português, English, Español (react-i18next)
@@ -150,7 +150,7 @@ ness-site2026/
 | `GET` | `/api/jobs` | Lista vagas ativas |
 | `GET` | `/api/cases` | Lista casos do portfólio |
 | `GET` | `/api/cases/:slug` | Caso por slug |
-| `POST` | `/api/chat` | Chat com Gabi.OS (RAG + streaming) |
+| `POST` | `/api/chat` | Chat com Gabi (RAG + streaming) |
 | `POST` | `/api/forms` | Envio de formulário de contato |
 | `POST` | `/api/newsletter` | Inscrição na newsletter |
 | `POST` | `/api/incidents` | Reporte de incidente (n.cirt) |

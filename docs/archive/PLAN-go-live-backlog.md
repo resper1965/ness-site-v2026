@@ -17,7 +17,7 @@ Essa fase foca puramente em interligar a infraestrutura de Cloudflare Pages (Fro
 
 ### 1.2 Bootstrapping de Dados
 1. **Administração**: Realizar o `cURL` POST para o endpoint `/api/setup/admin` utilizando o header `x-setup-key`. Isso criará a super-conta utilizando as rotas da Better Auth.
-2. **Setup do Vectorize**: Chamar `/api/admin/seed-vectors`. Este processo fará a varredura (`RAG Embedding`) do site atual via Workers AI (`@cf/baai/bge-base-en-v1.5`) e armazenará os encodings no Cloudflare Vectorize para manter o contexto vivo do Chatbot Gabi.OS.
+2. **Setup do Vectorize**: Chamar `/api/admin/seed-vectors`. Este processo fará a varredura (`RAG Embedding`) do site atual via Workers AI (`@cf/baai/bge-base-en-v1.5`) e armazenará os encodings no Cloudflare Vectorize para manter o contexto vivo do Chatbot Gabi.
 
 ### 1.3 CORS e Roteamento
 - Configurar origin binding no `index.ts` do Canal para aceitar tráfego limpo das 3 custom domains (`ness.com.br`, `trustness.com.br`, `forense.io`) e branches em preview da Cloudflare `https://*.ness-site2026.pages.dev`.

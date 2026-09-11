@@ -38,7 +38,7 @@ curl -X POST https://canal.ness.com.br/api/setup/admin \
 
 ### 4. Seed de vetores (RAG do chatbot)
 
-Sem isso o chatbot Gabi.OS responde sem contexto real da empresa.
+Sem isso o chatbot Gabi responde sem contexto real da empresa.
 
 ```bash
 curl -X POST https://canal.ness.com.br/api/admin/seed-vectors \
@@ -145,6 +145,6 @@ O modal de emergência tem título, aviso e placeholder em português hardcoded 
 - [ ] CF Pages com `CANAL_WORKER_URL` configurado
 - [ ] Custom Domains adicionados para os 3 domínios
 - [ ] DNS apontando para CF Pages (registros CNAME)
-- [ ] Chatbot Gabi.OS respondendo com contexto real em produção
+- [ ] Chatbot Gabi respondendo com contexto real em produção
 - [ ] Newsletter testada (inscrição + confirmação)
 - [ ] Formulário de contato testado (recebe email via Resend)
