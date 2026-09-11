@@ -1,0 +1,354 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-11T00:00:00.000Z",
+  "title": "Design System: ness., trustness. e forense.io",
+  "extensions": {
+    "colorMeta": {
+      "primary-container": {
+        "role": "primary",
+        "displayName": "Azul da marca",
+        "canonical": "#00ade8",
+        "tonalRamp": ["#001a24", "#003549", "#00506e", "#006b93", "#0086b8", "#00ade8", "#5cc9f0", "#b3e8fa"]
+      },
+      "primary": {
+        "role": "secondary",
+        "displayName": "Azul claro",
+        "canonical": "#7bd0ff",
+        "tonalRamp": ["#031f31", "#08405f", "#0d618d", "#1282bc", "#3ba3dc", "#7bd0ff", "#a9e1ff", "#d6f0ff"]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Meia-noite",
+        "canonical": "#0b1326",
+        "tonalRamp": ["#060e20", "#0b1326", "#0f172a", "#222a3d", "#333c52", "#4a5570", "#6b768f", "#9aa3b8"]
+      },
+      "surface-container-lowest": {
+        "role": "neutral",
+        "displayName": "Meia-noite profunda",
+        "canonical": "#060e20"
+      },
+      "surface-container-low": {
+        "role": "neutral",
+        "displayName": "Ardósia baixa",
+        "canonical": "#0f172a"
+      },
+      "surface-container-high": {
+        "role": "neutral",
+        "displayName": "Ardósia média",
+        "canonical": "#222a3d"
+      },
+      "surface-container-highest": {
+        "role": "neutral",
+        "displayName": "Ardósia alta",
+        "canonical": "#333c52"
+      },
+      "on-surface": {
+        "role": "neutral",
+        "displayName": "Gelo azulado",
+        "canonical": "#dae2fd",
+        "tonalRamp": ["#151a2b", "#222a45", "#303b60", "#42507f", "#6172a3", "#8b9cc9", "#b3c0e7", "#dae2fd"]
+      },
+      "on-surface-variant": {
+        "role": "neutral",
+        "displayName": "Cinza de apoio",
+        "canonical": "#9db0c0"
+      },
+      "on-primary": {
+        "role": "neutral",
+        "displayName": "Azul de contraste",
+        "canonical": "#003549"
+      },
+      "status-critico": {
+        "role": "tertiary",
+        "displayName": "Crítico",
+        "canonical": "#ef4444"
+      },
+      "status-desenvolvimento": {
+        "role": "tertiary",
+        "displayName": "Em desenvolvimento",
+        "canonical": "#f59e0b"
+      },
+      "status-adequado": {
+        "role": "tertiary",
+        "displayName": "Adequado",
+        "canonical": "#22c55e"
+      },
+      "status-excelente": {
+        "role": "tertiary",
+        "displayName": "Excelente",
+        "canonical": "#3b82f6"
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "Branco de título",
+        "canonical": "#ffffff"
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Filete",
+        "canonical": "rgba(255, 255, 255, 0.1)"
+      },
+      "hairline-strong": {
+        "role": "neutral",
+        "displayName": "Filete estrutural",
+        "canonical": "rgba(255, 255, 255, 0.2)"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Só a abertura da home da ness. Degrau por ponto de parada: 34 px no celular, 44 px em sm, 56 px em lg."
+      },
+      "display-sm": {
+        "displayName": "Display em sm",
+        "purpose": "O degrau intermediário da abertura da home da ness."
+      },
+      "display-xs": {
+        "displayName": "Display no celular",
+        "purpose": "O degrau de celular da abertura da home da ness."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "A abertura de todas as outras telas. 32 px no celular, 40 px em sm, 48 px em lg."
+      },
+      "headline-sm": {
+        "displayName": "Headline em sm",
+        "purpose": "O degrau intermediário da abertura das demais telas."
+      },
+      "headline-xs": {
+        "displayName": "Headline no celular",
+        "purpose": "O degrau de celular da abertura das demais telas."
+      },
+      "title-block": {
+        "displayName": "Título de bloco",
+        "purpose": "O título de um bloco de oferta dentro de uma seção — a isca de material gratuito."
+      },
+      "title": {
+        "displayName": "Título de seção",
+        "purpose": "h2 de seção, em caixa baixa, sempre fechado com o ponto azul."
+      },
+      "brand": {
+        "displayName": "Marca",
+        "purpose": "A classe .marca: assinatura de marca e de produto, em caixa baixa, com o ponto no azul da marca. Nunca em título comum."
+      },
+      "body": {
+        "displayName": "Corpo",
+        "purpose": "Texto corrente, de 58 a 72 caracteres por linha. O lede da abertura sobe para 18 px em md."
+      },
+      "body-small": {
+        "displayName": "Corpo pequeno",
+        "purpose": "Item de lista, legenda de figura e texto de apoio dentro de um bloco."
+      },
+      "label": {
+        "displayName": "Rótulo",
+        "purpose": "Rótulo de coluna, de eixo e de estado, em caixa normal."
+      },
+      "mono": {
+        "displayName": "Monoespaçada",
+        "purpose": "Hash da cadeia de custódia."
+      },
+      "micro": {
+        "displayName": "Micro",
+        "purpose": "O menor texto do site: o número dentro do anel de 19 px e o nível de severidade sobre a régua do mês. Só existe dentro de um marcador."
+      },
+      "display-legacy": {
+        "displayName": "Display herdado",
+        "purpose": "Os 88 px do título da página do DPO, resto do desenho anterior. Nenhum desenho novo o usa; a tela desce para 48 px quando for redesenhada."
+      }
+    },
+    "shadows": [
+      {
+        "name": "nebula-shadow",
+        "value": "0 20px 40px rgba(0, 173, 232, 0.08)",
+        "purpose": "Só nos dois elementos que realmente flutuam: a barra de navegação em vidro e o menu suspenso de soluções."
+      },
+      {
+        "name": "glow-acao",
+        "value": "0 0 20px rgba(0, 173, 232, 0.25)",
+        "purpose": "Resposta ao hover do botão de ação. Nunca em repouso."
+      },
+      {
+        "name": "text-glow",
+        "value": "0 0 20px rgba(0, 173, 232, 0.4)",
+        "purpose": "Brilho de texto herdado, reservado a destaque pontual."
+      }
+    ],
+    "motion": [
+      {
+        "name": "fade-up",
+        "value": "0.7s cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Entrada padrão: 16 px de baixo para cima, com opacidade. Em CSS, sem biblioteca de animação."
+      },
+      {
+        "name": "fade-in",
+        "value": "1.2s ease-out",
+        "purpose": "Aparição da foto de fundo quando ela não é prioridade de carregamento."
+      },
+      {
+        "name": "menu-in",
+        "value": "0.25s ease-out",
+        "purpose": "Abertura do menu de tela cheia no celular."
+      },
+      {
+        "name": "escalonamento",
+        "value": "0.08s por passo, até 4 passos",
+        "purpose": "Atraso em cascata dos itens de uma lista que entra."
+      },
+      {
+        "name": "prefers-reduced-motion",
+        "value": "duração e transição a 0.01ms, uma repetição, rolagem sem suavização",
+        "purpose": "A preferência do sistema desliga tudo; nada pode reintroduzir movimento inline."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botão de ação",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "A ação principal de uma tela. Pílula de 44 px, que é também o alvo de toque.",
+      "html": "<button class=\"ds-btn-primary\">falar com um especialista</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; height: 44px; padding: 0 24px; border: none; border-radius: 9999px; background: var(--color-primary-container, #00ade8); color: var(--color-on-primary, #003549); font-family: Montserrat, ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: filter 0.2s, box-shadow 0.2s, transform 0.2s; } .ds-btn-primary:hover { filter: brightness(1.1); box-shadow: 0 0 20px rgba(0, 173, 232, 0.25); } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--color-surface-container-lowest, #060e20), 0 0 0 4px #ffffff; }"
+    },
+    {
+      "name": "Link sublinhado",
+      "kind": "button",
+      "refersTo": "link-inline",
+      "description": "O segundo caminho de uma tela. Não existe botão secundário: um botão e um link ordenam a decisão.",
+      "html": "<a class=\"ds-link-inline\" href=\"#\">ver quem age em cada nível</a>",
+      "css": ".ds-link-inline { display: inline-block; padding: 4px 0; color: #ffffff; font-family: Montserrat, ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 500; text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.25); text-underline-offset: 5px; transition: text-decoration-color 0.2s; } .ds-link-inline:hover { text-decoration-color: var(--color-primary-container, #00ade8); } .ds-link-inline:focus-visible { outline: 2px solid var(--color-primary-container, #00ade8); outline-offset: 2px; border-radius: 4px; }"
+    },
+    {
+      "name": "Título de seção",
+      "kind": "custom",
+      "description": "h2 de 24 px em Montserrat 500, caixa baixa, fechado com o ponto azul, sobre um bloco de no máximo 62 caracteres.",
+      "html": "<div class=\"ds-secao\"><h2 class=\"ds-secao-titulo\">onde acaba a nossa parte<span class=\"ds-ponto\">.</span></h2><p class=\"ds-secao-apoio\">O runbook, combinado no onboarding, é a linha.</p></div>",
+      "css": ".ds-secao { max-width: 62ch; } .ds-secao-titulo { margin: 0; font-family: Montserrat, ui-sans-serif, system-ui, sans-serif; font-size: 24px; font-weight: 500; letter-spacing: -0.025em; text-transform: lowercase; color: #ffffff; } .ds-ponto { color: var(--color-primary-container, #00ade8); letter-spacing: 0; } .ds-secao-apoio { margin: 12px 0 0; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.625; color: var(--color-on-surface-variant, #9db0c0); }"
+    },
+    {
+      "name": "Campo de formulário",
+      "kind": "input",
+      "refersTo": "field-text",
+      "description": "Campo de texto do formulário de contato. O rótulo fica acima, recuado para acompanhar o canto do campo.",
+      "html": "<label class=\"ds-field-label\" for=\"ds-email\">e-mail</label><input class=\"ds-field-text\" id=\"ds-email\" type=\"email\" placeholder=\"nome@empresa.com.br\">",
+      "css": ".ds-field-label { display: block; margin: 0 0 8px 24px; font-family: Montserrat, ui-sans-serif, system-ui, sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-on-surface-variant, #9db0c0); } .ds-field-text { width: 100%; box-sizing: border-box; padding: 16px 24px; border: 1px solid rgba(255, 255, 255, 0.35); border-radius: 16px; background: rgba(255, 255, 255, 0.05); color: #ffffff; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 16px; transition: border-color 0.2s, box-shadow 0.2s; } .ds-field-text::placeholder { color: var(--color-on-surface-variant, #9db0c0); } .ds-field-text:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--color-primary-container, #00ade8); } .ds-field-text[aria-invalid=\"true\"] { border-color: rgba(239, 68, 68, 0.6); }"
+    },
+    {
+      "name": "Barra de navegação",
+      "kind": "nav",
+      "refersTo": "nav-bar",
+      "description": "Barra flutuante em vidro, com a marca à esquerda e o item ativo no azul da marca. A marca muda com o domínio.",
+      "html": "<nav class=\"ds-nav\"><span class=\"ds-nav-marca\">ness<span class=\"ds-ponto\">.</span></span><span class=\"ds-nav-itens\"><a class=\"ds-nav-item ds-nav-item-ativo\" href=\"#\">soluções</a><a class=\"ds-nav-item\" href=\"#\">sobre</a></span></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 12px 32px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 9999px; background: rgba(51, 60, 82, 0.6); backdrop-filter: blur(24px); box-shadow: 0 20px 40px rgba(0, 173, 232, 0.08); } .ds-nav-marca { font-family: Montserrat, ui-sans-serif, system-ui, sans-serif; font-size: 24px; font-weight: 500; letter-spacing: -0.01em; text-transform: lowercase; color: #ffffff; } .ds-ponto { color: var(--color-primary-container, #00ade8); letter-spacing: 0; } .ds-nav-itens { display: flex; gap: 24px; } .ds-nav-item { font-family: Montserrat, ui-sans-serif, system-ui, sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none; color: var(--color-on-surface-variant, #9db0c0); transition: color 0.3s; } .ds-nav-item:hover { color: var(--color-primary, #7bd0ff); } .ds-nav-item-ativo { color: var(--color-primary-container, #00ade8); }"
+    },
+    {
+      "name": "Glifos por ator",
+      "kind": "custom",
+      "description": "Os três marcadores de 8 px que atravessam todos os diagramas: é o que dispensa legenda. O nome do ator vem sempre escrito ao lado.",
+      "html": "<ul class=\"ds-glifos\"><li><span class=\"ds-glifo ds-glifo-aiops\" aria-hidden=\"true\"></span>AIOps</li><li><span class=\"ds-glifo ds-glifo-time\" aria-hidden=\"true\"></span>time de segurança</li><li><span class=\"ds-glifo ds-glifo-voce\" aria-hidden=\"true\"></span>você</li></ul>",
+      "css": ".ds-glifos { display: flex; flex-wrap: wrap; gap: 20px; margin: 0; padding: 0; list-style: none; font-family: Montserrat, ui-sans-serif, system-ui, sans-serif; font-size: 12.5px; font-weight: 500; color: var(--color-on-surface-variant, #9db0c0); } .ds-glifos li { display: flex; align-items: center; gap: 8px; } .ds-glifo { display: inline-block; width: 8px; height: 8px; flex-shrink: 0; border-radius: 9999px; } .ds-glifo-aiops { background: var(--color-primary-container, #00ade8); } .ds-glifo-time { border: 1.5px solid var(--color-primary, #7bd0ff); } .ds-glifo-voce { background: var(--color-on-surface, #dae2fd); }"
+    },
+    {
+      "name": "Figura contida",
+      "kind": "card",
+      "refersTo": "card-outline",
+      "description": "A moldura padrão de um diagrama ou de um aparte: filete de 1 px, canto de 16 px, sem fundo e sem sombra.",
+      "html": "<figure class=\"ds-figura\"><strong class=\"ds-figura-titulo\">um caso, por dentro</strong><p class=\"ds-figura-texto\">Exemplo ilustrativo.</p></figure>",
+      "css": ".ds-figura { margin: 0; padding: 24px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; } .ds-figura-titulo { display: block; padding-bottom: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-family: Montserrat, ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 500; color: #ffffff; } .ds-figura-texto { margin: 16px 0 0; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 13px; line-height: 1.625; color: var(--color-on-surface-variant, #9db0c0); }"
+    },
+    {
+      "name": "Etapa de sequência",
+      "kind": "custom",
+      "description": "A linha do tempo: marcador em anel de 9 px e fio de 1 px. Vertical no celular, horizontal a partir de lg. Tracejado quando a etapa é condicional.",
+      "html": "<ol class=\"ds-etapas\"><li class=\"ds-etapa\"><span class=\"ds-etapa-marca\" aria-hidden=\"true\"></span>coleta</li><li class=\"ds-etapa\"><span class=\"ds-etapa-marca\" aria-hidden=\"true\"></span>preservação</li><li class=\"ds-etapa ds-etapa-desvio\"><span class=\"ds-etapa-marca\" aria-hidden=\"true\"></span>contraprova</li></ol>",
+      "css": ".ds-etapas { display: grid; gap: 20px; margin: 0; padding: 0; list-style: none; } @media (min-width: 1024px) { .ds-etapas { grid-auto-flow: column; gap: 0; } } .ds-etapa { position: relative; padding-left: 28px; font-family: Montserrat, ui-sans-serif, system-ui, sans-serif; font-size: 13.5px; font-weight: 500; line-height: 1.375; color: #ffffff; } .ds-etapa::before { content: \"\"; position: absolute; left: 4px; top: 18px; bottom: -20px; width: 1px; background: rgba(255, 255, 255, 0.2); } .ds-etapa:last-child::before { display: none; } .ds-etapa-marca { position: absolute; left: 0; top: 4px; width: 9px; height: 9px; box-sizing: border-box; border: 1px solid var(--color-primary-container, #00ade8); border-radius: 9999px; background: var(--color-surface-container-lowest, #060e20); } .ds-etapa-desvio .ds-etapa-marca { border-style: dashed; border-color: var(--color-on-surface-variant, #9db0c0); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "O desenho delicado",
+    "overview": "O site fala com um CISO que está comparando fornecedores e desconta tudo o que parece apresentação. Então a tela não convence pelo volume: convence porque o conteúdo tem forma. Um filete de 1 px separa; um círculo de 8 px diz quem age; um tracejado diz que existe uma condição ali. Nada é gritado, e nada é decorativo — todo traço na tela carrega uma informação que o texto teria de explicar em um parágrafo.\n\nO fundo é de meia-noite (#0b1326), sempre, nos três domínios: o tema é escuro por definição (color-scheme: dark), não por preferência do visitante. Sobre ele, a tipografia é contida — Montserrat 500 em títulos e marcas, Inter no corpo — e a escala é baixa de propósito: a maior linha do desenho novo tem 56 px. A abertura já esteve a 88 px, e a 88 px o site ficava grosseiro; a 32 px ficava pequeno demais. O tamanho de hoje é o piso da faixa Display do guia de marca. A página do DPO ainda abre com um título herdado de 88 px (5.5rem): é a última tela fora do desenho novo, e ela desce para 48 px quando for redesenhada.\n\nA cor aparece pouco. O azul da marca (#00ade8) é assinatura, não tinta: ele mora no ponto que fecha um nome, no marcador do ator automatizado, no botão de ação e no fio que indica sequência. Quando uma zona precisa de preenchimento, ela fica entre 4 % e 8 % de opacidade — ou não tem preenchimento nenhum. O que foi rejeitado tem nome: bloco cheio no lugar de filete, caixa com gradiente no lugar de linha, palavra pintada de azul dentro de um título, etiqueta em caixa alta acima da abertura e painel de exemplo apresentado como dado real.",
+    "keyCharacteristics": [
+      "Fundo de meia-noite fixo, sem tema claro.",
+      "Filete de 1 px como unidade de separação e de estrutura.",
+      "Preenchimento de 4 % a 8 %, ou nenhum.",
+      "Montserrat 500 em título e marca; Inter no corpo.",
+      "Um ponto azul por assinatura, e um marcador de 8 px por ator.",
+      "Diagrama em SVG de traço fino no lugar de card repetido.",
+      "Foto da marca só na abertura, sob véu em degradê."
+    ],
+    "rules": [
+      {
+        "name": "A regra do ponto azul",
+        "body": "O azul da marca só entra depois do nome de uma marca ou de um produto, como ponto final de um título de seção, no botão de ação, no marcador do AIOps e no fio da etapa em curso. Nunca dentro de um rótulo de botão ou de link, e nunca pintando uma palavra no meio de um título.",
+        "section": "colors"
+      },
+      {
+        "name": "A regra do preenchimento fraco",
+        "body": "Uma zona tintada fica entre 4 % e 8 % de opacidade, ou não tem preenchimento. Bloco cheio de cor é o desenho anterior.",
+        "section": "colors"
+      },
+      {
+        "name": "A regra do fundo único",
+        "body": "Não existe tema claro. A paleta é escrita uma vez, no @theme de src/index.css, e é a única fonte da verdade: classe de cor que não sai de um token do @theme não gera CSS e o elemento fica sem fundo, sem erro nenhum.",
+        "section": "colors"
+      },
+      {
+        "name": "A regra do 500",
+        "body": "Título e marca são Montserrat 500. Não existe 600 no desenho novo — o peso 600 que ainda aparece em blocos herdados é resto do desenho anterior, e sai quando o bloco for redesenhado. Peso novo escrito a 600 é regressão.",
+        "section": "typography"
+      },
+      {
+        "name": "A regra da marca desenhada",
+        "body": "Nome de marca no meio de um texto nunca sai como texto comum: passa por ComMarcas, que o escreve em Montserrat 500 com o ponto no azul da marca. Um ness. com o ponto cinza dentro de um parágrafo é a regra quebrada, e há teste e2e que reprova.",
+        "section": "typography"
+      },
+      {
+        "name": "A regra da caixa baixa",
+        "body": "Título de seção e nome de marca são escritos em caixa baixa. Micro-rótulo em caixa alta com tracking-widest só sobrevive nos blocos herdados; não se escreve um novo.",
+        "section": "typography"
+      },
+      {
+        "name": "A regra dos dois desenhos",
+        "body": "Um diagrama largo não é escalado para o celular: são dois desenhos do mesmo grafo, um horizontal e um vertical, cada um com o seu viewBox, e o outro fica escondido. Escalar levaria o rótulo de 11,5 px para 4 px.",
+        "section": "layout"
+      },
+      {
+        "name": "A regra do filete",
+        "body": "Profundidade se faz com uma linha de 1 px, não com uma sombra. Se um bloco precisa se separar do vizinho, ele ganha border-t a 10 % de branco — não um fundo, não um card, não uma elevação.",
+        "section": "elevation"
+      },
+      {
+        "name": "A regra do tracejado",
+        "body": "Tracejado quer dizer condição ou limite, nunca decoração: o limite do runbook, o limite do contrato, o desvio que só acontece se o contato não responder, o ciclo que se repete, a fronteira do que a ness. opera. Linha cheia é o que sempre acontece.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do separar com um filete de 1 px a 10 % de branco antes de pensar em card.",
+      "Do fechar todo título de seção com o ponto azul, e escrever o título em caixa baixa, Montserrat 500 a 24 px.",
+      "Do escrever nome de marca no meio de um parágrafo através de ComMarcas, para que saia em Montserrat 500 com o ponto no azul da marca.",
+      "Do usar os três marcadores de ator de 8 px sempre que um desenho disser quem faz o quê, e escrever o nome do ator ao lado.",
+      "Do desenhar duas versões de um diagrama largo — uma horizontal e uma vertical — em vez de escalar uma só.",
+      "Do manter o alvo de toque em 44 px nas ações e o anel de foco visível em tudo que recebe teclado.",
+      "Do rotular dado de exemplo como exemplo, dentro da própria figura.",
+      "Do respeitar prefers-reduced-motion: a folha de estilo já zera duração e repetição, e nada pode reintroduzi-las inline."
+    ],
+    "donts": [
+      "Don't escrever título em Montserrat 600 — o desenho é 500.",
+      "Don't pintar uma palavra de azul dentro de um título, nem pôr etiqueta em caixa alta acima da abertura.",
+      "Don't preencher uma zona acima de 8 % de opacidade.",
+      "Don't pôr sombra em superfície em repouso; sombra é resposta a estado.",
+      "Don't usar tracejado como decoração — ele significa condição ou limite.",
+      "Don't pôr dois botões lado a lado: a segunda ação é um link sublinhado.",
+      "Don't escrever uma classe de cor fora dos tokens do @theme (bg-surface-container sem sufixo não existe, não gera CSS e falha em silêncio; há teste que reprova).",
+      "Don't usar foto fora da abertura, nem foto sem véu em degradê e sem brilho central.",
+      "Don't apresentar painel ou telemetria de mentira como se fosse dado real."
+    ]
+  }
+}

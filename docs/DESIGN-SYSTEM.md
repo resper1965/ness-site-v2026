@@ -1,5 +1,9 @@
 # DESIGN-SYSTEM.md — ness. Universal Design System
 
+> **Documento anterior (24/04/2026), mantido como histórico.** O design system
+> vigente está em [`DESIGN.md`](../DESIGN.md), na raiz, gerado do que está no
+> ar. Onde os dois divergirem, vale o da raiz.
+
 > Guia universal de identidade visual e design system para aplicação em **todos os contextos**: site, relatórios, apresentações, emails, documentos, dashboards e materiais impressos.
 
 ---
