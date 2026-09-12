@@ -22,10 +22,17 @@
     "know_ness": "conozca a ness",
     "since": "desde {{year}}",
     "subtitle_clear": "operaciones de seguridad 24×7, infraestructura, ingeniería de software, privacidad y peritaje digital para empresas que no pueden parar. {{years}} años entregando con precisión.",
-    "cta_primary": "hablar con un especialista"
+    "cta_primary": "hablar con un especialista",
+    "linha": {
+      "titulo": "una casa, el ciclo entero",
+      "antes": { "quando": "antes", "marca": "trustness.", "texto": "auditoría, ISO 27001, privacidad y DPO" },
+      "todo_dia": { "quando": "todos los días", "marca": "ness.", "texto": "la operación y la respuesta" },
+      "provar": { "quando": "cuando hay que probarlo", "marca": "forense.io", "texto": "peritaje digital con cadena de custodia" }
+    }
   },
   "presence": {
     "global": "presencia global",
+    "clientes": "clientes atendidos",
     "locations": {
       "brazil": "brasil",
       "portugal": "portugal",
@@ -417,6 +424,12 @@
       "cta1": "solicitar peritaje",
       "cta2": "ver recursos forenses"
     },
+    "linha": {
+      "titulo": "de la prueba al proceso",
+      "coleta": { "quando": "antes de que desaparezca", "texto": "recolección preventiva" },
+      "pericia": { "quando": "cuando hay que saber", "texto": "peritaje digital" },
+      "contraprova": { "quando": "cuando hay otro informe", "texto": "asistencia técnica y contraperitaje" }
+    },
     "why": {
       "title": "por qué importa",
       "desc": "La evidencia digital es volátil y puede destruirse en minutos. El análisis forense es vital para el cumplimiento, juicios o investigaciones corporativas. forense.io sigue marcos internacionales meticulosamente para preservar la evidencia legal.",
@@ -561,6 +574,13 @@
       "subtitle": "auditorías independientes, assessments de seguridad y consultoría en conformidad (ISO 27001, GDPR, SOC 2) — informes ejecutivos.",
       "cta1": "solicitar assessment",
       "cta2": "hablar con especialista"
+    },
+    "linha": {
+      "titulo": "medir, estructurar, probar, mantener",
+      "medir": { "quando": "medir", "texto": "auditoría y assessment" },
+      "estruturar": { "quando": "estructurar", "texto": "ISO 27001 y gobernanza" },
+      "testar": { "quando": "probar", "texto": "pruebas y vulnerabilidades" },
+      "manter": { "quando": "mantener", "texto": "DPO como servicio" }
     },
     "why": {
       "title": "por qué importa",

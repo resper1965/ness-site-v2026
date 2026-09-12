@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import BlueDot from "../../components/BlueDot";
 import Abertura, { BOTAO, CabecalhoDeSecao, LINK } from "../../components/Abertura";
+import LinhaDaEmpresa from "../../components/LinhaDaEmpresa";
 import LeadMagnet from "../../components/LeadMagnet";
 import ComMarcas from "../../components/ComMarcas";
 import { homeMeta, routeMeta } from '../../utils/meta';
@@ -76,6 +77,19 @@ export default function TrustnessHome() {
         fundo="trustness"
         marca={<>trustness<BlueDot /></>}
         titulo={t('trustness.hero.titulo')}
+        /* A linha da trustness. (spec, seção 4): medir, estruturar, testar,
+           manter. Link só onde o alvo existe nesta página. */
+        aoLado={
+          <LinhaDaEmpresa
+            titulo={t('trustness.linha.titulo')}
+            pontos={[
+              { quando: t('trustness.linha.medir.quando'), texto: t('trustness.linha.medir.texto'), href: '#auditoria', externo: true },
+              { quando: t('trustness.linha.estruturar.quando'), texto: t('trustness.linha.estruturar.texto') },
+              { quando: t('trustness.linha.testar.quando'), texto: t('trustness.linha.testar.texto') },
+              { quando: t('trustness.linha.manter.quando'), texto: t('trustness.linha.manter.texto'), href: '#dpo', externo: true },
+            ]}
+          />
+        }
         acoes={
           <>
             <Link to="/contato?ref=trustness" className={BOTAO}>{t('trustness.hero.cta')}</Link>

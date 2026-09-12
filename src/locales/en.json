@@ -22,10 +22,17 @@
     "know_ness": "know ness",
     "since": "since {{year}}",
     "subtitle_clear": "24×7 security operations, infrastructure, software engineering, data privacy and digital forensics for companies that cannot stop. {{years}} years delivering with precision.",
-    "cta_primary": "talk to a specialist"
+    "cta_primary": "talk to a specialist",
+    "linha": {
+      "titulo": "one house, the whole cycle",
+      "antes": { "quando": "before", "marca": "trustness.", "texto": "audit, ISO 27001, privacy law and DPO" },
+      "todo_dia": { "quando": "every day", "marca": "ness.", "texto": "the operation and the response" },
+      "provar": { "quando": "when you have to prove it", "marca": "forense.io", "texto": "digital forensics with chain of custody" }
+    }
   },
   "presence": {
     "global": "global presence",
+    "clientes": "clients served",
     "locations": {
       "brazil": "brazil",
       "portugal": "portugal",
@@ -417,6 +424,12 @@
       "cta1": "request forensics",
       "cta2": "view forensic resources"
     },
+    "linha": {
+      "titulo": "from evidence to court",
+      "coleta": { "quando": "before it disappears", "texto": "preventive collection" },
+      "pericia": { "quando": "when you need to know", "texto": "digital forensics" },
+      "contraprova": { "quando": "when there is another report", "texto": "technical assistance and counter-analysis" }
+    },
     "why": {
       "title": "why it matters",
       "desc": "Digital evidence is volatile and can be destroyed in minutes. Digital forensics is essential for judicial investigations, incident response, and compliance. forense.io conducts expertise with ISO 27037/27042 methodology, preserving the chain of custody and producing defensible reports in court.",
@@ -561,6 +574,13 @@
       "subtitle": "independent audits, security assessments, and compliance consulting (ISO 27001, GDPR, SOC 2) — with executive reports and actionable roadmaps.",
       "cta1": "request assessment",
       "cta2": "talk to a specialist"
+    },
+    "linha": {
+      "titulo": "measure, structure, test, maintain",
+      "medir": { "quando": "measure", "texto": "audit and assessment" },
+      "estruturar": { "quando": "structure", "texto": "ISO 27001 and governance" },
+      "testar": { "quando": "test", "texto": "testing and vulnerabilities" },
+      "manter": { "quando": "maintain", "texto": "DPO as a service" }
     },
     "why": {
       "title": "why it matters",

@@ -59,6 +59,8 @@ export default function Abertura({
   fundo,
   base = 'lowest',
   destaque = false,
+  aoLado,
+  abaixo,
 }: {
   marca?: ReactNode;
   titulo: ReactNode;
@@ -67,12 +69,26 @@ export default function Abertura({
   fundo?: Brand;
   base?: keyof typeof BASE;
   destaque?: boolean;
+  /** O segundo plano da primeira tela: a linha da empresa, à direita a partir
+   *  de 1024 px e abaixo do texto no celular (C2). */
+  aoLado?: ReactNode;
+  /** O que fecha a coluna de texto, abaixo das ações — a faixa de presença. */
+  abaixo?: ReactNode;
 }) {
   const palavras = typeof titulo === 'string' ? titulo.split(/\s+/).filter(Boolean).length : 0;
   const pouso = atrasoDoTitulo(palavras);
 
-  const conteudo = (
-    <div className="relative mx-auto grid max-w-3xl justify-items-center gap-5 text-center">
+  // Com o segundo plano, a abertura deixa de ser um bloco centrado: o texto
+  // encosta à esquerda nas colunas 1–7 e a linha ocupa as 8–12. Sem ele, é
+  // exatamente a abertura de antes — centrada, em 768 px.
+  const texto = (
+    <div
+      className={
+        aoLado
+          ? 'grid justify-items-start gap-5 text-left lg:col-span-7'
+          : 'relative mx-auto grid max-w-3xl justify-items-center gap-5 text-center'
+      }
+    >
       {marca && <p className="marca entra text-lg text-white" style={sequencia(0)}>{marca}</p>}
       <h1
         /* A escala é fluida por token (C1): parte do tamanho que o celular já
@@ -88,11 +104,34 @@ export default function Abertura({
         {comMarcas(children)}
       </p>
       {acoes && (
-        <div className="entra flex flex-wrap items-center justify-center gap-x-6 gap-y-3 pt-3" style={sequencia(1, `${pouso + 120}ms`)}>
+        <div
+          className={`entra flex flex-wrap items-center gap-x-6 gap-y-3 pt-3 ${aoLado ? 'justify-start' : 'justify-center'}`}
+          style={sequencia(1, `${pouso + 120}ms`)}
+        >
           {acoes}
         </div>
       )}
+      {abaixo && (
+        <div className="entra pt-4" style={sequencia(2, `${pouso + 120}ms`)}>
+          {abaixo}
+        </div>
+      )}
     </div>
+  );
+
+  // Sem o segundo plano, a abertura é exatamente a de antes. Com ele, vira a
+  // mesma grade de doze colunas do resto do site (C1): texto nas sete
+  // primeiras, linha nas cinco últimas. No celular a linha cai para baixo do
+  // texto, que é o que a spec descreve.
+  const conteudo = aoLado ? (
+    <div className="relative mx-auto grid w-full max-w-7xl gap-12 lg:grid-cols-12 lg:items-center lg:gap-8">
+      {texto}
+      <div className="entra lg:col-span-5" style={sequencia(3, `${pouso + 120}ms`)}>
+        {aoLado}
+      </div>
+    </div>
+  ) : (
+    texto
   );
 
   if (!fundo) return <div className="mb-20">{conteudo}</div>;

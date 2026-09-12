@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import BlueDot from "../../components/BlueDot";
 import Abertura, { BOTAO, CabecalhoDeSecao, LINK } from "../../components/Abertura";
+import LinhaDaEmpresa from "../../components/LinhaDaEmpresa";
 import { homeMeta, routeMeta } from '../../utils/meta';
 
 /**
@@ -39,6 +40,19 @@ export default function ForenseHome() {
         fundo="forense"
         marca={<>forense<BlueDot />io</>}
         titulo={t('forense.hero.titulo')}
+        /* A linha da forense.io (spec, seção 4): da prova ao processo. Só a
+           perícia tem alvo nesta página; os outros dois pontos ficam sem link
+           até existir a página correspondente. */
+        aoLado={
+          <LinhaDaEmpresa
+            titulo={t('forense.linha.titulo')}
+            pontos={[
+              { quando: t('forense.linha.coleta.quando'), texto: t('forense.linha.coleta.texto') },
+              { quando: t('forense.linha.pericia.quando'), texto: t('forense.linha.pericia.texto'), href: '#cadeia', externo: true },
+              { quando: t('forense.linha.contraprova.quando'), texto: t('forense.linha.contraprova.texto') },
+            ]}
+          />
+        }
         acoes={
           <>
             <Link to="/contato?ref=forense" className={BOTAO}>{t('forense.hero.cta')}</Link>
