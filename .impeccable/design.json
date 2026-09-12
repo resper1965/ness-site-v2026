@@ -58,40 +58,54 @@
         "displayName": "Azul de contraste",
         "canonical": "#003549"
       },
-      "status-critico": {
+      "inline-status-critico": {
         "role": "tertiary",
         "displayName": "Crítico",
-        "canonical": "#ef4444"
+        "canonical": "#ef4444",
+        "themeToken": false,
+        "source": "src/data/assessments.ts (hex cru, aplicado inline — não é token do @theme)"
       },
-      "status-desenvolvimento": {
+      "inline-status-desenvolvimento": {
         "role": "tertiary",
         "displayName": "Em desenvolvimento",
-        "canonical": "#f59e0b"
+        "canonical": "#f59e0b",
+        "themeToken": false,
+        "source": "src/data/assessments.ts (hex cru, aplicado inline — não é token do @theme)"
       },
-      "status-adequado": {
+      "inline-status-adequado": {
         "role": "tertiary",
         "displayName": "Adequado",
-        "canonical": "#22c55e"
+        "canonical": "#22c55e",
+        "themeToken": false,
+        "source": "src/data/assessments.ts (hex cru, aplicado inline — não é token do @theme)"
       },
-      "status-excelente": {
+      "inline-status-excelente": {
         "role": "tertiary",
         "displayName": "Excelente",
-        "canonical": "#3b82f6"
+        "canonical": "#3b82f6",
+        "themeToken": false,
+        "source": "src/data/assessments.ts (hex cru, aplicado inline — não é token do @theme)"
       },
-      "white": {
+      "inline-white": {
         "role": "neutral",
         "displayName": "Branco de título",
-        "canonical": "#ffffff"
+        "canonical": "#ffffff",
+        "themeToken": false,
+        "source": "utilitário nativo do Tailwind (text-white, bg-white/…) — não é token do @theme"
       },
-      "hairline": {
+      "inline-hairline": {
         "role": "neutral",
         "displayName": "Filete",
-        "canonical": "rgba(255, 255, 255, 0.1)"
+        "canonical": "rgba(255, 255, 255, 0.1)",
+        "themeToken": false,
+        "source": "utilitário nativo do Tailwind (border-white/10) — não é token do @theme"
       },
-      "hairline-strong": {
+      "inline-hairline-strong": {
         "role": "neutral",
         "displayName": "Filete estrutural",
-        "canonical": "rgba(255, 255, 255, 0.2)"
+        "canonical": "rgba(255, 255, 255, 0.2)",
+        "themeToken": false,
+        "source": "utilitário nativo do Tailwind (border-white/20) — não é token do @theme"
       }
     },
     "typographyMeta": {

@@ -80,10 +80,4 @@ describe('conteúdo das soluções', () => {
       expect(dados.useCases ?? []).toEqual([]);
     });
   }
-
-  // O n.infraops é atendimento, sustentação técnica e arquitetura; o FinOps
-  // saiu do produto em 11/09.
-  it('o n.infraops não fala em FinOps', () => {
-    expect(textos(solutionsData.infraops).filter((t) => /finops/i.test(t))).toEqual([]);
-  });
 });

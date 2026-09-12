@@ -90,8 +90,8 @@ Duas coisas que um concorrente vizinho não copia com verdade:
 
 **Restrições:**
 
-- Nenhuma alegação absoluta sem fonte (`100%`, `0 gaps`, `zero downtime`);
-  há teste que falha se aparecer uma.
+- Nenhuma alegação absoluta sem fonte (`100%`, `0 gaps`, `zero downtime`) nas
+  páginas de produto; há teste que falha se aparecer uma ali.
 - Nada de telemetria inventada nem mock de painel apresentado como dado real.
   Tela de produto só com dado de exemplo rotulado como exemplo.
 - **Codinome de projeto nunca aparece**: nem no texto, nem em chave de i18n,

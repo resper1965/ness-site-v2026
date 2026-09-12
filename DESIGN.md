@@ -12,13 +12,15 @@ colors:
   on-surface: "#dae2fd"
   on-surface-variant: "#9db0c0"
   on-primary: "#003549"
-  status-critico: "#ef4444"
-  status-desenvolvimento: "#f59e0b"
-  status-adequado: "#22c55e"
-  status-excelente: "#3b82f6"
-  white: "#ffffff"
-  hairline: "rgba(255, 255, 255, 0.1)"
-  hairline-strong: "rgba(255, 255, 255, 0.2)"
+  # As chaves abaixo não são tokens do @theme (src/index.css) — ver seção
+  # "Estado" e o bloco Neutral em Colors para a fonte de cada uma.
+  inline-status-critico: "#ef4444"
+  inline-status-desenvolvimento: "#f59e0b"
+  inline-status-adequado: "#22c55e"
+  inline-status-excelente: "#3b82f6"
+  inline-white: "#ffffff"
+  inline-hairline: "rgba(255, 255, 255, 0.1)"
+  inline-hairline-strong: "rgba(255, 255, 255, 0.2)"
 typography:
   display:
     fontFamily: "Montserrat, Montserrat Fallback, ui-sans-serif, system-ui, sans-serif"
@@ -228,7 +230,8 @@ Paleta de um acento só sobre uma escala de superfícies azuladas: tudo o que n�
   `surface-container-low/high/highest`): as superfícies que se levantam um
   degrau — o menu suspenso, a barra de navegação em vidro, a barra de rolagem.
 - **Branco** (`#ffffff`): título e nome de marca. Nenhum título é escrito no
-  cinza do corpo.
+  cinza do corpo. Não é um token do `@theme` — é a cor `white` nativa do
+  Tailwind, escrita como `text-white`, `bg-white/…` etc.
 - **Gelo azulado** (`#dae2fd`, token `on-surface`): o texto corrente e o
   marcador do terceiro ator, você.
 - **Cinza de apoio** (`#9db0c0`, token `on-surface-variant`): apoio, legenda,
@@ -238,13 +241,20 @@ Paleta de um acento só sobre uma escala de superfícies azuladas: tudo o que n�
 - **Filete** (`rgba(255,255,255,0.1)` e `rgba(255,255,255,0.2)`): a linha de
   1 px que separa item de item, seção de seção e zona de zona. A mais forte
   (20 %) é a que o leitor precisa ver como estrutura; a mais fraca (10 %), a que
-  ele só percebe quando procura.
+  ele só percebe quando procura. Nenhuma das duas é um token do `@theme` — são
+  opacidades do branco nativo do Tailwind, escritas como `border-white/10` e
+  `border-white/20`.
 
 ### Estado
 
 Quatro cores fora da paleta, e só elas: o resultado dos assessments, onde o
 nível de maturidade precisa de uma escala que o leitor já reconhece de outros
 lugares. Nunca entram em superfície, em texto corrido nem em gráfico decorativo.
+
+Nenhuma das quatro é um token do `@theme` de `src/index.css` — não existe
+`bg-status-critico` nem equivalente, e escrever uma dessas classes não gera
+CSS. Elas vivem como hex cru em `src/data/assessments.ts` e são aplicadas
+inline (`style={{ color: ... }}`), fora do sistema de tokens.
 
 - **Crítico** (`#ef4444`): faixa de 0 a 30 pontos. É também a borda do campo de
   formulário com erro, sempre acompanhada da mensagem — a cor nunca é o único

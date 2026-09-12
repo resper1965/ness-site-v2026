@@ -80,7 +80,14 @@ describe('integridade do que vai ao ar', () => {
   // o ator automatizado é o AIOps, e o n.autoops é gestão de automações, sem IA
   // (PRODUCT.md, 11/09).
   it('nenhum produto vendido como agente de IA ou copiloto', () => {
-    expect(ofensores(/agentes (de IA|de intelig|autônomos|neuro)|AI agents?|co-?pilot|copiloto/i)).toEqual([]);
+    expect(ofensores(/agentes?\s+(de IA|de intelig|autônomos|neuro)|AI agents?|co-?pilot|copiloto/i)).toEqual([]);
+  });
+
+  // O n.infraops é atendimento, sustentação técnica e arquitetura; o FinOps
+  // saiu do produto em 11/09. A guarda cobre todo o src/ — não só os dados do
+  // produto — porque o termo podia voltar por i18n.ts ou pelos locales.
+  it('nenhuma menção a FinOps no site', () => {
+    expect(ofensores(/finops/i)).toEqual([]);
   });
 
   // Codinome de projeto não é marca: nunca vai ao ar, nem em identificador ou
