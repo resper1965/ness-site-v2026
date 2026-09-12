@@ -381,16 +381,21 @@ gastar um ciclo de CI.
 
 - **LCP:** `/forense` sem JavaScript fecha em **1,98 s** (mediana de três
   execuções — 1979,49 / 1980,16 / 1984,34 ms; o pior caso também fica abaixo
-  da meta). No mesmo ambiente, a home da forense.io **hidratada** — servida
+  da meta). Essa corrida usou uma versão anterior e menor do `reforço`, de
+  1925 bytes; 700 bytes a mais num script `defer` não movem a marca, mas
+  quem dá o número do arquivo de hoje é a CI. No mesmo ambiente, a home da
+  forense.io **hidratada** — servida
   pelo mesmo preview local, que resolve `/` como forense.io independente do
   Host — mede **4,04 s**, numa única execução, sem o mesmo rigor de três
   corridas porque não é ela quem está sob prova. É o par que interessa (a
   mesma marca, hidratada contra sem JavaScript); a home institucional da
   ness. não foi medida nesta prova.
-- **Script:** `/forense` baixa **~2,1 KB** — só o `reforço`
-  (`public/reforco.js`) — contra **~287 KB** em 40 scripts na `/`. O
-  orçamento da faixa estrita é 10 KiB; sobra folga de **7,9 KiB**
-  (10240 − 2111 bytes).
+- **Script:** `/forense` carrega só o `reforço` (`public/reforco.js`), que
+  mede **2624 bytes** em disco, contra **~287 KB** em 40 scripts na `/`. O
+  orçamento da faixa estrita é 10 KiB, então sobra folga de **7,4 KiB**
+  mesmo contando o arquivo sem compressão (10240 − 2624 bytes). O número
+  transferido que a medição registrou — 2111 bytes — é de uma versão
+  anterior e menor do arquivo; o atual sai da corrida que a CI roda no PR.
 - **e2e:** os dois testes de `tests/site/sem-js.spec.ts` fecham verdes nos
   dois perfis (mobile e desktop), quatro execuções: um confere status 200 e
   que só `/reforco.js` é carregado (allow-list, nenhum outro script) — a
@@ -419,7 +424,7 @@ gastar um ciclo de CI.
   link para `/contato?ref=chat`, com o mesmo alvo de toque e o mesmo evento
   de conversão. A regra era "B primeiro, ilha de verdade (alternativa A) só
   se a medição mostrar folga", decidida antes de a medição rodar. A medição
-  saiu com folga — mais de 500 ms e 7,9 KiB de sobra —, mas nenhuma tarefa
+  saiu com folga — mais de 500 ms e 7,4 KiB de sobra —, mas nenhuma tarefa
   reabriu a escolha para trocar pela ilha; B é o que segue para a frente 3.
 
 **Veredito:** o critério de aceitação (LCP abaixo de 2,5 s) passou com
