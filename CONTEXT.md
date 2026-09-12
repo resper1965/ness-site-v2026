@@ -61,7 +61,8 @@ Este é o documento de planejamento central. Contém:
 | [`README.md`](README.md) | Visão geral, quick start, API reference |
 | [`docs/PLAN-epics-roadmap.md`](docs/PLAN-epics-roadmap.md) | **Roadmap Master** (contexto obrigatório) |
 | [`docs/PLAN-performance-ux-comercial.md`](docs/PLAN-performance-ux-comercial.md) | **Plano de performance** (técnica, UX/UI, comercial) — ondas 0–4, KPIs e inventário de achados |
-| [`docs/PLAN-movimento.md`](docs/PLAN-movimento.md) | **Plano de movimento** — a camada de animação sobre o desenho delicado (proposta de 12/09, a decidir) |
+| [`docs/PLAN-movimento.md`](docs/PLAN-movimento.md) | **Plano de movimento** — a camada de animação sobre o desenho delicado (aprovado em 12/09; M1–M3 no PR #49) |
+| [`docs/ESTUDO-desktop-wow.md`](docs/ESTUDO-desktop-wow.md) | **Estudo Tailwind/shadcn e o desktop** — por que o desktop parece tímido e o plano de composição (12/09, a decidir) |
 | [`docs/PLAN-canal-tech-debt.md`](docs/PLAN-canal-tech-debt.md) | Débitos técnicos pendentes |
 | [`docs/PLAN-next-steps.md`](docs/PLAN-next-steps.md) | Próximos passos pós-estabilização |
 | [`docs/DESIGN-SYSTEM.md`](docs/DESIGN-SYSTEM.md) | **Design System Universal** (regras visuais estritas) |
