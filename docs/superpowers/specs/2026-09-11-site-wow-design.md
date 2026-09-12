@@ -372,6 +372,80 @@ hidratação, tirar o `motion` do caminho global, pré-carregar só a Montserrat
 dar `fetchpriority` alto à foto do hero e reduzir os pré-carregamentos. O
 Ricardo decide antes de seguir.
 
+#### Resultado da prova (12/09/2026)
+
+Duas medições, as duas no perfil celular do Lighthouse: a da **CI**, contra o
+preview publicado do PR, que é a que vale; e a **local** — `wrangler dev
+--local`, `throttlingMethod: simulate` —, que serviu de referência antes de
+gastar um ciclo de CI. Nenhuma das duas é a Lighthouse de produção citada na
+seção 1.
+
+- **LCP:** na CI, `/forense` sem JavaScript fecha em **2,28 s** (mediana de
+  três execuções — 2269 / 2280 / 2283 ms), contra **4,26 s** da `/`
+  hidratada no mesmo preview (2894 / 4260 / 4313 ms). É o par que interessa:
+  a mesma marca, hidratada contra sem JavaScript. **Passou, mas por 220 ms.**
+  A medição local da mesma sessão dera 1,98 s, com uma versão anterior e
+  menor do `reforço` — o notebook foi otimista em cerca de 300 ms, e a régua
+  é a CI. Margem dessa ordem some com uma imagem mais pesada no topo ou uma
+  fonte a mais: a rota passa hoje, não com sobra estrutural. A home
+  institucional da ness. não foi medida nesta prova.
+- **Script:** `/forense` carrega **um** script, o `reforço`
+  (`public/reforco.js`): **2446 bytes** transferidos na CI, 2624 em disco,
+  contra **40 scripts e ~294 KB** na `/`. O orçamento da faixa estrita é
+  10 KiB, então sobram **7,6 KiB**. É aqui que está a folga da prova — não
+  no tempo.
+- **e2e:** os dois testes de `tests/site/sem-js.spec.ts` fecham verdes nos
+  dois perfis (mobile e desktop), quatro execuções: um confere status 200 e
+  que só `/reforco.js` é carregado (allow-list, nenhum outro script) — a
+  guarda que voltou a rodar, sozinha e em primeiro plano, depois de mexer nas
+  regras de pré-carregamento, e continua verde —, o outro — o mais forte da
+  prova — carrega a página com `javaScriptEnabled: false` e exige a cadeia de
+  custódia visível, com as cinco etapas e o mesmo hash em todas. A suíte
+  completa do site — nonce incluído (`tests/site/smoke.spec.ts:487`) — não é
+  afirmada aqui: quem decide esse número é a corrida que a CI já roda no PR,
+  contra o preview publicado. O que se sabe deste ciclo: os testes unitários
+  (`npm test`) e a checagem de tipos (`tsc --noEmit`) passam, e o
+  teste-guarda acima passa. Não quebrou a guarda — mas o item 3 do critério
+  de aceitação só foi exercido em parte: o reforço cobre evento de conversão
+  e profundidade de rolagem (Zaraz); aviso de cookies e Turnstile sem React não
+  entraram no escopo desta prova e continuam por medir. A revisão final da
+  frente encontrou dois custos que esta rota já paga, e que este ciclo de
+  correção não resolve porque são desenho, fora do escopo da prova: o
+  hambúrguer do `Navbar` é um botão que nunca abre — sem hidratação, o
+  `onClick` não liga, e a 390 px a rota não oferece nenhuma navegação —, e o
+  `AvisoDeConsentimento` só monta depois da hidratação, então nunca aparece;
+  quem visita não pode aceitar nem recusar, e como a Zaraz nega por padrão
+  quem nunca respondeu, a medição que o reforço existe para repor não chega
+  em produção. É por isso que a rota não está pronta para publicar como
+  está.
+- **Chat:** venceu a alternativa B — na rota sem JS, o botão de chat vira
+  link para `/contato?ref=chat`, com o mesmo alvo de toque e o mesmo evento
+  de conversão. A regra era "B primeiro, ilha de verdade (alternativa A) só
+  se a medição mostrar folga", decidida antes de a medição rodar. A medição
+  deu 220 ms de margem e 7,6 KiB de sobra — folga no peso, não no tempo —, e
+  nenhuma tarefa reabriu a escolha para trocar pela ilha; B é o que segue para
+  a frente 3.
+
+**Veredito:** o critério de aceitação (LCP abaixo de 2,5 s) passou — por
+220 ms na CI, o que é passar sem sobra —, e o ponto técnico mais incerto — o `Layout` descobrir e servir o
+reforço sem o runtime do React Router — resolveu-se mais simples do que a
+especificação previa: arquivo estático em `public/`, sem hash de build nem
+manifesto. **A arquitetura B segue para a frente 3**, com três ressalvas que
+a frente 3 herda em aberto. Primeira: `handle = { semJs: true }` é exportado
+uma vez, no nível do módulo de `pages/forense/Home.tsx`, e `src/routes.ts`
+monta essa mesma rota sob três prefixos de idioma — `/forense`, `/en/forense`
+e `/es/forense` saem sem JavaScript, os três. Só `/forense` foi medido e
+testado nesta prova; `/en/forense` e `/es/forense` não passaram pelo
+Lighthouse nem pela suíte `sem-js.spec.ts`. A execução decidiu que três
+variantes de idioma da mesma página contam como uma rota só para o critério
+de aceitação — é a mesma página, não uma migração do site —, mas o número
+acima vale só para o caminho medido, e quem decide de fato é a corrida do
+Lighthouse que a CI já roda no PR, contra o preview publicado. Segunda: o
+aviso de cookies e o Turnstile sem React ainda não foram provados. Terceira:
+os dois custos registrados acima (menu inerte, aviso de consentimento que não
+monta) — a frente 3 precisa resolvê-los antes de esta rota ir ao ar em
+produção.
+
 ## 8. Fundação (frente 1)
 
 1. **`PRODUCT.md`** passa a registrar as três empresas e os portfólios, a
