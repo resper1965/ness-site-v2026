@@ -381,14 +381,23 @@ gastar um ciclo de CI.
 
 - **LCP:** `/forense` sem JavaScript fecha em **1,98 s** (mediana de três
   execuções — 1979,49 / 1980,16 / 1984,34 ms; o pior caso também fica abaixo
-  da meta). No mesmo ambiente, a home hidratada (`/`) mede **4,04 s**, numa
-  única execução — sem o mesmo rigor de três corridas, porque não é ela quem
-  está sob prova.
+  da meta). No mesmo ambiente, a home da forense.io **hidratada** — servida
+  pelo mesmo preview local, que resolve `/` como forense.io independente do
+  Host — mede **4,04 s**, numa única execução, sem o mesmo rigor de três
+  corridas porque não é ela quem está sob prova. É o par que interessa (a
+  mesma marca, hidratada contra sem JavaScript); a home institucional da
+  ness. não foi medida nesta prova.
 - **Script:** `/forense` baixa **~2,1 KB** — só o `reforço`
   (`public/reforco.js`) — contra **~287 KB** em 40 scripts na `/`. O
-  orçamento da faixa estrita é 10 KiB; sobra folga de mais de 8 KiB.
-- **e2e:** os quatro testes de `sem-js.spec.ts` (status 200, allow-list de
-  script, nonce) fecham verdes. A suíte completa do site fecha em 99
+  orçamento da faixa estrita é 10 KiB; sobra folga de **7,9 KiB**
+  (10240 − 2111 bytes).
+- **e2e:** os dois testes de `tests/site/sem-js.spec.ts` fecham verdes nos
+  dois perfis (mobile e desktop), quatro execuções: um confere status 200 e
+  que só `/reforco.js` é carregado (allow-list, nenhum outro script), o outro
+  — o mais forte da prova — carrega a página com `javaScriptEnabled: false` e
+  exige a cadeia de custódia visível, com as cinco etapas e o mesmo hash em
+  todas. O teste de nonce mora em `tests/site/smoke.spec.ts:487`, não nesta
+  suíte, e também segue verde. A suíte completa do site fecha em 99
   aprovados / 42 reprovados — as 42 reprovações batem, teste a teste, com a
   baseline já documentada do ambiente local (marca resolvida como
   forense.io independente do Host, D1 local vazio); nenhuma é nova, nenhuma é
@@ -400,7 +409,7 @@ gastar um ciclo de CI.
   link para `/contato?ref=chat`, com o mesmo alvo de toque e o mesmo evento
   de conversão. A regra era "B primeiro, ilha de verdade (alternativa A) só
   se a medição mostrar folga", decidida antes de a medição rodar. A medição
-  saiu com folga — mais de 500 ms e 8 KiB de sobra —, mas nenhuma tarefa
+  saiu com folga — mais de 500 ms e 7,9 KiB de sobra —, mas nenhuma tarefa
   reabriu a escolha para trocar pela ilha; B é o que segue para a frente 3.
 
 **Veredito:** o critério de aceitação (LCP abaixo de 2,5 s) passou com
