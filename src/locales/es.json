@@ -418,11 +418,10 @@
     "title": "forense.io",
     "tabTitle": "análisis forense digital & respuesta a incidentes",
     "hero": {
-      "tag": "cadena de custodia",
-      "tag2": "preservada",
-      "subtitle": "especialización en auditoría forense digital bajo la norma ISO 27037/27042 — peritaje judicial, investigación corporativa y respuesta a incidentes.",
-      "cta1": "solicitar peritaje",
-      "cta2": "ver recursos forenses"
+      "titulo": "la evidencia llega al proceso tal como salió del equipo",
+      "lede": "Peritaje en computadoras, celulares, redes y cuentas en la nube. Cada etapa queda registrada, y el hash de la copia se verifica de punta a punta, de la recolección al informe.",
+      "cta": "hablar con un perito",
+      "link": "ver la cadena de custodia"
     },
     "linha": {
       "titulo": "de la prueba al proceso",
@@ -570,10 +569,10 @@
     "title": "trustness",
     "tabTitle": "auditoría y cumplimiento",
     "hero": {
-      "tag": "auditoría y cumplimiento",
-      "subtitle": "auditorías independientes, assessments de seguridad y consultoría en conformidad (ISO 27001, GDPR, SOC 2) — informes ejecutivos.",
-      "cta1": "solicitar assessment",
-      "cta2": "hablar con especialista"
+      "titulo": "llegas a la auditoría sabiendo lo que va a encontrar",
+      "lede": "Auditoría independiente, implementación de la ISO 27001 y programa de privacidad de la LGPD, con informe ejecutivo y un plan de corrección en orden de prioridad.",
+      "cta": "solicitar assessment",
+      "link": "ver cómo avanza la auditoría"
     },
     "linha": {
       "titulo": "medir, estructurar, probar, mantener",
