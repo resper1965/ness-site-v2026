@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { CabecalhoDeSecao } from "./Abertura";
+import { sequencia } from "../utils/movimento";
 
 interface Client {
   name: string;
@@ -32,9 +33,9 @@ export default function ClientLogos() {
       <div className="mx-auto max-w-7xl">
         <CabecalhoDeSecao titulo={t('clients.title', 'quem confia na ness')} />
         <ul className="grid grid-cols-2 gap-x-10 md:grid-cols-3 lg:grid-cols-6">
-          {clients.map((client) => (
-            <li key={client.name} className="border-t border-white/10">
-              <a href={client.url} target="_blank" rel="noopener noreferrer" className="group block py-4">
+          {clients.map((client, i) => (
+            <li key={client.name} className="filete filete-acende revela border-t border-white/10" style={sequencia(i)}>
+              <a href={client.url} target="_blank" rel="noopener noreferrer" className="group block py-4 transition-transform duration-[250ms] hover:-translate-y-0.5">
                 <span className="block font-display text-[15px] font-medium text-white/80 transition-colors group-hover:text-white">
                   {client.name}
                 </span>

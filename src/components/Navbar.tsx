@@ -108,8 +108,9 @@ const Navbar = () => {
 
   return (
     <>
-      <nav aria-label={t('a11y.nav_main', 'principal')} className="fixed top-3 md:top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl glass rounded-full flex justify-between items-center px-5 md:px-8 py-2.5 md:py-3 z-50 nebula-shadow">
-        <Link to="/" className="marca text-2xl text-white">
+      <nav aria-label={t('a11y.nav_main', 'principal')} className="navbar fixed top-3 md:top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl glass rounded-full flex justify-between items-center px-5 md:px-8 py-2.5 md:py-3 z-50 nebula-shadow">
+        {/* Ao rolar 80 px a marca encolhe a 92 % e a pílula fica mais opaca (CSS guiado pela rolagem) */}
+        <Link to="/" viewTransition className="marca navbar-marca inline-block text-2xl text-white">
           {brandMark}
         </Link>
 
@@ -138,7 +139,7 @@ const Navbar = () => {
                     /* Só clique: abrir no hover e fechar no clique é o padrão
                        que confunde no mouse e não existe no toque. */
                     onClick={() => setMenuSolucoes((aberto) => !aberto)}
-                    className={`flex items-center gap-1 py-2 tracking-wide text-[11px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-medium focus-visible:ring-2 focus-visible:ring-primary-container rounded-sm ${
+                    className={`nav-link flex items-center gap-1 py-2 tracking-wide text-[11px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-medium focus-visible:ring-2 focus-visible:ring-primary-container rounded-sm ${
                       active ? 'text-primary-container' : 'text-on-surface-variant'
                     }`}
                   >
@@ -149,13 +150,15 @@ const Navbar = () => {
                   {menuSolucoes && (
                     <div
                       id="menu-solucoes"
-                      className="absolute left-1/2 -translate-x-1/2 top-full pt-4 w-[320px]"
+                      /* Sobe 8 px e aparece com @starting-style; fechar é imediato */
+                      className="nasce absolute left-1/2 -translate-x-1/2 top-full pt-4 w-[320px]"
                     >
                       <div className="bg-surface-container-low/98 backdrop-blur-xl rounded-3xl border border-white/10 p-3 nebula-shadow">
                         {SOLUCOES.map((solucao) => (
                           <Link
                             key={solucao.slug}
                             to={`/solucoes/${solucao.slug}`}
+                            viewTransition
                             className="block px-4 py-2.5 rounded-2xl hover:bg-white/5 transition-colors"
                           >
                             <span className="marca block text-sm text-white">
@@ -167,6 +170,7 @@ const Navbar = () => {
                         {/* Serviços e verticais viraram o mapa de soluções. */}
                         <Link
                           to="/solucoes"
+                          viewTransition
                           className="block mt-1 pt-2.5 pb-2 px-4 border-t border-white/10 text-[11px] text-on-surface-variant hover:text-white transition-colors"
                         >
                           {t('solutions.ciclo.ver_mapa', 'ver o mapa das soluções')}
@@ -190,8 +194,9 @@ const Navbar = () => {
               <Link
                 key={item.key}
                 to={item.to}
+                viewTransition
                 aria-current={active ? 'page' : undefined}
-                className={`inline-flex items-center py-2 tracking-wide text-[11px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-medium focus-visible:ring-2 focus-visible:ring-primary-container rounded-sm ${
+                className={`nav-link inline-flex items-center py-2 tracking-wide text-[11px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-medium focus-visible:ring-2 focus-visible:ring-primary-container rounded-sm ${
                   active ? "text-primary-container" : "text-on-surface-variant"
                 }`}
               >
@@ -226,6 +231,7 @@ const Navbar = () => {
           <Link
             onClick={() => evento('cta_click', { cta: 'navbar', destino: '/contato' })}
             to="/contato"
+            viewTransition
             className="bg-primary-container text-on-primary px-4 md:px-6 py-2 rounded-full font-display font-medium text-[11px] md:text-xs uppercase tracking-wide transition-all hover:brightness-110 active:scale-95 focus-visible:ring-2 focus-visible:ring-primary-container whitespace-nowrap"
           >
             {t('nav.contact')}
@@ -275,6 +281,7 @@ const Navbar = () => {
                 <div key={item.key} className={`anim-fade-up anim-delay-${Math.min(i + 1, 4)}`}>
                   <Link
                     to={item.to}
+                    viewTransition
                     onClick={() => setIsOpen(false)}
                     aria-current={active ? 'page' : undefined}
                     className={`text-3xl font-display font-semibold lowercase-all tracking-tighter ${

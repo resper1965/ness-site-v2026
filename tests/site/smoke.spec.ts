@@ -331,7 +331,10 @@ test.describe('idioma na URL', () => {
     for (const c of casos) {
       const html = await (await request.get(c.path)).text();
       expect(html, c.path).toContain(`<html lang="${c.lang}"`);
-      expect(html, c.path).toContain(c.trecho);
+      // O título sai do servidor palavra por palavra (cada uma num span, para
+      // subir na abertura); o que se confere é o texto, sem as tags.
+      const texto = html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ');
+      expect(texto, c.path).toContain(c.trecho);
     }
   });
 

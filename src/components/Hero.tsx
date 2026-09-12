@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import Abertura, { BOTAO, LINK } from './Abertura';
 import { anosDeLegado } from '../constants/brand';
 import { evento } from '../utils/eventos';
@@ -18,7 +18,9 @@ const Hero = () => {
       fundo="ness"
       base="surface"
       destaque
-      titulo={<Trans i18nKey="hero.title" components={{ highlight: <span /> }} />}
+      /* O <highlight> do texto era um <span/> vazio; sem ele o título chega como
+         string e sobe palavra por palavra (Abertura). */
+      titulo={t('hero.title').replace(/<\/?highlight>/g, '')}
       acoes={
         <>
           <Link

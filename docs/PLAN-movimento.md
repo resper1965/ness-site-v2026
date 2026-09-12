@@ -1,6 +1,6 @@
 # Movimento: a luz que responde ao leitor
 
-**Data:** 12/09/2026 · **Status:** proposta, a decidir por Ricardo Esper ·
+**Data:** 12/09/2026 · **Status:** aprovado por Ricardo Esper em 12/09 ("siga"); M1, M2 e a parte hidratada de M3 implementadas no PR #49; M4 (a luz que segue o leitor) fica para depois de ver o resultado no ar ·
 **Base:** [`superpowers/specs/2026-09-11-site-wow-design.md`](superpowers/specs/2026-09-11-site-wow-design.md) (D2, D3, D6, D13) e [`PLAN-performance-ux-comercial.md`](PLAN-performance-ux-comercial.md) (ondas 0–1)
 
 ## 1. O problema

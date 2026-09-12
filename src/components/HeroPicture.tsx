@@ -20,8 +20,12 @@ export default function HeroPicture({ brand, opacity = 0.6, priority = false, gr
   const widths = [640, 1024, 1600];
   const srcset = (ext: string) => widths.map((w) => `${base}-${w}.${ext} ${w}w`).join(', ');
 
+  // Dois planos (docs/PLAN-movimento.md, 4.2): a foto chega um pouco maior e
+  // assenta (a escala fica na <img>), e ao rolar sobe mais devagar que o texto
+  // e escurece (o <picture> afunda, guiado pela rolagem). As duas animações
+  // ficam em elementos diferentes porque as duas mexem em transform.
   return (
-    <picture>
+    <picture className="foto-afunda block h-full w-full">
       <source type="image/avif" srcSet={srcset('avif')} sizes="100vw" />
       <source type="image/webp" srcSet={srcset('webp')} sizes="100vw" />
       <img
@@ -36,7 +40,7 @@ export default function HeroPicture({ brand, opacity = 0.6, priority = false, gr
         loading={priority ? 'eager' : 'lazy'}
         decoding="async"
         style={{ opacity }}
-        className={`w-full h-full object-cover ${priority ? '' : 'anim-fade-in'} ${grayscale ? 'grayscale' : ''}`}
+        className={`w-full h-full object-cover ${priority ? 'foto-assenta' : 'anim-fade-in'} ${grayscale ? 'grayscale' : ''}`}
       />
     </picture>
   );

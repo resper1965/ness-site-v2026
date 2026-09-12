@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { routeMeta, traduzir } from '../utils/meta';
 import { BRAND_DOMAINS } from '../config/brand';
+import { sequencia } from '../utils/movimento';
 
 /**
  * As soluções no ciclo de vida do ambiente — construir, operar, proteger,
@@ -54,14 +55,19 @@ const Solutions = () => {
 
         <figure>
           <div className="grid lg:grid-cols-5">
-            {ciclo.map(({ chave, produtos }) => (
+            {ciclo.map(({ chave, produtos }, i) => (
+              /* A coluna se revela ao entrar na tela, o filete de cima se
+                 desenha e o marcador pousa em sequência; sob o mouse, o
+                 marcador se preenche e o filete acende (PLAN-movimento 4.3/4.4). */
               <div
                 key={chave}
-                className="relative border-l border-white/20 pb-8 pl-6 last:pb-0 lg:border-l-0 lg:border-t lg:pb-0 lg:pl-0 lg:pr-6 lg:pt-7"
+                className="coluna filete filete-lg filete-forte filete-acende revela relative border-l border-white/20 pb-8 pl-6 last:pb-0 lg:border-l-0 lg:border-t lg:pb-0 lg:pl-0 lg:pr-6 lg:pt-7"
+                style={sequencia(i)}
               >
                 <span
                   aria-hidden="true"
-                  className="absolute -left-[5px] top-1 h-[9px] w-[9px] rounded-full border border-primary-container bg-surface lg:-top-[5px] lg:left-0"
+                  className="marcador pousa-na-vista absolute -left-[5px] top-1 h-[9px] w-[9px] rounded-full border border-primary-container bg-surface lg:-top-[5px] lg:left-0"
+                  style={sequencia(i)}
                 />
                 <Estagio className="mb-5 font-display text-[13px] font-medium text-on-surface-variant">
                   {t(`solutions.ciclo.estagios.${chave}`)}
@@ -79,9 +85,9 @@ const Solutions = () => {
                     return (
                       <li key={p.nome}>
                         {p.externo ? (
-                          <a href={p.href} className="group block">{conteudo}</a>
+                          <a href={p.href} className="group block transition-transform duration-[250ms] hover:translate-x-0.5">{conteudo}</a>
                         ) : (
-                          <Link to={p.href} className="group block">{conteudo}</Link>
+                          <Link to={p.href} viewTransition className="group block transition-transform duration-[250ms] hover:translate-x-0.5">{conteudo}</Link>
                         )}
                       </li>
                     );
