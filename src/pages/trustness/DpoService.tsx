@@ -44,7 +44,7 @@ export default function DpoService() {
   const differentiators = [
     {
       icon: Zap,
-      title: "plataforma aegis",
+      title: "plataforma própria",
       desc: "Tecnologia proprietária para gestão do programa de privacidade. ROPA automatizado, findings, dashboards executivos e audit trail. Sem aquisição de ferramentas externas.",
     },
     {
@@ -65,7 +65,7 @@ export default function DpoService() {
     {
       icon: Lock,
       title: "zero ferramentas extras",
-      desc: "Tudo o que sua organização precisa para operar em conformidade está incluído no serviço. Aegis é a plataforma — não há custos adicionais de licenciamento.",
+      desc: "Tudo o que sua organização precisa para operar em conformidade está incluído no serviço. A plataforma de gestão de privacidade vem junto — não há custos adicionais de licenciamento.",
     },
     {
       icon: Clock,
@@ -74,7 +74,7 @@ export default function DpoService() {
     },
   ];
 
-  const aegisFeatures = [
+  const platformFeatures = [
     "Registro de Operações de Tratamento (ROPA) automatizado",
     "Gestão de consentimento e bases legais",
     "Gestão de solicitações de titulares (DSAR)",
@@ -110,7 +110,7 @@ export default function DpoService() {
         data={{
           name: "DPO as a Service — trustness.",
           description:
-            "Serviço de Data Protection Officer terceirizado com tecnologia proprietária Aegis para adequação, manutenção e auditoria de programas de privacidade corporativos conforme LGPD.",
+            "Serviço de Data Protection Officer terceirizado com plataforma própria de gestão de privacidade para adequação, manutenção e auditoria de programas de privacidade corporativos conforme LGPD.",
           url: "https://trustness.com.br/dpo-as-a-service",
         }}
       />
@@ -132,7 +132,7 @@ export default function DpoService() {
               dpo as a service<BlueDot />
             </h1>
             <p className="text-lg md:text-2xl text-on-surface-variant max-w-3xl leading-relaxed font-normal">
-              Seu programa de privacidade operado por especialistas. Adequação, manutenção e auditoria contínua da LGPD com a plataforma Aegis — sem investimento em ferramentas adicionais.
+              Seu programa de privacidade operado por especialistas. Adequação, manutenção e auditoria contínua da LGPD com a plataforma própria da trustness. — sem investimento em ferramentas adicionais.
             </p>
             <div className="flex flex-wrap items-center gap-8 pt-4">
               <Link
@@ -240,7 +240,7 @@ export default function DpoService() {
         </div>
       </section>
 
-      {/* Plataforma Aegis */}
+      {/* Plataforma de privacidade */}
       <section className="py-24 px-8 bg-surface-container-lowest border-t border-white/5">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -249,10 +249,10 @@ export default function DpoService() {
                 tecnologia proprietária
               </span>
               <h2 className="text-3xl md:text-5xl font-display font-medium text-white lowercase-all tracking-tighter mb-6">
-                plataforma aegis<BlueDot />
+                plataforma de privacidade<BlueDot />
               </h2>
               <p className="text-on-surface-variant leading-relaxed font-normal mb-8">
-                Toda a operação de privacidade da sua organização em uma única plataforma. O Aegis é o sistema nervoso central do programa de proteção de dados — integrado, auditável e acessível de qualquer lugar.
+                Toda a operação de privacidade da sua organização em uma única plataforma: integrada, auditável e acessível de qualquer lugar.
               </p>
               <p className="text-sm text-primary-container/80 font-medium">
                 Incluso no serviço. Sem licenciamento adicional. Sem setup fee.
@@ -260,7 +260,7 @@ export default function DpoService() {
             </div>
 
             <div className="space-y-3">
-              {aegisFeatures.map((feature, i) => (
+              {platformFeatures.map((feature, i) => (
                 <div key={i}
                   className="flex items-center gap-4 p-4 rounded-2xl bg-surface-container-low/50 border border-white/5">
                   <CheckCircle2 size={20} className="text-primary-container shrink-0" />
@@ -290,7 +290,7 @@ export default function DpoService() {
                 {
                   question: "Preciso comprar alguma ferramenta adicional?",
                   answer:
-                    "Não. A plataforma Aegis está incluída no serviço. É uma ferramenta proprietária da trustness. que cobre todo o ciclo de gestão de privacidade — ROPA, DSAR, DPIA, auditorias, dashboards e gestão de incidentes.",
+                    "Não. A plataforma de gestão de privacidade da trustness. está incluída no serviço. Ela cobre todo o ciclo de gestão de privacidade — ROPA, DSAR, DPIA, auditorias, dashboards e gestão de incidentes.",
                 },
                 {
                   question: "A trustness. substitui meu escritório de advocacia?",
@@ -318,7 +318,7 @@ export default function DpoService() {
               },
               {
                 q: "Preciso comprar alguma ferramenta adicional?",
-                a: "Não. A plataforma Aegis está incluída no serviço. É uma ferramenta proprietária da trustness. que cobre todo o ciclo de gestão de privacidade — ROPA, DSAR, DPIA, auditorias, dashboards e gestão de incidentes.",
+                a: "Não. A plataforma de gestão de privacidade da trustness. está incluída no serviço. Ela cobre todo o ciclo de gestão de privacidade — ROPA, DSAR, DPIA, auditorias, dashboards e gestão de incidentes.",
               },
               {
                 q: "A trustness. substitui meu escritório de advocacia?",
@@ -384,6 +384,6 @@ export function meta(args: Parameters<typeof routeMeta>[0]) {
     // A marca vem do sufixo; repetir aqui produz o título dobrado.
     title: 'DPO as a Service',
     description:
-      'Serviço de DPO terceirizado da trustness. Adequação, manutenção e auditoria contínua dos processos de privacidade da sua organização com tecnologia proprietária Aegis. Sem necessidade de aquisição de ferramentas adicionais.',
+      'Serviço de DPO terceirizado da trustness. Adequação, manutenção e auditoria contínua dos processos de privacidade da sua organização com plataforma própria de gestão de privacidade. Sem necessidade de aquisição de ferramentas adicionais.',
   });
 }

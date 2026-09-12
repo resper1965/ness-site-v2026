@@ -134,7 +134,7 @@ export default function TrustnessHome() {
           <div>
             <CabecalhoDeSecao id="t-dpo" titulo={t('trustness.dpo.titulo')}>
               <p><ComMarcas>{t('trustness.dpo.texto')}</ComMarcas></p>
-              <p>{t('trustness.dpo.aegis')}</p>
+              <p>{t('trustness.dpo.plataforma')}</p>
             </CabecalhoDeSecao>
             <Link to="/dpo-as-a-service" className={LINK}>{t('trustness.dpo.link')}</Link>
           </div>

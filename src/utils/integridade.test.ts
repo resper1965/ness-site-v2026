@@ -64,4 +64,34 @@ describe('integridade do que vai ao ar', () => {
   it('nenhum recurso de terceiro fora da Cloudflare', () => {
     expect(ofensores(/transparenttextures\.com/)).toEqual([]);
   });
+
+  // Codinome de projeto não é marca: nunca vai ao ar, nem em identificador ou
+  // chave de i18n. O teste guarda só o SHA-256 de cada codinome, para que o
+  // próprio nome não more no repositório — e acusa o arquivo, não a palavra.
+  it('nenhum codinome interno de projeto', async () => {
+    const { createHash } = await import('node:crypto');
+    const codinomes = new Set([
+      '598f7a741a1e3a05654d346033571fda567af6dc2bf099b34b930171519d995f',
+      '985502c570c52c8377dfcd5c6474fd76682f7ea98bf4bd8799cbaed26f9ad78f',
+      '14ae131ebd1070daebe7e93c35842ac3e5b4568df0b7761458aba905a81983f2',
+    ]);
+    const sha256 = (palavra: string) => createHash('sha256').update(palavra).digest('hex');
+
+    const achados = Object.entries(arquivos)
+      .filter(([, texto]) => {
+        const minusculo = texto.toLowerCase();
+        // Três leituras, porque o codinome aparece em qualquer grafia: camelCase
+        // separado ("fooBar" → "foo", "bar"), a palavra inteira ("FooBar" →
+        // "foobar") e o nome com ponto, no formato de produto ("foo.bar").
+        const candidatos = new Set([
+          ...(texto.replace(/(\p{Ll})(\p{Lu})/gu, '$1 $2').toLowerCase().match(/\p{L}+/gu) ?? []),
+          ...(minusculo.match(/\p{L}+/gu) ?? []),
+          ...(minusculo.match(/\p{L}+(?:\.\p{L}+)+/gu) ?? []),
+        ]);
+        return [...candidatos].some((candidato) => codinomes.has(sha256(candidato)));
+      })
+      .map(([caminho]) => caminho);
+
+    expect(achados).toEqual([]);
+  });
 });
