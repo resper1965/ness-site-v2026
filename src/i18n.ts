@@ -263,12 +263,6 @@ const ptResources = {
         "quick_specialist": "Falar com Especialista",
         "quick_incident": "Incidente (n.cirt)",
         "quick_dpo": "Ouvidoria DPO",
-        "preview": {
-          "msg1_user": "Gabi, preciso de um resumo dos contratos que vencem este mês.",
-          "msg1_bot": "Com certeza. Identifiquei 12 contratos com vencimento em abril. Os 3 principais são: Cliente Alpha (dia 15), Tech Solutions (dia 22) e Global Corp (dia 28). Deseja que eu prepare os termos de renovação?",
-          "msg2_user": "Sim, por favor. Use o modelo padrão de 2024.",
-          "msg2_bot": "Entendido. Processando minutas... Pronto! As 3 minutas foram geradas e enviadas para sua pasta de rascunhos no Teams. Algo mais?"
-        },
         "open": "falar com a Gabi"
       },
       "consentimento": {

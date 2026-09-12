@@ -1,6 +1,5 @@
 import BlueDot, { NomeDeProduto } from '../components/BlueDot';
 import Abertura, { BOTAO, LINK } from '../components/Abertura';
-import ChatPreview from '../components/ChatPreview';
 import EmergencyChatModal from '../components/EmergencyChatModal';
 import SolutionHeroBackground from '../components/solutions/SolutionHeroBackground';
 import SolutionServicesGrid from '../components/solutions/SolutionServicesGrid';
@@ -86,7 +85,7 @@ const SolutionPage = () => {
             {solution.apresentacao}
           </Abertura>
         ) : (
-        <div className={`mb-24 grid items-center gap-16 ${slug === 'autoops' ? 'lg:grid-cols-2' : 'max-w-3xl'}`}>
+        <div className="mb-24 grid items-center gap-16 max-w-3xl">
           <div className="space-y-8">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-2xl bg-primary-container/10 border border-primary-container/20 flex items-center justify-center">
@@ -110,12 +109,6 @@ const SolutionPage = () => {
               </button>
             </div>
           </div>
-
-          {slug === 'autoops' && (
-            <div className="relative">
-              <ChatPreview />
-            </div>
-          )}
         </div>
         )}
 

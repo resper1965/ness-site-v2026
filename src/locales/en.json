@@ -257,12 +257,6 @@
     "quick_specialist": "Talk to a Specialist",
     "quick_incident": "Incident (n.cirt)",
     "quick_dpo": "DPO Ombudsman",
-    "preview": {
-      "msg1_user": "Gabi, I need a summary of the contracts expiring this month.",
-      "msg1_bot": "Certainly. I identified 12 contracts expiring in April. The top 3 are: Alpha Client (15th), Tech Solutions (22nd), and Global Corp (28th). Would you like me to prepare the renewal terms?",
-      "msg2_user": "Yes, please. Use the 2024 standard template.",
-      "msg2_bot": "Understood. Processing drafts... Done! The 3 drafts have been generated and sent to your drafts folder in Teams. Anything else?"
-    },
     "open": "talk to Gabi"
   },
   "common": {

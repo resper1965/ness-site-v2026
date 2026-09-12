@@ -257,12 +257,6 @@
     "quick_specialist": "Hablar con Especialista",
     "quick_incident": "Incidente (n.cirt)",
     "quick_dpo": "Defensoría DPO",
-    "preview": {
-      "msg1_user": "Gabi, necesito un resumen de los contratos que vencen este mes.",
-      "msg1_bot": "Por supuesto. He identificado 12 contratos que vencen en abril. Los 3 principales son: Cliente Alpha (día 15), Tech Solutions (día 22) y Global Corp (día 28). ¿Desea que prepare los términos de renovación?",
-      "msg2_user": "Sí, por favor. Use el modelo estándar de 2024.",
-      "msg2_bot": "Entendido. Procesando borradores... ¡Listo! Los 3 borradores han sido generados y enviados a su carpeta de borradores en Teams. ¿Algo más?"
-    },
     "open": "hablar con Gabi"
   },
   "common": {
