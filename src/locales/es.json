@@ -22,10 +22,17 @@
     "know_ness": "conozca a ness",
     "since": "desde {{year}}",
     "subtitle_clear": "operaciones de seguridad 24×7, infraestructura, ingeniería de software, privacidad y peritaje digital para empresas que no pueden parar. {{years}} años entregando con precisión.",
-    "cta_primary": "hablar con un especialista"
+    "cta_primary": "hablar con un especialista",
+    "linha": {
+      "titulo": "una casa, el ciclo entero",
+      "antes": { "quando": "antes", "marca": "trustness.", "texto": "auditoría, ISO 27001, privacidad y DPO" },
+      "todo_dia": { "quando": "todos los días", "marca": "ness.", "texto": "la operación y la respuesta" },
+      "provar": { "quando": "cuando hay que probarlo", "marca": "forense.io", "texto": "peritaje digital con cadena de custodia" }
+    }
   },
   "presence": {
     "global": "presencia global",
+    "clientes": "clientes atendidos",
     "locations": {
       "brazil": "brasil",
       "portugal": "portugal",
@@ -411,11 +418,16 @@
     "title": "forense.io",
     "tabTitle": "análisis forense digital & respuesta a incidentes",
     "hero": {
-      "tag": "cadena de custodia",
-      "tag2": "preservada",
-      "subtitle": "especialización en auditoría forense digital bajo la norma ISO 27037/27042 — peritaje judicial, investigación corporativa y respuesta a incidentes.",
-      "cta1": "solicitar peritaje",
-      "cta2": "ver recursos forenses"
+      "titulo": "la evidencia llega al proceso tal como salió del equipo",
+      "lede": "Peritaje en computadoras, celulares, redes y cuentas en la nube. Cada etapa queda registrada, y el hash de la copia se verifica de punta a punta, de la recolección al informe.",
+      "cta": "hablar con un perito",
+      "link": "ver la cadena de custodia"
+    },
+    "linha": {
+      "titulo": "de la prueba al proceso",
+      "coleta": { "quando": "antes de que desaparezca", "texto": "recolección preventiva" },
+      "pericia": { "quando": "cuando hay que saber", "texto": "peritaje digital" },
+      "contraprova": { "quando": "cuando hay otro informe", "texto": "asistencia técnica y contraperitaje" }
     },
     "why": {
       "title": "por qué importa",
@@ -557,10 +569,17 @@
     "title": "trustness",
     "tabTitle": "auditoría y cumplimiento",
     "hero": {
-      "tag": "auditoría y cumplimiento",
-      "subtitle": "auditorías independientes, assessments de seguridad y consultoría en conformidad (ISO 27001, GDPR, SOC 2) — informes ejecutivos.",
-      "cta1": "solicitar assessment",
-      "cta2": "hablar con especialista"
+      "titulo": "llegas a la auditoría sabiendo lo que va a encontrar",
+      "lede": "Auditoría independiente, implementación de la ISO 27001 y programa de privacidad de la LGPD, con informe ejecutivo y un plan de corrección en orden de prioridad.",
+      "cta": "solicitar assessment",
+      "link": "ver cómo avanza la auditoría"
+    },
+    "linha": {
+      "titulo": "medir, estructurar, probar, mantener",
+      "medir": { "quando": "medir", "texto": "auditoría y assessment" },
+      "estruturar": { "quando": "estructurar", "texto": "ISO 27001 y gobernanza" },
+      "testar": { "quando": "probar", "texto": "pruebas y vulnerabilidades" },
+      "manter": { "quando": "mantener", "texto": "DPO como servicio" }
     },
     "why": {
       "title": "por qué importa",

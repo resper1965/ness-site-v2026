@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import BlueDot from "../../components/BlueDot";
 import Abertura, { BOTAO, CabecalhoDeSecao, LINK } from "../../components/Abertura";
+import LinhaDaEmpresa from "../../components/LinhaDaEmpresa";
 import LeadMagnet from "../../components/LeadMagnet";
 import ComMarcas from "../../components/ComMarcas";
 import { homeMeta, routeMeta } from '../../utils/meta';
@@ -76,6 +77,19 @@ export default function TrustnessHome() {
         fundo="trustness"
         marca={<>trustness<BlueDot /></>}
         titulo={t('trustness.hero.titulo')}
+        /* A linha da trustness. (spec, seção 4): medir, estruturar, testar,
+           manter. Link só onde o alvo existe nesta página. */
+        aoLado={
+          <LinhaDaEmpresa
+            titulo={t('trustness.linha.titulo')}
+            pontos={[
+              { quando: t('trustness.linha.medir.quando'), texto: t('trustness.linha.medir.texto'), href: '#auditoria', externo: true },
+              { quando: t('trustness.linha.estruturar.quando'), texto: t('trustness.linha.estruturar.texto') },
+              { quando: t('trustness.linha.testar.quando'), texto: t('trustness.linha.testar.texto') },
+              { quando: t('trustness.linha.manter.quando'), texto: t('trustness.linha.manter.texto'), href: '#dpo', externo: true },
+            ]}
+          />
+        }
         acoes={
           <>
             <Link to="/contato?ref=trustness" className={BOTAO}>{t('trustness.hero.cta')}</Link>
@@ -87,9 +101,16 @@ export default function TrustnessHome() {
       </Abertura>
       <div className="mx-auto box-content max-w-7xl px-8 pb-24">
 
-        <section id="auditoria" aria-labelledby="t-auditoria" className="mb-24">
-          <CabecalhoDeSecao id="t-auditoria" titulo={t('trustness.auditoria.titulo')}>{t('trustness.auditoria.intro')}</CabecalhoDeSecao>
-          <figure>
+        {/* A partir de 1024 px a seção vira doze colunas (C1): o cabeçalho nas
+            quatro primeiras, acompanhando o leitor enquanto a régua rola, e o
+            desenho nas oito restantes. O fixo é o div de fora; o `.revela` do
+            cabeçalho fica dentro dele, porque `sticky` impediria a animação
+            guiada por rolagem de completar o alcance. */}
+        <section id="auditoria" aria-labelledby="t-auditoria" className="secao-grade mb-24">
+          <div className="cabecalho-fixo">
+            <CabecalhoDeSecao id="t-auditoria" titulo={t('trustness.auditoria.titulo')}>{t('trustness.auditoria.intro')}</CabecalhoDeSecao>
+          </div>
+          <figure className="conteudo-grade">
             <ol className="grid lg:grid-cols-5">
               {fases.map((fase, i) => (
                 <li
@@ -143,13 +164,15 @@ export default function TrustnessHome() {
           </figure>
         </section>
 
-        <section id="servicos" aria-labelledby="t-servicos" className="mb-24">
-          <CabecalhoDeSecao id="t-servicos" titulo={t('trustness.servicos.titulo')} />
-          <dl className="grid gap-x-12 md:grid-cols-2 lg:grid-cols-3">
+        <section id="servicos" aria-labelledby="t-servicos" className="secao-grade mb-24">
+          <div className="cabecalho-fixo">
+            <CabecalhoDeSecao id="t-servicos" titulo={t('trustness.servicos.titulo')} />
+          </div>
+          <dl className="conteudo-grade grid gap-x-12 md:grid-cols-2 lg:grid-cols-3">
             {servicos.map((s) => (
               <div key={s.titulo} className="border-t border-white/10 py-4">
                 <dt className="font-display text-sm font-medium text-white">{s.titulo}</dt>
-                <dd className="mt-1 text-[13.5px] leading-relaxed text-on-surface-variant">{s.texto}</dd>
+                <dd className="mt-1 text-resumo leading-relaxed text-on-surface-variant">{s.texto}</dd>
               </div>
             ))}
           </dl>
@@ -176,8 +199,8 @@ export default function TrustnessHome() {
         </section>
 
         <section aria-labelledby="t-fecho" className="grid justify-items-start gap-4 border-t border-white/10 pt-16">
-          <h2 id="t-fecho" className="font-display text-xl font-medium lowercase tracking-tight text-white">{t('trustness.cta.title')}</h2>
-          <p className="max-w-[60ch] text-[15px] leading-relaxed text-on-surface-variant">{t('trustness.cta.desc')}</p>
+          <h2 id="t-fecho" className="font-display text-secao-alt font-medium lowercase tracking-tight text-white">{t('trustness.cta.title')}</h2>
+          <p className="max-w-[60ch] text-resumo leading-relaxed text-on-surface-variant">{t('trustness.cta.desc')}</p>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
             <Link to="/contato?ref=trustness" className={BOTAO}>{t('trustness.cta.btn1')}</Link>
             <Link to="/contato?ref=trustness" className={LINK}>{t('trustness.cta.btn2')}</Link>

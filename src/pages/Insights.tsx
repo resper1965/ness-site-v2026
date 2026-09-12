@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { CANAL_BASE } from '../config/api';
 import { LINK } from '../components/Abertura';
+import { sequencia } from '../utils/movimento';
 
 
 interface Insight {
@@ -51,25 +52,27 @@ const Insights = () => {
 
   return (
     <section id="insights" className="bg-surface px-8 py-24">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-9 flex items-baseline justify-between gap-6">
-          <h2 className="font-display text-xl font-medium lowercase tracking-tight text-white">
-            {t('nav.blog')}<BlueDot />
-          </h2>
-          <Link to="/blog" className={LINK}>{t('common.view_all')}</Link>
+      <div className="mx-auto max-w-7xl secao-grade">
+        <div className="cabecalho-fixo">
+          <div className="mb-9 flex items-baseline justify-between gap-6">
+            <h2 className="font-display text-secao-alt font-medium lowercase tracking-tight text-white">
+              {t('nav.blog')}<BlueDot />
+            </h2>
+            <Link to="/blog" viewTransition className={LINK}>{t('common.view_all')}</Link>
+          </div>
         </div>
 
-        <div className="grid gap-x-10 md:grid-cols-3">
+        <div className="conteudo-grade grid gap-x-10 md:grid-cols-3">
           {loading
             ? [1, 2, 3].map((i) => <div key={i} className="h-32 animate-pulse border-t border-white/10" />)
             : articles.map((art, i) => (
-                <article key={art.id ?? i} className="border-t border-white/10 py-5">
-                  <Link to={`/blog/${art.slug ?? String(i)}`} className="group block">
+                <article key={art.id ?? i} className="filete filete-acende revela border-t border-white/10 py-5" style={sequencia(i)}>
+                  <Link to={`/blog/${art.slug ?? String(i)}`} viewTransition className="group block transition-transform duration-[250ms] hover:-translate-y-0.5">
                     <span className="text-[12.5px] text-primary-container">{art.tag}</span>
-                    <h3 className="mt-1.5 font-display text-[15px] font-medium leading-snug text-white transition-colors group-hover:text-primary lowercase-all">
+                    <h3 className="mt-1.5 font-display text-nome font-medium leading-snug text-white transition-colors group-hover:text-primary lowercase-all">
                       {art.title}
                     </h3>
-                    <p className="mt-2 line-clamp-2 text-[13.5px] leading-relaxed text-on-surface-variant">{art.desc}</p>
+                    <p className="mt-2 line-clamp-2 text-resumo leading-relaxed text-on-surface-variant">{art.desc}</p>
                   </Link>
                 </article>
               ))}

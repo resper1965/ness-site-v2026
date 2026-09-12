@@ -541,6 +541,29 @@ mesmas regras: traço de 1 px, preenchimento de 5 % ou nenhum, texto de 12 px a
 legenda logo abaixo que diz o que o desenho afirma. Dado de exemplo aparece
 rotulado como exemplo, na própria figura.
 
+## Movimento
+
+A camada de movimento (`docs/PLAN-movimento.md`) segue a frase da marca:
+invisível quando tudo funciona, presente quando importa. **Nada se mexe
+sozinho** (nenhum loop) e **tudo responde ao leitor**: chegar, rolar, apontar,
+escolher, navegar. Só `transform`, `opacity` e `clip`; nunca `filter`.
+
+| Token | Valor | Uso |
+|---|---|---|
+| `--ease-sair` | `cubic-bezier(0.22, 1, 0.36, 1)` | toda entrada e todo hover |
+| `--ease-pousar` | `cubic-bezier(0.34, 1.4, 0.64, 1)` | só o ponto azul e os marcadores de 9 px |
+| `--dur-micro` | 150 ms | cor e sublinhado |
+| `--dur-curta` | 250 ms | hover, menu, transição de página |
+| `--dur-entrada` | 700 ms | subida de bloco, filete que se desenha |
+| `--dur-titulo` | 900 ms | as palavras do título |
+| `--passo` | 60 ms | escalonamento entre itens (`style="--i: N"`, limitado a 8) |
+
+Classes: `.entra` (entrada), `.palavra` (título palavra por palavra), `.pousa`
+(o ponto azul), `.revela` e `.filete` (guiadas por rolagem com
+`animation-timeline`, sob `@supports`), `.filete-acende`, `.marcador`,
+`.nav-link`, `.reflexo`, `.link-vivo`, `.nasce`, `.chega-ao-rolar`,
+`.luz-chega`. Sem suporte a `animation-timeline`, a página é a de sempre.
+
 ## Do's and Don'ts
 
 ### Do:
@@ -557,8 +580,11 @@ rotulado como exemplo, na própria figura.
 - **Do** manter o alvo de toque em 44 px nas ações e o anel de foco visível em
   tudo que recebe teclado.
 - **Do** rotular dado de exemplo como exemplo, dentro da própria figura.
-- **Do** respeitar `prefers-reduced-motion`: a folha de estilo já zera duração e
-  repetição, e nada pode reintroduzi-las inline.
+- **Do** respeitar `prefers-reduced-motion` pela regra positiva: toda entrada e
+  toda animação guiada por rolagem é declarada **dentro** de
+  `@media (prefers-reduced-motion: no-preference)` (`@layer movimento` em
+  `src/index.css`). Sem a preferência, o elemento fica como já era: visível e
+  parado. Nada pode reintroduzir animação inline.
 
 ### Don't:
 

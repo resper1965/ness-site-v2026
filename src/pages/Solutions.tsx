@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { routeMeta, traduzir } from '../utils/meta';
 import { BRAND_DOMAINS } from '../config/brand';
+import { sequencia } from '../utils/movimento';
 
 /**
  * As soluções no ciclo de vida do ambiente — construir, operar, proteger,
@@ -45,23 +46,37 @@ const Solutions = () => {
 
   return (
     <section id="soluções" className={`bg-surface px-8 ${comoPagina ? 'pb-24 pt-32' : 'py-24'}`}>
-      <div className="mx-auto max-w-7xl">
+      {/* Na home, a seção vira doze colunas a partir de 1024 px (C1): o
+          cabeçalho nas quatro primeiras, acompanhando o leitor enquanto o
+          ciclo rola, e o ciclo nas oito restantes. Como página, /solucoes
+          abre com a `Abertura` centralizada e fica fora da grade. */}
+      <div className={`mx-auto max-w-7xl ${comoPagina ? '' : 'secao-grade'}`}>
         {comoPagina ? (
           <Abertura titulo={t('solutions.ciclo.titulo')}>{t('solutions.ciclo.lede')}</Abertura>
         ) : (
-          <CabecalhoDeSecao titulo={t('nav.solutions')} />
+          /* O fixo é este div; o que se revela é o cabeçalho dentro dele —
+             `position: sticky` impediria a animação guiada por rolagem de
+             completar o seu alcance. */
+          <div className="cabecalho-fixo">
+            <CabecalhoDeSecao titulo={t('nav.solutions')} />
+          </div>
         )}
 
-        <figure>
+        <figure className={comoPagina ? '' : 'conteudo-grade'}>
           <div className="grid lg:grid-cols-5">
-            {ciclo.map(({ chave, produtos }) => (
+            {ciclo.map(({ chave, produtos }, i) => (
+              /* A coluna se revela ao entrar na tela, o filete de cima se
+                 desenha e o marcador pousa em sequência; sob o mouse, o
+                 marcador se preenche e o filete acende (PLAN-movimento 4.3/4.4). */
               <div
                 key={chave}
-                className="relative border-l border-white/20 pb-8 pl-6 last:pb-0 lg:border-l-0 lg:border-t lg:pb-0 lg:pl-0 lg:pr-6 lg:pt-7"
+                className="coluna filete filete-lg filete-forte filete-acende revela relative border-l border-white/20 pb-8 pl-6 last:pb-0 lg:border-l-0 lg:border-t lg:pb-0 lg:pl-0 lg:pr-6 lg:pt-7"
+                style={sequencia(i)}
               >
                 <span
                   aria-hidden="true"
-                  className="absolute -left-[5px] top-1 h-[9px] w-[9px] rounded-full border border-primary-container bg-surface lg:-top-[5px] lg:left-0"
+                  className="marcador pousa-na-vista absolute -left-[5px] top-1 h-[9px] w-[9px] rounded-full border border-primary-container bg-surface lg:-top-[5px] lg:left-0"
+                  style={sequencia(i)}
                 />
                 <Estagio className="mb-5 font-display text-[13px] font-medium text-on-surface-variant">
                   {t(`solutions.ciclo.estagios.${chave}`)}
@@ -70,18 +85,18 @@ const Solutions = () => {
                   {produtos.map((p) => {
                     const conteudo = (
                       <>
-                        <span className="marca block text-[15px] text-white transition-colors group-hover:text-primary">
+                        <span className="marca block text-nome text-white transition-colors group-hover:text-primary">
                           <NomeDeProduto nome={p.nome} />
                         </span>
-                        <span className="mt-1 block text-[13px] leading-relaxed text-on-surface-variant">{p.resumo}</span>
+                        <span className="mt-1 block text-resumo leading-relaxed text-on-surface-variant">{p.resumo}</span>
                       </>
                     );
                     return (
                       <li key={p.nome}>
                         {p.externo ? (
-                          <a href={p.href} className="group block">{conteudo}</a>
+                          <a href={p.href} className="group block transition-transform duration-[250ms] hover:translate-x-0.5">{conteudo}</a>
                         ) : (
-                          <Link to={p.href} className="group block">{conteudo}</Link>
+                          <Link to={p.href} viewTransition className="group block transition-transform duration-[250ms] hover:translate-x-0.5">{conteudo}</Link>
                         )}
                       </li>
                     );
@@ -118,8 +133,8 @@ function Passagem() {
       <ol className="grid lg:grid-cols-4 lg:gap-x-28">
         {passos.map((passo) => (
           <li key={passo.nome} className="relative grid content-start gap-1.5">
-            <span className="marca text-[15px] text-white"><NomeDeProduto nome={passo.nome} /></span>
-            <p className="text-[13px] leading-relaxed text-on-surface-variant">{passo.texto}</p>
+            <span className="marca text-nome text-white"><NomeDeProduto nome={passo.nome} /></span>
+            <p className="text-resumo leading-relaxed text-on-surface-variant">{passo.texto}</p>
             {passo.seta && (
               <span className="flex items-center gap-3 py-3 text-xs leading-snug text-on-surface-variant lg:absolute lg:left-full lg:top-0 lg:w-28 lg:flex-col lg:gap-1.5 lg:px-3 lg:py-0 lg:text-center">
                 <svg aria-hidden="true" width="8" height="28" viewBox="0 0 8 28" className="shrink-0 lg:hidden">
