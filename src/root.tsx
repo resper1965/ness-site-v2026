@@ -150,6 +150,10 @@ const loadMotionFeatures = () => import('motion/react').then((mod) => mod.domMax
 
 function Shell({ brand, children }: { brand: Brand; children: ReactNode }) {
   const { t } = useTranslation();
+  // Mesma checagem do Layout: a rota sem JS não hidrata, então o widget do
+  // chat (uma ilha React) nunca abriria. Ali o botão vira link para o
+  // contato, com o mesmo alvo de toque e o mesmo evento de conversão.
+  const semJsShell = useMatches().some((m) => (m.handle as { semJs?: boolean } | undefined)?.semJs);
   return (
     <BrandProvider value={brand}>
       <RenderErrorBoundary>
@@ -164,7 +168,18 @@ function Shell({ brand, children }: { brand: Brand; children: ReactNode }) {
               <Analytics />
               <ProfundidadeDeRolagem />
               <Navbar />
-              <ChatLauncher />
+              {semJsShell ? (
+                <a
+                  href="/contato?ref=chat"
+                  data-evento="cta_click"
+                  data-cta="chat_sem_js"
+                  className="fixed bottom-6 right-6 z-40 inline-flex min-h-11 items-center gap-2 rounded-full border border-primary-container/25 bg-surface-container-low px-5 py-3 font-display text-sm font-medium text-white shadow-xl shadow-black/30 md:bottom-8 md:right-8"
+                >
+                  {t('chatbot.open', 'falar com a Gabi')}
+                </a>
+              ) : (
+                <ChatLauncher />
+              )}
               <AvisoDeConsentimento />
               <main id="main-content" tabIndex={-1} className="outline-none">
                 <Breadcrumbs semTrilhaVisivel />
