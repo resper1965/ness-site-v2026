@@ -1,6 +1,6 @@
 import { useMemo, type ReactNode } from 'react';
 import { I18nextProvider, useTranslation } from 'react-i18next';
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, isRouteErrorResponse, useRouteLoaderData } from 'react-router';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, isRouteErrorResponse, useMatches, useRouteLoaderData } from 'react-router';
 import { LazyMotion, MotionConfig } from 'motion/react';
 
 import './index.css';
@@ -98,6 +98,10 @@ export function Layout({ children }: { children: ReactNode }) {
   const dados = useRouteLoaderData('root') as RootData | undefined;
   const lang = dados?.lang ?? IDIOMA_PADRAO;
   const nonce = dados?.nonce;
+  // Rota marcada com `semJs` não recebe o runtime do React Router: o HTML sai
+  // completo do servidor e nenhum módulo desce. O que ainda precisa de
+  // comportamento vem de /reforco.js (frente 2, tarefa 2).
+  const semJs = useMatches().some((m) => (m.handle as { semJs?: boolean } | undefined)?.semJs);
 
   return (
     <html lang={lang === 'pt' ? 'pt-BR' : lang}>
@@ -110,8 +114,12 @@ export function Layout({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
-        <ScrollRestoration nonce={nonce} />
-        <Scripts nonce={nonce} />
+        {semJs ? null : (
+          <>
+            <ScrollRestoration nonce={nonce} />
+            <Scripts nonce={nonce} />
+          </>
+        )}
       </body>
     </html>
   );
