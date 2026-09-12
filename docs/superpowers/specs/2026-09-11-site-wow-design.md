@@ -374,28 +374,26 @@ Ricardo decide antes de seguir.
 
 #### Resultado da prova (12/09/2026)
 
-Medição local — mesma sessão, mesma máquina, `wrangler dev --local`, perfil
-celular do Lighthouse, `throttlingMethod: simulate`. Não é a Lighthouse de
-produção citada na seção 1: é a referência que valida a arquitetura antes de
-gastar um ciclo de CI.
+Duas medições, as duas no perfil celular do Lighthouse: a da **CI**, contra o
+preview publicado do PR, que é a que vale; e a **local** — `wrangler dev
+--local`, `throttlingMethod: simulate` —, que serviu de referência antes de
+gastar um ciclo de CI. Nenhuma das duas é a Lighthouse de produção citada na
+seção 1.
 
-- **LCP:** `/forense` sem JavaScript fecha em **1,98 s** (mediana de três
-  execuções — 1979,49 / 1980,16 / 1984,34 ms; o pior caso também fica abaixo
-  da meta). Essa corrida usou uma versão anterior e menor do `reforço`, de
-  1925 bytes; 700 bytes a mais num script `defer` não movem a marca, mas
-  quem dá o número do arquivo de hoje é a CI. No mesmo ambiente, a home da
-  forense.io **hidratada** — servida
-  pelo mesmo preview local, que resolve `/` como forense.io independente do
-  Host — mede **4,04 s**, numa única execução, sem o mesmo rigor de três
-  corridas porque não é ela quem está sob prova. É o par que interessa (a
-  mesma marca, hidratada contra sem JavaScript); a home institucional da
-  ness. não foi medida nesta prova.
-- **Script:** `/forense` carrega só o `reforço` (`public/reforco.js`), que
-  mede **2624 bytes** em disco, contra **~287 KB** em 40 scripts na `/`. O
-  orçamento da faixa estrita é 10 KiB, então sobra folga de **7,4 KiB**
-  mesmo contando o arquivo sem compressão (10240 − 2624 bytes). O número
-  transferido que a medição registrou — 2111 bytes — é de uma versão
-  anterior e menor do arquivo; o atual sai da corrida que a CI roda no PR.
+- **LCP:** na CI, `/forense` sem JavaScript fecha em **2,28 s** (mediana de
+  três execuções — 2269 / 2280 / 2283 ms), contra **4,26 s** da `/`
+  hidratada no mesmo preview (2894 / 4260 / 4313 ms). É o par que interessa:
+  a mesma marca, hidratada contra sem JavaScript. **Passou, mas por 220 ms.**
+  A medição local da mesma sessão dera 1,98 s, com uma versão anterior e
+  menor do `reforço` — o notebook foi otimista em cerca de 300 ms, e a régua
+  é a CI. Margem dessa ordem some com uma imagem mais pesada no topo ou uma
+  fonte a mais: a rota passa hoje, não com sobra estrutural. A home
+  institucional da ness. não foi medida nesta prova.
+- **Script:** `/forense` carrega **um** script, o `reforço`
+  (`public/reforco.js`): **2446 bytes** transferidos na CI, 2624 em disco,
+  contra **40 scripts e ~294 KB** na `/`. O orçamento da faixa estrita é
+  10 KiB, então sobram **7,6 KiB**. É aqui que está a folga da prova — não
+  no tempo.
 - **e2e:** os dois testes de `tests/site/sem-js.spec.ts` fecham verdes nos
   dois perfis (mobile e desktop), quatro execuções: um confere status 200 e
   que só `/reforco.js` é carregado (allow-list, nenhum outro script) — a
@@ -424,11 +422,12 @@ gastar um ciclo de CI.
   link para `/contato?ref=chat`, com o mesmo alvo de toque e o mesmo evento
   de conversão. A regra era "B primeiro, ilha de verdade (alternativa A) só
   se a medição mostrar folga", decidida antes de a medição rodar. A medição
-  saiu com folga — mais de 500 ms e 7,4 KiB de sobra —, mas nenhuma tarefa
-  reabriu a escolha para trocar pela ilha; B é o que segue para a frente 3.
+  deu 220 ms de margem e 7,6 KiB de sobra — folga no peso, não no tempo —, e
+  nenhuma tarefa reabriu a escolha para trocar pela ilha; B é o que segue para
+  a frente 3.
 
-**Veredito:** o critério de aceitação (LCP abaixo de 2,5 s) passou com
-margem, e o ponto técnico mais incerto — o `Layout` descobrir e servir o
+**Veredito:** o critério de aceitação (LCP abaixo de 2,5 s) passou — por
+220 ms na CI, o que é passar sem sobra —, e o ponto técnico mais incerto — o `Layout` descobrir e servir o
 reforço sem o runtime do React Router — resolveu-se mais simples do que a
 especificação previa: arquivo estático em `public/`, sem hash de build nem
 manifesto. **A arquitetura B segue para a frente 3**, com três ressalvas que
@@ -437,7 +436,7 @@ uma vez, no nível do módulo de `pages/forense/Home.tsx`, e `src/routes.ts`
 monta essa mesma rota sob três prefixos de idioma — `/forense`, `/en/forense`
 e `/es/forense` saem sem JavaScript, os três. Só `/forense` foi medido e
 testado nesta prova; `/en/forense` e `/es/forense` não passaram pelo
-Lighthouse nem pela suíte `sem-js.spec.ts`. O Ricardo decidiu que três
+Lighthouse nem pela suíte `sem-js.spec.ts`. A execução decidiu que três
 variantes de idioma da mesma página contam como uma rota só para o critério
 de aceitação — é a mesma página, não uma migração do site —, mas o número
 acima vale só para o caminho medido, e quem decide de fato é a corrida do
