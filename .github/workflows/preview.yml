@@ -99,7 +99,9 @@ jobs:
       - name: Lighthouse contra o preview
         uses: treosh/lighthouse-ci-action@v12
         with:
-          urls: ${{ steps.deploy.outputs.deployment-url }}
+          urls: |
+            ${{ steps.deploy.outputs.deployment-url }}
+            ${{ steps.deploy.outputs.deployment-url }}/forense
           configPath: ./lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true
