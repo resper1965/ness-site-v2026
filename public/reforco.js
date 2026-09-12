@@ -5,7 +5,12 @@
  * Zaraz e marcar a profundidade de rolagem. Nada mais — se este arquivo
  * crescer, a rota deixou de ser "sem JavaScript" e virou outra coisa.
  *
- * Mede menos de 1 KiB e é carregado com `defer`: nunca segura a pintura.
+ * Mede ~2,3 KiB de arquivo (checar com `wc -c public/reforco.js`; o resto da
+ * frente 2 registrou ~2,1 KB / 2111 bytes transferidos antes deste ajuste, e
+ * o portão de verdade é o `resource-summary:script:size` de 10 KiB no
+ * `lighthouserc.json`). É a régua para julgar o próprio arquivo: se ele
+ * crescer muito além disso, a rota deixou de ser "sem JavaScript" e virou
+ * outra coisa. Carregado com `defer`: nunca segura a pintura.
  */
 (function () {
   var zaraz = function (nome, parametros) {
@@ -25,28 +30,33 @@
     zaraz(alvo.getAttribute('data-evento'), parametros);
   });
 
-  // Profundidade de rolagem, uma vez por marca e por carregamento.
+  // Profundidade de rolagem: mesmo campo, mesma fórmula e mesmos marcos de
+  // src/components/ProfundidadeDeRolagem.tsx — os dois emitem `scroll_depth`,
+  // e a linha do painel não pode variar conforme qual caminho rodou.
   var marcas = [25, 50, 75, 100];
   var vistas = {};
   var pendente = false;
+  var medir = function () {
+    pendente = false;
+    var alturaVisivel = window.innerHeight;
+    var alturaTotal = document.documentElement.scrollHeight;
+    if (alturaTotal <= alturaVisivel) return;
+    var lido = Math.round(((window.scrollY + alturaVisivel) / alturaTotal) * 100);
+    for (var i = 0; i < marcas.length; i++) {
+      var m = marcas[i];
+      if (lido >= m && !vistas[m]) {
+        vistas[m] = true;
+        zaraz('scroll_depth', { percent: m, page: window.location.pathname });
+      }
+    }
+  };
+  medir();
   window.addEventListener(
     'scroll',
     function () {
       if (pendente) return;
       pendente = true;
-      requestAnimationFrame(function () {
-        pendente = false;
-        var altura = document.documentElement.scrollHeight - window.innerHeight;
-        if (altura <= 0) return;
-        var pct = (window.scrollY / altura) * 100;
-        for (var i = 0; i < marcas.length; i++) {
-          var m = marcas[i];
-          if (pct >= m && !vistas[m]) {
-            vistas[m] = true;
-            zaraz('scroll_depth', { profundidade: String(m) });
-          }
-        }
-      });
+      requestAnimationFrame(medir);
     },
     { passive: true }
   );

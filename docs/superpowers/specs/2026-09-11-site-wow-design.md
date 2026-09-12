@@ -404,7 +404,16 @@ gastar um ciclo de CI.
   da rota migrada. Não quebrou nada — mas o item 3 do critério de aceitação
   só foi exercido em parte: o reforço cobre evento de conversão e
   profundidade de rolagem (Zaraz); aviso de cookies e Turnstile sem React não
-  entraram no escopo desta prova e continuam por medir.
+  entraram no escopo desta prova e continuam por medir. A revisão final da
+  frente encontrou dois custos que esta rota já paga, e que este ciclo de
+  correção não resolve porque são desenho, fora do escopo da prova: o
+  hambúrguer do `Navbar` é um botão que nunca abre — sem hidratação, o
+  `onClick` não liga, e a 390 px a rota não oferece nenhuma navegação —, e o
+  `AvisoDeConsentimento` só monta depois da hidratação, então nunca aparece;
+  quem visita não pode aceitar nem recusar, e como a Zaraz nega por padrão
+  quem nunca respondeu, a medição que o reforço existe para repor não chega
+  em produção. É por isso que a rota não está pronta para publicar como
+  está.
 - **Chat:** venceu a alternativa B — na rota sem JS, o botão de chat vira
   link para `/contato?ref=chat`, com o mesmo alvo de toque e o mesmo evento
   de conversão. A regra era "B primeiro, ilha de verdade (alternativa A) só
@@ -416,11 +425,21 @@ gastar um ciclo de CI.
 margem, e o ponto técnico mais incerto — o `Layout` descobrir e servir o
 reforço sem o runtime do React Router — resolveu-se mais simples do que a
 especificação previa: arquivo estático em `public/`, sem hash de build nem
-manifesto. **A arquitetura B segue para a frente 3**, com duas ressalvas que
-a frente 3 herda em aberto: o número acima é de uma rota só, medido
-localmente — quem decide é a corrida do Lighthouse que a CI já roda no PR,
-contra o preview publicado —, e o aviso de cookies e o Turnstile sem React
-ainda não foram provados.
+manifesto. **A arquitetura B segue para a frente 3**, com três ressalvas que
+a frente 3 herda em aberto. Primeira: `handle = { semJs: true }` é exportado
+uma vez, no nível do módulo de `pages/forense/Home.tsx`, e `src/routes.ts`
+monta essa mesma rota sob três prefixos de idioma — `/forense`, `/en/forense`
+e `/es/forense` saem sem JavaScript, os três. Só `/forense` foi medido e
+testado nesta prova; `/en/forense` e `/es/forense` não passaram pelo
+Lighthouse nem pela suíte `sem-js.spec.ts`. O Ricardo decidiu que três
+variantes de idioma da mesma página contam como uma rota só para o critério
+de aceitação — é a mesma página, não uma migração do site —, mas o número
+acima vale só para o caminho medido, e quem decide de fato é a corrida do
+Lighthouse que a CI já roda no PR, contra o preview publicado. Segunda: o
+aviso de cookies e o Turnstile sem React ainda não foram provados. Terceira:
+os dois custos registrados acima (menu inerte, aviso de consentimento que não
+monta) — a frente 3 precisa resolvê-los antes de esta rota ir ao ar em
+produção.
 
 ## 8. Fundação (frente 1)
 

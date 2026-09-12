@@ -19,7 +19,7 @@ import Breadcrumbs from './components/Breadcrumbs';
 import ProfundidadeDeRolagem from './components/ProfundidadeDeRolagem';
 import { BrandProvider, BRAND_DOMAINS, resolveBrand, type Brand } from './config/brand';
 import { BRAND_DEFAULT_META, pageMeta } from './utils/meta';
-import { IDIOMA_PADRAO, idiomaDaRota, rotaSemIdioma, type Idioma } from './utils/lang';
+import { IDIOMA_PADRAO, idiomaDaRota, rotaNoIdioma, rotaSemIdioma, type Idioma } from './utils/lang';
 
 /**
  * A marca sai do Host da requisição, no servidor, antes de qualquer render.
@@ -125,7 +125,34 @@ export function Layout({ children }: { children: ReactNode }) {
               nonce={nonce}
               dangerouslySetInnerHTML={{
                 __html: JSON.stringify({
-                  prerender: [{ where: { href_matches: '/*' }, eagerness: 'moderate' }],
+                  // '/*' pré-carregava até as rotas hidratadas (contato,
+                  // assessment, carreiras, obrigado): passar o mouse nelas já
+                  // baixava e iniciava o bundle todo do React Router em
+                  // segundo plano — a página sem JavaScript acabava
+                  // arrastando o JavaScript que ela existe para evitar. Só
+                  // essas quatro (e os prefixos /en e /es) ficam de fora; o
+                  // resto — as demais páginas de conteúdo, hoje só esta —
+                  // continua pré-carregado.
+                  prerender: [
+                    {
+                      where: {
+                        and: [
+                          { href_matches: '/*' },
+                          {
+                            not: {
+                              href_matches: [
+                                '/contato', '/en/contato', '/es/contato',
+                                '/assessment/*', '/en/assessment/*', '/es/assessment/*',
+                                '/carreiras', '/en/carreiras', '/es/carreiras',
+                                '/obrigado', '/en/obrigado', '/es/obrigado',
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                      eagerness: 'moderate',
+                    },
+                  ],
                 }),
               }}
             />
@@ -154,6 +181,8 @@ function Shell({ brand, children }: { brand: Brand; children: ReactNode }) {
   // chat (uma ilha React) nunca abriria. Ali o botão vira link para o
   // contato, com o mesmo alvo de toque e o mesmo evento de conversão.
   const semJsShell = useMatches().some((m) => (m.handle as { semJs?: boolean } | undefined)?.semJs);
+  const dados = useRouteLoaderData('root') as RootData | undefined;
+  const langShell = dados?.lang ?? IDIOMA_PADRAO;
   return (
     <BrandProvider value={brand}>
       <RenderErrorBoundary>
@@ -170,7 +199,7 @@ function Shell({ brand, children }: { brand: Brand; children: ReactNode }) {
               <Navbar />
               {semJsShell ? (
                 <a
-                  href="/contato?ref=chat"
+                  href={`${rotaNoIdioma('/contato', langShell)}?ref=chat`}
                   data-evento="cta_click"
                   data-cta="chat_sem_js"
                   className="fixed bottom-6 right-6 z-40 inline-flex min-h-11 items-center gap-2 rounded-full border border-primary-container/25 bg-surface-container-low px-5 py-3 font-display text-sm font-medium text-white shadow-xl shadow-black/30 md:bottom-8 md:right-8"
