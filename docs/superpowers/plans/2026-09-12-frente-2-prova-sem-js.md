@@ -39,7 +39,7 @@
 | Arquivo | O que muda | Tarefa |
 |---|---|---|
 | `tests/site/sem-js.spec.ts` | novo: a rota da prova não baixa módulo nenhum e continua funcionando | 1 |
-| `src/routes/home.tsx`, `src/pages/forense/Home.tsx` | `export const handle = { semJs: true }` na rota da prova | 1 |
+| `src/pages/forense/Home.tsx` | `export const handle = { semJs: true }` na rota da prova | 1 |
 | `src/root.tsx` | o `Layout` decide pelo `handle` se emite `<Scripts>` e `<ScrollRestoration>` | 1 |
 | `public/reforco.js` | novo: eventos por atributo, profundidade de rolagem | 2 |
 | `public/_headers` | cache do reforço, como o `/boot.js` | 2 |
@@ -54,7 +54,7 @@
 
 **Arquivos:**
 - Criar: `tests/site/sem-js.spec.ts`
-- Modificar: `src/routes/home.tsx`, `src/root.tsx:97-118`
+- Modificar: `src/pages/forense/Home.tsx`, `src/root.tsx:97-118`
 
 **Interfaces:**
 - Produz: a convenção `export const handle = { semJs: true }`, que as tarefas 2 e 3 leem no `Layout`, e que a frente 3 vai aplicar às demais rotas.
@@ -105,22 +105,18 @@ Esperado: o primeiro teste falha listando os módulos de `/assets/*.js` que a p�
 
 - [ ] **Passo 3: marcar a rota**
 
-Em `src/routes/home.tsx`, depois dos imports, acrescente:
-
-```ts
-/**
- * A rota `/` serve as três marcas; o `handle` vale para todas elas. A frente 2
- * usa a home da forense.io como prova, e o `Layout` lê esta marca para decidir
- * se emite os scripts.
- */
-export const handle = { semJs: true };
-```
-
-E em `src/pages/forense/Home.tsx`, antes do `export default`, acrescente o mesmo bloco (a rota `/forense` é um módulo de rota próprio, declarado em `src/routes.ts:34`):
+Em `src/pages/forense/Home.tsx`, antes do `export default`, acrescente (a rota `/forense` é um módulo de rota próprio, declarado em `src/routes.ts:34`):
 
 ```ts
 export const handle = { semJs: true };
 ```
+
+**Não marque `src/routes/home.tsx`.** Essa rota serve as três marcas de uma vez,
+e a prova é de uma rota só: marcá-la tira o JavaScript das três homes e derruba
+o mega-menu, o seletor de marcas, o menu do celular, o chat e o aviso de
+cookies. Uma versão anterior deste passo mandava marcá-la; a execução quebrou
+treze testes por causa disso, e a correção foi restringir o `handle` à home da
+forense.io.
 
 - [ ] **Passo 4: o `Layout` obedecer ao `handle`**
 
