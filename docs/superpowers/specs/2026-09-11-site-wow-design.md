@@ -372,6 +372,47 @@ hidratação, tirar o `motion` do caminho global, pré-carregar só a Montserrat
 dar `fetchpriority` alto à foto do hero e reduzir os pré-carregamentos. O
 Ricardo decide antes de seguir.
 
+#### Resultado da prova (12/09/2026)
+
+Medição local — mesma sessão, mesma máquina, `wrangler dev --local`, perfil
+celular do Lighthouse, `throttlingMethod: simulate`. Não é a Lighthouse de
+produção citada na seção 1: é a referência que valida a arquitetura antes de
+gastar um ciclo de CI.
+
+- **LCP:** `/forense` sem JavaScript fecha em **1,98 s** (mediana de três
+  execuções — 1979,49 / 1980,16 / 1984,34 ms; o pior caso também fica abaixo
+  da meta). No mesmo ambiente, a home hidratada (`/`) mede **4,04 s**, numa
+  única execução — sem o mesmo rigor de três corridas, porque não é ela quem
+  está sob prova.
+- **Script:** `/forense` baixa **~2,1 KB** — só o `reforço`
+  (`public/reforco.js`) — contra **~287 KB** em 40 scripts na `/`. O
+  orçamento da faixa estrita é 10 KiB; sobra folga de mais de 8 KiB.
+- **e2e:** os quatro testes de `sem-js.spec.ts` (status 200, allow-list de
+  script, nonce) fecham verdes. A suíte completa do site fecha em 99
+  aprovados / 42 reprovados — as 42 reprovações batem, teste a teste, com a
+  baseline já documentada do ambiente local (marca resolvida como
+  forense.io independente do Host, D1 local vazio); nenhuma é nova, nenhuma é
+  da rota migrada. Não quebrou nada — mas o item 3 do critério de aceitação
+  só foi exercido em parte: o reforço cobre evento de conversão e
+  profundidade de rolagem (Zaraz); aviso de cookies e Turnstile sem React não
+  entraram no escopo desta prova e continuam por medir.
+- **Chat:** venceu a alternativa B — na rota sem JS, o botão de chat vira
+  link para `/contato?ref=chat`, com o mesmo alvo de toque e o mesmo evento
+  de conversão. A regra era "B primeiro, ilha de verdade (alternativa A) só
+  se a medição mostrar folga", decidida antes de a medição rodar. A medição
+  saiu com folga — mais de 500 ms e 8 KiB de sobra —, mas nenhuma tarefa
+  reabriu a escolha para trocar pela ilha; B é o que segue para a frente 3.
+
+**Veredito:** o critério de aceitação (LCP abaixo de 2,5 s) passou com
+margem, e o ponto técnico mais incerto — o `Layout` descobrir e servir o
+reforço sem o runtime do React Router — resolveu-se mais simples do que a
+especificação previa: arquivo estático em `public/`, sem hash de build nem
+manifesto. **A arquitetura B segue para a frente 3**, com duas ressalvas que
+a frente 3 herda em aberto: o número acima é de uma rota só, medido
+localmente — quem decide é a corrida do Lighthouse que a CI já roda no PR,
+contra o preview publicado —, e o aviso de cookies e o Turnstile sem React
+ainda não foram provados.
+
 ## 8. Fundação (frente 1)
 
 1. **`PRODUCT.md`** passa a registrar as três empresas e os portfólios, a
