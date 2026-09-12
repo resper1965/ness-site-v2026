@@ -114,7 +114,23 @@ export function Layout({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
-        {semJs ? null : (
+        {semJs ? (
+          <>
+            {/* Medição e navegação nas rotas sem hidratação. `defer` para não
+                disputar a primeira pintura; as regras de pré-carregamento são
+                do navegador, e onde não houver suporte a navegação é a normal. */}
+            <script defer nonce={nonce} src="/reforco.js" />
+            <script
+              type="speculationrules"
+              nonce={nonce}
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  prerender: [{ where: { href_matches: '/*' }, eagerness: 'moderate' }],
+                }),
+              }}
+            />
+          </>
+        ) : (
           <>
             <ScrollRestoration nonce={nonce} />
             <Scripts nonce={nonce} />

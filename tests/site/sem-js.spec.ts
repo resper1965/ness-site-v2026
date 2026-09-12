@@ -7,14 +7,19 @@ import { expect, test } from '@playwright/test';
  */
 test.describe('rota sem JavaScript', () => {
   test('/forense não baixa nenhum módulo da aplicação', async ({ page }) => {
-    const modulos: string[] = [];
+    // Lista de permissão, não filtro por pasta: qualquer script, de qualquer
+    // caminho, entra na conta. Só o reforço (frente 2, tarefa 2) tem passe.
+    const scripts: string[] = [];
     page.on('request', (req) => {
       const url = new URL(req.url());
-      if (url.pathname.startsWith('/assets/') && url.pathname.endsWith('.js')) modulos.push(url.pathname);
+      if (req.resourceType() === 'script' || url.pathname.endsWith('.js')) scripts.push(url.pathname);
     });
-    await page.goto('/forense');
+    const resposta = await page.goto('/forense');
     await page.waitForLoadState('networkidle');
-    expect(modulos, `módulos baixados: ${modulos.join(' ')}`).toEqual([]);
+    // Sem isto um 500 ou uma resposta truncada passaria: zero scripts por
+    // página quebrada, não por página sem JavaScript.
+    expect(resposta?.status()).toBe(200);
+    expect(new Set(scripts), `scripts carregados: ${scripts.join(' ')}`).toEqual(new Set(['/reforco.js']));
   });
 
   test('/forense mostra a cadeia de custódia com o JavaScript desligado', async ({ browser }) => {
