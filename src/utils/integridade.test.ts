@@ -12,6 +12,17 @@ const arquivos = import.meta.glob(['../**/*.{ts,tsx,json}', '!../**/*.test.*', '
   eager: true,
 }) as Record<string, string>;
 
+/**
+ * Os documentos entram só na varredura de codinome: PESQUISA-metricas.md cita
+ * "100%" de propósito, para registrar o que foi vetado, e reprovaria os outros
+ * testes sem estar errado.
+ */
+const documentos = import.meta.glob(['../../*.md', '../../docs/**/*.md'], {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
+
 function ofensores(padrao: RegExp): string[] {
   return Object.entries(arquivos)
     .filter(([, texto]) => padrao.test(texto))
@@ -65,6 +76,20 @@ describe('integridade do que vai ao ar', () => {
     expect(ofensores(/transparenttextures\.com/)).toEqual([]);
   });
 
+  // Nenhum produto é vendido como agente ou copiloto: no n.secops e no ness.OS
+  // o ator automatizado é o AIOps, e o n.autoops é gestão de automações, sem IA
+  // (PRODUCT.md, 11/09).
+  it('nenhum produto vendido como agente de IA ou copiloto', () => {
+    expect(ofensores(/agentes?\s+(de IA|de intelig|autônomos|neuro)|AI agents?|co-?pilot|copiloto/i)).toEqual([]);
+  });
+
+  // O n.infraops é atendimento, sustentação técnica e arquitetura; o FinOps
+  // saiu do produto em 11/09. A guarda cobre todo o src/ — não só os dados do
+  // produto — porque o termo podia voltar por i18n.ts ou pelos locales.
+  it('nenhuma menção a FinOps no site', () => {
+    expect(ofensores(/finops/i)).toEqual([]);
+  });
+
   // Codinome de projeto não é marca: nunca vai ao ar, nem em identificador ou
   // chave de i18n. O teste guarda só o SHA-256 de cada codinome, para que o
   // próprio nome não more no repositório — e acusa o arquivo, não a palavra.
@@ -77,7 +102,7 @@ describe('integridade do que vai ao ar', () => {
     ]);
     const sha256 = (palavra: string) => createHash('sha256').update(palavra).digest('hex');
 
-    const achados = Object.entries(arquivos)
+    const achados = Object.entries({ ...arquivos, ...documentos })
       .filter(([, texto]) => {
         const minusculo = texto.toLowerCase();
         // Três leituras, porque o codinome aparece em qualquer grafia: camelCase

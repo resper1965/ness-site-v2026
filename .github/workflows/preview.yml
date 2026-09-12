@@ -35,6 +35,18 @@ jobs:
       - name: Instalar dependências
         run: npm ci
 
+      # Os testes de integridade (alegação sem fonte, codinome, marca) só
+      # barram alguma coisa se rodarem aqui; antes, dependiam de alguém rodar
+      # npm test na mão.
+      - name: Testes unitários
+        run: npm test
+
+      # Versão fixa: uma versão nova do detector com regra nova não pode
+      # derrubar a CI sem ninguém ter mexido no código. As exceções ficam em
+      # .impeccable/config.json.
+      - name: Detector do impeccable
+        run: npx --yes impeccable@4.1.0 detect src
+
       - name: Build
         run: npm run build
         env:

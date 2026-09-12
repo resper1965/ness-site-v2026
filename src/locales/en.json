@@ -48,23 +48,23 @@
     },
     "infraops": {
       "title": "n.infraops",
-      "fullTitle": "intelligent infrastructure & global support",
-      "desc": "Infrastructure and cloud: service desk, ITIL, backup and recovery.",
-      "longDesc": "n.infraops redefines traditional technical support. we combine the robustness of the ITIL framework with the agility of an applied AI system that acts as a co-pilot for our operations.",
+      "fullTitle": "user support, technical sustainment and infrastructure architecture",
+      "desc": "User support, technical sustainment and infrastructure architecture, on-premises, cloud or hybrid.",
+      "longDesc": "we look after your infrastructure on three fronts: support for the people who use it, the technical sustainment that keeps it running, and the architecture that designs and evolves it.",
       "cta": "optimize my infrastructure"
     },
     "devarch": {
       "title": "n.devarch",
-      "fullTitle": "developer-oriented architecture & secure scale",
-      "desc": "Software engineering and architecture, secure from the code up.",
-      "longDesc": "at n.devarch, we transform development into a competitive advantage. we create our own solutions and empower companies to achieve extreme scale.",
-      "cta": "scale my development"
+      "fullTitle": "software development, architecture and security",
+      "desc": "A software development, architecture and security cell.",
+      "longDesc": "a cell dedicated to your product, focused on architecture, security across the development lifecycle, and testing.",
+      "cta": "request an architecture review"
     },
     "autoops": {
       "title": "n.autoops",
-      "fullTitle": "operational efficiency & strategic automation",
-      "desc": "Process and operations automation with AI agents.",
-      "longDesc": "n.autoops is the intelligence arm of ness. that puts your company ahead of the competition. we develop personalized assistants (co-pilots) that take over repetitive tasks.",
+      "fullTitle": "automation management: govern, sustain and prove the return",
+      "desc": "Management of your automation fleet: governance, sustainment, security and measured return.",
+      "longDesc": "building bots has become a commodity. we look after your whole automation fleet: we govern, sustain, protect and measure the return of every automation.",
       "cta": "talk about your automation fleet"
     },
     "cirt": {
@@ -257,12 +257,6 @@
     "quick_specialist": "Talk to a Specialist",
     "quick_incident": "Incident (n.cirt)",
     "quick_dpo": "DPO Ombudsman",
-    "preview": {
-      "msg1_user": "Gabi, I need a summary of the contracts expiring this month.",
-      "msg1_bot": "Certainly. I identified 12 contracts expiring in April. The top 3 are: Alpha Client (15th), Tech Solutions (22nd), and Global Corp (28th). Would you like me to prepare the renewal terms?",
-      "msg2_user": "Yes, please. Use the 2024 standard template.",
-      "msg2_bot": "Understood. Processing drafts... Done! The 3 drafts have been generated and sent to your drafts folder in Teams. Anything else?"
-    },
     "open": "talk to Gabi"
   },
   "common": {

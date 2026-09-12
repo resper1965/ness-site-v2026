@@ -114,7 +114,7 @@ Este roadmap consolida **todos os processos** do ecossistema ness. em 6 fases (�
 
 | Task | Descrição | Status |
 |------|-----------|--------|
-| T1.4.1 | Chatbot Gabi.OS respondendo com contexto RAG real | `[ ]` |
+| T1.4.1 | Chatbot Gabi respondendo com contexto RAG real | `[ ]` |
 | T1.4.2 | Newsletter sign-up + confirmação email (Resend) | `[ ]` |
 | T1.4.3 | Formulário de contato → recebe email | `[ ]` |
 | T1.4.4 | Rate limiting do chat (20 req/min/IP) | `[ ]` |
@@ -202,7 +202,7 @@ Este roadmap consolida **todos os processos** do ecossistema ness. em 6 fases (�
 - **Agent:** `backend-specialist`
 - **INPUT:** `server.ts` — acumula stream com `await response.text()`
 - **OUTPUT:** Streaming direto para o frontend em dev local
-- **VERIFY:** Chat Gabi.OS funciona em `localhost:3000`
+- **VERIFY:** Chat Gabi funciona em `localhost:3000`
 
 | Task | Descrição | Status |
 |------|-----------|--------|

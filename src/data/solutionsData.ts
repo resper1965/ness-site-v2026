@@ -1,4 +1,4 @@
-import { ShieldCheck, Cloud, Cpu, Brain, Gavel } from 'lucide-react';
+import { ShieldCheck, Cloud, Cpu, Workflow, Gavel } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 export interface WorkflowStep { step: string; name: string; desc: string }
@@ -208,150 +208,91 @@ export const solutionsData: Record<string, SolutionData> = {
   },
   "infraops": {
     icon: Cloud,
-    metaTitle: "n.infraops — operações de infraestrutura e cloud com FinOps",
-    metaDescription: "Suporte técnico e operação de infraestrutura híbrida com ITIL, automação e IA aplicada. Nuvem elástica, custos previsíveis e uptime garantido.",
-    overview: "Infraestrutura instável gera downtime, insatisfação de usuários e desperdício financeiro. O n.infraops assume a operação completa do seu ambiente — do Service Desk L1/L2/L3 à gestão de ITIL e Cloud — liberando seu time interno de apagar incêndios para focar puramente em inovações de alto nível.",
+    metaTitle: "n.infraops — atendimento, sustentação técnica e arquitetura de infraestrutura",
+    metaDescription: "Atendimento a quem usa, sustentação técnica do ambiente e arquitetura de infraestrutura on-premises, em nuvem ou híbrida.",
+    overview: "Cuidamos da sua infraestrutura em três frentes: o atendimento a quem usa, a sustentação técnica que mantém o ambiente de pé e a arquitetura que desenha e evolui o ambiente, on-premises, em nuvem ou híbrido.",
     workflow: [
-      { step: "01", name: "Assessment Inicial", desc: "Mapeamento minucioso da infraestrutura atual, descobrindo ativos não documentados, processos e identificando os pain points com SLAs reais." },
-      { step: "02", name: "Setup ITSM e CMDB", desc: "Estruturação rigorosa da ferramenta de serviços, desenhando os workflows ITIL (Incident/Change/Problem) e a malha conectada de gestão de ativos." },
-      { step: "03", name: "Operação e SLA Ativo", desc: "Assumimos as trincheiras. Nossos Service Desks L1 e L2 passam a responder os chamados enquanto reportamos indicadores SLO/SLI limpos para a liderança." }
+      { step: "01", name: "o pedido ou o alerta", desc: "Um usuário pede ou o monitoramento avisa. Tudo vira registro." },
+      { step: "02", name: "quem cuida", desc: "O atendimento resolve o que é de uso; a sustentação, o que é do ambiente; a arquitetura, o que pede mudança de desenho." },
+      { step: "03", name: "o que você recebe", desc: "A solução documentada e, quando o ambiente muda, a mudança registrada com o plano de volta." }
     ],
     services: [
-      { name: "Service Desk L1/L2/L3 (ITIL)", desc: "Triagem, escalonamento e resolução sob rigorosos processos ITIL. Encerramos tickets velozmente documentando soluções para problemas repetitivos." },
-      { name: "AIOps e Orquestração Autônoma (SOAR)", desc: "Vigilância impulsionada por agentes de Inteligência Artificial. Malhas de sensores detectam anomalias, executam fluxos de mitigação antes do impacto e atualizam seus dashboards de integridade automagicamente." },
-      { name: "Backup Strategy & Disaster Recovery", desc: "Engenharia voltada para salvaguardar a continuidade do negócio. Criamos cofres de dados com RTO e RPO matemáticos para recuperação instantânea de desastres." }
+      { name: "atendimento", desc: "Suporte a quem usa, em níveis, com registro de cada chamado e a solução documentada para o que se repete." },
+      { name: "sustentação técnica", desc: "Operação, manutenção, correção e aplicação de patch do ambiente, com cada mudança registrada e o plano de volta." },
+      { name: "arquitetura de infraestrutura", desc: "Desenho e evolução do ambiente on-premises, em nuvem ou híbrido, incluindo backup e recuperação." }
     ],
-    ctaLabel: "agendar assessment (1-2s)",
-    useCases: [
-      { title: "TI enxuta precisa escalar Atendimento sem inchar a folha", desc: "Assumimos as linhas iniciais L1 e L2, resolvendo rapidamente o volume. Seu board foca em inovação, derrubando o ticket backlog em mais da metade na primeira semana." },
-      { title: "Fadiga de alertas de Infraestrutura esgotando os engenheiros", desc: "Implementação de modelo agentico de monitoramento. Nossa IA investiga ocorrências, auto-resolve incidentes comuns via orquestração e só abre chamados documentados para humanos em falhas críticas reais." },
-      { title: "A Diretoria exige relatórios de compliance para a próxima rodada", desc: "A adoção rigorosa de processos ITIL, Change Management (CAB) com rollbacks e relatórios abrem imediatamente o caminho em auditorias rigorosas como SOC 2 e ISO." },
-      { title: "A empresa perdeu dinheiro renovando licenças que não usava", desc: "Implementação profunda de CMDB e Gestão de Capacidade. Auditamos periodicamente ativos de software e hardware matando o desperdício de recursos inativos ou ociosos." }
-    ],
-    features: [
-      { name: "Agentes Autônomos de NOC", category: "AIOps" },
-      { name: "Orquestração de Resposta (SOAR)", category: "Automação" },
-      { name: "Service Desk L1/L2/L3", category: "Atendimento" },
-      { name: "Gestão de Ativos (CMDB / ITAM)", category: "Governança" },
-      { name: "Painéis de Autonomia SLO/SLI", category: "Monitoramento" },
-      { name: "Planos RPO / RTO em Backup", category: "Continuidade" },
-      { name: "Cloud Migration Strategy", category: "Operação" },
-      { name: "Relatórios de Evidência ITIL", category: "Auditoria" }
-    ],
+    ctaLabel: "agendar diagnóstico",
     onboarding: [
-      { step: "01", title: "Discovery", desc: "Assessment de arquitetura e dores em 1-2 semanas." },
-      { step: "02", title: "Setup ITSM", desc: "Customização das vias de ITIL e importação do CMDB." },
-      { step: "03", title: "Shadowing", desc: "Transferência de conhecimento documentando runbooks da sua própria TI." },
-      { step: "04", title: "Go-Live Híbrido", desc: "Atuação como backup/suporte até atingirmos autonomia total nos protocolos." }
+      { step: "01", title: "diagnóstico", desc: "Mapeamos o ambiente, os ativos e o atendimento que você já tem." },
+      { step: "02", title: "montagem", desc: "Organizamos o registro de chamados e de mudanças e o inventário dos ativos." },
+      { step: "03", title: "shadowing", desc: "Nosso time acompanha o seu, aprende a rotina e documenta os runbooks da sua TI." },
+      { step: "04", title: "go-live", desc: "Entramos como apoio ao seu time até assumirmos a frente, com o mesmo registro." }
     ],
     technicalFeatures: [],
-    portfolio: [
-      { client: "Logística Nacional", project: "Help Desk + CMDB", result: "Redução de MTTR em mais de 78% nos primeiros meses." }
-    ]
   },
   "devarch": {
     icon: Cpu,
-    metaTitle: "n.devarch — engenharia e arquitetura de software sob medida",
-    metaDescription: "Squads de engenharia de software de alta performance: arquitetura, desenvolvimento seguro (DevSecOps) e modernização de sistemas críticos.",
-    overview: "Segurança que entra no fim do ciclo é retrabalho. O n.devarch embarca Segurança e Cloud Native diretamente no seu SDLC. Desenhe aplicações escaláveis, consolide CI/CD com varreduras SAST/DAST integradas, levante SBOM dinamicamente e escale sua malha de microsserviços sem travar a velocidade de entrega técnica.",
+    metaTitle: "n.devarch — célula de desenvolvimento, arquitetura e segurança de software",
+    metaDescription: "Um time dedicado ao seu produto, com foco em arquitetura, segurança ao longo do ciclo de vida do desenvolvimento e testes.",
+    overview: "Segurança que entra no fim do ciclo vira retrabalho. Montamos uma célula dedicada ao seu produto, que junta desenvolvimento, arquitetura e segurança de software: o desenho é revisado antes do código, o código passa por revisão e análise de segurança, e nada chega à produção sem teste.",
     workflow: [
-      { step: "01", name: "Architecture Review", desc: "Varredura pontual na arquitetura vigente identificando débitos técnicos, riscos iminentes e desenhando os Threat Models lógicos." },
-      { step: "02", name: "SSDLC Design", desc: "Integração cirúrgica do Secure SDLC desenhando gates automatizados. SAST/DAST acoplados diretamente ao pull request do seu desenvolvedor sem estresse." },
-      { step: "03", name: "CI/CD Setup e Handoff", desc: "Deploys condicionados automatizados com testes E2E blindados. Sua equipe assina a qualidade em produção enquanto a ferramenta aprova riscos baixos sozinha." }
+      { step: "01", name: "arquitetura", desc: "O desenho é revisado e as ameaças são modeladas antes do código." },
+      { step: "02", name: "código", desc: "Revisão e análise de segurança do código e das dependências a cada mudança." },
+      { step: "03", name: "testes", desc: "Testes automatizados e de segurança antes da homologação e da produção." }
     ],
     services: [
-      { name: "Varreduras Automáticas (SAST/DAST)", desc: "Seu time faz commit, o código é estressado de forma silenciosa por heurísticas em Sandbox localizando fragilidades muito antes de compilar para produção." },
-      { name: "Threat Modeling e SBOM", desc: "Radiografia constante do seu software, desde matrizes com o modelo STRIDE até a transparência milimétrica das bibliotecas em formato SBOM para rigor de auditorias corporativas." },
-      { name: "API e Container Security", desc: "Blindagem externa ponta a ponta. Refinamento de APIs (OAuth2, rate limits) contido na fortaleza de runtime images atestados por scanners contínuos." }
+      { name: "arquitetura de software", desc: "Revisão da arquitetura que existe e desenho do que vem, com modelagem de ameaças." },
+      { name: "segurança no ciclo de desenvolvimento", desc: "Análise do código e das dependências na esteira de entrega, e o inventário dos componentes do software." },
+      { name: "testes", desc: "Testes automatizados e de segurança, de aplicação e de API, antes de cada entrega." }
     ],
-    ctaLabel: "solicitar architecture review",
-    useCases: [
-      { title: "O time ágil sofre gargalos da segurança ao soltar releases", desc: "Ao acoplarmos o Scanner de SAST/DAST à esteira CI/CD, os falsos positivos e os alertas de baixo impacto são validados instantaneamente reduzindo revisões puramente manuais da Segurança." },
-      { title: "Startup transicionando carga para Cloud-Native", desc: "Executamos o redesign cirúrgico convertendo monolitos em micro-funcionalidades e API-gateways, migrando a topologia arquitetural aos poucos." },
-      { title: "Auditoria exigiu imediatamente lista SBOM do produto", desc: "Entregamos automações de pipeline que cospem todo o Software Bill of Materials validando assinaturas e varrendo licenças open-source maliciosas on-demand." },
-      { title: "CTO foi cobrado por Métricas Ágeis em Produtividade", desc: "Configuramos painéis executivos vivos medindo Deployment Frequency e tempo médio de recuperação (MTTR) em tempo real baseados nos KPIs DORA universais." }
-    ],
-    features: [
-      { name: "Pipelines CI/CD Seguros", category: "Automação" },
-      { name: "Security Gateways SAST/DAST", category: "Shift-Left" },
-      { name: "SBOM Configuration Tracker", category: "Compliance" },
-      { name: "Painéis de DORA Metrics", category: "Métricas" },
-      { name: "Threat Modeling (STRIDE/PASTA)", category: "Arquitetura" },
-      { name: "Container/Runtime Hardening", category: "Isolamento" },
-      { name: "Infra-as-Code (Terraform/OPA)", category: "Deploy" },
-      { name: "Arquitetura API & OIDC", category: "Transação" }
-    ],
+    ctaLabel: "solicitar revisão de arquitetura",
     onboarding: [
-      { step: "01", title: "Review", desc: "Identificação do end-state em sessões precisas de arquitetura de software de até duas semanas." },
-      { step: "02", title: "SSDLC", desc: "Mapeamento rigoroso e implantação inicial das regras nos repositórios para Secure SDLC." },
-      { step: "03", title: "CI/CD Pipe", desc: "Setup final conectando a engenharia de delivery nativa da corporação à nossa automação." },
-      { step: "04", title: "Handoff", desc: "Treinamentos pragmáticos. O processo fica claro, documentado na rotina e assumido pelos DevOps." }
+      { step: "01", title: "revisão", desc: "Sessões de arquitetura para definir aonde o seu software precisa chegar." },
+      { step: "02", title: "ciclo seguro", desc: "As regras de segurança entram nos repositórios e na esteira de entrega." },
+      { step: "03", title: "esteira", desc: "A esteira do seu time passa a rodar as verificações a cada mudança." },
+      { step: "04", title: "passagem", desc: "Treinamento e documentação para o seu time assumir a rotina." }
     ],
     technicalFeatures: [],
-    portfolio: [
-      { client: "Top Fintech", project: "Refatoração Secure SDLC & SBOM", result: "Adequação acelerada para aprovação do SOC2." }
-    ]
   },
   "autoops": {
-    icon: Brain,
-    metaTitle: "n.autoops — automação de infraestrutura e processos",
-    metaDescription: "Automação de infraestrutura, pipelines e processos operacionais com IA. Menos tarefas manuais, mais previsibilidade e escala.",
+    icon: Workflow,
+    metaTitle: "n.autoops — gestão de automações",
+    metaDescription: "Construir robô virou commodity. Governamos, sustentamos, protegemos e medimos o retorno da sua frota de automações, e o código e a documentação são seus desde o primeiro dia.",
+    overview: "Construir robô virou commodity; o difícil é governar, sustentar, proteger e provar o retorno. Cuidamos da sua frota de automações inteira: acompanhamos cada execução, corrigimos quando uma tela ou uma credencial muda, guardamos as credenciais fora do código e mostramos a economia líquida de cada automação.",
     workflow: [
-      { step: "01", name: "Triagem de Fricção Cognitiva", desc: "Varredura corporativa cruzando o mapa de processos departamentais e destacando onde atividades humanas não agregam inovação orgânica." },
-      { step: "02", name: "Injeção LLM Customizada", desc: "Treinamento do core de IA sobre sua wiki corporativa e contratos vitais garantindo acurácia setorial profunda e sem alucinações vazias." },
-      { step: "03", name: "Delegação Ativa Transacional", desc: "Acoplamento de agentes neuro-digitais executivos; eles leem a solicitação, acionam API sem intervenção e enviam o ticket resolvido ao requisitante final." }
+      { step: "01", name: "mapear", desc: "Os processos com mais atrito, documentados como são hoje e como devem ficar." },
+      { step: "02", name: "automatizar", desc: "Cada automação com o tratamento de exceção desenhado e as credenciais num cofre, fora do código." },
+      { step: "03", name: "sustentar e medir", desc: "Cada execução acompanhada, a correção quando algo muda e a economia líquida de cada automação." }
     ],
     services: [
-      { name: "LLMs de Backoffice Auditável", desc: "Agentes operando leitura de milhares de PDFs, comparando faturamento automático e indicando onde há gargalos logísticos contábeis rotineiramente." },
-      { name: "Atendimento N1 Cognitivo", desc: "FrontDesk hiper-escalável que absorve tickets técnicos triviais resetando senhas ou acionando rollbacks simples via permissões pré-negociaveis da chefia." },
-      { name: "Orquestradores Baseados em Agentes", desc: "Avanço estrutural de engenharia: A.I. conectada e programada autonomamente atirando payload a múltiplos nós das arquiteturas AWS / GCP por demanda de texto." }
+      { name: "cockpit da frota", desc: "O que rodou, quanto tempo levou, onde falhou e o que está parado, em todas as automações." },
+      { name: "economia líquida", desc: "Horas poupadas vezes o custo da hora, menos o custo da automação: a conta de cada robô." },
+      { name: "trilha de auditoria", desc: "Cada execução registrada, com o hash dos arquivos processados." },
+      { name: "credenciais protegidas", desc: "Segredos fora do código, entregues só na hora da execução, com o menor privilégio." }
     ],
-    ctaLabel: "automatizar operações",
-    technicalFeatures: [
-      { title: "Stack LLM Isolado Corporativamente", desc: "Modelos OpenSource robustos empacotados privadamente sem rastreamento dos provedores globais terceiros vigentes." },
-      { title: "Engenharia de Prompt Parametrizada", desc: "Roteamento sistemático na camada de entrada e RAG vector para suprimir distorções." },
-      { title: "Agents via Function Calling", desc: "IAs emparelhadas ativando scripts na AWS isoladas pelo seu controle de JWT/SAML corporativo central." }
-    ],
-    portfolio: [
-      { client: "Logistics Leader", project: "Backoffice AI", result: "Economia de 30.000 horas/ano em tarefas de retaguarda." }
-    ]
+    ctaLabel: "conversar sobre a sua frota de automações",
   },
   "cirt": {
     icon: Gavel,
-    metaTitle: "n.cirt — resposta a incidentes: contenção, forense e comunicação de crise",
-    metaDescription: "Time de resposta a incidentes para ransomware, vazamento de dados e indisponibilidade crítica. Contenção, forense e comunicação de crise, com sala de guerra estruturada e playbooks NIST/ISO.",
-    overview: "Quando o impensável acontece, o pânico e o tempo são seus maiores inimigos. O n.cirt é a força de liderança em Resposta a Incidentes, atuando na orquestração da crise. Acionamos uma sala de guerra virtual estruturada e assumimos o controle gerencial com playbooks NIST/ISO. Alinhamos sua equipe de TI, a Comunicação (PR), o Jurídico e até acionamos perícia forense externa, tirando o peso dos ombros da sua diretoria para garantir a continuidade do negócio.",
+    metaTitle: "n.cirt — resposta a incidentes: comando da crise, contenção, perícia e comunicação",
+    metaDescription: "Assumimos o comando da crise cibernética e coordenamos contenção, perícia, retomada e comunicação, com o comitê acompanhando cada decisão registrada.",
+    overview: "Num incidente grave, o colapso costuma vir da descoordenação: provas perdidas na pressa de restaurar, ambiente contaminado de volta ao ar, comitê decidindo por boato. Assumimos o comando da crise e organizamos cinco frentes sob um comandante: perícia e custódia, resposta tática, reestruturação, comunicação e jurídico e regulatório. O comitê acompanha no cockpit, e cada decisão fica registrada.",
     workflow: [
-      { step: "01", name: "War Room e Triagem", desc: "Assumimos a cadeira central de comando. Centralizamos as informações cruzando relatos dos seus times internos e provedores de segurança (SOC/MSSP) para entender a magnitude do incidente sem achismos." },
-      { step: "02", name: "Coordenação de Contenção", desc: "Direcionamos a aplicação de playbooks táticos aprovados. Instruímos suas equipes de redes e infraestrutura sobre exatamente quais conectividades cortar e quais ativos isolar para estancar a sangria imediatamente." },
-      { step: "03", name: "Orquestração de Retomada e Forense", desc: "Gerenciamos a recuperação. Acionamos parceiros especialistas e peritos externos (ex: forense.io) para análise profunda, enquanto guiamos seus DBAs na homologação e subida limpa dos backups essenciais." }
+      { step: "01", name: "sala de crise", desc: "O comando é assumido, os papéis são distribuídos e o comitê passa a acompanhar no cockpit." },
+      { step: "02", name: "contenção", desc: "A contenção é coordenada com o seu time e os seus fornecedores, preservando a evidência antes de reiniciar." },
+      { step: "03", name: "retomada e perícia", desc: "Cópias verificadas antes de restaurar, liberação em fases e a perícia com cadeia de custódia." }
     ],
     services: [
-      { name: "Incident Response Management", desc: "Liderança ativa em cenários de violação. Assumimos a posição de Incident Commander, gerenciando seus provedores de tecnologia e ditando prioridades críticas minuto a minuto." },
-      { name: "Modo Standby (Retainer Ativo)", desc: "Seu seguro-comandante contratado antes da falência. Uma liderança sênior à espreita, garantindo a subida do comitê de crise à primeira confirmação do seu NOC de que as barreiras caíram." },
-      { name: "Post-Incident Forensic Review", desc: "Após apagar o incêndio, centralizamos auditorias. Contratamos especialistas forenses para rastrear a origem da porta arrombada e devolvemos um roadmap gerencial de Security inaleável." }
+      { name: "comando do incidente", desc: "Assumimos o comando: distribuímos os papéis, coordenamos o seu time e os seus fornecedores e respondemos ao comitê." },
+      { name: "prontidão contratada", desc: "Um time contratado antes da crise, que entra na primeira confirmação do incidente." },
+      { name: "perícia e retomada", desc: "Evidência preservada antes de restaurar, cópias verificadas e retomada em fases." }
     ],
-    ctaLabel: "agendar emergência cirúrgica",
-    useCases: [
-      { title: "Ransomware Ativo paralisando a operação global", desc: "Acionamento de emergência. A Sala de Guerra subiu em 15 minutos e os especialistas da Ness coordenaram os líderes de TI do cliente e a provedora de nuvem para isolar as contas administrativas antes da perda total." },
-      { title: "Vazamento contínuo de Logs na DarkWeb", desc: "Ativação do processo tático focado em contenção de PII. A coordenação da Ness acionou rapidamente firmas forenses parceiras e guiou o comitê jurídico na formatação da defesa pública." }
-    ],
-    features: [
-      { name: "Sala de Guerra Virtual 24/7", category: "Orquestração" },
-      { name: "Playbooks Normatizados (NIST)", category: "Processos" },
-      { name: "Coordenação de Fornecedores", category: "Microgestão" },
-      { name: "Integração Jurídica e Forense", category: "Legal Hold" },
-      { name: "Comunicação de Crise", category: "C-Level PR" },
-      { name: "Simulações Tabletop (Readiness)", category: "Preparo" }
-    ],
+    ctaLabel: "falar com o time de resposta",
     onboarding: [
-      { step: "01", title: "Playbook Engine", desc: "Assessment de governança desenhando os rituais obrigatórios do NIST aplicados ao catálogo de times e diretores do cliente." },
-      { step: "02", title: "Readiness", desc: "Mapeamento das capacidades dos terceiros (SOC, Cloud Providers) garantindo que eles sabem o que fazer quando a Ness pedir." },
-      { step: "03", title: "Standby Retainer", desc: "O contrato dorme: uma liderança remota silenciosa mas apta a comandar o incidente ao primeiro disparo tático." },
-      { step: "04", title: "War Trigger", desc: "Crise instaurada. A central é puxada, todos os processos bloqueados e os gestores são colocados na call em <= 15 Minutos." }
+      { step: "01", title: "roteiros", desc: "Os ritos e as decisões de crise desenhados para os seus times e diretores." },
+      { step: "02", title: "prontidão", desc: "O mapa do que cada fornecedor faz quando o incidente começa." },
+      { step: "03", title: "em espera", desc: "O contrato fica ativo, com o comando pronto para entrar." },
+      { step: "04", title: "acionamento", desc: "Crise confirmada: o comando assume e o comitê é chamado." }
     ],
-    portfolio: [
-      { client: "Healthcare Provider", project: "Ransomware Rescue Coordination", result: "Ameaça contida pela War Room gerencial orquestrando os DBAs internos e evitando R$ 15 Milhões em perdas com índice legal inabalado." }
-    ]
   }
 };

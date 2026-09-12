@@ -48,23 +48,23 @@
     },
     "infraops": {
       "title": "n.infraops",
-      "fullTitle": "infraestructura inteligente & soporte global",
-      "desc": "Infraestructura y cloud: service desk, ITIL, backup y recuperación.",
-      "longDesc": "n.infraops redefine el soporte técnico tradicional. combinamos la robustez del marco ITIL con la agilidad de un sistema de IA aplicada que actúa como copiloto de nuestras operaciones.",
+      "fullTitle": "atención, sostenimiento técnico y arquitectura de infraestructura",
+      "desc": "Atención, sostenimiento técnico y arquitectura de infraestructura, on-premises, en la nube o híbrida.",
+      "longDesc": "cuidamos de su infraestructura en tres frentes: la atención a quien la usa, el sostenimiento técnico que la mantiene en pie y la arquitectura que la diseña y la hace evolucionar.",
       "cta": "optimizar mi infraestructura"
     },
     "devarch": {
       "title": "n.devarch",
-      "fullTitle": "arquitectura orientada al desarrollador & escala segura",
-      "desc": "Ingeniería y arquitectura de software, con seguridad desde el código.",
-      "longDesc": "en n.devarch, transformamos el desarrollo en una ventaja competitiva. creamos nuestras propias soluciones y capacitamos a las empresas para alcanzar una escala extrema.",
-      "cta": "escalar mi desarrollo"
+      "fullTitle": "desarrollo, arquitectura y seguridad de software",
+      "desc": "Una célula de desarrollo, arquitectura y seguridad de software.",
+      "longDesc": "una célula dedicada a su producto, con foco en arquitectura, seguridad a lo largo del ciclo de vida del desarrollo y pruebas.",
+      "cta": "solicitar una revisión de arquitectura"
     },
     "autoops": {
       "title": "n.autoops",
-      "fullTitle": "eficiencia operativa & automatización estratégica",
-      "desc": "Automatización de procesos y operaciones con agentes de IA.",
-      "longDesc": "n.autoops es el brazo de inteligencia de ness. que pone a su empresa por delante de la competencia. desarrollamos asistentes personalizados (copilotos) que se encargan de tareas repetitivas.",
+      "fullTitle": "gestión de automatizaciones: gobernar, sostener y probar el retorno",
+      "desc": "Gestión de su flota de automatizaciones: gobierno, sostenimiento, seguridad y retorno medido.",
+      "longDesc": "construir robots se volvió commodity. cuidamos de toda su flota de automatizaciones: la gobernamos, la sostenemos, la protegemos y medimos el retorno de cada automatización.",
       "cta": "conversar sobre su flota de automatizaciones"
     },
     "cirt": {
@@ -257,12 +257,6 @@
     "quick_specialist": "Hablar con Especialista",
     "quick_incident": "Incidente (n.cirt)",
     "quick_dpo": "Defensoría DPO",
-    "preview": {
-      "msg1_user": "Gabi, necesito un resumen de los contratos que vencen este mes.",
-      "msg1_bot": "Por supuesto. He identificado 12 contratos que vencen en abril. Los 3 principales son: Cliente Alpha (día 15), Tech Solutions (día 22) y Global Corp (día 28). ¿Desea que prepare los términos de renovación?",
-      "msg2_user": "Sí, por favor. Use el modelo estándar de 2024.",
-      "msg2_bot": "Entendido. Procesando borradores... ¡Listo! Los 3 borradores han sido generados y enviados a su carpeta de borradores en Teams. ¿Algo más?"
-    },
     "open": "hablar con Gabi"
   },
   "common": {

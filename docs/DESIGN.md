@@ -1,5 +1,9 @@
 # DESIGN.md — ness. Design System
 
+> **Documento anterior (24/04/2026), mantido como histórico.** O design system
+> vigente está em [`DESIGN.md`](../DESIGN.md), na raiz, gerado do que está no
+> ar. Onde os dois divergirem, vale o da raiz.
+
 > Documento de referência do design system utilizado nos 3 domínios: **ness.com.br**, **trustness.com.br** e **forense.io**.
 
 ---
@@ -321,7 +325,7 @@ src/
 │   ├── BlueDot.tsx      # Assinatura visual
 │   ├── Navbar.tsx       # Multi-brand navigation
 │   ├── Footer.tsx       # Multi-brand footer
-│   ├── ChatbotWidget.tsx # Gabi.OS chatbot
+│   ├── ChatbotWidget.tsx # Gabi chatbot
 │   ├── LeadMagnet.tsx   # Email capture modal
 │   ├── ClientLogos.tsx  # Social proof
 │   ├── SchemaOrg.tsx    # SEO structured data

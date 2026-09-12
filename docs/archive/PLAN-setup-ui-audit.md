@@ -1,14 +1,14 @@
 # Plan: Setup Environment & UI Audit
 
 ## Overview
-This plan outlines the execution of **Option A** (Local Setup & Backend Validation) and **Option B** (UI/UX Audit & Refinement) for the "ness. Institutional Website". The goal is to fully setup the local environment, test backend specific API routes (especially the Generative AI integrations via Gabi.OS), and conduct a thorough analysis of UI aesthetics, animations, and typography conventions.   
+This plan outlines the execution of **Option A** (Local Setup & Backend Validation) and **Option B** (UI/UX Audit & Refinement) for the "ness. Institutional Website". The goal is to fully setup the local environment, test backend specific API routes (especially the Generative AI integrations via Gabi), and conduct a thorough analysis of UI aesthetics, animations, and typography conventions.   
 
 ## Project Type
 **WEB** - React 19, React Router 7, Vite 6, Tailwind CSS 4, Framer Motion, and Hono.
 
 ## Success Criteria
 1. `npm install` and `npm run dev` complete seamlessly without dependency issues.
-2. The Gabi.OS AI proxy is successfully authenticated using `.env` configurations.
+2. The Gabi AI proxy is successfully authenticated using `.env` configurations.
 3. Dark Mode is fully enforced without Violet/Purple colors, conforming to the "precision engineering" brand aesthetics.
 4. `tsc --noEmit` and `npm run lint` show 0 errors or warnings.
 5. All verification scripts in Phase X pass validation.
@@ -38,7 +38,7 @@ ness-site2026/
 - **Details**: Execute initial setup commands (`npm install`) to prepare local dependencies. Copy `.env.example` into a local `.env` file and prepare the Google Generative AI API key.
 - **Verification**: `node -v` shows compatible version (v18+) and running `npm run dev` serves the application without immediate compilation errors.
 
-### Task 2: Backend Stability & Gabi.OS API Validation
+### Task 2: Backend Stability & Gabi API Validation
 - **Agent**: `backend-specialist`
 - **Skill**: `api-patterns`
 - **Details**: Test functionality of the routes declared in `server.ts` (`/api/insights`, `/api/jobs`, `/api/submit-form`, and `/api/chat`). Ensure that `@google/genai` instances map securely and handle error boundaries properly (graceful fallback).
