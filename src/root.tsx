@@ -125,14 +125,15 @@ export function Layout({ children }: { children: ReactNode }) {
               nonce={nonce}
               dangerouslySetInnerHTML={{
                 __html: JSON.stringify({
-                  // '/*' pré-carregava até as rotas hidratadas (contato,
-                  // assessment, carreiras, obrigado): passar o mouse nelas já
-                  // baixava e iniciava o bundle todo do React Router em
-                  // segundo plano — a página sem JavaScript acabava
-                  // arrastando o JavaScript que ela existe para evitar. Só
-                  // essas quatro (e os prefixos /en e /es) ficam de fora; o
-                  // resto — as demais páginas de conteúdo, hoje só esta —
-                  // continua pré-carregado.
+                  // '/*' pré-carregava até as quatro páginas com formulário
+                  // (contato, assessment, carreiras, e obrigado, que fecha
+                  // esse fluxo): passar o mouse nelas já baixava e iniciava
+                  // o bundle todo do React Router em segundo plano — a
+                  // página sem JavaScript acabava arrastando o JavaScript
+                  // que ela existe para evitar. Só essas quatro (e os
+                  // prefixos /en e /es) ficam de fora; as demais páginas
+                  // hidratadas (home, sobre, portfólio, blog, soluções,
+                  // compliance) continuam no alcance do pré-carregamento.
                   prerender: [
                     {
                       where: {

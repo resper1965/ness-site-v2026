@@ -5,12 +5,13 @@
  * Zaraz e marcar a profundidade de rolagem. Nada mais — se este arquivo
  * crescer, a rota deixou de ser "sem JavaScript" e virou outra coisa.
  *
- * Mede ~2,3 KiB de arquivo (checar com `wc -c public/reforco.js`; o resto da
- * frente 2 registrou ~2,1 KB / 2111 bytes transferidos antes deste ajuste, e
- * o portão de verdade é o `resource-summary:script:size` de 10 KiB no
- * `lighthouserc.json`). É a régua para julgar o próprio arquivo: se ele
- * crescer muito além disso, a rota deixou de ser "sem JavaScript" e virou
- * outra coisa. Carregado com `defer`: nunca segura a pintura.
+ * Mede ~2,6 KiB (2624 bytes) — meça de novo com `wc -c public/reforco.js`
+ * depois de qualquer edição deste arquivo, o número aqui é o que vale, não
+ * o que a especificação registrou num dia diferente. O portão de verdade é
+ * o `resource-summary:script:size` de 10 KiB em `lighthouserc.json`; este
+ * comentário é só o alarme antecipado: se o arquivo crescer muito além do
+ * que está medido aqui, a rota deixou de ser "sem JavaScript" e virou outra
+ * coisa. Carregado com `defer`: nunca segura a pintura.
  */
 (function () {
   var zaraz = function (nome, parametros) {

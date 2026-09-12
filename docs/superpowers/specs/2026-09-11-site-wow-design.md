@@ -393,17 +393,18 @@ gastar um ciclo de CI.
   (10240 − 2111 bytes).
 - **e2e:** os dois testes de `tests/site/sem-js.spec.ts` fecham verdes nos
   dois perfis (mobile e desktop), quatro execuções: um confere status 200 e
-  que só `/reforco.js` é carregado (allow-list, nenhum outro script), o outro
-  — o mais forte da prova — carrega a página com `javaScriptEnabled: false` e
-  exige a cadeia de custódia visível, com as cinco etapas e o mesmo hash em
-  todas. O teste de nonce mora em `tests/site/smoke.spec.ts:487`, não nesta
-  suíte, e também segue verde. A suíte completa do site fecha em 99
-  aprovados / 42 reprovados — as 42 reprovações batem, teste a teste, com a
-  baseline já documentada do ambiente local (marca resolvida como
-  forense.io independente do Host, D1 local vazio); nenhuma é nova, nenhuma é
-  da rota migrada. Não quebrou nada — mas o item 3 do critério de aceitação
-  só foi exercido em parte: o reforço cobre evento de conversão e
-  profundidade de rolagem (Zaraz); aviso de cookies e Turnstile sem React não
+  que só `/reforco.js` é carregado (allow-list, nenhum outro script) — a
+  guarda que voltou a rodar, sozinha e em primeiro plano, depois de mexer nas
+  regras de pré-carregamento, e continua verde —, o outro — o mais forte da
+  prova — carrega a página com `javaScriptEnabled: false` e exige a cadeia de
+  custódia visível, com as cinco etapas e o mesmo hash em todas. A suíte
+  completa do site — nonce incluído (`tests/site/smoke.spec.ts:487`) — não é
+  afirmada aqui: quem decide esse número é a corrida que a CI já roda no PR,
+  contra o preview publicado. O que se sabe deste ciclo: os testes unitários
+  (`npm test`) e a checagem de tipos (`tsc --noEmit`) passam, e o
+  teste-guarda acima passa. Não quebrou a guarda — mas o item 3 do critério
+  de aceitação só foi exercido em parte: o reforço cobre evento de conversão
+  e profundidade de rolagem (Zaraz); aviso de cookies e Turnstile sem React não
   entraram no escopo desta prova e continuam por medir. A revisão final da
   frente encontrou dois custos que esta rota já paga, e que este ciclo de
   correção não resolve porque são desenho, fora do escopo da prova: o
