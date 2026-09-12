@@ -75,8 +75,10 @@ export default function Abertura({
     <div className="relative mx-auto grid max-w-3xl justify-items-center gap-5 text-center">
       {marca && <p className="marca entra text-lg text-white" style={sequencia(0)}>{marca}</p>}
       <h1
+        /* A escala é fluida por token (C1): parte do tamanho que o celular já
+           tinha e cresce com a tela, sem degrau por breakpoint. */
         className={`text-balance font-display font-medium leading-[1.1] tracking-tight text-white ${
-          destaque ? 'text-[34px] sm:text-[44px] lg:text-[56px]' : 'text-[32px] sm:text-[40px] lg:text-[48px]'
+          destaque ? 'text-abertura' : 'text-abertura-sm'
         } ${palavras ? '' : 'entra'}`}
       >
         {typeof titulo === 'string' ? <Palavras texto={titulo} /> : titulo}
@@ -115,7 +117,7 @@ export default function Abertura({
 export function CabecalhoDeSecao({ id, titulo, children }: { id?: string; titulo: ReactNode; children?: ReactNode }) {
   return (
     <div className="revela mb-10 max-w-[62ch]">
-      <h2 id={id} className="text-balance font-display text-2xl font-medium lowercase tracking-tight text-white">
+      <h2 id={id} className="text-balance font-display text-secao font-medium lowercase tracking-tight text-white">
         {titulo}<BlueDot />
       </h2>
       {children && <div className="mt-3 space-y-3 text-base leading-relaxed text-on-surface-variant">{comMarcas(children)}</div>}

@@ -77,11 +77,34 @@
 
   --radius-default: 0.25rem;
   --radius-lg: 0.5rem;
+
+  /* ── Escala fluida (docs/ESTUDO-desktop-wow.md, C1) ────────────────────
+     O desenho delicado fixou a escala olhando o celular, e a 1440 px a mesma
+     escala lê como página interna: título de capa a 56 px, título de seção a
+     24 px, nome de produto a 15 px. Cada token abaixo SAI do tamanho que o
+     celular já tem — a 390 px nada muda — e cresce até o teto do desktop.
+     A reta é a mesma em todos: do valor de celular a 390 px ao teto a
+     1440 px. O passo do meio importa mais que os extremos, e é o que se
+     confere no navegador a 1024 e 1280 px. */
+  --text-abertura: clamp(34px, 2.86vw + 22.9px, 64px);
+  --text-abertura-sm: clamp(32px, 2.29vw + 23.1px, 56px);
+  --text-secao: clamp(24px, 0.76vw + 21px, 32px);
+  /* O segundo título de seção: blog, fecho da home e os fechos da trustness.
+     e da forense.io nasceram a 20 px, não a 24. Unificá-los subiria o
+     celular, e a regra do C1 é que abaixo de 1024 px nada muda. */
+  --text-secao-alt: clamp(20px, 0.57vw + 17.8px, 26px);
+  --text-nome: clamp(15px, 0.29vw + 13.9px, 18px);
+  --text-resumo: clamp(13.5px, 0.14vw + 12.9px, 15px);
+  --text-corpo: clamp(16px, 0.1vw + 15.6px, 17px);
 }
 
 @layer base {
   html {
     color-scheme: dark;
+    /* A pílula da navegação é fixa, e o cabeçalho de seção passa a ser fixo
+       com ela (C1). Sem isto, âncora interna (#soluções, #cadeia, #auditoria)
+       encosta o alvo debaixo das duas. */
+    scroll-padding-top: var(--topo-fixo);
   }
 
   body {
@@ -201,6 +224,43 @@
     --passo: 60ms;
     --sobe-item: 16px;
     --sobe-bloco: 24px;
+
+    /* Altura da pílula da navegação mais 16 px de respiro: é onde o cabeçalho
+       de seção para, e onde uma âncora encosta. Medido no navegador, não
+       estimado: a pílula fica a 16 px do topo (`md:top-4`), mede 69 px com o
+       botão dentro dela e termina em 85 px. 85 + 16 = 101. */
+    --topo-fixo: 101px;
+  }
+}
+
+/* ── A grade editorial (docs/ESTUDO-desktop-wow.md, C1) ───────────────────
+   A partir de 1024 px a seção vira doze colunas: o cabeçalho ocupa as quatro
+   primeiras e acompanha o leitor enquanto a seção rola; o conteúdo ocupa as
+   oito restantes. Abaixo de 1024 px é uma coluna só, empilhada, exatamente
+   como sempre foi — o celular não muda.
+
+   O fixo e o `.revela` nunca moram no mesmo elemento: `.revela` é guiada por
+   `animation-timeline: view()`, cujo alcance depende de o elemento atravessar
+   a tela, e `position: sticky` é justamente o que o impede de atravessar. O
+   cabeçalho ficaria parado no meio da animação, meio transparente. Por isso o
+   elemento fixo é o de fora, e o que se revela vem dentro dele. */
+.secao-grade {
+  display: grid;
+}
+
+@media (min-width: 1024px) {
+  .secao-grade {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 2rem;
+  }
+  .secao-grade > .cabecalho-fixo {
+    grid-column: 1 / span 4;
+    position: sticky;
+    top: var(--topo-fixo);
+    align-self: start;
+  }
+  .secao-grade > .conteudo-grade {
+    grid-column: 5 / span 8;
   }
 }
 

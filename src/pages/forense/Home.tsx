@@ -50,9 +50,16 @@ export default function ForenseHome() {
       </Abertura>
       <div className="mx-auto box-content max-w-7xl px-8 pb-24">
 
-        <section id="cadeia" aria-labelledby="t-cadeia" className="mb-24">
-          <CabecalhoDeSecao id="t-cadeia" titulo={t('forense.cadeia.titulo')}>{t('forense.cadeia.intro')}</CabecalhoDeSecao>
-          <figure>
+        {/* A partir de 1024 px a seção vira doze colunas (C1): o cabeçalho nas
+            quatro primeiras, acompanhando o leitor enquanto a cadeia rola, e a
+            cadeia nas oito restantes. O fixo é o div de fora; o `.revela` do
+            cabeçalho fica dentro dele, porque `sticky` impediria a animação
+            guiada por rolagem de completar o alcance. */}
+        <section id="cadeia" aria-labelledby="t-cadeia" className="secao-grade mb-24">
+          <div className="cabecalho-fixo">
+            <CabecalhoDeSecao id="t-cadeia" titulo={t('forense.cadeia.titulo')}>{t('forense.cadeia.intro')}</CabecalhoDeSecao>
+          </div>
+          <figure className="conteudo-grade">
             <ol className="grid gap-y-9 lg:grid-cols-5 lg:gap-x-10">
               {etapas.map((etapa, i) => (
                 <li key={etapa.nome} className="relative flex flex-col gap-1.5 pl-7 lg:pl-0 lg:pt-7">
@@ -69,8 +76,8 @@ export default function ForenseHome() {
                       <Elo />
                     </>
                   )}
-                  <h3 className="font-display text-[15px] font-medium text-white">{etapa.nome}</h3>
-                  <p className="text-[13px] leading-relaxed text-on-surface-variant">{etapa.texto}</p>
+                  <h3 className="font-display text-nome font-medium text-white">{etapa.nome}</h3>
+                  <p className="text-resumo leading-relaxed text-on-surface-variant">{etapa.texto}</p>
                   <p className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1 border-t border-dashed border-white/10 pt-2.5 lg:mt-auto">
                     <code className="font-mono text-[11.5px] text-on-surface">{HASH}</code>
                     <span className="text-[11.5px] text-primary-container">{etapa.estado}</span>
@@ -84,21 +91,23 @@ export default function ForenseHome() {
           </figure>
         </section>
 
-        <section id="quando" aria-labelledby="t-quando" className="mb-24">
-          <CabecalhoDeSecao id="t-quando" titulo={t('forense.quando.titulo')} />
-          <dl className="grid gap-x-12 md:grid-cols-2">
+        <section id="quando" aria-labelledby="t-quando" className="secao-grade mb-24">
+          <div className="cabecalho-fixo">
+            <CabecalhoDeSecao id="t-quando" titulo={t('forense.quando.titulo')} />
+          </div>
+          <dl className="conteudo-grade grid gap-x-12 md:grid-cols-2">
             {situacoes.map((s) => (
               <div key={s.titulo} className="border-t border-white/10 py-4">
                 <dt className="font-display text-sm font-medium text-white">{s.titulo}</dt>
-                <dd className="mt-1 text-[13.5px] leading-relaxed text-on-surface-variant">{s.texto}</dd>
+                <dd className="mt-1 text-resumo leading-relaxed text-on-surface-variant">{s.texto}</dd>
               </div>
             ))}
           </dl>
         </section>
 
         <section aria-labelledby="t-fecho" className="grid justify-items-start gap-4 border-t border-white/10 pt-16">
-          <h2 id="t-fecho" className="font-display text-xl font-medium lowercase tracking-tight text-white">{t('forense.cta.title')}</h2>
-          <p className="max-w-[60ch] text-[15px] leading-relaxed text-on-surface-variant">{t('forense.cta.desc')}</p>
+          <h2 id="t-fecho" className="font-display text-secao-alt font-medium lowercase tracking-tight text-white">{t('forense.cta.title')}</h2>
+          <p className="max-w-[60ch] text-resumo leading-relaxed text-on-surface-variant">{t('forense.cta.desc')}</p>
           <Link to="/contato?ref=forense" className={BOTAO}>{t('forense.cta.btn')}</Link>
         </section>
       </div>

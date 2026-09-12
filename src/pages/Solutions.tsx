@@ -46,14 +46,23 @@ const Solutions = () => {
 
   return (
     <section id="soluções" className={`bg-surface px-8 ${comoPagina ? 'pb-24 pt-32' : 'py-24'}`}>
-      <div className="mx-auto max-w-7xl">
+      {/* Na home, a seção vira doze colunas a partir de 1024 px (C1): o
+          cabeçalho nas quatro primeiras, acompanhando o leitor enquanto o
+          ciclo rola, e o ciclo nas oito restantes. Como página, /solucoes
+          abre com a `Abertura` centralizada e fica fora da grade. */}
+      <div className={`mx-auto max-w-7xl ${comoPagina ? '' : 'secao-grade'}`}>
         {comoPagina ? (
           <Abertura titulo={t('solutions.ciclo.titulo')}>{t('solutions.ciclo.lede')}</Abertura>
         ) : (
-          <CabecalhoDeSecao titulo={t('nav.solutions')} />
+          /* O fixo é este div; o que se revela é o cabeçalho dentro dele —
+             `position: sticky` impediria a animação guiada por rolagem de
+             completar o seu alcance. */
+          <div className="cabecalho-fixo">
+            <CabecalhoDeSecao titulo={t('nav.solutions')} />
+          </div>
         )}
 
-        <figure>
+        <figure className={comoPagina ? '' : 'conteudo-grade'}>
           <div className="grid lg:grid-cols-5">
             {ciclo.map(({ chave, produtos }, i) => (
               /* A coluna se revela ao entrar na tela, o filete de cima se
@@ -76,10 +85,10 @@ const Solutions = () => {
                   {produtos.map((p) => {
                     const conteudo = (
                       <>
-                        <span className="marca block text-[15px] text-white transition-colors group-hover:text-primary">
+                        <span className="marca block text-nome text-white transition-colors group-hover:text-primary">
                           <NomeDeProduto nome={p.nome} />
                         </span>
-                        <span className="mt-1 block text-[13px] leading-relaxed text-on-surface-variant">{p.resumo}</span>
+                        <span className="mt-1 block text-resumo leading-relaxed text-on-surface-variant">{p.resumo}</span>
                       </>
                     );
                     return (
@@ -124,8 +133,8 @@ function Passagem() {
       <ol className="grid lg:grid-cols-4 lg:gap-x-28">
         {passos.map((passo) => (
           <li key={passo.nome} className="relative grid content-start gap-1.5">
-            <span className="marca text-[15px] text-white"><NomeDeProduto nome={passo.nome} /></span>
-            <p className="text-[13px] leading-relaxed text-on-surface-variant">{passo.texto}</p>
+            <span className="marca text-nome text-white"><NomeDeProduto nome={passo.nome} /></span>
+            <p className="text-resumo leading-relaxed text-on-surface-variant">{passo.texto}</p>
             {passo.seta && (
               <span className="flex items-center gap-3 py-3 text-xs leading-snug text-on-surface-variant lg:absolute lg:left-full lg:top-0 lg:w-28 lg:flex-col lg:gap-1.5 lg:px-3 lg:py-0 lg:text-center">
                 <svg aria-hidden="true" width="8" height="28" viewBox="0 0 8 28" className="shrink-0 lg:hidden">

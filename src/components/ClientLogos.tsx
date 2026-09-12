@@ -30,13 +30,19 @@ export default function ClientLogos() {
   const { t } = useTranslation();
   return (
     <section className="bg-surface px-8 py-24">
-      <div className="mx-auto max-w-7xl">
-        <CabecalhoDeSecao titulo={t('clients.title', 'quem confia na ness')} />
-        <ul className="grid grid-cols-2 gap-x-10 md:grid-cols-3 lg:grid-cols-6">
+      <div className="mx-auto max-w-7xl secao-grade">
+        <div className="cabecalho-fixo">
+          <CabecalhoDeSecao titulo={t('clients.title', 'quem confia na ness')} />
+        </div>
+        {/* Três colunas, não seis: dentro das oito colunas da grade, seis
+            dariam 142 px por nome e "Leite Tosto e Barros" quebraria em
+            quatro linhas. Três dão 284 px — mais largo do que os 213 px de
+            hoje, não menos. */}
+        <ul className="conteudo-grade grid grid-cols-2 gap-x-10 md:grid-cols-3">
           {clients.map((client, i) => (
             <li key={client.name} className="filete filete-acende revela border-t border-white/10" style={sequencia(i)}>
               <a href={client.url} target="_blank" rel="noopener noreferrer" className="group block py-4 transition-transform duration-[250ms] hover:-translate-y-0.5">
-                <span className="block font-display text-[15px] font-medium text-white/80 transition-colors group-hover:text-white">
+                <span className="block font-display text-nome font-medium text-white/80 transition-colors group-hover:text-white">
                   {client.name}
                 </span>
                 <span className="text-[12.5px] text-on-surface-variant">{client.sector}</span>
