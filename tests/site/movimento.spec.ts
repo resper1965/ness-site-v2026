@@ -47,14 +47,15 @@ test.describe('movimento', () => {
     }
   });
 
-  // "Nada se mexe sozinho": 1,5 s depois do load, com a página parada, não
+  // "Nada se mexe sozinho": 2 s depois do load, com a página parada, não
   // pode haver animação em curso. As guiadas por rolagem ficam pausadas
-  // enquanto ninguém rola; as de entrada já terminaram.
+  // enquanto ninguém rola; as de entrada já terminaram (a última, o segundo
+  // plano da abertura, termina por volta de 1,8 s).
   test('nada se mexe sozinho depois da entrada', async ({ page }) => {
     for (const rota of ROTAS) {
       await page.goto(rota);
       await page.waitForLoadState('networkidle');
-      await page.waitForTimeout(1_800);
+      await page.waitForTimeout(2_000);
       const emCurso = await page.evaluate(() =>
         document
           .getAnimations()
@@ -75,10 +76,10 @@ test.describe('movimento', () => {
     for (const rota of ROTAS) {
       await page.goto(rota);
       await page.waitForLoadState('networkidle');
-      // A abertura leva até 1,5 s para se compor; só depois dela a rolagem
+      // A abertura leva até 1,8 s para se compor; só depois dela a rolagem
       // começa, em passos, como uma pessoa, para as animações guiadas por
       // rolagem percorrerem o caminho.
-      await page.waitForTimeout(1_800);
+      await page.waitForTimeout(2_000);
       await page.evaluate(async () => {
         const passo = window.innerHeight / 2;
         for (let y = 0; y < document.documentElement.scrollHeight; y += passo) {
