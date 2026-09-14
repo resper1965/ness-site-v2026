@@ -331,7 +331,10 @@ test.describe('idioma na URL', () => {
     for (const c of casos) {
       const html = await (await request.get(c.path)).text();
       expect(html, c.path).toContain(`<html lang="${c.lang}"`);
-      expect(html, c.path).toContain(c.trecho);
+      // O título sai do servidor palavra por palavra (cada uma num span, para
+      // subir na abertura); o que se confere é o texto, sem as tags.
+      const texto = html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ');
+      expect(texto, c.path).toContain(c.trecho);
     }
   });
 
@@ -676,7 +679,12 @@ test.describe('telas no desenho delicado', () => {
   // pequena demais. A abertura fica no piso da faixa Display do brandbook —
   // até 56 px, que é a da home — e os títulos de seção até 28 px. Cabeçalho,
   // rodapé e menu ficam de fora.
-  test('títulos na escala: abertura até 56 px, seções até 28 px', async ({ page }) => {
+  // Os tetos subiram com a escala fluida do C1 (docs/ESTUDO-desktop-wow.md):
+  // a 1440 px o título da home lia como página interna, e o de seção como
+  // subtítulo. Abertura vai a 64 px e seção a 32 px no desktop; a 390 px nada
+  // mudou, e é por isso que o piso de cada token é o tamanho de celular de
+  // antes. Os tetos aqui são os do token, não uma folga arbitrária.
+  test('títulos na escala: abertura até 64 px, seções até 32 px', async ({ page }) => {
     for (const path of ['/', '/solucoes', '/solucoes/secops', '/forense', '/trustness']) {
       await page.goto(path);
       const tamanhos = await page.evaluate(() => {
@@ -689,8 +697,8 @@ test.describe('telas no desenho delicado', () => {
           );
         return { abertura: maior('h1'), secoes: maior('h2, h3') };
       });
-      expect(tamanhos.abertura, `${path} abertura`).toBeLessThanOrEqual(56);
-      expect(tamanhos.secoes, `${path} seções`).toBeLessThanOrEqual(28);
+      expect(tamanhos.abertura, `${path} abertura`).toBeLessThanOrEqual(64);
+      expect(tamanhos.secoes, `${path} seções`).toBeLessThanOrEqual(32);
     }
   });
 

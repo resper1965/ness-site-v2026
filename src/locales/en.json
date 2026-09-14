@@ -22,10 +22,17 @@
     "know_ness": "know ness",
     "since": "since {{year}}",
     "subtitle_clear": "24×7 security operations, infrastructure, software engineering, data privacy and digital forensics for companies that cannot stop. {{years}} years delivering with precision.",
-    "cta_primary": "talk to a specialist"
+    "cta_primary": "talk to a specialist",
+    "linha": {
+      "titulo": "one house, the whole cycle",
+      "antes": { "quando": "before", "marca": "trustness.", "texto": "audit, ISO 27001, privacy law and DPO" },
+      "todo_dia": { "quando": "every day", "marca": "ness.", "texto": "the operation and the response" },
+      "provar": { "quando": "when you have to prove it", "marca": "forense.io", "texto": "digital forensics with chain of custody" }
+    }
   },
   "presence": {
     "global": "global presence",
+    "clientes": "clients served",
     "locations": {
       "brazil": "brazil",
       "portugal": "portugal",
@@ -411,11 +418,16 @@
     "title": "forense.io",
     "tabTitle": "digital forensics & incident response",
     "hero": {
-      "tag": "chain of custody",
-      "tag2": "preserved",
-      "subtitle": "specialization in digital forensics following ISO 27037/27042 — judicial expertise, corporate investigation, and incident response.",
-      "cta1": "request forensics",
-      "cta2": "view forensic resources"
+      "titulo": "the evidence reaches the case exactly as it left the device",
+      "lede": "Forensics on computers, phones, networks and cloud accounts. Every step is recorded, and the copy's hash is checked end to end, from collection to report.",
+      "cta": "talk to an examiner",
+      "link": "see the chain of custody"
+    },
+    "linha": {
+      "titulo": "from evidence to court",
+      "coleta": { "quando": "before it disappears", "texto": "preventive collection" },
+      "pericia": { "quando": "when you need to know", "texto": "digital forensics" },
+      "contraprova": { "quando": "when there is another report", "texto": "technical assistance and counter-analysis" }
     },
     "why": {
       "title": "why it matters",
@@ -557,10 +569,17 @@
     "title": "trustness",
     "tabTitle": "audit and compliance",
     "hero": {
-      "tag": "audit and compliance",
-      "subtitle": "independent audits, security assessments, and compliance consulting (ISO 27001, GDPR, SOC 2) — with executive reports and actionable roadmaps.",
-      "cta1": "request assessment",
-      "cta2": "talk to a specialist"
+      "titulo": "you walk into the audit knowing what it will find",
+      "lede": "Independent audit, ISO 27001 implementation and an LGPD privacy programme, with an executive report and a remediation plan in priority order.",
+      "cta": "request an assessment",
+      "link": "see how the audit runs"
+    },
+    "linha": {
+      "titulo": "measure, structure, test, maintain",
+      "medir": { "quando": "measure", "texto": "audit and assessment" },
+      "estruturar": { "quando": "structure", "texto": "ISO 27001 and governance" },
+      "testar": { "quando": "test", "texto": "testing and vulnerabilities" },
+      "manter": { "quando": "maintain", "texto": "DPO as a service" }
     },
     "why": {
       "title": "why it matters",
