@@ -76,11 +76,15 @@ Quatro linhas. Se vocês usam outra escala, troque os nomes.
 
 *(mesma estrutura; copie os quatro blocos acima)*
 
+> Rascunho preenchido em [`fichas/n-infraops.md`](fichas/n-infraops.md) (14/09), a validar.
+
 ---
 
 ## n.devarch — engenharia e arquitetura de software
 
 *(mesma estrutura)*
+
+> Rascunho preenchido em [`fichas/n-devarch.md`](fichas/n-devarch.md) (14/09), a validar.
 
 ---
 
@@ -88,12 +92,17 @@ Quatro linhas. Se vocês usam outra escala, troque os nomes.
 
 *(mesma estrutura)*
 
+> Rascunho preenchido em [`fichas/n-autoops.md`](fichas/n-autoops.md) (14/09), a validar.
+
 ---
 
 ## n.cirt — resposta a incidentes cibernéticos
 
 *(mesma estrutura. Este é o produto onde o modelo de severidade mais importa —
 é literalmente o que se vende)*
+
+> Rascunho preenchido em [`fichas/n-cirt.md`](fichas/n-cirt.md) (14/09), a validar. A coluna
+> "comprovar" do ciclo, que é a trustness., tem a sua em [`fichas/comprovar-trustness.md`](fichas/comprovar-trustness.md).
 
 ---
 
