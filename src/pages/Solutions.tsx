@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { routeMeta, traduzir } from '../utils/meta';
 import { BRAND_DOMAINS } from '../config/brand';
 import { sequencia } from '../utils/movimento';
+import GlifoDoMomento, { type Momento } from '../components/solutions/GlifoDoMomento';
 
 /**
  * As soluções no ciclo de vida do ambiente — construir, operar, proteger,
@@ -30,7 +31,7 @@ const Solutions = () => {
     resumo: t(`solutions.${slug}.desc`),
     href: `/solucoes/${slug}`,
   });
-  const ciclo: { chave: string; produtos: Produto[] }[] = [
+  const ciclo: { chave: Momento; produtos: Produto[] }[] = [
     { chave: 'construir', produtos: [produto('devarch')] },
     { chave: 'operar', produtos: [produto('infraops'), produto('autoops')] },
     { chave: 'proteger', produtos: [produto('secops')] },
@@ -78,6 +79,9 @@ const Solutions = () => {
                   className="marcador pousa-na-vista absolute -left-[5px] top-1 h-[9px] w-[9px] rounded-full border border-primary-container bg-surface lg:-top-[5px] lg:left-0"
                   style={sequencia(i)}
                 />
+                {/* O glifo do momento (C3): o desenho do produto, em cima do
+                    nome do estágio; acende com o filete sob o mouse. */}
+                <GlifoDoMomento momento={chave} />
                 <Estagio className="mb-5 font-display text-[13px] font-medium text-on-surface-variant">
                   {t(`solutions.ciclo.estagios.${chave}`)}
                 </Estagio>

@@ -262,6 +262,10 @@
   .secao-grade > .conteudo-grade {
     grid-column: 5 / span 8;
   }
+  /* A faixa: um filho que ocupa as doze colunas, abaixo do cabeçalho (C4) */
+  .secao-grade > .faixa-grade {
+    grid-column: 1 / -1;
+  }
 }
 
 @keyframes sobe {
@@ -378,6 +382,21 @@
   .link-vivo:hover,
   .link-vivo:focus-visible { text-decoration-thickness: 2px; }
 
+  /* A luz da abertura (PLAN-movimento 4.9): o brilho central lê o seu centro
+     de duas variáveis. Sem JavaScript, ou no celular, fica onde sempre esteve
+     (50 % 45 %); com o script de 700 bytes do root e um ponteiro fino, o
+     centro segue o leitor com atraso. O radial em si é o mesmo do M1. */
+  .luz-segue {
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 45%), rgba(0, 173, 232, 0.14), transparent 65%);
+  }
+
+  /* O glifo do momento (ESTUDO-desktop-wow, C3): traço de 1 px a 40 % de
+     branco e um acento azul; sob o mouse da coluna, o traço acende. */
+  .glifo .traco { stroke: rgba(255, 255, 255, 0.4); transition: stroke var(--dur-micro) var(--ease-sair); }
+  .glifo .acento { fill: var(--color-primary-container); transition: opacity var(--dur-micro) var(--ease-sair); }
+  .coluna:hover .glifo .traco,
+  .coluna:focus-within .glifo .traco { stroke: rgba(255, 255, 255, 0.85); }
+
   /* A navbar fixa fica fora da troca de página; o chat também */
   .navbar { view-transition-name: navbar; }
   .chat-launcher { view-transition-name: chat; }
@@ -478,7 +497,7 @@
         position: absolute;
         inset: 0;
         z-index: -1;
-        background: radial-gradient(60% 70% at 30% 40%, rgba(0, 173, 232, 0.1), transparent 70%);
+        background: radial-gradient(70% 90% at 28% 50%, rgba(0, 173, 232, 0.12), transparent 70%);
         animation: aparece linear both;
         animation-timeline: view();
         animation-range: entry 0% entry 60%;

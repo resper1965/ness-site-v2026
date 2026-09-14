@@ -562,7 +562,20 @@ Classes: `.entra` (entrada), `.palavra` (título palavra por palavra), `.pousa`
 (o ponto azul), `.revela` e `.filete` (guiadas por rolagem com
 `animation-timeline`, sob `@supports`), `.filete-acende`, `.marcador`,
 `.nav-link`, `.reflexo`, `.link-vivo`, `.nasce`, `.chega-ao-rolar`,
-`.luz-chega`. Sem suporte a `animation-timeline`, a página é a de sempre.
+`.luz-chega`, `.luz-segue` e `.glifo`. Sem suporte a `animation-timeline`, a
+página é a de sempre.
+
+A única exceção à regra "tudo em CSS" é **a luz que segue o leitor** (M4):
+o brilho da abertura (`.luz-segue`) lê o seu centro de `--mx`/`--my` no
+`section[data-luz]`, e um script inline de menos de 1 KiB (`src/utils/luz.ts`,
+servido com o nonce da CSP em `root.tsx`) move as duas variáveis atrás do
+ponteiro com atraso. Só com `(hover: hover) and (pointer: fine)` e sem
+`prefers-reduced-motion`; no celular e sem JavaScript, a luz fica onde está.
+
+O **glifo do momento** (`GlifoDoMomento.tsx`, C3) é o desenho do produto de
+cada coluna do ciclo, a 64 px no desktop: traço de 1 px a 40 % de branco
+(`.traco`) e um único acento azul (`.acento`); o traço acende sob o mouse da
+coluna. É o mesmo idioma dos diagramas da página de produto, reduzido.
 
 ## Do's and Don'ts
 

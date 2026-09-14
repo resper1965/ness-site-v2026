@@ -138,6 +138,9 @@ export default function Abertura({
 
   return (
     <section
+      /* `data-luz` é o que o script do root procura: a luz da abertura segue
+         o ponteiro por duas variáveis neste section (PLAN-movimento 4.9, M4). */
+      data-luz=""
       className={`relative isolate flex items-center overflow-hidden px-8 pb-24 pt-36 md:pt-40 ${BASE[base].fundo} ${
         destaque ? 'min-h-[84vh]' : 'min-h-[70vh]'
       }`}
@@ -145,7 +148,7 @@ export default function Abertura({
       <div aria-hidden="true" className="absolute inset-0 -z-10">
         <HeroPicture brand={fundo} opacity={fundo === 'ness' ? 0.55 : 0.4} priority grayscale={fundo !== 'ness'} />
         <div className={`absolute inset-0 bg-linear-to-b ${BASE[base].veu}`} />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(0,173,232,0.14),transparent_65%)]" />
+        <div className="luz-segue absolute inset-0" />
       </div>
       <div className="w-full">{conteudo}</div>
     </section>

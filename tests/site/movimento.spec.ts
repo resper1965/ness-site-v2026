@@ -109,4 +109,49 @@ test.describe('movimento', () => {
     const palavras = await page.locator('h1 .palavra').count();
     expect(palavras).toBeGreaterThan(3);
   });
+
+  // A luz que segue o leitor (M4): só com ponteiro fino e sem reduced-motion.
+  // O script inline cabe no portão de 5 KiB do reforço.
+  test('a luz da abertura segue o ponteiro no desktop e fica parada no resto', async ({ page, browser, isMobile, request }) => {
+    const html = await (await request.get('/')).text();
+    const inline = html.match(/<script nonce="[^"]*">([^<]*data-luz[^<]*)<\/script>/);
+    expect(inline, 'o script da luz sai inline no HTML do servidor').not.toBeNull();
+    expect(Buffer.byteLength(inline![1]), 'o script da luz passa de 5 KiB').toBeLessThan(5 * 1024);
+
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    const luz = page.locator('section[data-luz]').first();
+    const caixa = (await luz.boundingBox())!;
+    await page.mouse.move(caixa.x + caixa.width * 0.2, caixa.y + caixa.height * 0.7, { steps: 8 });
+    const centro = () => luz.evaluate((el) => (el as HTMLElement).style.getPropertyValue('--mx'));
+    if (isMobile) {
+      await page.waitForTimeout(400);
+      expect(await centro(), 'no celular a luz fica onde está').toBe('');
+    } else {
+      await expect.poll(centro, { timeout: 3_000 }).toMatch(/^\d/);
+      expect(parseFloat(await centro()), 'a luz foi para a esquerda, atrás do ponteiro').toBeLessThan(50);
+      // Ao sair da abertura, a luz volta para o centro devagar.
+      await page.mouse.move(caixa.x + caixa.width * 0.5, caixa.y + caixa.height + 200, { steps: 8 });
+      await expect.poll(async () => Math.abs(parseFloat(await centro()) - 50), { timeout: 4_000 }).toBeLessThan(1);
+    }
+
+    const contexto = await browser.newContext({ reducedMotion: 'reduce' });
+    const quieta = await contexto.newPage();
+    await quieta.goto('/');
+    await quieta.waitForLoadState('networkidle');
+    const alvo = quieta.locator('section[data-luz]').first();
+    const b = (await alvo.boundingBox())!;
+    await quieta.mouse.move(b.x + b.width * 0.2, b.y + b.height * 0.7, { steps: 8 });
+    await quieta.waitForTimeout(400);
+    expect(await alvo.evaluate((el) => (el as HTMLElement).style.getPropertyValue('--mx')), 'com reduced-motion a luz não segue').toBe('');
+    await contexto.close();
+  });
+
+  // C3 e C4: cinco glifos no ciclo, seis marcas na faixa, e nenhum deles
+  // vira texto para o leitor de tela.
+  test('o ciclo tem cinco glifos e a faixa tem seis marcas', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('#soluções figure svg.glifo[aria-hidden="true"]')).toHaveCount(5);
+    await expect(page.locator('.faixa-grade > li')).toHaveCount(6);
+  });
 });

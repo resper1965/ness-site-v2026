@@ -2,7 +2,7 @@
 
 **Data:** 12/09/2026 · **Pedido:** Ricardo Esper ("um estudo para implantação de
 Tailwind e/ou shadcn para elevar a qualidade visual; no celular o site está
-adequado, no desktop está pouco *wow*") · **Status:** estudo, a decidir ·
+adequado, no desktop está pouco *wow*") · **Status:** C1 e C2 (Ricardo, 13/09), C3 e C4 (14/09) implementados no PR #49; C3 com os glifos provisórios, a rever produto a produto quando as fichas chegarem ·
 **Base:** [`superpowers/specs/2026-09-11-site-wow-design.md`](superpowers/specs/2026-09-11-site-wow-design.md),
 [`PLAN-movimento.md`](PLAN-movimento.md), `DESIGN.md`
 

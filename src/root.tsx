@@ -20,6 +20,7 @@ import ProfundidadeDeRolagem from './components/ProfundidadeDeRolagem';
 import { BrandProvider, BRAND_DOMAINS, resolveBrand, type Brand } from './config/brand';
 import { BRAND_DEFAULT_META, pageMeta } from './utils/meta';
 import { IDIOMA_PADRAO, idiomaDaRota, rotaSemIdioma, type Idioma } from './utils/lang';
+import { LUZ_QUE_SEGUE } from './utils/luz';
 
 /**
  * A marca sai do Host da requisição, no servidor, antes de qualquer render.
@@ -110,6 +111,9 @@ export function Layout({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
+        {/* A luz que segue o leitor: inline, com o nonce, para valer também
+            nas páginas servidas sem o bundle (PLAN-movimento 4.9, M4). */}
+        <script nonce={nonce} dangerouslySetInnerHTML={{ __html: LUZ_QUE_SEGUE }} />
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
       </body>
