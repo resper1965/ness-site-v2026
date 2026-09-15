@@ -186,11 +186,13 @@ test.describe('navegação', () => {
   test('soluções abre o mapa dos cinco produtos e fecha no Esc', async ({ page, isMobile }) => {
     test.skip(!!isMobile, 'o mega-menu é do desktop; no mobile os produtos ficam listados');
     await page.goto('/');
-    const botao = page.getByRole('button', { name: /soluções/i });
-    await expect(botao).toHaveAttribute('aria-expanded', 'false');
+    // O menu e um <details>: quem abre e fecha e o navegador, e o estado que
+    // importa e o painel estar a vista, nao um atributo que o React mantinha.
+    const painel = page.locator('#menu-solucoes');
+    await expect(painel).toBeHidden();
 
-    await botao.click();
-    await expect(botao).toHaveAttribute('aria-expanded', 'true');
+    await page.locator('details:has(#menu-solucoes) summary').click();
+    await expect(painel).toBeVisible();
     // Cinco produtos, o mapa das soluções e o diagnóstico.
     await expect(page.locator('#menu-solucoes a')).toHaveCount(7);
     // Serviços e verticais viraram o mapa: nenhum link leva mais a eles.
@@ -198,14 +200,16 @@ test.describe('navegação', () => {
     await expect(page.locator('#menu-solucoes a[href="/servicos"], #menu-solucoes a[href="/verticais"]')).toHaveCount(0);
 
     await page.keyboard.press('Escape');
-    await expect(botao).toHaveAttribute('aria-expanded', 'false');
+    await expect(painel).toBeHidden();
   });
 
   test('o switcher leva às três marcas, cada uma no seu domínio', async ({ page, isMobile }) => {
     test.skip(!!isMobile, 'o switcher é do desktop');
     await page.goto('/');
-    const botao = page.getByRole('button', { name: /trocar de marca/i });
-    await botao.click();
+    const painel = page.locator('#ecossistema');
+    await expect(painel).toBeHidden();
+    await page.locator('details:has(#ecossistema) summary').click();
+    await expect(painel).toBeVisible();
 
     const links = page.locator('#ecossistema a');
     await expect(links).toHaveCount(3);
@@ -215,7 +219,7 @@ test.describe('navegação', () => {
     await expect(links.nth(2)).toHaveAttribute('href', 'https://forense.io');
 
     await page.keyboard.press('Escape');
-    await expect(botao).toHaveAttribute('aria-expanded', 'false');
+    await expect(painel).toBeHidden();
   });
 
   test('toda página interna declara a hierarquia para o buscador', async ({ request }) => {
@@ -230,7 +234,7 @@ test.describe('navegação', () => {
   test('no mobile os cinco produtos ficam listados sob soluções', async ({ page, isMobile }) => {
     test.skip(!isMobile, 'somente mobile');
     await page.goto('/');
-    await page.getByRole('button', { name: /abrir menu/i }).click();
+    await page.locator('details:has(#mobile-menu) summary').click();
     // Os cinco produtos; serviços e verticais viraram o mapa de soluções.
     await expect(page.locator('#solucoes-mobile a')).toHaveCount(5);
   });
@@ -452,11 +456,19 @@ test.describe('primeira visita sem interrupções', () => {
   test('menu mobile abre, fecha com Esc e mantém o CTA visível', async ({ page, isMobile }) => {
     test.skip(!isMobile, 'somente mobile');
     await page.goto('/');
-    await expect(page.getByRole('link', { name: /contato/i }).first()).toBeVisible();
-    await page.getByRole('button', { name: /abrir menu/i }).click();
+    const cta = page.getByRole('link', { name: /contato/i }).first();
+    await expect(cta).toBeVisible();
+
+    await page.locator('details:has(#mobile-menu) summary').click();
     await expect(page.locator('#mobile-menu')).toBeVisible();
+    // O painel desce ancorado a pilha, e nao a cobre: o CTA e o botao de
+    // fechar continuam a vista com o menu aberto.
+    await expect(cta).toBeVisible();
+
     await page.keyboard.press('Escape');
-    await expect(page.locator('#mobile-menu')).toHaveCount(0);
+    // O painel do <details> nao sai do DOM: fica escondido, que e o mesmo
+    // para quem usa a pagina e uma garantia a mais para quem le a tela.
+    await expect(page.locator('#mobile-menu')).toBeHidden();
   });
 });
 
@@ -531,9 +543,10 @@ test.describe('marca e alvo de toque', () => {
     }
   });
 
-  // WCAG 2.2 (2.5.8) pede 24x24 px de alvo. A excecao e o link dentro de uma
-  // frase, cuja altura e limitada pela entrelinha do texto ao redor — por isso
-  // os links da frase de consentimento ficam de fora.
+  // WCAG 2.2 (2.5.8) pede 24x24 px de alvo. A excecao, na propria norma, e o
+  // alvo "numa frase, ou cujo tamanho e limitado pela entrelinha do texto ao
+  // redor": o link dentro do rotulo do formulario e o da frase do aviso de
+  // privacidade, que passou a sair do servidor na rota sem hidratacao.
   for (const rota of ['/', '/contato', '/carreiras', '/solucoes', '/solucoes/secops', '/forense', '/trustness']) {
     test(`nenhum controle de ${rota} fica abaixo de 24 px`, async ({ page }) => {
       await page.goto(rota);
@@ -547,7 +560,10 @@ test.describe('marca e alvo de toque', () => {
           if (r.width === 0 || r.height === 0 || s.visibility === 'hidden' || s.display === 'none') continue;
           // sr-only: recortado ate receber foco, quando vira um alvo de verdade.
           if (s.clipPath !== 'none' || s.clip !== 'auto') continue;
-          if (el.closest('label')) continue; // link dentro de frase: excecao da norma
+          // Link dentro de uma frase (o rotulo de um campo, o paragrafo do
+          // aviso): excecao da norma. Vale so para ancoras — um botao dentro
+          // de um paragrafo nao herda a desculpa.
+          if (el.tagName === 'A' && el.closest('label, p')) continue;
           if (Math.min(r.width, r.height) < 24) {
             const nome = (el.getAttribute('aria-label') || el.textContent || '').trim().slice(0, 40);
             achados.push(`${Math.round(r.width)}x${Math.round(r.height)} ${nome}`);
@@ -861,6 +877,17 @@ test.describe('aviso de consentimento', () => {
     expect(await page.evaluate(() => window.__enviou)).toBeUndefined();
     await expect(page.getByRole('region', { name: /privacidade|privacy/i })).toHaveCount(0);
 
+    // A recusa fica num cookie nosso — e ele que o servidor le para decidir
+    // se a faixa sai no HTML. Antes quem guardava a resposta era so a Zaraz,
+    // e como o duble daqui nao escreve cookie, recarregar trazia a faixa de
+    // volta; o teste aproveitava um artefato do duble. Agora recarregar prova
+    // o contrario, que e o que a pessoa espera de ter respondido.
+    await page.reload();
+    await page.waitForTimeout(1_500);
+    await expect(page.getByRole('region', { name: /privacidade|privacy/i })).toHaveCount(0);
+
+    // Para exercitar "aceitar" e preciso alguem que ainda nao respondeu.
+    await page.context().clearCookies();
     await page.addInitScript(simularZaraz(false));
     await page.goto('/');
     await page.getByRole('button', { name: /^aceitar$|^accept$|^aceptar$/i }).click();
