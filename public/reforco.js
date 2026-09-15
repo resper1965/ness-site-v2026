@@ -2,10 +2,11 @@
  * Reforço das rotas sem JavaScript (frente 2).
  *
  * O que a hidratação fazia e aqui continua: mandar evento de conversão para a
- * Zaraz e marcar a profundidade de rolagem. Nada mais — se este arquivo
- * crescer, a rota deixou de ser "sem JavaScript" e virou outra coisa.
+ * Zaraz, marcar a profundidade de rolagem e levar até a medição a resposta que
+ * a pessoa deu ao aviso de privacidade. Nada mais — se este arquivo crescer,
+ * a rota deixou de ser "sem JavaScript" e virou outra coisa.
  *
- * Mede ~2,6 KiB (2624 bytes) — meça de novo com `wc -c public/reforco.js`
+ * Mede ~3,7 KiB (3754 bytes) — meça de novo com `wc -c public/reforco.js`
  * depois de qualquer edição deste arquivo, o número aqui é o que vale, não
  * o que a especificação registrou num dia diferente. O portão de verdade é
  * o `resource-summary:script:size` de 10 KiB em `lighthouserc.json`; este
@@ -17,6 +18,28 @@
   var zaraz = function (nome, parametros) {
     if (window.zaraz && typeof window.zaraz.track === 'function') window.zaraz.track(nome, parametros || {});
   };
+
+  // A resposta ao aviso de privacidade chega pelo cookie que o Worker grava:
+  // aqui não há hidratação, então aceitar é enviar um formulário e voltar. É
+  // este trecho que leva a escolha até a medição — sem ele, o visitante
+  // responde e nada acontece, que era o buraco desta rota.
+  var aplicarEscolha = function (aceitou) {
+    try {
+      var consent = window.zaraz && window.zaraz.consent;
+      if (!consent) return;
+      if (typeof consent.setAll === 'function') consent.setAll(aceitou);
+      if (aceitou && typeof consent.sendQueuedEvents === 'function') consent.sendQueuedEvents();
+    } catch (e) {
+      // Terceiro quebrou. A página segue.
+    }
+  };
+  var respondido = /(?:^|;\s*)ness-consent=(aceito|recusado)(?:;|$)/.exec(document.cookie);
+  if (respondido) {
+    var aceitou = respondido[1] === 'aceito';
+    // A API pode estar pronta agora ou chegar depois; os dois casos contam.
+    document.addEventListener('zarazConsentAPIReady', function () { aplicarEscolha(aceitou); });
+    aplicarEscolha(aceitou);
+  }
 
   // Evento por atributo: <a data-evento="cta_click" data-cta="hero"> vira
   // track('cta_click', { cta: 'hero' }). Delegação: um ouvinte para a página.

@@ -3,6 +3,7 @@ import { createRequestHandler } from 'react-router';
 import api, { type Bindings } from './api';
 import { robots } from './robots';
 import { sitemap } from './sitemap';
+import { COOKIE_CONSENTIMENTO, VALIDADE_CONSENTIMENTO } from '../src/utils/consentimento';
 
 /**
  * O Worker único que serve os três domínios: HTML renderizado na edge,
@@ -80,6 +81,39 @@ function redirecionar(url: URL): Response | null {
   });
 }
 
+/**
+ * A resposta ao aviso de privacidade, para quem não tem hidratação.
+ *
+ * O aviso era uma ilha React: montava depois da hidratação, e na rota servida
+ * sem o runtime ele nunca aparecia. Quem visitava a `/forense` não aceitava
+ * nem recusava — e como a medição nega por padrão, o reforço que existe para
+ * repor a medição não tinha o que enviar.
+ *
+ * Aqui responder é enviar um formulário: o Worker grava a escolha e devolve
+ * 303 para a página de onde ela veio. Com JavaScript o componente intercepta
+ * o envio e nada disto roda; sem ele, é este caminho que vale.
+ */
+async function responderConsentimento(request: Request, url: URL): Promise<Response> {
+  const formulario = await request.formData();
+  const escolha = formulario.get('resposta') === 'aceito' ? 'aceito' : 'recusado';
+  const volta = formulario.get('volta');
+  // Só volta para dentro do site: `//outro.site` é um endereço absoluto que o
+  // cabeçalho Location aceitaria sem reclamar, e o formulário é público.
+  const destino = typeof volta === 'string' && /^\/(?!\/)/.test(volta) ? volta : '/';
+  // `Secure` só no que é servido por https: no http do preview local o
+  // navegador descartaria o cookie inteiro, e a resposta se perderia.
+  const seguro = url.protocol === 'https:' ? ' Secure;' : '';
+
+  return new Response(null, {
+    status: 303,
+    headers: {
+      Location: destino,
+      'Set-Cookie': `${COOKIE_CONSENTIMENTO}=${escolha}; Path=/; Max-Age=${VALIDADE_CONSENTIMENTO}; SameSite=Lax;${seguro}`,
+      'Cache-Control': 'no-store',
+    },
+  });
+}
+
 export default {
   async fetch(request: Request, env: Bindings, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
@@ -99,6 +133,10 @@ export default {
         return mocks.fetch(request, env, ctx);
       }
       return api.fetch(request, env, ctx);
+    }
+
+    if (url.pathname === '/consentimento' && request.method === 'POST') {
+      return responderConsentimento(request, url);
     }
 
     const nonce = crypto.randomUUID().replace(/-/g, '');

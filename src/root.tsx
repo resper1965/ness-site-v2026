@@ -1,6 +1,6 @@
 import { useMemo, type ReactNode } from 'react';
 import { I18nextProvider, useTranslation } from 'react-i18next';
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, isRouteErrorResponse, useMatches, useRouteLoaderData } from 'react-router';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, isRouteErrorResponse, useRouteLoaderData } from 'react-router';
 import { LazyMotion, MotionConfig } from 'motion/react';
 
 import './index.css';
@@ -21,6 +21,8 @@ import { BrandProvider, BRAND_DOMAINS, resolveBrand, type Brand } from './config
 import { BRAND_DEFAULT_META, pageMeta } from './utils/meta';
 import { IDIOMA_PADRAO, idiomaDaRota, rotaNoIdioma, rotaSemIdioma, type Idioma } from './utils/lang';
 import { LUZ_QUE_SEGUE } from './utils/luz';
+import { lerConsentimento, type Consentimento } from './utils/consentimento';
+import { useSemJs } from './utils/semJs';
 
 /**
  * A marca sai do Host da requisição, no servidor, antes de qualquer render.
@@ -29,21 +31,38 @@ import { LUZ_QUE_SEGUE } from './utils/luz';
  * O `clientLoader` refaz a conta no navegador (mesma resposta, `location` é a
  * mesma origem) para a navegação interna não pagar uma ida ao servidor.
  */
-type RootData = { brand: Brand; url: string; nonce: string; lang: Idioma; pathnameCompleto: string };
+type RootData = {
+  brand: Brand;
+  url: string;
+  nonce: string;
+  lang: Idioma;
+  pathnameCompleto: string;
+  /** `null` é quem ainda não respondeu ao aviso de privacidade. */
+  consentimento: Consentimento | null;
+};
 
 /**
  * O canonical aponta sempre para o domínio de produção da marca, nunca para
  * a origem que serviu a resposta — é o que impede uma URL de preview de se
  * declarar canônica.
  */
-function forPath(host: string, pathname: string, nonce: string): RootData {
+function forPath(host: string, pathname: string, nonce: string, cookies: string | null): RootData {
   const brand = resolveBrand(host);
-  return { brand, url: BRAND_DOMAINS[brand] + pathname, nonce, lang: idiomaDaRota(pathname), pathnameCompleto: pathname };
+  return {
+    brand,
+    url: BRAND_DOMAINS[brand] + pathname,
+    nonce,
+    lang: idiomaDaRota(pathname),
+    pathnameCompleto: pathname,
+    // O aviso de privacidade precisa estar — ou não estar — no HTML que sai
+    // daqui: na rota sem hidratação não há um segundo momento para decidir.
+    consentimento: lerConsentimento(cookies),
+  };
 }
 
 export async function loader({ request, context }: { request: Request; context: { nonce?: string } }): Promise<RootData> {
   const url = new URL(request.url);
-  const dados = forPath(url.hostname, url.pathname, context.nonce ?? '');
+  const dados = forPath(url.hostname, url.pathname, context.nonce ?? '', request.headers.get('Cookie'));
   // Sem os recursos carregados, a página sairia com as chaves cruas.
   await ensureLanguage(dados.lang);
   return dados;
@@ -52,7 +71,7 @@ export async function loader({ request, context }: { request: Request; context: 
 export async function clientLoader(): Promise<RootData> {
   // O nonce só vale para o documento que o servidor emitiu; na navegação
   // interna não há script inline novo para autorizar.
-  const dados = forPath(window.location.hostname, window.location.pathname, '');
+  const dados = forPath(window.location.hostname, window.location.pathname, '', document.cookie);
   await ensureLanguage(dados.lang);
   return dados;
 }
@@ -102,7 +121,7 @@ export function Layout({ children }: { children: ReactNode }) {
   // Rota marcada com `semJs` não recebe o runtime do React Router: o HTML sai
   // completo do servidor e nenhum módulo desce. O que ainda precisa de
   // comportamento vem de /reforco.js (frente 2, tarefa 2).
-  const semJs = useMatches().some((m) => (m.handle as { semJs?: boolean } | undefined)?.semJs);
+  const semJs = useSemJs();
 
   return (
     <html lang={lang === 'pt' ? 'pt-BR' : lang}>
@@ -187,7 +206,7 @@ function Shell({ brand, children }: { brand: Brand; children: ReactNode }) {
   // Mesma checagem do Layout: a rota sem JS não hidrata, então o widget do
   // chat (uma ilha React) nunca abriria. Ali o botão vira link para o
   // contato, com o mesmo alvo de toque e o mesmo evento de conversão.
-  const semJsShell = useMatches().some((m) => (m.handle as { semJs?: boolean } | undefined)?.semJs);
+  const semJsShell = useSemJs();
   const dados = useRouteLoaderData('root') as RootData | undefined;
   const langShell = dados?.lang ?? IDIOMA_PADRAO;
   return (
