@@ -6,7 +6,7 @@
  * a pessoa deu ao aviso de privacidade. Nada mais — se este arquivo crescer,
  * a rota deixou de ser "sem JavaScript" e virou outra coisa.
  *
- * Mede ~3,7 KiB (3754 bytes) — meça de novo com `wc -c public/reforco.js`
+ * Mede ~3,9 KiB (4015 bytes) — meça de novo com `wc -c public/reforco.js`
  * depois de qualquer edição deste arquivo, o número aqui é o que vale, não
  * o que a especificação registrou num dia diferente. O portão de verdade é
  * o `resource-summary:script:size` de 10 KiB em `lighthouserc.json`; este
@@ -43,13 +43,18 @@
 
   // Evento por atributo: <a data-evento="cta_click" data-cta="hero"> vira
   // track('cta_click', { cta: 'hero' }). Delegação: um ouvinte para a página.
+  //
+  // `data-discover` fica de fora: quem o põe é o React Router, em todo
+  // <Link>, e ele viraria um campo `discover: "true"` em cada evento — ruído
+  // nosso no painel de quem lê a conversão.
+  var IGNORADOS = { 'data-evento': 1, 'data-discover': 1 };
   document.addEventListener('click', function (e) {
     var alvo = e.target instanceof Element ? e.target.closest('[data-evento]') : null;
     if (!alvo) return;
     var parametros = {};
     for (var i = 0; i < alvo.attributes.length; i++) {
       var a = alvo.attributes[i];
-      if (a.name.indexOf('data-') === 0 && a.name !== 'data-evento') parametros[a.name.slice(5)] = a.value;
+      if (a.name.indexOf('data-') === 0 && !IGNORADOS[a.name]) parametros[a.name.slice(5)] = a.value;
     }
     zaraz(alvo.getAttribute('data-evento'), parametros);
   });

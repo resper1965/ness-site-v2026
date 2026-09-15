@@ -143,6 +143,9 @@ const Navbar = () => {
                         <Link
                           to="/assessment/cyber"
                           onClick={() => evento('cta_click', { cta: 'megamenu_diagnostico', destino: '/assessment/cyber' })}
+                          data-evento="cta_click"
+                          data-cta="megamenu_diagnostico"
+                          data-destino="/assessment/cyber"
                           className="block mt-1 px-4 py-2.5 rounded-2xl bg-primary-container/10 text-primary-container text-[11px] font-medium uppercase tracking-widest text-center hover:bg-primary-container hover:text-on-primary transition-colors"
                         >
                           {t('nav.assessment', 'diagnóstico gratuito')}
@@ -193,10 +196,20 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* CTA — visível também no mobile */}
+          {/* CTA — visível também no mobile.
+
+              Os `data-evento` ao lado do `onClick` não são repetição: na rota
+              servida sem hidratação o `onClick` nunca liga, e é o reforço
+              estático que emite o evento, lendo estes atributos. Sem eles a
+              conversão mais visível da página não era contada (achado do
+              Codex). Com hidratação quem emite é o `onClick`, uma vez só —
+              o reforço não é carregado ali. */}
           <Link
             onClick={() => evento('cta_click', { cta: 'navbar', destino: '/contato' })}
             to="/contato"
+            data-evento="cta_click"
+            data-cta="navbar"
+            data-destino="/contato"
             viewTransition
             className="bg-primary-container text-on-primary px-4 md:px-6 py-2 rounded-full font-display font-medium text-[11px] md:text-xs uppercase tracking-wide transition-all hover:brightness-110 active:scale-95 focus-visible:ring-2 focus-visible:ring-primary-container whitespace-nowrap"
           >
@@ -283,6 +296,7 @@ const Navbar = () => {
                     to="/contato"
                     data-evento="cta_click"
                     data-cta="menu_mobile"
+                    data-destino="/contato"
                     className="block w-full rounded-2xl bg-primary-container py-4 text-center font-display text-sm font-medium uppercase tracking-widest text-on-primary"
                   >
                     {t('nav.cta')}

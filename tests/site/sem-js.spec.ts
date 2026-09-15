@@ -109,3 +109,41 @@ test.describe('a /forense navega sem JavaScript', () => {
     expect(resposta.headers()['location']).toBe('/');
   });
 });
+
+/**
+ * O evento de conversão na rota sem hidratação.
+ *
+ * O `onClick` do CTA da navbar nunca liga aqui, e o reforço só enxerga quem
+ * carrega `data-evento`: sem esses atributos, a conversão mais visível da
+ * página deixava de ser contada — achado do Codex na revisão deste PR. O
+ * teste roda com JavaScript ligado, porque é o reforço que está sendo
+ * medido, e ele é JavaScript.
+ */
+test.describe('a medição da /forense sem hidratação', () => {
+  test('o CTA da navbar emite cta_click com cta e destino', async ({ page }) => {
+    // Os eventos vão para o sessionStorage porque o clique navega: uma
+    // variável em `window` iria embora com o documento antes de ser lida.
+    await page.addInitScript(`
+      window.zaraz = {
+        track: (nome, parametros) => {
+          const ate_agora = JSON.parse(sessionStorage.getItem('__eventos') || '[]');
+          ate_agora.push([nome, parametros]);
+          sessionStorage.setItem('__eventos', JSON.stringify(ate_agora));
+        },
+      };
+    `);
+    await page.goto('/forense');
+    await page.locator('nav a[data-evento="cta_click"][data-cta="navbar"]').click();
+    await expect(page).toHaveURL(/\/contato$/);
+
+    const eventos: [string, Record<string, string>][] = JSON.parse(
+      (await page.evaluate(() => sessionStorage.getItem('__eventos'))) ?? '[]',
+    );
+    const conversao = eventos.find(([nome]) => nome === 'cta_click');
+    expect(conversao, `eventos: ${JSON.stringify(eventos)}`).toBeTruthy();
+    // Os mesmos campos que o `onClick` emitiria na rota hidratada, e só
+    // eles: `data-discover`, que o React Router põe em todo <Link>, não pode
+    // virar campo do painel.
+    expect(conversao?.[1]).toEqual({ cta: 'navbar', destino: '/contato' });
+  });
+});
