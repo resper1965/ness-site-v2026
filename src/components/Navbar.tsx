@@ -1,10 +1,11 @@
 import BlueDot, { NomeDeProduto } from '../components/BlueDot';
-import React, { useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router";
+import React, { useEffect, useRef } from "react";
+import { Link, useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
 import { Menu, X, ChevronDown } from "lucide-react";
 
 import { useBrand } from '../config/brand';
+import { useFechaSozinho } from '../utils/menu';
 import { rotaNoIdioma, type Idioma } from '../utils/lang';
 import { solutionsData } from '../data/solutionsData';
 import { evento } from '../utils/eventos';
@@ -19,9 +20,7 @@ const SOLUCOES = Object.entries(solutionsData).map(([slug, dados]) => {
 const Navbar = () => {
   const BRAND = useBrand();
   const { t, i18n } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
 
 
   const isActive = (path: string) => {
@@ -50,55 +49,25 @@ const Navbar = () => {
     return !nessOnlyKeys.includes(item.key) && !trustnessOnlyKeys.includes(item.key);
   });
 
-  // O idioma vive na URL: trocar de idioma é navegar. Assim a escolha é
-  // compartilhável, indexável e sobrevive a um recarregamento.
-  const [menuSolucoes, setMenuSolucoes] = useState(false);
-  const caixaSolucoes = useRef<HTMLDivElement>(null);
-  const hamburguer = useRef<HTMLButtonElement>(null);
+  // Os dois menus da navbar são <details>: quem abre e fecha é o navegador,
+  // não um estado do React. É isso que os mantém de pé na rota servida sem
+  // hidratação — e, de quebra, tirou daqui três efeitos e dois estados.
+  const caixaSolucoes = useRef<HTMLDetailsElement>(null);
+  const menuMobile = useRef<HTMLDetailsElement>(null);
+  useFechaSozinho(caixaSolucoes);
+  useFechaSozinho(menuMobile);
 
-  // O menu de soluções fecha ao navegar e no Esc — abrir é fácil, sair tem
-  // que ser mais fácil ainda.
-  useEffect(() => { setMenuSolucoes(false); }, [location.pathname]);
+  /** O endereço da página no idioma pedido, preservando a consulta. */
+  const rotaDoIdioma = (lng: string) => rotaNoIdioma(location.pathname, lng as Idioma) + location.search;
+
+  // Navegou, fecha os dois. Sem JavaScript a navegação recarrega o documento
+  // e o <details> volta fechado sozinho; com JavaScript a troca é no cliente
+  // e o painel ficaria aberto sobre a página nova.
   useEffect(() => {
-    if (!menuSolucoes) return;
-    const aoTeclar = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenuSolucoes(false); };
-    // Clicar fora fecha, como no seletor de marcas.
-    const aoClicarFora = (e: MouseEvent) => {
-      if (caixaSolucoes.current && !caixaSolucoes.current.contains(e.target as Node)) setMenuSolucoes(false);
-    };
-    document.addEventListener('keydown', aoTeclar);
-    document.addEventListener('mousedown', aoClicarFora);
-    return () => {
-      document.removeEventListener('keydown', aoTeclar);
-      document.removeEventListener('mousedown', aoClicarFora);
-    };
-  }, [menuSolucoes]);
-
-  const changeLanguage = (lng: string) => {
-    navigate(rotaNoIdioma(location.pathname, lng as Idioma) + location.search);
-  };
-
-  // Fecha o menu ao navegar e ao pressionar Esc; trava o scroll enquanto aberto
-  useEffect(() => { setIsOpen(false); }, [location.pathname]);
-  useEffect(() => {
-    if (!isOpen) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setIsOpen(false); };
-    document.addEventListener('keydown', onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    // O que fica atrás do menu sai do teclado e do leitor de tela enquanto
-    // ele está aberto: sem isso o Tab passeava pela página escondida.
-    const fundo = [document.getElementById('main-content'), document.querySelector('footer')]
-      .filter((el): el is HTMLElement => !!el);
-    fundo.forEach((el) => el.setAttribute('inert', ''));
-    document.querySelector<HTMLElement>('#mobile-menu a, #mobile-menu button')?.focus();
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = prev;
-      fundo.forEach((el) => el.removeAttribute('inert'));
-      hamburguer.current?.focus();
-    };
-  }, [isOpen]);
+    for (const menu of [caixaSolucoes.current, menuMobile.current]) {
+      if (menu) menu.open = false;
+    }
+  }, [location.pathname]);
 
   const brandMark = (BRAND === 'trustness' || location.pathname === '/trustness')
     ? <>trustness<BlueDot /></>
@@ -131,23 +100,18 @@ const Navbar = () => {
             // "segurança" não sabe que o produto se chama n.secops.
             if (item.key === 'solutions') {
               return (
-                <div key={item.key} ref={caixaSolucoes} className="relative">
-                  <button
-                    type="button"
-                    aria-expanded={menuSolucoes}
-                    aria-controls="menu-solucoes"
+                <details key={item.key} ref={caixaSolucoes} className="abre-fecha group relative">
+                  <summary
                     /* Só clique: abrir no hover e fechar no clique é o padrão
                        que confunde no mouse e não existe no toque. */
-                    onClick={() => setMenuSolucoes((aberto) => !aberto)}
-                    className={`nav-link flex items-center gap-1 py-2 tracking-wide text-[11px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-medium focus-visible:ring-2 focus-visible:ring-primary-container rounded-sm ${
+                    className={`nav-link flex items-center gap-1 py-2 tracking-wide text-[11px] lg:text-xs uppercase hover:text-primary transition-colors duration-300 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-container rounded-sm ${
                       active ? 'text-primary-container' : 'text-on-surface-variant'
                     }`}
                   >
                     {item.label}
-                    <ChevronDown size={12} aria-hidden="true" className={menuSolucoes ? 'rotate-180 transition-transform' : 'transition-transform'} />
-                  </button>
+                    <ChevronDown size={12} aria-hidden="true" className="transition-transform group-open:rotate-180" />
+                  </summary>
 
-                  {menuSolucoes && (
                     <div
                       id="menu-solucoes"
                       /* Sobe 8 px e aparece com @starting-style; fechar é imediato */
@@ -185,8 +149,7 @@ const Navbar = () => {
                         </Link>
                       </div>
                     </div>
-                  )}
-                </div>
+                </details>
               );
             }
 
@@ -208,14 +171,17 @@ const Navbar = () => {
 
         <div className="flex items-center gap-2 md:gap-4">
           {/* Language Switcher */}
-          <div className="hidden sm:flex items-center bg-white/5 rounded-full p-1 border border-white/10" role="group" aria-label={t('a11y.language', 'idioma')}>
+          {/* O idioma vive na URL, então trocar de idioma é seguir um link:
+              funciona sem JavaScript, dá para abrir em outra aba e o
+              buscador enxerga as três versões da página. */}
+          <div className="hidden sm:flex items-center bg-white/5 rounded-full p-1 border border-white/10">
             {['pt', 'en', 'es'].map((lng) => (
-              <button
+              <Link
                 key={lng}
-                type="button"
-                onClick={() => changeLanguage(lng)}
+                to={rotaDoIdioma(lng)}
+                hrefLang={lng}
                 aria-label={t('a11y.change_language', { idioma: lng.toUpperCase(), defaultValue: 'mudar o idioma para {{idioma}}' })}
-                aria-pressed={i18n.language.startsWith(lng)}
+                aria-current={i18n.language.startsWith(lng) ? 'true' : undefined}
                 className={`px-3 py-2 rounded-full text-[11px] uppercase font-medium tracking-wide transition-all focus-visible:ring-2 focus-visible:ring-primary-container ${
                   i18n.language.startsWith(lng)
                     ? "bg-primary-container text-on-primary"
@@ -223,7 +189,7 @@ const Navbar = () => {
                 }`}
               >
                 {lng}
-              </button>
+              </Link>
             ))}
           </div>
 
@@ -237,92 +203,97 @@ const Navbar = () => {
             {t('nav.contact')}
           </Link>
 
-          {/* Hamburger Button */}
-          <button
-            type="button"
-            onClick={() => setIsOpen(!isOpen)}
-            ref={hamburguer}
-            aria-label={isOpen ? t('a11y.menu_close', 'fechar menu de navegação') : t('a11y.menu_open', 'abrir menu de navegação')}
-            aria-expanded={isOpen}
-            aria-controls="mobile-menu"
-            className="md:hidden text-white p-2 hover:bg-white/5 rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-primary-container"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* O menu do celular. Um <details> e não um botão com estado: ele
+              abre, fecha e navega sem uma linha de JavaScript, que é o que
+              mantém navegável a rota servida sem o runtime. O painel desce
+              ancorado à pílula — dentro dela, porque o vidro da navbar
+              (backdrop-filter) prende qualquer descendente fixo. */}
+          <details ref={menuMobile} className="abre-fecha group md:hidden">
+            <summary
+              aria-label={t('a11y.menu', 'menu de navegação')}
+              className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full text-white transition-colors hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-container"
+            >
+              <Menu size={24} aria-hidden="true" className="group-open:hidden" />
+              <X size={24} aria-hidden="true" className="hidden group-open:block" />
+            </summary>
+
+            <div
+              id="mobile-menu"
+              /* Aparece sem sair do lugar: a folha é grande, e um alvo que
+                 desliza é um alvo que escapa de quem toca depressa. */
+              className="surge absolute inset-x-0 top-full mt-3 max-h-[calc(100dvh-6rem)] overflow-y-auto rounded-3xl border border-white/10 bg-surface-container-low/98 p-6 backdrop-blur-xl nebula-shadow"
+            >
+              <div className="flex flex-col gap-6">
+                {/* Trocar de idioma é seguir um link, também aqui. */}
+                <div className="flex flex-wrap items-center gap-3">
+                  {['pt', 'en', 'es'].map((lng) => (
+                    <Link
+                      key={lng}
+                      to={rotaDoIdioma(lng)}
+                      hrefLang={lng}
+                      aria-current={i18n.language.startsWith(lng) ? 'true' : undefined}
+                      className={`px-5 py-3 rounded-full text-xs uppercase font-medium tracking-wide transition-all focus-visible:ring-2 focus-visible:ring-primary-container ${
+                        i18n.language.startsWith(lng)
+                          ? "bg-primary-container text-on-primary"
+                          : "bg-white/5 text-on-surface-variant"
+                      }`}
+                    >
+                      <span lang={lng}>{lng === 'pt' ? 'Português' : lng === 'en' ? 'English' : 'Español'}</span>
+                    </Link>
+                  ))}
+                </div>
+
+                {menuItems.map((item) => {
+                  const active = isActive(item.to);
+                  return (
+                    <div key={item.key}>
+                      <Link
+                        to={item.to}
+                        viewTransition
+                        aria-current={active ? 'page' : undefined}
+                        className={`font-display text-2xl font-semibold lowercase-all tracking-tighter ${
+                          active ? "text-primary-container" : "text-white"
+                        }`}
+                      >
+                        {item.label}{active && <BlueDot />}
+                      </Link>
+
+                      {/* No mobile não há hover: os cinco produtos ficam listados
+                          sob Soluções, em vez de escondidos atrás de um toque. */}
+                      {item.key === 'solutions' && (
+                        <div id="solucoes-mobile" className="mt-3 ml-1 flex flex-col gap-2 border-l border-white/10 pl-4">
+                          {SOLUCOES.map((solucao) => (
+                            <Link
+                              key={solucao.slug}
+                              to={`/solucoes/${solucao.slug}`}
+                              className="marca text-base text-on-surface-variant transition-colors hover:text-primary-container"
+                            >
+                              <NomeDeProduto nome={solucao.nome} />
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+
+                <div className="border-t border-white/5 pt-6">
+                  <Link
+                    onClick={() => evento('cta_click', { cta: 'menu_mobile', destino: '/contato' })}
+                    to="/contato"
+                    data-evento="cta_click"
+                    data-cta="menu_mobile"
+                    className="block w-full rounded-2xl bg-primary-container py-4 text-center font-display text-sm font-medium uppercase tracking-widest text-on-primary"
+                  >
+                    {t('nav.cta')}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </details>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay (CSS only) */}
-      {isOpen && (
-        <div id="mobile-menu" className="fixed inset-0 z-40 md:hidden bg-surface/95 backdrop-blur-xl pt-24 px-8 anim-menu-in overflow-y-auto">
-          <div className="flex flex-col gap-6">
-            {/* Mobile Language Switcher */}
-            <div className="flex items-center gap-3 mb-2" role="group" aria-label={t('a11y.language', 'idioma')}>
-              {['pt', 'en', 'es'].map((lng) => (
-                <button
-                  key={lng}
-                  type="button"
-                  onClick={() => { changeLanguage(lng); setIsOpen(false); }}
-                  aria-pressed={i18n.language.startsWith(lng)}
-                  className={`px-5 py-3 rounded-full text-xs uppercase font-medium tracking-wide transition-all focus-visible:ring-2 focus-visible:ring-primary-container ${
-                    i18n.language.startsWith(lng)
-                      ? "bg-primary-container text-on-primary"
-                      : "bg-white/5 text-on-surface-variant"
-                  }`}
-                >
-                  <span lang={lng}>{lng === 'pt' ? 'Português' : lng === 'en' ? 'English' : 'Español'}</span>
-                </button>
-              ))}
-            </div>
-
-            {menuItems.map((item, i) => {
-              const active = isActive(item.to);
-              return (
-                <div key={item.key} className={`anim-fade-up anim-delay-${Math.min(i + 1, 4)}`}>
-                  <Link
-                    to={item.to}
-                    viewTransition
-                    onClick={() => setIsOpen(false)}
-                    aria-current={active ? 'page' : undefined}
-                    className={`text-3xl font-display font-semibold lowercase-all tracking-tighter ${
-                      active ? "text-primary-container" : "text-white"
-                    }`}
-                  >
-                    {item.label}{active && <BlueDot />}
-                  </Link>
-
-                  {/* No mobile não há hover: os cinco produtos ficam listados
-                      sob Soluções, em vez de escondidos atrás de um toque. */}
-                  {item.key === 'solutions' && (
-                    <div id="solucoes-mobile" className="mt-3 ml-1 flex flex-col gap-2 border-l border-white/10 pl-4">
-                      {SOLUCOES.map((solucao) => (
-                        <Link
-                          key={solucao.slug}
-                          to={`/solucoes/${solucao.slug}`}
-                          onClick={() => setIsOpen(false)}
-                          className="marca text-base text-on-surface-variant transition-colors hover:text-primary-container"
-                        >
-                          <NomeDeProduto nome={solucao.nome} />
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-
-            <div className="pt-8 border-t border-white/5 anim-fade-up anim-delay-4">
-              <Link
-                onClick={() => { setIsOpen(false); evento('cta_click', { cta: 'menu_mobile', destino: '/contato' }); }}
-                to="/contato"
-                className="w-full block text-center bg-primary-container text-on-primary py-4 rounded-2xl font-display font-medium uppercase tracking-widest text-sm"
-              >
-                {t('nav.cta')}
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 };

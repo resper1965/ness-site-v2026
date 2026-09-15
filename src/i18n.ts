@@ -415,6 +415,7 @@ const ptResources = {
         "language": "idioma",
         "skip": "pular para o conteúdo principal",
         "nav_main": "principal",
+        "menu": "menu de navegação",
         "menu_open": "abrir menu de navegação",
         "menu_close": "fechar menu de navegação",
         "change_language": "mudar o idioma para {{idioma}}",

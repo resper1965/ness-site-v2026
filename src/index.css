@@ -127,6 +127,17 @@
     @apply bg-surface-container-highest/60 backdrop-blur-xl border border-white/10;
   }
 
+  /* Os menus da navbar são <details>: sem o triângulo do navegador, o
+     <summary> é só o botão — e continua sendo um controle de verdade, com
+     estado anunciado, sem depender de JavaScript para abrir. */
+  .abre-fecha > summary {
+    list-style: none;
+    cursor: pointer;
+  }
+  .abre-fecha > summary::-webkit-details-marker {
+    display: none;
+  }
+
   .text-glow {
     text-shadow: 0 0 20px rgba(0, 173, 232, 0.4);
   }
@@ -421,6 +432,14 @@
     .nasce {
       transition: opacity var(--dur-curta) var(--ease-sair), transform var(--dur-curta) var(--ease-sair);
       @starting-style { opacity: 0; transform: translateY(8px); }
+    }
+    /* O mesmo aparecimento, sem sair do lugar. Para o que é grande (a folha
+       do menu do celular) e para o que se pede para clicar assim que aparece
+       (o aviso de privacidade): um alvo que se move por 200 ms é um alvo que
+       escapa de quem responde rápido. */
+    .surge {
+      transition: opacity var(--dur-curta) var(--ease-sair);
+      @starting-style { opacity: 0; }
     }
 
     /* ── Guiadas por rolagem (CSS puro, no compositor) ─────────────── */

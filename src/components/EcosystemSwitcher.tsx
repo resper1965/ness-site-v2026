@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown } from 'lucide-react';
 import BlueDot from './BlueDot';
 import { BRAND_DOMAINS, useBrand, type Brand } from '../config/brand';
+import { useFechaSozinho } from '../utils/menu';
 
 // `nome` é a parte antes do ponto e `sufixo` o que vem depois: o ponto é
 // sempre o BlueDot, nunca a cor do texto — inclusive em forense.io.
@@ -21,65 +22,49 @@ const MARCAS: { marca: Brand; nome: string; sufixo?: string }[] = [
  *
  * O nome acessível começa pelo texto visível ("ecossistema"): quem comanda
  * por voz fala o que vê, e um rótulo diferente do texto não era encontrado.
+ *
+ * É um `<details>` e não um botão com estado: abrir e fechar é trabalho do
+ * navegador, então isto funciona na rota servida sem hidratação, onde um
+ * `onClick` nunca chegaria a existir.
  */
 export default function EcosystemSwitcher() {
   const { t } = useTranslation();
   const atual = useBrand();
-  const [aberto, setAberto] = useState(false);
-  const caixa = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!aberto) return;
-    const aoTeclar = (e: KeyboardEvent) => { if (e.key === 'Escape') setAberto(false); };
-    const aoClicarFora = (e: MouseEvent) => {
-      if (caixa.current && !caixa.current.contains(e.target as Node)) setAberto(false);
-    };
-    document.addEventListener('keydown', aoTeclar);
-    document.addEventListener('mousedown', aoClicarFora);
-    return () => {
-      document.removeEventListener('keydown', aoTeclar);
-      document.removeEventListener('mousedown', aoClicarFora);
-    };
-  }, [aberto]);
+  const caixa = useRef<HTMLDetailsElement>(null);
+  useFechaSozinho(caixa);
 
   return (
-    <div ref={caixa} className="relative">
-      <button
-        type="button"
-        aria-expanded={aberto}
-        aria-controls="ecossistema"
+    <details ref={caixa} className="abre-fecha group relative">
+      <summary
         aria-label={t('a11y.brand_switch', 'ecossistema: trocar de marca')}
-        onClick={() => setAberto((a) => !a)}
-        className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-white/5 border border-white/10 hover:border-primary-container/40 transition-colors focus-visible:ring-2 focus-visible:ring-primary-container"
+        className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-white/5 border border-white/10 hover:border-primary-container/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-container"
       >
         {/* Não repete o nome da marca: o logo ao lado já diz onde se está. */}
         <span className="text-[11px] font-medium text-on-surface-variant uppercase tracking-widest">
           {t('footer.ecosystem', 'ecossistema')}
         </span>
-        <ChevronDown size={11} aria-hidden="true" className={`text-on-surface-variant ${aberto ? 'rotate-180' : ''} transition-transform`} />
-      </button>
+        <ChevronDown size={11} aria-hidden="true" className="text-on-surface-variant transition-transform group-open:rotate-180" />
+      </summary>
 
-      {aberto && (
-        <div id="ecossistema" className="absolute left-0 top-full pt-3 w-[260px] z-50">
-          <div className="bg-surface-container-low/98 backdrop-blur-xl rounded-2xl border border-white/10 p-2 nebula-shadow">
-            {MARCAS.map((m) => (
-              <a
-                key={m.marca}
-                href={BRAND_DOMAINS[m.marca]}
-                aria-current={m.marca === atual ? 'true' : undefined}
-                className={`block px-3 py-2 rounded-xl transition-colors ${
-                  m.marca === atual ? 'bg-white/5' : 'hover:bg-white/5'
-                }`}
-              >
-                <span className="marca block text-sm text-white">
-                  {m.nome}<BlueDot />{m.sufixo}
-                </span>
-                <span className="block text-[11px] text-on-surface-variant leading-snug">{t(`ecossistema.${m.marca}`)}</span>
-              </a>
-            ))}
-          </div>
+      <div id="ecossistema" className="nasce absolute left-0 top-full pt-3 w-[260px] z-50">
+        <div className="bg-surface-container-low/98 backdrop-blur-xl rounded-2xl border border-white/10 p-2 nebula-shadow">
+          {MARCAS.map((m) => (
+            <a
+              key={m.marca}
+              href={BRAND_DOMAINS[m.marca]}
+              aria-current={m.marca === atual ? 'true' : undefined}
+              className={`block px-3 py-2 rounded-xl transition-colors ${
+                m.marca === atual ? 'bg-white/5' : 'hover:bg-white/5'
+              }`}
+            >
+              <span className="marca block text-sm text-white">
+                {m.nome}<BlueDot />{m.sufixo}
+              </span>
+              <span className="block text-[11px] text-on-surface-variant leading-snug">{t(`ecossistema.${m.marca}`)}</span>
+            </a>
+          ))}
         </div>
-      )}
-    </div>
+      </div>
+    </details>
   );
 }
