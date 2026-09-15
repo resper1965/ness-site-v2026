@@ -443,8 +443,48 @@ acima vale só para o caminho medido, e quem decide de fato é a corrida do
 Lighthouse que a CI já roda no PR, contra o preview publicado. Segunda: o
 aviso de cookies e o Turnstile sem React ainda não foram provados. Terceira:
 os dois custos registrados acima (menu inerte, aviso de consentimento que não
-monta) — a frente 3 precisa resolvê-los antes de esta rota ir ao ar em
-produção.
+monta) precisavam ser pagos antes de esta rota ir ao ar em produção. Foram,
+no mesmo PR, e a subseção abaixo registra como.
+
+#### Os custos, pagos (15/09/2026)
+
+A prova mediu o que se propôs a medir e deixou a rota impublicável por três
+buracos: sem navegação no celular, sem troca de idioma e sem consentimento.
+Os três eram o mesmo buraco — comportamento guardado num estado do React,
+numa página que não hidrata. A resposta foi devolvê-los ao HTML, não
+devolver o JavaScript:
+
+1. **Os menus viraram `<details>`/`<summary>`.** Os três: o mega-menu de
+   soluções, o seletor de marcas e o do celular. Abrir e fechar passou a ser
+   trabalho do navegador; o JavaScript só acrescenta fechar no Esc, ao clicar
+   fora e ao navegar. Saíram dois estados e três efeitos do `Navbar`.
+2. **A troca de idioma virou link.** Ela já era navegação — "o idioma vive na
+   URL" está escrito no próprio componente desde sempre —, mas era disparada
+   por `onClick` com `navigate()`. Agora são `<a href>` de verdade: abrem em
+   outra aba, o buscador enxerga as três versões e funcionam sem hidratação.
+3. **O consentimento passou a ser decidido no servidor.** O `loader` da raiz
+   lê um cookie nosso (`ness-consent`, em `src/utils/consentimento.ts`) e o
+   HTML já sai com a faixa, ou sem ela. Responder é enviar um formulário para
+   `POST /consentimento`, que o Worker atende gravando a escolha e devolvendo
+   303 para a página de origem. Com hidratação o componente intercepta o
+   envio e nada disso roda; sem ela, é este o caminho. Quem leva a escolha até
+   a medição continua sendo a API da Zaraz — no componente, quando há
+   hidratação, e em `public/reforco.js`, quando não há.
+
+O cookie é nosso e não o da Zaraz de propósito: o servidor precisa de uma
+resposta a uma pergunta só — *esta pessoa já respondeu?* — e o cookie dela tem
+formato dela, que muda com a configuração da zone. Escrever nele seria
+adivinhar.
+
+O que isto **não** resolve: sem JavaScript nenhum não há Zaraz e não há
+medição, então o cookie registra a resposta e o site não mede — que é o
+comportamento correto, não uma lacuna. O Turnstile sem React continua por
+provar, e a rota da prova não tem formulário. `public/reforco.js` passou de
+2624 para 3754 bytes, dentro do portão de 10 KiB do Lighthouse.
+
+Seis testes novos em `tests/site/sem-js.spec.ts`, todos com
+`javaScriptEnabled: false` — inclusive um que confirma que o `volta` do
+formulário não vira redirecionador aberto.
 
 ## 8. Fundação (frente 1)
 

@@ -34,3 +34,78 @@ test.describe('rota sem JavaScript', () => {
     await contexto.close();
   });
 });
+
+/**
+ * O que a prova custou, e passou a não custar mais.
+ *
+ * A revisão do PR listou três buracos que a rota sem hidratação abria: no
+ * celular ela ficava sem navegação, a troca de idioma não respondia e a faixa
+ * de consentimento nunca aparecia — e, sem ela, a medição que o reforço existe
+ * para repor nunca era autorizada. Os três viraram HTML: `<details>` para os
+ * menus, links para o idioma, formulário para o consentimento.
+ *
+ * Todo teste daqui roda com `javaScriptEnabled: false`. É a única forma de
+ * provar que não sobrou um `onClick` no caminho.
+ */
+test.describe('a /forense navega sem JavaScript', () => {
+  test.use({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
+
+  test('o menu do celular abre, lista as páginas e leva a outra', async ({ page }) => {
+    await page.goto('/forense');
+
+    const menu = page.locator('details#mobile-menu, details:has(#mobile-menu)').first();
+    const painel = page.locator('#mobile-menu');
+    await expect(painel).toBeHidden();
+
+    // Abrir é um clique no <summary>: o navegador faz sozinho.
+    await menu.locator('summary').click();
+    await expect(painel).toBeVisible();
+
+    const sobre = painel.getByRole('link', { name: /sobre|about/i }).first();
+    await expect(sobre).toBeVisible();
+    await sobre.click();
+    await expect(page).toHaveURL(/\/sobre$/);
+  });
+
+  test('a troca de idioma é um link, e leva à mesma página traduzida', async ({ page }) => {
+    await page.goto('/forense');
+    await page.locator('details:has(#mobile-menu) summary').click();
+    const ingles = page.locator('#mobile-menu a[hreflang="en"]');
+    await expect(ingles).toHaveAttribute('href', '/en/forense');
+    await ingles.click();
+    await expect(page).toHaveURL(/\/en\/forense$/);
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  });
+
+  test('o aviso de privacidade aparece, responde e não volta', async ({ page }) => {
+    await page.context().clearCookies();
+    await page.goto('/forense');
+
+    const aviso = page.getByRole('region', { name: /privacidade|privacy/i });
+    await expect(aviso).toBeVisible();
+
+    // Recusar é enviar um formulário: o Worker grava a escolha e devolve a
+    // pessoa para a mesma página. Sem JavaScript não há outro caminho.
+    await aviso.getByRole('button', { name: /recusar|decline|rechazar/i }).click();
+    await expect(page).toHaveURL(/\/forense$/);
+    await expect(aviso).toBeHidden();
+
+    const cookies = await page.context().cookies();
+    expect(cookies.find((c) => c.name === 'ness-consent')?.value).toBe('recusado');
+
+    // E não volta na próxima página, que é o ponto do cookie.
+    await page.goto('/forense');
+    await expect(aviso).toBeHidden();
+  });
+
+  test('a resposta ao aviso não leva ninguém para fora do site', async ({ page }) => {
+    // O formulário é público: um `volta` apontando para outro domínio viraria
+    // um redirecionador aberto com o nosso nome.
+    const resposta = await page.request.post('/consentimento', {
+      form: { resposta: 'aceito', volta: '//exemplo.invalido/' },
+      maxRedirects: 0,
+    });
+    expect(resposta.status()).toBe(303);
+    expect(resposta.headers()['location']).toBe('/');
+  });
+});
