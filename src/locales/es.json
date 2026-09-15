@@ -403,6 +403,7 @@
     "language": "idioma",
     "skip": "saltar al contenido principal",
     "nav_main": "principal",
+    "menu": "menú de navegación",
     "menu_open": "abrir menú de navegación",
     "menu_close": "cerrar menú de navegación",
     "change_language": "cambiar el idioma a {{idioma}}",

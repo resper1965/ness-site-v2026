@@ -19,8 +19,10 @@ import Breadcrumbs from './components/Breadcrumbs';
 import ProfundidadeDeRolagem from './components/ProfundidadeDeRolagem';
 import { BrandProvider, BRAND_DOMAINS, resolveBrand, type Brand } from './config/brand';
 import { BRAND_DEFAULT_META, pageMeta } from './utils/meta';
-import { IDIOMA_PADRAO, idiomaDaRota, rotaSemIdioma, type Idioma } from './utils/lang';
+import { IDIOMA_PADRAO, idiomaDaRota, rotaNoIdioma, rotaSemIdioma, type Idioma } from './utils/lang';
 import { LUZ_QUE_SEGUE } from './utils/luz';
+import { lerConsentimento, type Consentimento } from './utils/consentimento';
+import { useSemJs } from './utils/semJs';
 
 /**
  * A marca sai do Host da requisição, no servidor, antes de qualquer render.
@@ -29,21 +31,38 @@ import { LUZ_QUE_SEGUE } from './utils/luz';
  * O `clientLoader` refaz a conta no navegador (mesma resposta, `location` é a
  * mesma origem) para a navegação interna não pagar uma ida ao servidor.
  */
-type RootData = { brand: Brand; url: string; nonce: string; lang: Idioma; pathnameCompleto: string };
+type RootData = {
+  brand: Brand;
+  url: string;
+  nonce: string;
+  lang: Idioma;
+  pathnameCompleto: string;
+  /** `null` é quem ainda não respondeu ao aviso de privacidade. */
+  consentimento: Consentimento | null;
+};
 
 /**
  * O canonical aponta sempre para o domínio de produção da marca, nunca para
  * a origem que serviu a resposta — é o que impede uma URL de preview de se
  * declarar canônica.
  */
-function forPath(host: string, pathname: string, nonce: string): RootData {
+function forPath(host: string, pathname: string, nonce: string, cookies: string | null): RootData {
   const brand = resolveBrand(host);
-  return { brand, url: BRAND_DOMAINS[brand] + pathname, nonce, lang: idiomaDaRota(pathname), pathnameCompleto: pathname };
+  return {
+    brand,
+    url: BRAND_DOMAINS[brand] + pathname,
+    nonce,
+    lang: idiomaDaRota(pathname),
+    pathnameCompleto: pathname,
+    // O aviso de privacidade precisa estar — ou não estar — no HTML que sai
+    // daqui: na rota sem hidratação não há um segundo momento para decidir.
+    consentimento: lerConsentimento(cookies),
+  };
 }
 
 export async function loader({ request, context }: { request: Request; context: { nonce?: string } }): Promise<RootData> {
   const url = new URL(request.url);
-  const dados = forPath(url.hostname, url.pathname, context.nonce ?? '');
+  const dados = forPath(url.hostname, url.pathname, context.nonce ?? '', request.headers.get('Cookie'));
   // Sem os recursos carregados, a página sairia com as chaves cruas.
   await ensureLanguage(dados.lang);
   return dados;
@@ -52,7 +71,7 @@ export async function loader({ request, context }: { request: Request; context: 
 export async function clientLoader(): Promise<RootData> {
   // O nonce só vale para o documento que o servidor emitiu; na navegação
   // interna não há script inline novo para autorizar.
-  const dados = forPath(window.location.hostname, window.location.pathname, '');
+  const dados = forPath(window.location.hostname, window.location.pathname, '', document.cookie);
   await ensureLanguage(dados.lang);
   return dados;
 }
@@ -99,6 +118,10 @@ export function Layout({ children }: { children: ReactNode }) {
   const dados = useRouteLoaderData('root') as RootData | undefined;
   const lang = dados?.lang ?? IDIOMA_PADRAO;
   const nonce = dados?.nonce;
+  // Rota marcada com `semJs` não recebe o runtime do React Router: o HTML sai
+  // completo do servidor e nenhum módulo desce. O que ainda precisa de
+  // comportamento vem de /reforco.js (frente 2, tarefa 2).
+  const semJs = useSemJs();
 
   return (
     <html lang={lang === 'pt' ? 'pt-BR' : lang}>
@@ -111,11 +134,61 @@ export function Layout({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
-        {/* A luz que segue o leitor: inline, com o nonce, para valer também
-            nas páginas servidas sem o bundle (PLAN-movimento 4.9, M4). */}
-        <script nonce={nonce} dangerouslySetInnerHTML={{ __html: LUZ_QUE_SEGUE }} />
-        <ScrollRestoration nonce={nonce} />
-        <Scripts nonce={nonce} />
+        {semJs ? (
+          <>
+            {/* Medição e navegação nas rotas sem hidratação. `defer` para não
+                disputar a primeira pintura; as regras de pré-carregamento são
+                do navegador, e onde não houver suporte a navegação é a normal. */}
+            <script defer nonce={nonce} src="/reforco.js" />
+            <script
+              type="speculationrules"
+              nonce={nonce}
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  // '/*' pré-carregava até as quatro páginas com formulário
+                  // (contato, assessment, carreiras, e obrigado, que fecha
+                  // esse fluxo): passar o mouse nelas já baixava e iniciava
+                  // o bundle todo do React Router em segundo plano — a
+                  // página sem JavaScript acabava arrastando o JavaScript
+                  // que ela existe para evitar. Só essas quatro (e os
+                  // prefixos /en e /es) ficam de fora; as demais páginas
+                  // hidratadas (home, sobre, portfólio, blog, soluções,
+                  // compliance) continuam no alcance do pré-carregamento.
+                  prerender: [
+                    {
+                      where: {
+                        and: [
+                          { href_matches: '/*' },
+                          {
+                            not: {
+                              href_matches: [
+                                '/contato', '/en/contato', '/es/contato',
+                                '/assessment/*', '/en/assessment/*', '/es/assessment/*',
+                                '/carreiras', '/en/carreiras', '/es/carreiras',
+                                '/obrigado', '/en/obrigado', '/es/obrigado',
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                      eagerness: 'moderate',
+                    },
+                  ],
+                }),
+              }}
+            />
+          </>
+        ) : (
+          <>
+            {/* A luz que segue o leitor (PLAN-movimento 4.9, M4): inline, com
+                o nonce. Fica só no ramo hidratado — a rota `semJs` não tem
+                seção `data-luz`, e um script a mais ali reprovaria o teste
+                que exige que só o reforço seja carregado. */}
+            <script nonce={nonce} dangerouslySetInnerHTML={{ __html: LUZ_QUE_SEGUE }} />
+            <ScrollRestoration nonce={nonce} />
+            <Scripts nonce={nonce} />
+          </>
+        )}
       </body>
     </html>
   );
@@ -130,6 +203,12 @@ const loadMotionFeatures = () => import('motion/react').then((mod) => mod.domMax
 
 function Shell({ brand, children }: { brand: Brand; children: ReactNode }) {
   const { t } = useTranslation();
+  // Mesma checagem do Layout: a rota sem JS não hidrata, então o widget do
+  // chat (uma ilha React) nunca abriria. Ali o botão vira link para o
+  // contato, com o mesmo alvo de toque e o mesmo evento de conversão.
+  const semJsShell = useSemJs();
+  const dados = useRouteLoaderData('root') as RootData | undefined;
+  const langShell = dados?.lang ?? IDIOMA_PADRAO;
   return (
     <BrandProvider value={brand}>
       <RenderErrorBoundary>
@@ -144,7 +223,18 @@ function Shell({ brand, children }: { brand: Brand; children: ReactNode }) {
               <Analytics />
               <ProfundidadeDeRolagem />
               <Navbar />
-              <ChatLauncher />
+              {semJsShell ? (
+                <a
+                  href={`${rotaNoIdioma('/contato', langShell)}?ref=chat`}
+                  data-evento="cta_click"
+                  data-cta="chat_sem_js"
+                  className="fixed bottom-6 right-6 z-40 inline-flex min-h-11 items-center gap-2 rounded-full border border-primary-container/25 bg-surface-container-low px-5 py-3 font-display text-sm font-medium text-white shadow-xl shadow-black/30 md:bottom-8 md:right-8"
+                >
+                  {t('chatbot.open', 'falar com a Gabi')}
+                </a>
+              ) : (
+                <ChatLauncher />
+              )}
               <AvisoDeConsentimento />
               <main id="main-content" tabIndex={-1} className="outline-none">
                 <Breadcrumbs semTrilhaVisivel />

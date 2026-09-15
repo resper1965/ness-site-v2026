@@ -1,6 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useRouteLoaderData } from 'react-router';
+
+import { COOKIE_CONSENTIMENTO, VALIDADE_CONSENTIMENTO, type Consentimento } from '../utils/consentimento';
+import { useSemJs } from '../utils/semJs';
 
 /**
  * Aviso de medição de audiência — nosso, não o da Zaraz.
@@ -22,7 +25,9 @@ import { Link } from 'react-router-dom';
  * recusar não pode custar mais que aceitar.
  *
  * Sem Zaraz na página — preview em workers.dev, desenvolvimento local — o
- * componente não renderiza nada.
+ * componente não renderiza nada nas rotas hidratadas. A exceção é a rota
+ * servida sem o runtime: lá quem decide é o servidor, pelo cookie, porque
+ * este componente nunca chega a montar.
  *
  * `z-30`, um degrau abaixo do chat, não é detalhe: os dois moram no canto
  * de baixo e no celular eles se sobrepõem. Em `z-40`, empatado com o chat e
@@ -41,15 +46,39 @@ import { Link } from 'react-router-dom';
  *
  * O cookie não tem essa ambiguidade: ou existe, e houve resposta, ou não
  * existe. `zaraz-consent` é o nome configurado nas nossas zones; `cf_consent`
- * é o padrão da Zaraz, aceito aqui para o caso de a configuração mudar.
+ * é o padrão da Zaraz, aceito aqui para o caso de a configuração mudar; e
+ * `ness-consent` é o nosso, o único que o servidor enxerga.
  */
 function jaRespondeu(): boolean {
-  return /(?:^|;\s*)(zaraz-consent|cf_consent)=/.test(document.cookie);
+  return /(?:^|;\s*)(zaraz-consent|cf_consent|ness-consent)=/.test(document.cookie);
+}
+
+/** O mesmo cookie que o Worker grava, quando quem responde é o navegador. */
+function guardarEscolha(escolha: Consentimento) {
+  const seguro = window.location.protocol === 'https:' ? '; secure' : '';
+  document.cookie = `${COOKIE_CONSENTIMENTO}=${escolha}; path=/; max-age=${VALIDADE_CONSENTIMENTO}; samesite=lax${seguro}`;
 }
 
 export default function AvisoDeConsentimento() {
   const { t } = useTranslation();
-  const [visivel, setVisivel] = useState(false);
+  const location = useLocation();
+  const dados = useRouteLoaderData('root') as { consentimento?: Consentimento | null } | undefined;
+  const semJs = useSemJs();
+
+  /**
+   * Quem decide se a faixa aparece depende de haver hidratação.
+   *
+   * Na rota servida sem o runtime não existe um segundo momento: ou o HTML
+   * sai com a faixa, ou o visitante nunca responde. Então lá a pergunta é a
+   * do servidor — tem cookie? —, e a resposta vai por formulário.
+   *
+   * Nas rotas hidratadas quem decide continua sendo a Zaraz, no efeito
+   * abaixo: ela é quem sabe se há medição nesta página. Onde não há (o
+   * preview em workers.dev, o desenvolvimento local), nada aparece, como
+   * antes — pedir consentimento para uma medição que não existe seria pedir
+   * por pedir.
+   */
+  const [visivel, setVisivel] = useState(semJs && !dados?.consentimento);
 
   useEffect(() => {
     const decidir = () => {
@@ -83,7 +112,17 @@ export default function AvisoDeConsentimento() {
 
   if (!visivel) return null;
 
-  const responder = (aceitou: boolean) => {
+  /**
+   * Com JavaScript, responder não recarrega a página: o envio é interceptado,
+   * a escolha vai para o cookie e para a Zaraz, e a faixa sai. Sem
+   * JavaScript nada disto roda e o formulário segue para o Worker, que faz o
+   * mesmo e devolve a pessoa à página em que ela estava.
+   */
+  const responder = (e: FormEvent<HTMLFormElement>) => {
+    const botao = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
+    const aceitou = botao?.value === 'aceito';
+    e.preventDefault();
+    guardarEscolha(aceitou ? 'aceito' : 'recusado');
     // Mesmo motivo do try/catch acima: a escolha da pessoa tem que valer
     // mesmo que a API da Zaraz quebre no meio.
     try {
@@ -105,7 +144,7 @@ export default function AvisoDeConsentimento() {
     <section
       role="region"
       aria-label={t('consentimento.titulo', 'aviso de privacidade')}
-      className="glass anim-fade-up fixed bottom-24 left-4 right-4 z-30 rounded-3xl border-white/10 p-6 shadow-2xl shadow-black/40 sm:bottom-6 sm:right-auto sm:max-w-md"
+      className="glass surge fixed bottom-24 left-4 right-4 z-30 rounded-3xl border-white/10 p-6 shadow-2xl shadow-black/40 sm:bottom-6 sm:right-auto sm:max-w-md"
     >
       <p className="text-sm leading-relaxed text-on-surface-variant">
         <Trans
@@ -121,18 +160,21 @@ export default function AvisoDeConsentimento() {
           }}
         />
       </p>
-      <div className="mt-5 flex flex-wrap gap-3">
-        <button type="button" onClick={() => responder(true)} className={`${botao} bg-primary-container text-on-primary hover:brightness-110`}>
+      <form method="post" action="/consentimento" onSubmit={responder} className="mt-5 flex flex-wrap gap-3">
+        {/* Para onde o Worker devolve a pessoa depois de gravar a escolha. */}
+        <input type="hidden" name="volta" value={location.pathname + location.search} />
+        <button type="submit" name="resposta" value="aceito" className={`${botao} bg-primary-container text-on-primary hover:brightness-110`}>
           {t('consentimento.aceitar', 'aceitar')}
         </button>
         <button
-          type="button"
-          onClick={() => responder(false)}
+          type="submit"
+          name="resposta"
+          value="recusado"
           className={`${botao} border border-primary-container text-primary-container hover:bg-primary-container/10`}
         >
           {t('consentimento.recusar', 'recusar')}
         </button>
-      </div>
+      </form>
     </section>
   );
 }

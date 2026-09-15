@@ -561,9 +561,16 @@ escolher, navegar. Só `transform`, `opacity` e `clip`; nunca `filter`.
 Classes: `.entra` (entrada), `.palavra` (título palavra por palavra), `.pousa`
 (o ponto azul), `.revela` e `.filete` (guiadas por rolagem com
 `animation-timeline`, sob `@supports`), `.filete-acende`, `.marcador`,
-`.nav-link`, `.reflexo`, `.link-vivo`, `.nasce`, `.chega-ao-rolar`,
+`.nav-link`, `.reflexo`, `.link-vivo`, `.nasce`, `.surge`, `.chega-ao-rolar`,
 `.luz-chega`, `.luz-segue` e `.glifo`. Sem suporte a `animation-timeline`, a
 página é a de sempre.
+
+`.nasce` e `.surge` são o mesmo aparecimento, e a diferença entre as duas é
+uma regra: **o que se pede para clicar assim que aparece não se move**. O
+menu de soluções e o seletor de marcas sobem 8 px (`.nasce`); a folha do menu
+do celular e o aviso de privacidade aparecem parados (`.surge`), porque são
+grandes ou urgentes, e um alvo que desliza por 250 ms é um alvo que escapa de
+quem responde depressa.
 
 A única exceção à regra "tudo em CSS" é **a luz que segue o leitor** (M4):
 o brilho da abertura (`.luz-segue`) lê o seu centro de `--mx`/`--my` no
@@ -571,6 +578,13 @@ o brilho da abertura (`.luz-segue`) lê o seu centro de `--mx`/`--my` no
 servido com o nonce da CSP em `root.tsx`) move as duas variáveis atrás do
 ponteiro com atraso. Só com `(hover: hover) and (pointer: fine)` e sem
 `prefers-reduced-motion`; no celular e sem JavaScript, a luz fica onde está.
+
+Os menus da navbar — soluções, ecossistema e o do celular — são
+`<details>`/`<summary>` com `.abre-fecha`, não botões com estado: abrir e
+fechar é trabalho do navegador. É isso que os mantém de pé na rota servida
+sem hidratação (`/forense`), onde um `onClick` nunca chega a existir. O
+JavaScript só acrescenta o que o `<details>` não faz sozinho: fechar no Esc,
+fechar ao clicar fora e fechar ao navegar.
 
 O **glifo do momento** (`GlifoDoMomento.tsx`, C3) é o desenho do produto de
 cada coluna do ciclo, a 64 px no desktop: traço de 1 px a 40 % de branco

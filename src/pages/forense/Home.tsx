@@ -29,6 +29,8 @@ function Elo() {
   );
 }
 
+export const handle = { semJs: true };
+
 export default function ForenseHome() {
   const { t } = useTranslation();
   const etapas = t('forense.cadeia.etapas', { returnObjects: true }) as Etapa[];
