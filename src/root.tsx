@@ -20,6 +20,7 @@ import ProfundidadeDeRolagem from './components/ProfundidadeDeRolagem';
 import { BrandProvider, BRAND_DOMAINS, resolveBrand, type Brand } from './config/brand';
 import { BRAND_DEFAULT_META, pageMeta } from './utils/meta';
 import { IDIOMA_PADRAO, idiomaDaRota, rotaNoIdioma, rotaSemIdioma, type Idioma } from './utils/lang';
+import { LUZ_QUE_SEGUE } from './utils/luz';
 
 /**
  * A marca sai do Host da requisição, no servidor, antes de qualquer render.
@@ -160,6 +161,11 @@ export function Layout({ children }: { children: ReactNode }) {
           </>
         ) : (
           <>
+            {/* A luz que segue o leitor (PLAN-movimento 4.9, M4): inline, com
+                o nonce. Fica só no ramo hidratado — a rota `semJs` não tem
+                seção `data-luz`, e um script a mais ali reprovaria o teste
+                que exige que só o reforço seja carregado. */}
+            <script nonce={nonce} dangerouslySetInnerHTML={{ __html: LUZ_QUE_SEGUE }} />
             <ScrollRestoration nonce={nonce} />
             <Scripts nonce={nonce} />
           </>

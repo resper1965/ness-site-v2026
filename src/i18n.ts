@@ -28,10 +28,17 @@ const ptResources = {
         "know_ness": "conheça a ness",
         "since": "desde {{year}}",
         "subtitle_clear": "operações de segurança 24×7, infraestrutura, engenharia de software, LGPD e perícia digital para empresas que não podem parar. {{years}} anos entregando com precisão.",
-        "cta_primary": "falar com um especialista"
+        "cta_primary": "falar com um especialista",
+        "linha": {
+          "titulo": "uma casa, o ciclo inteiro",
+          "antes": { "quando": "antes", "marca": "trustness.", "texto": "auditoria, ISO 27001, LGPD e DPO" },
+          "todo_dia": { "quando": "todo dia", "marca": "ness.", "texto": "a operação e a resposta" },
+          "provar": { "quando": "quando é preciso provar", "marca": "forense.io", "texto": "perícia digital com cadeia de custódia" }
+        }
       },
       "presence": {
         "global": "presença global",
+        "clientes": "clientes atendidos",
         "locations": {
           "brazil": "brasil",
           "portugal": "portugal",
@@ -428,6 +435,12 @@ const ptResources = {
           "cta": "falar com um perito",
           "link": "ver a cadeia de custódia"
         },
+        "linha": {
+          "titulo": "da prova ao processo",
+          "coleta": { "quando": "antes que ela suma", "texto": "coleta preventiva" },
+          "pericia": { "quando": "quando é preciso saber", "texto": "perícia digital" },
+          "contraprova": { "quando": "quando há outro laudo", "texto": "assistência técnica e contraprova" }
+        },
         "cadeia": {
           "titulo": "a cadeia de custódia",
           "intro": "O hash é a impressão digital da cópia. Calculado na coleta, ele é conferido em cada etapa seguinte: se um único bit mudar, o hash muda, e a cadeia mostra onde.",
@@ -503,6 +516,13 @@ const ptResources = {
           "lede": "Auditoria independente, implementação da ISO 27001 e programa de privacidade da LGPD, com relatório executivo e um plano de correção em ordem de prioridade.",
           "cta": "solicitar assessment",
           "link": "ver como a auditoria anda"
+        },
+        "linha": {
+          "titulo": "medir, estruturar, testar, manter",
+          "medir": { "quando": "medir", "texto": "auditoria e assessment" },
+          "estruturar": { "quando": "estruturar", "texto": "ISO 27001 e governança" },
+          "testar": { "quando": "testar", "texto": "testes e vulnerabilidades" },
+          "manter": { "quando": "manter", "texto": "DPO como serviço" }
         },
         "auditoria": {
           "titulo": "a auditoria, semana a semana",

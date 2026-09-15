@@ -14,6 +14,12 @@
         "value": "montserrat",
         "createdAt": "2026-09-11T21:27:14.713Z",
         "reason": "fonte da marca (títulos)"
+      },
+      {
+        "rule": "bounce-easing",
+        "value": "cubic-bezier(0.34, 1.4, 0.64, 1)",
+        "createdAt": "2026-09-12T18:35:00.000Z",
+        "reason": "--ease-pousar: a única exceção deliberada do movimento (docs/PLAN-movimento.md, princípio 4), só no pouso do ponto azul e dos marcadores de 9 px; o resto usa --ease-sair"
       }
     ]
   }

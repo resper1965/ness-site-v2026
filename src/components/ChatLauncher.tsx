@@ -30,7 +30,9 @@ export default function ChatLauncher() {
 
 function LauncherButton({ onClick, label, pending = false }: { onClick: () => void; label: string; pending?: boolean }) {
   return (
-    <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-40">
+    /* Quem só olha a abertura não vê chat; quem começou a ler ganha o convite
+       (PLAN-movimento 4.5). Só opacidade e transform: o botão continua no lugar. */
+    <div className="chat-launcher chega-ao-rolar fixed bottom-6 right-6 md:bottom-8 md:right-8 z-40">
       <button
         type="button"
         onClick={onClick}
